@@ -51,4 +51,22 @@ export class AuthService {
     // Si hay un token, devuelve true. Si es null, devuelve false.
     return !!this.getToken();
   }
+
+  // --- Método para "decodificar" el rol del token ---
+  getUserRole(): 'Admin' | 'Cajero' | null {
+  const token = this.getToken();
+
+  if (!token) {
+    return null;
+  }
+
+  // Lógica de simulación para decodificar el token falso
+  if (token.includes('FAKE_ADMIN_TOKEN')) {
+    return 'Admin';
+  } else if (token.includes('FAKE_CAJERO_TOKEN')) {
+    return 'Cajero';
+  }
+
+  return null;
+}
 }
