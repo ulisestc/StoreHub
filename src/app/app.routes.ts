@@ -1,11 +1,13 @@
 import { Routes } from '@angular/router';
 
-// Importa tus componentes
 import { LandingComponent } from './screens/landing/landing.component';
 import { LoginComponent } from './screens/auth/login/login.component';
 import { RegisterComponent } from './screens/auth/register/register.component';
 import { DashboardComponent } from './screens/dashboard/dashboard.component';
 import { HomeComponent } from './screens/dashboard/home/home.component';
+
+// Se importa el Guard
+import { authGuard } from './shared/guards/auth.guard';
 
 export const routes: Routes = [
   // --- RUTAS PÚBLICAS ---
@@ -29,6 +31,7 @@ export const routes: Routes = [
   {
     path: 'dashboard',
     component: DashboardComponent,
+    canActivate: [authGuard], // Se aplica el Guard aquí
     // Estas son las "Rutas Hijas" que se cargarán dentro del <router-outlet> del Dashboard
     children: [
       {

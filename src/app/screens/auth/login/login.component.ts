@@ -1,7 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 
 import { ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
+import { AuthService } from '../../../services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -16,6 +18,13 @@ import { CommonModule } from '@angular/common';
 })
 export class LoginComponent {
 
+  // Se inyectan los servicios
+  authService = inject(AuthService);
+  router = inject(Router);
+
+  // (Variable para mostrar un mensaje de error)
+  loginError: boolean = false;
+
   // Definición del FormGroup para el formulario
   loginForm = new FormGroup({
     email: new FormControl('', [Validators.required, Validators.email]),
@@ -24,12 +33,25 @@ export class LoginComponent {
 
   // Método que se llamará al enviar el formulario
   onSubmit() {
-    if (this.loginForm.valid) {
-      // Por ahora, solo mostramos los datos en la consola
-      // Aquí es donde después se llamará a auth.service
-      console.log('Formulario válido:', this.loginForm.value);
-    } else {
-      console.log('Formulario inválido');
+    // Se resetea el error
+    this.loginError = false;
+
+  if (this.loginForm.valid) {
+      const email = this.loginForm.value.email ?? '';
+      const password = this.loginForm.value.password ?? '';
+
+      // Se llama al servicio de login
+      const loginExitoso = this.authService.login(email, password);
+
+      if (loginExitoso) {
+        // ¡Éxito! Se redirige al Dashboard
+        console.log('Login exitoso, redirigiendo...');
+        this.router.navigate(['/dashboard']);
+      } else {
+        // Error en las credenciales
+        console.log('Credenciales incorrectas');
+        this.loginError = true;
+      }
     }
   }
 }
