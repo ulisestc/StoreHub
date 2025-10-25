@@ -6,8 +6,19 @@ import { RegisterComponent } from './screens/auth/register/register.component';
 import { DashboardComponent } from './screens/dashboard/dashboard.component';
 import { HomeComponent } from './screens/dashboard/home/home.component';
 
+import { ProductListComponent } from './screens/dashboard/products/product-list/product-list.component';
+import { ReportListComponent } from './screens/dashboard/reports/report-list/report-list.component';
+import { InventoryAdjustComponent } from './screens/dashboard/inventory/inventory-adjust/inventory-adjust.component';
+import { CategoryListComponent } from './screens/dashboard/categories/category-list/category-list.component';
+
+import { PosComponent } from './screens/dashboard/sales/pos/pos.component';
+import { SaleHistoryComponent } from './screens/dashboard/sales/sale-history/sale-history.component';
+
 // Se importa el Guard
 import { authGuard } from './shared/guards/auth.guard';
+
+// Se importa el guard de rol
+import { roleGuard } from './shared/guards/role.guard';
 
 export const routes: Routes = [
   // --- RUTAS PÚBLICAS ---
@@ -38,9 +49,38 @@ export const routes: Routes = [
         path: '', // Esta es la ruta por defecto (ej. /dashboard)
         component: HomeComponent
       },
-      // Aquí irán las rutas de Persona 2 y 3 (productos, reportes, etc.)
-      // { path: 'products', component: ProductsComponent },
-      // { path: 'reports', component: ReportsComponent },
+      // --- RUTAS DE CAJERO Y ADMIN (Persona 3) ---
+      // No necesitan RoleGuard porque el AuthGuard ya hizo el trabajo
+      // y el Sidebar los muestra a ambos.
+      { path: 'sales/pos', component: PosComponent },
+      { path: 'sales/history', component: SaleHistoryComponent },
+
+      // --- RUTAS SOLO ADMIN (Persona 2) ---
+      // Aquí aplicamos el RoleGuard
+      {
+        path: 'products',
+        component: ProductListComponent,
+        canActivate: [roleGuard], // <-- Aplicamos el guard
+        data: { expectedRoles: ['Admin'] } // <-- Le decimos al guard qué rol esperamos
+      },
+      {
+        path: 'categories',
+        component: CategoryListComponent,
+        canActivate: [roleGuard],
+        data: { expectedRoles: ['Admin'] }
+      },
+      {
+        path: 'inventory',
+        component: InventoryAdjustComponent,
+        canActivate: [roleGuard],
+        data: { expectedRoles: ['Admin'] }
+      },
+      {
+        path: 'reports',
+        component: ReportListComponent,
+        canActivate: [roleGuard],
+        data: { expectedRoles: ['Admin'] }
+      },
     ]
   },
 
