@@ -1,14 +1,15 @@
 import { Component } from '@angular/core';
-
 import { RouterModule } from '@angular/router';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-landing',
   standalone: true,
-  imports: [RouterModule],
+  imports: [
+    RouterModule,
+    MatButtonModule
+  ],
   templateUrl: './landing.component.html',
-  styleUrl: './landing.component.css'
+  styleUrl: './landing.component.scss'
 })
-export class LandingComponent {
-
-}
+export class LandingComponent { }

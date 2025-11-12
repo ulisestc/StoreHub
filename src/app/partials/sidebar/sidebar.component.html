@@ -1,54 +1,38 @@
-<div class="d-flex flex-column flex-shrink-0 p-3 bg-light" style="width: 280px; min-height: 100vh;">
+<mat-nav-list>
+  <h3 mat-subheader>Menú Principal</h3>
 
-  <span class="fs-5">Menú Principal</span>
-  <hr>
-  <ul class="nav nav-pills flex-column mb-auto">
+  <a mat-list-item routerLink="/dashboard" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+    Inicio (Dashboard)
+  </a>
 
-    <li class="nav-item">
-      <a routerLink="/dashboard" class="nav-link" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
-        Inicio (Dashboard)
-      </a>
-    </li>
-
-    <div *ngIf="userRole === 'Admin' || userRole === 'Cajero'">
-      <li class="nav-item">
-        <a routerLink="/dashboard/sales/pos" class="nav-link" routerLinkActive="active">
-          Punto de Venta (POS)
-        </a>
-      </li>
-      <li class="nav-item">
-        <a routerLink="/dashboard/sales/history" class="nav-link" routerLinkActive="active">
-          Historial de Ventas
-        </a>
-      </li>
-    </div>
-
-    <div *ngIf="userRole === 'Admin'">
-      <li class="nav-item">
-        <a routerLink="/dashboard/products" class="nav-link" routerLinkActive="active">
-          Productos
-        </a>
-      </li>
-      <li class="nav-item">
-        <a routerLink="/dashboard/categories" class="nav-link" routerLinkActive="active">
-          Categorías
-        </a>
-      </li>
-      <li class="nav-item">
-        <a routerLink="/dashboard/inventory" class="nav-link" routerLinkActive="active">
-          Ajuste de Inventario
-        </a>
-      </li>
-      <li class="nav-item">
-        <a routerLink="/dashboard/reports" class="nav-link" routerLinkActive="active">
-          Reportes
-        </a>
-      </li>
-    </div>
-
-  </ul>
-  <hr>
-  <div class="dropdown">
-    <strong>Rol: {{ userRole }}</strong>
+  <div *ngIf="userRole === 'Admin' || userRole === 'Cajero'">
+    <a mat-list-item routerLink="/dashboard/sales/pos" routerLinkActive="active">
+      Punto de Venta (POS)
+    </a>
+    <a mat-list-item routerLink="/dashboard/sales/history" routerLinkActive="active">
+      Historial de Ventas
+    </a>
   </div>
-</div>
+
+  <div *ngIf="userRole === 'Admin'">
+    <a mat-list-item routerLink="/dashboard/products" routerLinkActive="active">
+      Productos
+    </a>
+    <a mat-list-item routerLink="/dashboard/categories" routerLinkActive="active">
+      Categorías
+    </a>
+    <a mat-list-item routerLink="/dashboard/inventory" routerLinkActive="active">
+      Ajuste de Inventario
+    </a>
+    <a mat-list-item routerLink="/dashboard/reports" routerLinkActive="active">
+      Reportes
+    </a>
+  </div>
+
+  <mat-divider></mat-divider>
+
+  <a mat-list-item disabled>
+    Rol: {{ userRole }}
+  </a>
+
+</mat-nav-list>

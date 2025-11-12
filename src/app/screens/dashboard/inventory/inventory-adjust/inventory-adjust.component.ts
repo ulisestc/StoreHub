@@ -4,7 +4,7 @@ import { Component } from '@angular/core';
   selector: 'app-inventory-adjust',
   imports: [],
   templateUrl: './inventory-adjust.component.html',
-  styleUrl: './inventory-adjust.component.css'
+  styleUrl: './inventory-adjust.component.scss'
 })
 export class InventoryAdjustComponent {
 

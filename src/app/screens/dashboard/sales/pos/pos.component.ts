@@ -4,7 +4,7 @@ import { Component } from '@angular/core';
   selector: 'app-pos',
   imports: [],
   templateUrl: './pos.component.html',
-  styleUrl: './pos.component.css'
+  styleUrl: './pos.component.scss'
 })
 export class PosComponent {
 

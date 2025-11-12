@@ -4,7 +4,7 @@ import { Component } from '@angular/core';
   selector: 'app-category-list',
   imports: [],
   templateUrl: './category-list.component.html',
-  styleUrl: './category-list.component.css'
+  styleUrl: './category-list.component.scss'
 })
 export class CategoryListComponent {
 

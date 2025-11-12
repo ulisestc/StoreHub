@@ -1,10 +1,17 @@
-<app-navbar></app-navbar>
+<mat-sidenav-container class="dashboard-container">
 
-<div class="d-flex">
-  <app-sidebar></app-sidebar>
+  <mat-sidenav mode="side" opened class="sidebar">
+    <app-sidebar></app-sidebar>
+  </mat-sidenav>
 
-  <main class="content-wrapper">
-    <router-outlet></router-outlet>
-  </main>
+  <mat-sidenav-content class="main-content">
 
-</div>
+    <app-navbar></app-navbar>
+
+    <div class="page-content" style="padding: 20px;">
+      <router-outlet></router-outlet>
+    </div>
+
+  </mat-sidenav-content>
+
+</mat-sidenav-container>

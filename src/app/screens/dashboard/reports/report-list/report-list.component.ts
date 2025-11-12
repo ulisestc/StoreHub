@@ -4,7 +4,7 @@ import { Component } from '@angular/core';
   selector: 'app-report-list',
   imports: [],
   templateUrl: './report-list.component.html',
-  styleUrl: './report-list.component.css'
+  styleUrl: './report-list.component.scss'
 })
 export class ReportListComponent {
 

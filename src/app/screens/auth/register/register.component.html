@@ -1,47 +1,32 @@
-<div class="form-container m-3">
+<div class="form-container" style="padding: 20px;">
   <h2>Crear Cuenta</h2>
 
-  <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+  <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" style="display: flex; flex-direction: column;">
 
-    <div class="form-group mb-3">
-      <label for="nombre">Nombre(s)</label>
-      <input
-        type="text"
-        id="nombre"
-        formControlName="nombre"
-        class="form-control">
-      </div>
+    <mat-form-field appearance="outline">
+      <mat-label>Nombre(s)</mat-label>
+      <input matInput type="text" id="nombre" formControlName="nombre">
+    </mat-form-field>
 
-    <div class="form-group mb-3">
-      <label for="apellidos">Apellidos</label>
-      <input
-        type="text"
-        id="apellidos"
-        formControlName="apellidos"
-        class="form-control">
-    </div>
+    <mat-form-field appearance="outline">
+      <mat-label>Apellidos</mat-label>
+      <input matInput type="text" id="apellidos" formControlName="apellidos">
+    </mat-form-field>
 
-    <div class="form-group mb-3">
-      <label for="email">Correo Electrónico</label>
-      <input
-        type="email"
-        id="email"
-        formControlName="email"
-        class="form-control">
-    </div>
+    <mat-form-field appearance="outline">
+      <mat-label>Correo Electrónico</mat-label>
+      <input matInput type="email" id="email" formControlName="email">
+    </mat-form-field>
 
-    <div class="form-group mb-3">
-      <label for="password">Contraseña</label>
-      <input
-        type="password"
-        id="password"
-        formControlName="password"
-        class="form-control">
-    </div>
+    <mat-form-field appearance="outline">
+      <mat-label>Contraseña</mat-label>
+      <input matInput type="password" id="password" formControlName="password">
+    </mat-form-field>
 
     <button
+      mat-raised-button
+      color="primary"
       type="submit"
-      class="btn btn-primary"
       [disabled]="registerForm.invalid">
       Registrarse
     </button>
