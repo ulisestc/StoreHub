@@ -1,0 +1,51 @@
+import { Injectable } from '@angular/core';
+import { Observable, of } from 'rxjs';
+import { Product } from '../shared/interfaces/product';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class ProductService {
+
+  // Datos simulados (Mock Data)
+  private mockProducts: Product[] = [
+    {
+      id: '1',
+      nombre: 'Laptop Pro 15"',
+      codigo_barras: 'LP15PRO',
+      precio_venta: 1500,
+      costo_adquisicion: 1000,
+      cantidad_stock: 25,
+      categoria: 'Electrónica',
+      estado: 'activo'
+    },
+    {
+      id: '2',
+      nombre: 'Mouse Inalámbrico',
+      codigo_barras: 'MOUSE-WL',
+      precio_venta: 40,
+      costo_adquisicion: 20,
+      cantidad_stock: 150,
+      categoria: 'Accesorios',
+      estado: 'activo'
+    },
+    {
+      id: '3',
+      nombre: 'Teclado Mecánico',
+      codigo_barras: 'KEY-MECH',
+      precio_venta: 120,
+      costo_adquisicion: 70,
+      cantidad_stock: 0, // Stock crítico
+      categoria: 'Accesorios',
+      estado: 'inactivo'
+    }
+  ];
+
+  constructor() { }
+
+  // Método para obtener productos (simulado)
+  getProducts(): Observable<Product[]> {
+    // 'of()' crea un Observable que emite la lista de productos
+    return of(this.mockProducts);
+  }
+}
