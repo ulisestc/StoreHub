@@ -1,0 +1,27 @@
+.page-header {
+  margin-bottom: 20px;
+}
+
+.form-container {
+  padding: 0 16px;
+
+  mat-card-content {
+    padding-top: 20px;
+  }
+}
+
+.form-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.form-field {
+  flex: 1;
+  min-width: 250px;
+}
+
+.form-field-full {
+  flex: 1 1 100%;
+}

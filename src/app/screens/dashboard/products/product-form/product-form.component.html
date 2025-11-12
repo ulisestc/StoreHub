@@ -1,1 +1,84 @@
-<p>product-form works!</p>
+<mat-toolbar class="page-header">
+  <a mat-icon-button routerLink="/dashboard/products" aria-label="Volver a la lista">
+    <mat-icon>arrow_back</mat-icon>
+  </a>
+  <span>{{ pageTitle }}</span>
+</mat-toolbar>
+
+<div class="form-container">
+  <mat-card>
+    <mat-card-content>
+
+      <form [formGroup]="productForm" (ngSubmit)="onSubmit()">
+
+        <div class="form-row">
+          <mat-form-field appearance="outline" class="form-field">
+            <mat-label>Nombre del Producto</mat-label>
+            <input matInput formControlName="nombre" required>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="form-field">
+            <mat-label>Código de Barras (SKU)</mat-label>
+            <input matInput formControlName="codigo_barras" required>
+          </mat-form-field>
+        </div>
+
+        <div class="form-row">
+          <mat-form-field appearance="outline" class="form-field-full">
+            <mat-label>Descripción (Opcional)</mat-label>
+            <textarea matInput formControlName="descripcion"></textarea>
+          </mat-form-field>
+        </div>
+
+        <div class="form-row">
+          <mat-form-field appearance="outline" class="form-field">
+            <mat-label>Precio de Venta</mat-label>
+            <input matInput type="number" formControlName="precio_venta" required min="0">
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="form-field">
+            <mat-label>Costo de Adquisición</mat-label>
+            <input matInput type="number" formControlName="costo_adquisicion" required min="0">
+          </mat-form-field>
+        </div>
+
+        <div class="form-row">
+          <mat-form-field appearance="outline" class="form-field">
+            <mat-label>Cantidad en Stock</mat-label>
+            <input matInput type="number" formControlName="cantidad_stock" required min="0">
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="form-field">
+            <mat-label>Categoría</mat-label>
+            <mat-select formControlName="categoria" required>
+              <mat-option *ngFor="let cat of categoriasSimuladas" [value]="cat">
+                {{cat}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="form-field">
+            <mat-label>Estado</mat-label>
+            <mat-select formControlName="estado" required>
+              <mat-option *ngFor="let estado of estadosSimulados" [value]="estado.value">
+                {{estado.viewValue}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <mat-card-actions align="end">
+          <a mat-button routerLink="/dashboard/products">Cancelar</a>
+          <button
+            mat-raised-button
+            color="primary"
+            type="submit"
+            [disabled]="productForm.invalid">
+            Guardar Producto
+          </button>
+        </mat-card-actions>
+
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>
