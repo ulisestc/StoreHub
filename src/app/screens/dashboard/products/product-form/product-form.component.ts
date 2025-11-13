@@ -12,6 +12,10 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 
+import { ActivatedRoute } from '@angular/router';
+import { ProductService } from '../../../../services/product.service';
+import { Product } from '../../../../shared/interfaces/product';
+
 @Component({
   selector: 'app-product-form',
   standalone: true,
@@ -43,9 +47,48 @@ export class ProductFormComponent implements OnInit {
     { value: 'inactivo', viewValue: 'Inactivo' },
   ];
 
+  // Nueva propiedad para guardar el ID actual
+  private currentProductId: string | null = null;
+  isEditMode = false;
+
+  // Inyecta los servicios
+  private route = inject(ActivatedRoute);
+  private productService = inject(ProductService);
+  private router = inject(Router);
+
   productForm!: FormGroup;
 
   ngOnInit(): void {
+    this.initForm();
+
+    // Lee el ID de la URL
+    this.route.paramMap.subscribe(params => {
+      this.currentProductId = params.get('id');
+
+      if (this.currentProductId) {
+        // --- MODO EDICIÓN ---
+        this.isEditMode = true;
+        this.pageTitle = 'Editar Producto';
+
+        // Carga los datos del producto
+        this.productService.getProductById(this.currentProductId).subscribe(product => {
+          if (product) {
+            // Rellena el formulario con los datos
+            this.productForm.patchValue(product);
+          } else {
+            // (Opcional) Manejar caso de producto no encontrado
+            this.router.navigate(['/dashboard/products']);
+          }
+        });
+      } else {
+        // --- MODO CREAR ---
+        this.isEditMode = false;
+        this.pageTitle = 'Crear Nuevo Producto';
+      }
+    });
+  }
+
+  initForm(): void {
     this.productForm = new FormGroup({
       nombre: new FormControl('', [Validators.required]),
       descripcion: new FormControl(''),
@@ -58,11 +101,22 @@ export class ProductFormComponent implements OnInit {
     });
   }
 
-  // Método que se llamará al guardar
   onSubmit(): void {
     if (this.productForm.valid) {
-      console.log('Formulario válido, datos:', this.productForm.value);
-      // Aquí llamaremos al product.service.createProduct(this.productForm.value)
+      const productData = this.productForm.value;
+
+      if (this.isEditMode && this.currentProductId) {
+        // --- Lógica de ACTUALIZAR (Simulada) ---
+        console.log('Modo Edición. Datos:', productData);
+        // En el futuro: this.productService.updateProduct(this.currentProductId, productData)...
+        this.router.navigate(['/dashboard/products']); // Redirige a la lista
+      } else {
+        // --- Lógica de CREAR (Simulada) ---
+        console.log('Modo Creación. Datos:', productData);
+        // En el futuro: this.productService.createProduct(productData)...
+        this.router.navigate(['/dashboard/products']); // Redirige a la lista
+      }
+
     } else {
       console.log('Formulario inválido');
     }

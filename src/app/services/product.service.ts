@@ -48,4 +48,13 @@ export class ProductService {
     // 'of()' crea un Observable que emite la lista de productos
     return of(this.mockProducts);
   }
+
+  // Método para obtener un producto por ID (simulado)
+  getProductById(id: string): Observable<Product | undefined> {
+    // Buscamos el producto en nuestro array simulado
+    const product = this.mockProducts.find(p => p.id === id);
+
+    // Devolvemos el producto (o undefined si no se encuentra) como un Observable
+    return of(product);
+  }
 }
