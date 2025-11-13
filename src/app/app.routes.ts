@@ -15,6 +15,7 @@ import { PosComponent } from './screens/dashboard/sales/pos/pos.component';
 import { SaleHistoryComponent } from './screens/dashboard/sales/sale-history/sale-history.component';
 
 import { ProductFormComponent } from './screens/dashboard/products/product-form/product-form.component';
+import { CategoryFormComponent } from './screens/dashboard/categories/category-form/category-form.component';
 
 // Se importa el Guard
 import { authGuard } from './shared/guards/auth.guard';
@@ -57,7 +58,7 @@ export const routes: Routes = [
       { path: 'sales/pos', component: PosComponent },
       { path: 'sales/history', component: SaleHistoryComponent },
 
-      // --- NUEVAS RUTAS DE PRODUCTOS ---
+      // --- RUTAS DE PRODUCTOS ---
       {
         path: 'products/new', // Ruta para crear
         component: ProductFormComponent,
@@ -77,6 +78,20 @@ export const routes: Routes = [
         canActivate: [roleGuard], // <-- Aplicamos el guard
         data: { expectedRoles: ['Admin'] } // <-- Le decimos al guard qué rol esperamos
       },
+      // --- RUTAS DE CATEGORÍAS ---
+      {
+        path: 'categories/new', // Ruta para crear
+        component: CategoryFormComponent,
+        canActivate: [roleGuard],
+        data: { expectedRoles: ['Admin'] }
+      },
+      {
+        path: 'categories/edit/:id', // Ruta para editar
+        component: CategoryFormComponent,
+        canActivate: [roleGuard],
+        data: { expectedRoles: ['Admin'] }
+      },
+      // Aquí aplicamos el RoleGuard
       {
         path: 'categories',
         component: CategoryListComponent,
