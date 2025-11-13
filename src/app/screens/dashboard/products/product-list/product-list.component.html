@@ -45,7 +45,9 @@
           aria-label="Editar">
           <mat-icon>edit</mat-icon>
         </a>
-        <button mat-icon-button color="warn" aria-label="Eliminar">
+        <button mat-icon-button color="warn"
+                (click)="openDeleteDialog(prod.id)"
+                aria-label="Eliminar">
           <mat-icon>delete</mat-icon>
         </button>
       </td>

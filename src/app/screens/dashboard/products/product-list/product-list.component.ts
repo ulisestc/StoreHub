@@ -12,6 +12,9 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { ProductService } from '../../../../services/product.service';
 import { Product } from '../../../../shared/interfaces/product';
 
+import { MatDialog } from '@angular/material/dialog';
+import { ConfirmDialogComponent } from '../../../../shared/components/confirm-dialog/confirm-dialog.component';
+
 @Component({
   selector: 'app-product-list',
   standalone: true,
@@ -36,6 +39,7 @@ export class ProductListComponent implements OnInit {
 
   // Inyectamos el servicio
   private productService = inject(ProductService);
+  private dialog = inject(MatDialog);
 
   // ngOnInit se ejecuta cuando el componente carga
   ngOnInit(): void {
@@ -44,7 +48,40 @@ export class ProductListComponent implements OnInit {
 
   loadProducts(): void {
     this.productService.getProducts().subscribe(data => {
-      this.dataSource = data;
+      this.dataSource = [...data];
+    });
+  }
+
+  // Método para abrir el diálogo
+  openDeleteDialog(productId: string): void {
+    // Abre el componente ConfirmDialogComponent
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      width: '350px',
+      data: {
+        title: 'Confirmar Borrado',
+        message: '¿Estás seguro de que deseas eliminar este producto?'
+      }
+    });
+
+    // Se suscribe a lo que el diálogo devuelve al cerrarse
+    dialogRef.afterClosed().subscribe(result => {
+      // Si el usuario hizo clic en "Eliminar" (result es 'true')
+      if (result === true) {
+        this.deleteProduct(productId);
+      }
+    });
+  }
+
+  // Método que llama al servicio para borrar
+  private deleteProduct(id: string): void {
+    this.productService.deleteProduct(id).subscribe(success => {
+      if (success) {
+        console.log('Producto eliminado');
+        // Recargamos la lista para que la tabla se actualice
+        this.loadProducts();
+      } else {
+        console.error('Error al eliminar el producto');
+      }
     });
   }
 }

@@ -57,4 +57,18 @@ export class ProductService {
     // Devolvemos el producto (o undefined si no se encuentra) como un Observable
     return of(product);
   }
+
+  // Método para borrar un producto (simulado)
+  deleteProduct(id: string): Observable<boolean> {
+    // Encontramos el índice del producto
+    const index = this.mockProducts.findIndex(p => p.id === id);
+
+    if (index > -1) {
+      // Si existe, lo quitamos del array
+      this.mockProducts.splice(index, 1);
+      return of(true); // Devuelve 'true' (éxito)
+    }
+
+    return of(false); // Devuelve 'false' (no encontrado)
+  }
 }
