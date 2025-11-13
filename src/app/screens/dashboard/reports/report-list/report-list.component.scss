@@ -1,0 +1,26 @@
+.page-header {
+  margin-bottom: 20px;
+}
+.filter-card {
+  margin: 0 16px 20px 16px;
+  mat-card-content {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    align-items: center;
+  }
+}
+.report-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  padding: 0 16px;
+}
+.report-card {
+  flex: 1 1 300px;
+}
+.total-revenue {
+  font-size: 1.5rem;
+  font-weight: 300;
+  margin-bottom: 0;
+}
