@@ -12,6 +12,10 @@ import { MatChipsModule } from '@angular/material/chips';
 import { InventoryService } from '../../../../services/inventory.service';
 import { InventoryMovement } from '../../../../shared/interfaces/inventory-movement';
 
+import { MatDialog } from '@angular/material/dialog'; // 1. Importa MatDialog
+import { AdjustStockDialogComponent } from '../adjust-stock-dialog/adjust-stock-dialog.component'; // 2. Importa tu diálogo
+import { AuthService } from '../../../../services/auth.service'; // 3. Importa AuthService
+
 @Component({
   selector: 'app-inventory-adjust',
   standalone: true,
@@ -32,6 +36,8 @@ export class InventoryAdjustComponent implements OnInit {
   dataSource: InventoryMovement[] = [];
 
   private inventoryService = inject(InventoryService);
+  private dialog = inject(MatDialog);
+  private authService = inject(AuthService);
 
   ngOnInit(): void {
     this.loadMovements();
@@ -51,5 +57,34 @@ export class InventoryAdjustComponent implements OnInit {
       case 'salida': return 'accent';
       case 'merma': return 'warn';
     }
+  }
+
+  // Método para abrir el diálogo
+  openAdjustDialog(): void {
+    const dialogRef = this.dialog.open(AdjustStockDialogComponent, {
+      width: '450px',
+    });
+
+    // Se suscribe a lo que el diálogo devuelve al cerrarse
+    dialogRef.afterClosed().subscribe(result => {
+      // Si el usuario guardó (result no es nulo y tiene datos)
+      if (result) {
+        console.log('Datos del diálogo:', result);
+
+        // Preparamos el objeto de movimiento
+        const newMovement = {
+          producto: result.producto,
+          tipo_movimiento: result.tipo_movimiento,
+          cantidad: result.cantidad,
+          usuario: this.authService.getUserRole() ?? 'admin' // Obtenemos el usuario logueado
+        };
+
+        // Llamamos al servicio para crear
+        this.inventoryService.createMovement(newMovement).subscribe(() => {
+          console.log('Movimiento creado');
+          this.loadMovements(); // Recargamos la tabla
+        });
+      }
+    });
   }
 }

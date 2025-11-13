@@ -1,1 +1,37 @@
-<p>adjust-stock-dialog works!</p>
+<h1 mat-dialog-title>Registrar Ajuste de Inventario</h1>
+
+<div mat-dialog-content>
+  <form [formGroup]="adjustForm" class="dialog-form">
+
+    <mat-form-field appearance="outline" class="form-field-full">
+      <mat-label>Producto</mat-label>
+      <mat-select formControlName="producto" required>
+        <mat-option *ngFor="let prod of products" [value]="prod.nombre">
+          {{ prod.nombre }} (Stock: {{ prod.cantidad_stock }})
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="form-field-full">
+      <mat-label>Tipo de Movimiento</mat-label>
+      <mat-select formControlName="tipo_movimiento" required>
+        <mat-option *ngFor="let tipo of tiposMovimiento" [value]="tipo">
+          {{ tipo | titlecase }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="form-field-full">
+      <mat-label>Cantidad</mat-label>
+      <input matInput type="number" formControlName="cantidad" required min="1">
+    </mat-form-field>
+
+  </form>
+</div>
+
+<div mat-dialog-actions align="end">
+  <button mat-button (click)="onCancel()">Cancelar</button>
+  <button mat-raised-button color="primary" (click)="onSave()" [disabled]="adjustForm.invalid">
+    Guardar Ajuste
+  </button>
+</div>
