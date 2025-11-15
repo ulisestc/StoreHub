@@ -8,28 +8,43 @@
     <mat-card>
       <mat-card-content>
 
-        <mat-form-field appearance="outline" class="full-width">
-          <mat-label>Buscar producto por Código o Nombre</mat-label>
-          <input matInput>
-          <mat-icon matSuffix>search</mat-icon>
-        </mat-form-field>
+        <form [formGroup]="searchForm" (ngSubmit)="onAddProduct()">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Buscar por Código/SKU y presionar Enter</mat-label>
+            <input matInput formControlName="sku">
+            <mat-icon matSuffix>search</mat-icon>
+          </mat-form-field>
+        </form>
 
-        </mat-card-content>
+      </mat-card-content>
     </mat-card>
   </div>
 
   <div class="ticket-column">
     <mat-card>
+
       <mat-card-header>
         <mat-card-title>Ticket de Venta Actual</mat-card-title>
       </mat-card-header>
 
       <mat-card-content class="ticket-content">
-        <mat-list role="list">
-          <mat-list-item *ngFor="let item of ticketItems" role="listitem">
+
+        <div *ngIf="ticketItems.length === 0" class="empty-ticket">
+          <mat-icon>shopping_cart</mat-icon>
+          <p>El ticket está vacío</p>
+        </div>
+
+        <mat-list role="list" *ngIf="ticketItems.length > 0">
+          <mat-list-item *ngFor="let item of ticketItems; let i = index" role="listitem">
+
+            <button mat-icon-button color="warn" (click)="removeItem(i)" class="remove-item-btn">
+              <mat-icon>remove_circle</mat-icon>
+            </button>
+
             <span>{{ item.nombre }} (x{{ item.cantidad }})</span>
             <span class="spacer" style="flex: 1 1 auto;"></span>
             <span>{{ (item.precio_venta * item.cantidad) | currency }}</span>
+
           </mat-list-item>
         </mat-list>
       </mat-card-content>
@@ -37,13 +52,14 @@
       <mat-card-actions class="ticket-footer">
         <div class="totals">
           <h3>Total: {{ totalVenta | currency }}</h3>
-          </div>
+        </div>
 
         <button mat-raised-button color="primary" class="pay-button" [disabled]="ticketItems.length === 0">
           <mat-icon>payment</mat-icon>
           Confirmar Venta
         </button>
       </mat-card-actions>
+
     </mat-card>
   </div>
 
