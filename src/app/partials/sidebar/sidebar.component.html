@@ -5,6 +5,12 @@
     Inicio (Dashboard)
   </a>
 
+  <li class="nav-item">
+    <a mat-list-item routerLink="/dashboard/profile" routerLinkActive="active">
+     Mi Perfil
+    </a>
+  </li>
+  
   <div *ngIf="userRole === 'Admin' || userRole === 'Cajero'">
     <a mat-list-item routerLink="/dashboard/sales/pos" routerLinkActive="active">
       Punto de Venta (POS)

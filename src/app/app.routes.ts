@@ -20,6 +20,8 @@ import { CategoryFormComponent } from './screens/dashboard/categories/category-f
 import { ClientListComponent } from './screens/dashboard/clients/client-list/client-list.component';
 import { ClientFormComponent } from './screens/dashboard/clients/client-form/client-form.component';
 
+import { ProfileEditComponent } from './screens/dashboard/profile/profile-edit/profile-edit.component';
+
 // Se importa el Guard
 import { authGuard } from './shared/guards/auth.guard';
 
@@ -55,7 +57,13 @@ export const routes: Routes = [
         path: '', // Esta es la ruta por defecto (ej. /dashboard)
         component: HomeComponent
       },
-      // --- RUTAS DE CAJERO Y ADMIN (Persona 3) ---
+      // --- NUEVA RUTA DE PERFIL (Para todos los roles) ---
+      {
+        path: 'profile',
+        component: ProfileEditComponent
+        // No necesita RoleGuard
+      },
+      // --- RUTAS DE CAJERO Y ADMIN ---
       // No necesitan RoleGuard porque el AuthGuard ya hizo el trabajo
       // y el Sidebar los muestra a ambos.
       { path: 'sales/pos', component: PosComponent },

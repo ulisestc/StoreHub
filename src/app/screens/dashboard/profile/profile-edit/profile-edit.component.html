@@ -1,0 +1,46 @@
+<mat-toolbar class="page-header">
+  <span>Mi Perfil</span>
+</mat-toolbar>
+
+<div class="form-container">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>Editar Información</mat-card-title>
+      <mat-card-subtitle>Tu rol actual es: {{ userRole }}</mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content>
+      <form [formGroup]="profileForm" (ngSubmit)="onSubmit()">
+
+        <div class="form-row">
+          <mat-form-field appearance="outline" class="form-field-full">
+            <mat-label>Nombre Completo</mat-label>
+            <input matInput formControlName="nombre" required>
+          </mat-form-field>
+        </div>
+
+        <div class="form-row">
+          <mat-form-field appearance="outline" class="form-field-full">
+            <mat-label>Correo Electrónico</mat-label>
+            <input matInput type="email" formControlName="email" readonly>
+          </mat-form-field>
+        </div>
+
+        <mat-divider style="margin: 10px 0;"></mat-divider>
+
+        <p>(La funcionalidad para cambiar contraseña se implementará en el futuro)</p>
+
+        <mat-card-actions align="end">
+          <button
+            mat-raised-button
+            color="primary"
+            type="submit"
+            [disabled]="profileForm.invalid">
+            Guardar Cambios
+          </button>
+        </mat-card-actions>
+
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>
