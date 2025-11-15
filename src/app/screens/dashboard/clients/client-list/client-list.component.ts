@@ -12,7 +12,7 @@ import { MatDialog } from '@angular/material/dialog';
 // Servicio y Diálogo
 import { ClientService } from '../../../../services/client.service';
 import { Client } from '../../../../shared/interfaces/client';
-import { ConfirmDialogComponent } from '../../../../shared/components/confirm-dialog/confirm-dialog.component';
+import { ConfirmDialogComponent } from '../../../../modals/confirm-dialog/confirm-dialog.component';
 
 @Component({
   selector: 'app-client-list',

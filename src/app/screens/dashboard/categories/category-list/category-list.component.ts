@@ -12,7 +12,7 @@ import { MatDialog } from '@angular/material/dialog';
 // Importaciones del servicio y diálogo
 import { CategoryService } from '../../../../services/category.service';
 import { Category } from '../../../../shared/interfaces/category';
-import { ConfirmDialogComponent } from '../../../../shared/components/confirm-dialog/confirm-dialog.component';
+import { ConfirmDialogComponent } from '../../../../modals/confirm-dialog/confirm-dialog.component';
 
 @Component({
   selector: 'app-category-list',

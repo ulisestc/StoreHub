@@ -13,7 +13,7 @@ import { InventoryService } from '../../../../services/inventory.service';
 import { InventoryMovement } from '../../../../shared/interfaces/inventory-movement';
 
 import { MatDialog } from '@angular/material/dialog'; // 1. Importa MatDialog
-import { AdjustStockDialogComponent } from '../adjust-stock-dialog/adjust-stock-dialog.component'; // 2. Importa tu diálogo
+import { AdjustStockDialogComponent } from '../../../../modals/adjust-stock-dialog/adjust-stock-dialog.component'; // 2. Importa tu diálogo
 import { AuthService } from '../../../../services/auth.service'; // 3. Importa AuthService
 
 @Component({

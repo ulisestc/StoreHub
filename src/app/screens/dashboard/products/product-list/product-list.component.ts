@@ -13,7 +13,7 @@ import { ProductService } from '../../../../services/product.service';
 import { Product } from '../../../../shared/interfaces/product';
 
 import { MatDialog } from '@angular/material/dialog';
-import { ConfirmDialogComponent } from '../../../../shared/components/confirm-dialog/confirm-dialog.component';
+import { ConfirmDialogComponent } from '../../../../modals/confirm-dialog/confirm-dialog.component';
 
 @Component({
   selector: 'app-product-list',

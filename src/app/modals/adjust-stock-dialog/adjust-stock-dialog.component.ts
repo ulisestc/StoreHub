@@ -10,8 +10,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
 
 // Servicios y Modelos
-import { ProductService } from '../../../../services/product.service';
-import { Product } from '../../../../shared/interfaces/product';
+import { ProductService } from '../../services/product.service';
+import { Product } from '../../shared/interfaces/product';
 
 @Component({
   selector: 'app-adjust-stock-dialog',

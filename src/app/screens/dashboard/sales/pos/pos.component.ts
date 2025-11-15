@@ -14,10 +14,10 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { MatDialog } from '@angular/material/dialog';
-import { ConfirmSaleDialogComponent } from '../confirm-sale-dialog/confirm-sale-dialog.component';
+import { ConfirmSaleDialogComponent } from '../../../../modals/confirm-sale-dialog/confirm-sale-dialog.component';
 import { MatSelectModule } from '@angular/material/select';
-import { ClientQuickAddDialogComponent } from '../client-quick-add-dialog/client-quick-add-dialog.component';
-import { LowStockWarningDialogComponent } from '../../../../shared/components/low-stock-warning-dialog/low-stock-warning-dialog.component';
+import { ClientQuickAddDialogComponent } from '../../../../modals/client-quick-add-dialog/client-quick-add-dialog.component';
+import { LowStockWarningDialogComponent } from '../../../../modals/low-stock-warning-dialog/low-stock-warning-dialog.component';
 
 // 3. Servicios y Modelos
 import { ProductService } from '../../../../services/product.service';

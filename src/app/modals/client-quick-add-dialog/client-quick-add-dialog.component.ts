@@ -9,7 +9,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 
 // Servicio
-import { ClientService } from '../../../../services/client.service';
+import { ClientService } from '../../services/client.service';
 
 @Component({
   selector: 'app-client-quick-add-dialog',
