@@ -1,1 +1,49 @@
-<p>client-form works!</p>
+<mat-toolbar class="page-header">
+  <a mat-icon-button routerLink="/dashboard/clients" aria-label="Volver a la lista">
+    <mat-icon>arrow_back</mat-icon>
+  </a>
+  <span>{{ pageTitle }}</span>
+</mat-toolbar>
+
+<div class="form-container">
+  <mat-card>
+    <mat-card-content>
+
+      <form [formGroup]="clientForm" (ngSubmit)="onSubmit()">
+
+        <div class="form-row">
+          <mat-form-field appearance="outline" class="form-field-full">
+            <mat-label>Nombre Completo</mat-label>
+            <input matInput formControlName="nombre" required>
+          </mat-form-field>
+        </div>
+
+        <div class="form-row">
+          <mat-form-field appearance="outline" class="form-field-full">
+            <mat-label>Correo Electrónico (Opcional)</mat-label>
+            <input matInput type="email" formControlName="correo">
+          </mat-form-field>
+        </div>
+
+        <div class="form-row">
+          <mat-form-field appearance="outline" class="form-field-full">
+            <mat-label>Teléfono (Opcional)</mat-label>
+            <input matInput type="tel" formControlName="telefono">
+          </mat-form-field>
+        </div>
+
+        <mat-card-actions align="end">
+          <a mat-button routerLink="/dashboard/clients">Cancelar</a>
+          <button
+            mat-raised-button
+            color="primary"
+            type="submit"
+            [disabled]="clientForm.invalid">
+            Guardar Cliente
+          </button>
+        </mat-card-actions>
+
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>
