@@ -17,6 +17,9 @@ import { SaleHistoryComponent } from './screens/dashboard/sales/sale-history/sal
 import { ProductFormComponent } from './screens/dashboard/products/product-form/product-form.component';
 import { CategoryFormComponent } from './screens/dashboard/categories/category-form/category-form.component';
 
+import { ClientListComponent } from './screens/dashboard/clients/client-list/client-list.component';
+import { ClientFormComponent } from './screens/dashboard/clients/client-form/client-form.component';
+
 // Se importa el Guard
 import { authGuard } from './shared/guards/auth.guard';
 
@@ -98,6 +101,28 @@ export const routes: Routes = [
         canActivate: [roleGuard],
         data: { expectedRoles: ['Admin'] }
       },
+
+      // --- RUTAS DE CLIENTES (Solo Admin) ---
+      {
+        path: 'clients/new',
+        component: ClientFormComponent,
+        canActivate: [roleGuard],
+        data: { expectedRoles: ['Admin'] }
+      },
+      {
+        path: 'clients/edit/:id',
+        component: ClientFormComponent,
+        canActivate: [roleGuard],
+        data: { expectedRoles: ['Admin'] }
+      },
+      {
+        path: 'clients',
+        component: ClientListComponent,
+        canActivate: [roleGuard],
+        data: { expectedRoles: ['Admin'] }
+      },
+
+      // --- RUTAS DE INVENTARIO Y REPORTES ---
       {
         path: 'inventory',
         component: InventoryAdjustComponent,
