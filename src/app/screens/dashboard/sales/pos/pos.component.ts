@@ -17,6 +17,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ConfirmSaleDialogComponent } from '../confirm-sale-dialog/confirm-sale-dialog.component';
 import { MatSelectModule } from '@angular/material/select';
 import { ClientQuickAddDialogComponent } from '../client-quick-add-dialog/client-quick-add-dialog.component';
+import { LowStockWarningDialogComponent } from '../../../../shared/components/low-stock-warning-dialog/low-stock-warning-dialog.component';
 
 // 3. Servicios y Modelos
 import { ProductService } from '../../../../services/product.service';
@@ -57,6 +58,9 @@ export class PosComponent implements OnInit {
   private snackBar = inject(MatSnackBar);
   private salesService = inject(SalesService);
   private dialog = inject(MatDialog);
+
+  // Define el umbral de stock bajo
+  private LOW_STOCK_THRESHOLD = 5;
 
   // --- Lógica de Clientes ---
   clients: Client[] = [];
@@ -189,9 +193,9 @@ export class PosComponent implements OnInit {
     });
   }
 
-  // Lógica para procesar la venta (simulada)
+// Lógica para procesar la venta (simulada)
   private processSale(): void {
-    // --- Lógica del cliente implementada ---
+    // --- Lógica del cliente implementada (Se conserva) ---
     const selectedClient = this.clients.find(c => c.id === this.selectedClientId);
 
     console.log('Venta asociada al cliente:', selectedClient?.nombre);
@@ -203,20 +207,40 @@ export class PosComponent implements OnInit {
     // a. Llama al servicio de ventas
     this.salesService.createSale(this.ticketItems, this.totalVenta).subscribe(saleResponse => {
 
-      // b. Disminuye el stock de cada producto (¡Importante!)
-      this.ticketItems.forEach(item => {
-        this.productService.decreaseStock(item.id, item.cantidad).subscribe();
-      });
+      // --- INICIO DEL NUEVO CÓDIGO ---
+      // La lógica de "b." y "c." del código anterior se reemplaza por esto:
 
-      // c. Muestra éxito y limpia el ticket
       this.snackBar.open(`Venta #${saleResponse.id} registrada con éxito`, 'Cerrar', {
         duration: 3000,
-        panelClass: ['snackbar-success'] // (Clase CSS opcional)
+        panelClass: ['snackbar-success']
       });
 
-      this.ticketItems = [];
-      this.calculateTotal();
-      this.loadAllProducts(); // Recarga el stock actualizado de los productos
+      // Array para guardar productos con stock bajo
+      const productsWithLowStock: any[] = [];
+
+      // b. Disminuye el stock (usamos un contador para saber cuándo terminamos)
+      let itemsProcessed = 0;
+      this.ticketItems.forEach(item => {
+
+        this.productService.decreaseStock(item.id, item.cantidad).subscribe(() => {
+          itemsProcessed++;
+
+          // Busca el producto actualizado (para saber su nuevo stock)
+          const updatedProduct = this.allProducts.find(p => p.id === item.id);
+
+          if (updatedProduct && updatedProduct.cantidad_stock <= this.LOW_STOCK_THRESHOLD) {
+            // Si el nuevo stock está por debajo del umbral, lo añadimos a la lista
+            productsWithLowStock.push(updatedProduct);
+          }
+
+          // Si ya procesamos todos los items...
+          if (itemsProcessed === this.ticketItems.length) {
+            this.finishSale(productsWithLowStock);
+          }
+        });
+      });
+      // --- FIN DEL NUEVO CÓDIGO ---
+
     });
   }
 
@@ -237,5 +261,21 @@ export class PosComponent implements OnInit {
         });
       }
     });
+  }
+
+  // Método para limpiar y mostrar el modal
+  private finishSale(lowStockProducts: any[]): void {
+    // Limpia el ticket y recarga
+    this.ticketItems = [];
+    this.calculateTotal();
+    this.loadAllProducts(); // Recarga el stock actualizado de los productos
+
+    // Si hay productos con stock bajo, muestra el modal
+    if (lowStockProducts.length > 0) {
+      this.dialog.open(LowStockWarningDialogComponent, {
+        width: '450px',
+        data: { products: lowStockProducts }
+      });
+    }
   }
 }
