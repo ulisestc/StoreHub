@@ -1,0 +1,29 @@
+<h1 mat-dialog-title>Crear Cliente Nuevo</h1>
+
+<div mat-dialog-content>
+  <form [formGroup]="clientForm" class="dialog-form">
+
+    <mat-form-field appearance="outline" class="form-field-full">
+      <mat-label>Nombre Completo</mat-label>
+      <input matInput formControlName="nombre" required>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="form-field-full">
+      <mat-label>Correo Electrónico</mat-label>
+      <input matInput type="email" formControlName="correo">
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="form-field-full">
+      <mat-label>Teléfono</mat-label>
+      <input matInput type="tel" formControlName="telefono">
+    </mat-form-field>
+
+  </form>
+</div>
+
+<div mat-dialog-actions align="end">
+  <button mat-button (click)="onCancel()">Cancelar</button>
+  <button mat-raised-button color="primary" (click)="onSave()" [disabled]="clientForm.invalid">
+    Guardar Cliente
+  </button>
+</div>

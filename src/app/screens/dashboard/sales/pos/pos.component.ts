@@ -16,6 +16,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmSaleDialogComponent } from '../confirm-sale-dialog/confirm-sale-dialog.component';
 import { MatSelectModule } from '@angular/material/select';
+import { ClientQuickAddDialogComponent } from '../client-quick-add-dialog/client-quick-add-dialog.component';
 
 // 3. Servicios y Modelos
 import { ProductService } from '../../../../services/product.service';
@@ -216,6 +217,25 @@ export class PosComponent implements OnInit {
       this.ticketItems = [];
       this.calculateTotal();
       this.loadAllProducts(); // Recarga el stock actualizado de los productos
+    });
+  }
+
+  // Método para abrir el diálogo de alta rápida
+  openCreateClientDialog(): void {
+    const dialogRef = this.dialog.open(ClientQuickAddDialogComponent, {
+      width: '450px',
+    });
+
+    // 5. Se suscribe a la respuesta del diálogo
+    dialogRef.afterClosed().subscribe((newClient: Client | undefined) => {
+      if (newClient) {
+        // Si se creó un nuevo cliente, lo añade a la lista y lo selecciona
+        this.selectedClientId = newClient.id;
+
+        this.snackBar.open(`Cliente "${newClient.nombre}" creado y seleccionado`, 'Cerrar', {
+          duration: 3000
+        });
+      }
     });
   }
 }
