@@ -10,6 +10,8 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 // 3. Servicios y Modelos
 import { ProductService } from '../../../../services/product.service';
@@ -27,7 +29,8 @@ import { Product } from '../../../../shared/interfaces/product';
     MatInputModule,
     MatButtonModule,
     MatIconModule,
-    MatListModule
+    MatListModule,
+    MatSnackBarModule
   ],
   templateUrl: './pos.component.html',
   styleUrl: './pos.component.scss'
@@ -41,6 +44,7 @@ export class PosComponent implements OnInit {
   // --- Lógica de Búsqueda ---
   private productService = inject(ProductService);
   private allProducts: Product[] = []; // Almacenará todos los productos
+  private snackBar = inject(MatSnackBar);
 
   // Formulario para el buscador
   searchForm = new FormGroup({
@@ -65,8 +69,6 @@ export class PosComponent implements OnInit {
     if (this.searchForm.invalid) return;
 
     const sku = this.searchForm.value.sku;
-
-    // Busca el producto en la lista simulada
     const productFound = this.allProducts.find(p => p.codigo_barras === sku);
 
     if (productFound) {
@@ -74,9 +76,27 @@ export class PosComponent implements OnInit {
 
       // Revisa si el producto ya está en el ticket
       const itemInTicket = this.ticketItems.find(item => item.id === productFound.id);
+      const cantidadEnTicket = itemInTicket ? itemInTicket.cantidad : 0;
+
+      // --- VALIDACIÓN DE STOCK  ---
+      if (cantidadEnTicket >= productFound.cantidad_stock) {
+        // El cajero intenta añadir más de lo que hay en stock
+        this.showError('No hay más stock disponible para este producto.');
+        this.searchForm.reset();
+        return;
+      }
+
+      if (productFound.cantidad_stock <= 0) {
+        // El producto está agotado
+        this.showError('Producto agotado. No se puede añadir.');
+        this.searchForm.reset();
+        return;
+      }
+      // --- Fin Validación ---
+
 
       if (itemInTicket) {
-        // Si ya está, solo aumenta la cantidad
+        // Si ya está, aumenta la cantidad
         itemInTicket.cantidad++;
       } else {
         // Si es nuevo, lo añade al ticket
@@ -84,16 +104,17 @@ export class PosComponent implements OnInit {
           id: productFound.id,
           nombre: productFound.nombre,
           precio_venta: productFound.precio_venta,
-          cantidad: 1
+          cantidad: 1,
+          stock_disponible: productFound.cantidad_stock // Guardamos el stock original
         });
       }
 
-      this.calculateTotal(); // Recalcula el total
-      this.searchForm.reset(); // Limpia el buscador
+      this.calculateTotal();
+      this.searchForm.reset();
 
     } else {
       // --- Producto no encontrado ---
-      console.warn('Producto no encontrado:', sku);
+      this.showError('Producto no encontrado con ese SKU.');
       this.searchForm.reset();
     }
   }
@@ -109,5 +130,13 @@ export class PosComponent implements OnInit {
   removeItem(index: number): void {
     this.ticketItems.splice(index, 1); // Quita el ítem por su índice
     this.calculateTotal(); // Recalcula el total
+  }
+
+  // Helper para mostrar notificaciones de error
+  private showError(message: string): void {
+    this.snackBar.open(message, 'Cerrar', {
+      duration: 3000, // 3 segundos
+      panelClass: ['snackbar-error']
+    });
   }
 }

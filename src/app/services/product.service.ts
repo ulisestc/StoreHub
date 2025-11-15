@@ -25,7 +25,7 @@ export class ProductService {
       codigo_barras: 'MOUSE-WL',
       precio_venta: 40,
       costo_adquisicion: 20,
-      cantidad_stock: 150,
+      cantidad_stock: 1,
       categoria: 'Accesorios',
       estado: 'activo'
     },
@@ -70,5 +70,19 @@ export class ProductService {
     }
 
     return of(false); // Devuelve 'false' (no encontrado)
+  }
+
+  // Método para reducir el stock (simulado)
+  decreaseStock(productId: string, quantity: number): Observable<boolean> {
+    const product = this.mockProducts.find(p => p.id === productId);
+
+    if (product && product.cantidad_stock >= quantity) {
+      product.cantidad_stock -= quantity;
+      console.log(`Stock de ${product.nombre} reducido a ${product.cantidad_stock}`);
+      return of(true);
+    }
+
+    // No se pudo reducir (no hay suficiente stock o no se encontró)
+    return of(false);
   }
 }
