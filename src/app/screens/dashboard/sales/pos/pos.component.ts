@@ -1,6 +1,6 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angular/forms';
+import { ReactiveFormsModule, FormGroup, FormControl, Validators, FormsModule } from '@angular/forms';
 
 // Importaciones de Material
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -15,11 +15,14 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmSaleDialogComponent } from '../confirm-sale-dialog/confirm-sale-dialog.component';
+import { MatSelectModule } from '@angular/material/select';
 
 // 3. Servicios y Modelos
 import { ProductService } from '../../../../services/product.service';
 import { Product } from '../../../../shared/interfaces/product';
 import { SalesService } from '../../../../services/sales.service';
+import { ClientService } from '../../../../services/client.service';
+import { Client } from '../../../../shared/interfaces/client';
 
 @Component({
   selector: 'app-pos',
@@ -34,7 +37,9 @@ import { SalesService } from '../../../../services/sales.service';
     MatButtonModule,
     MatIconModule,
     MatListModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatSelectModule,
+    FormsModule
   ],
   templateUrl: './pos.component.html',
   styleUrl: './pos.component.scss'
@@ -52,6 +57,12 @@ export class PosComponent implements OnInit {
   private salesService = inject(SalesService);
   private dialog = inject(MatDialog);
 
+  // --- Lógica de Clientes ---
+  clients: Client[] = [];
+  selectedClientId: string | null = null; // Guardará el ID del cliente
+
+  private clientService = inject(ClientService);
+
   // Formulario para el buscador
   searchForm = new FormGroup({
     sku: new FormControl('', [Validators.required])
@@ -60,6 +71,7 @@ export class PosComponent implements OnInit {
   // ngOnInit se ejecuta al cargar
   ngOnInit(): void {
     this.loadAllProducts();
+    this.loadClients();
   }
 
   // Carga todos los productos para la búsqueda simulada
@@ -67,6 +79,18 @@ export class PosComponent implements OnInit {
     this.productService.getProducts().subscribe(data => {
       this.allProducts = data;
       console.log('Productos cargados para POS:', this.allProducts);
+    });
+  }
+
+  // Método para cargar clientes
+  loadClients(): void {
+    this.clientService.getClients().subscribe(data => {
+      this.clients = data;
+      // Selecciona "Cliente Mostrador" por defecto
+      const defaultClient = data.find(c => c.nombre.includes('Mostrador'));
+      if (defaultClient) {
+        this.selectedClientId = defaultClient.id;
+      }
     });
   }
 
@@ -166,6 +190,15 @@ export class PosComponent implements OnInit {
 
   // Lógica para procesar la venta (simulada)
   private processSale(): void {
+    // --- Lógica del cliente implementada ---
+    const selectedClient = this.clients.find(c => c.id === this.selectedClientId);
+
+    console.log('Venta asociada al cliente:', selectedClient?.nombre);
+
+    // (La lógica de salesService.createSale() debería actualizarse para
+    // aceptar el ID del cliente, pero por ahora solo lo mostramos en consola)
+    // --- Fin de la implementación ---
+
     // a. Llama al servicio de ventas
     this.salesService.createSale(this.ticketItems, this.totalVenta).subscribe(saleResponse => {
 

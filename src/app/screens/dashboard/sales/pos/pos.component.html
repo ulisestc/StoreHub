@@ -16,7 +16,24 @@
           </mat-form-field>
         </form>
 
-      </mat-card-content>
+        <mat-divider style="margin: 20px 0;"></mat-divider>
+
+        <div class="client-section">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Asociar Cliente</mat-label>
+            <mat-select [(ngModel)]="selectedClientId">
+              <mat-option *ngFor="let client of clients" [value]="client.id">
+                {{ client.nombre }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <button mat-stroked-button color="primary" class="full-width">
+            <mat-icon>person_add</mat-icon>
+            Crear Cliente Nuevo
+          </button>
+        </div>
+        </mat-card-content>
     </mat-card>
   </div>
 
@@ -56,7 +73,8 @@
 
         <button mat-raised-button color="primary" class="pay-button"
                 [disabled]="ticketItems.length === 0"
-                (click)="onConfirmSale()"> <mat-icon>payment</mat-icon>
+                (click)="onConfirmSale()">
+          <mat-icon>payment</mat-icon>
           Confirmar Venta
         </button>
       </mat-card-actions>
