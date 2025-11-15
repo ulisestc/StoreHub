@@ -13,9 +13,13 @@ import { MatListModule } from '@angular/material/list';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
+import { MatDialog } from '@angular/material/dialog';
+import { ConfirmSaleDialogComponent } from '../confirm-sale-dialog/confirm-sale-dialog.component';
+
 // 3. Servicios y Modelos
 import { ProductService } from '../../../../services/product.service';
 import { Product } from '../../../../shared/interfaces/product';
+import { SalesService } from '../../../../services/sales.service';
 
 @Component({
   selector: 'app-pos',
@@ -45,6 +49,8 @@ export class PosComponent implements OnInit {
   private productService = inject(ProductService);
   private allProducts: Product[] = []; // Almacenará todos los productos
   private snackBar = inject(MatSnackBar);
+  private salesService = inject(SalesService);
+  private dialog = inject(MatDialog);
 
   // Formulario para el buscador
   searchForm = new FormGroup({
@@ -137,6 +143,46 @@ export class PosComponent implements OnInit {
     this.snackBar.open(message, 'Cerrar', {
       duration: 3000, // 3 segundos
       panelClass: ['snackbar-error']
+    });
+  }
+
+  // Método para abrir el diálogo de confirmación
+  onConfirmSale(): void {
+    if (this.ticketItems.length === 0) return;
+
+    const dialogRef = this.dialog.open(ConfirmSaleDialogComponent, {
+      width: '400px',
+      data: { total: this.totalVenta } // Pasa el total al diálogo
+    });
+
+    // Se suscribe a la respuesta del diálogo
+    dialogRef.afterClosed().subscribe(result => {
+      if (result === true) {
+        // ¡Usuario confirmó! Procesamos la venta
+        this.processSale();
+      }
+    });
+  }
+
+  // Lógica para procesar la venta (simulada)
+  private processSale(): void {
+    // a. Llama al servicio de ventas
+    this.salesService.createSale(this.ticketItems, this.totalVenta).subscribe(saleResponse => {
+
+      // b. Disminuye el stock de cada producto (¡Importante!)
+      this.ticketItems.forEach(item => {
+        this.productService.decreaseStock(item.id, item.cantidad).subscribe();
+      });
+
+      // c. Muestra éxito y limpia el ticket
+      this.snackBar.open(`Venta #${saleResponse.id} registrada con éxito`, 'Cerrar', {
+        duration: 3000,
+        panelClass: ['snackbar-success'] // (Clase CSS opcional)
+      });
+
+      this.ticketItems = [];
+      this.calculateTotal();
+      this.loadAllProducts(); // Recarga el stock actualizado de los productos
     });
   }
 }

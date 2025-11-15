@@ -1,0 +1,17 @@
+<div class="confirm-sale-header">
+  <mat-icon color="primary">payment</mat-icon>
+  <h1 mat-dialog-title>Confirmar Venta</h1>
+</div>
+
+<div mat-dialog-content>
+  <p class="total-display">Total a Pagar:</p>
+  <h2 class="total-amount">{{ data.total | currency:'USD':'symbol':'1.2-2' }}</h2>
+  <p>¿Deseas registrar esta venta?</p>
+</div>
+
+<div mat-dialog-actions align="end">
+  <button mat-button (click)="onCancel()">Cancelar</button>
+  <button mat-raised-button color="primary" (click)="onConfirm()" cdkFocusInitial>
+    Confirmar y Cobrar
+  </button>
+</div>

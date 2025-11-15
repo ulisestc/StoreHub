@@ -54,8 +54,9 @@
           <h3>Total: {{ totalVenta | currency }}</h3>
         </div>
 
-        <button mat-raised-button color="primary" class="pay-button" [disabled]="ticketItems.length === 0">
-          <mat-icon>payment</mat-icon>
+        <button mat-raised-button color="primary" class="pay-button"
+                [disabled]="ticketItems.length === 0"
+                (click)="onConfirmSale()"> <mat-icon>payment</mat-icon>
           Confirmar Venta
         </button>
       </mat-card-actions>

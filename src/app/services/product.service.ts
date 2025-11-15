@@ -25,7 +25,7 @@ export class ProductService {
       codigo_barras: 'MOUSE-WL',
       precio_venta: 40,
       costo_adquisicion: 20,
-      cantidad_stock: 1,
+      cantidad_stock: 150,
       categoria: 'Accesorios',
       estado: 'activo'
     },
