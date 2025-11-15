@@ -1,0 +1,54 @@
+.page-header {
+  margin-bottom: 20px;
+}
+
+.pos-container {
+  display: flex;
+  flex-wrap: wrap; // Para que se ajuste en móviles
+  gap: 20px;
+  padding: 0 16px;
+}
+
+.actions-column {
+  flex: 1 1 300px; // Crece 1, base 300px
+}
+
+.ticket-column {
+  flex: 2 1 400px; // Crece 2 (más grande), base 400px
+
+  mat-card {
+    // Hacemos que la tarjeta ocupe todo el alto
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+
+  .ticket-content {
+    flex: 1 1 auto; // Esta es la parte que crece (la lista)
+    overflow-y: auto; // Permite scroll si hay muchos productos
+  }
+
+  .ticket-footer {
+    padding: 16px;
+    border-top: 1px solid rgba(0,0,0,0.12);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 16px;
+
+    .totals {
+      flex: 1 1 auto;
+      h3 {
+        margin: 0;
+        font-size: 1.5rem;
+      }
+    }
+    .pay-button {
+      min-width: 200px;
+    }
+  }
+}
+
+.full-width {
+  width: 100%;
+}

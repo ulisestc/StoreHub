@@ -1,1 +1,50 @@
-<p>pos works!</p>
+<mat-toolbar class="page-header">
+  <span>Punto de Venta (POS)</span>
+</mat-toolbar>
+
+<div class="pos-container">
+
+  <div class="actions-column">
+    <mat-card>
+      <mat-card-content>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Buscar producto por Código o Nombre</mat-label>
+          <input matInput>
+          <mat-icon matSuffix>search</mat-icon>
+        </mat-form-field>
+
+        </mat-card-content>
+    </mat-card>
+  </div>
+
+  <div class="ticket-column">
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title>Ticket de Venta Actual</mat-card-title>
+      </mat-card-header>
+
+      <mat-card-content class="ticket-content">
+        <mat-list role="list">
+          <mat-list-item *ngFor="let item of ticketItems" role="listitem">
+            <span>{{ item.nombre }} (x{{ item.cantidad }})</span>
+            <span class="spacer" style="flex: 1 1 auto;"></span>
+            <span>{{ (item.precio_venta * item.cantidad) | currency }}</span>
+          </mat-list-item>
+        </mat-list>
+      </mat-card-content>
+
+      <mat-card-actions class="ticket-footer">
+        <div class="totals">
+          <h3>Total: {{ totalVenta | currency }}</h3>
+          </div>
+
+        <button mat-raised-button color="primary" class="pay-button" [disabled]="ticketItems.length === 0">
+          <mat-icon>payment</mat-icon>
+          Confirmar Venta
+        </button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+
+</div>
