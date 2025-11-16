@@ -3,15 +3,36 @@
 </mat-toolbar>
 
 <mat-card class="filter-card">
-  <mat-card-content [formGroup]="range" (ngSubmit)="onFilter()">
+  <mat-card-content [formGroup]="filterForm" (ngSubmit)="onFilter()">
+
     <mat-form-field appearance="outline">
       <mat-label>Filtrar por rango de fechas</mat-label>
-      <mat-date-range-input [formGroup]="range" [rangePicker]="picker">
+      <mat-date-range-input [formGroup]="filterForm" [rangePicker]="picker">
         <input matStartDate formControlName="start" placeholder="Fecha inicio">
         <input matEndDate formControlName="end" placeholder="Fecha fin">
       </mat-date-range-input>
       <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
       <mat-date-range-picker #picker></mat-date-range-picker>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Categoría</mat-label>
+      <mat-select formControlName="categoria">
+        <mat-option [value]="null">Todas</mat-option>
+        <mat-option *ngFor="let cat of categories" [value]="cat.id">
+          {{ cat.nombre }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Vendedor</mat-label>
+      <mat-select formControlName="vendedor">
+        <mat-option [value]="null">Todos</mat-option>
+        <mat-option *ngFor="let vend of vendedoresSimulados" [value]="vend.id">
+          {{ vend.nombre }}
+        </mat-option>
+      </mat-select>
     </mat-form-field>
 
     <button mat-raised-button color="primary" (click)="onFilter()">
