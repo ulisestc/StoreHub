@@ -1,0 +1,60 @@
+/* Contenedor principal del sidebar */
+.sidebar-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%; // Ocupa toda la altura del sidenav
+}
+
+/* 1. Header */
+.sidebar-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px;
+
+  .sidebar-logo {
+    font-size: 32px;
+    width: 32px;
+    height: 32px;
+  }
+  .sidebar-title {
+    font-size: 1.25rem;
+    font-weight: 500;
+  }
+}
+
+/* 2. Contenido (Lista) */
+.sidebar-content {
+  flex: 1 1 auto; // Hace que la lista ocupe el espacio sobrante
+  overflow-y: auto; // Añade scroll si los enlaces no caben
+  padding: 0 !important; // Sobreescribe el padding de mat-nav-list
+
+  .mat-icon {
+    color: rgba(0,0,0,0.6); // Íconos un poco más suaves
+  }
+
+  // Estilo para el enlace activo
+  .active {
+    background: rgba(63, 81, 181, 0.1); // Color 'primary' con 10% opacidad
+    .mat-icon, span {
+      color: #3f51b5; // Color 'primary'
+    }
+  }
+}
+
+/* 3. Footer */
+.sidebar-footer {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px;
+  border-top: 1px solid rgba(0,0,0,0.12);
+  font-size: 0.9rem;
+  color: rgba(0,0,0,0.7);
+
+  mat-icon {
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+  }
+}

@@ -1,12 +1,12 @@
 <mat-sidenav-container class="dashboard-container">
 
-  <mat-sidenav mode="side" opened class="sidebar">
-    <app-sidebar></app-sidebar>
+  <mat-sidenav #sidenav mode="over" class="sidebar">
+    <app-sidebar (click)="sidenav.close()"></app-sidebar>
   </mat-sidenav>
 
   <mat-sidenav-content class="main-content">
 
-    <app-navbar></app-navbar>
+    <app-navbar (menuToggle)="sidenav.toggle()"></app-navbar>
 
     <div class="page-content" style="padding: 20px;">
       <router-outlet></router-outlet>

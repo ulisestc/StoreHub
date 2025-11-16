@@ -1,47 +1,68 @@
-<mat-nav-list>
-  <h3 mat-subheader>Menú Principal</h3>
+<div class="sidebar-container">
 
-  <a mat-list-item routerLink="/dashboard" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
-    Inicio (Dashboard)
-  </a>
-
-  <li class="nav-item">
-    <a mat-list-item routerLink="/dashboard/profile" routerLinkActive="active">
-     Mi Perfil
-    </a>
-  </li>
-  
-  <div *ngIf="userRole === 'Admin' || userRole === 'Cajero'">
-    <a mat-list-item routerLink="/dashboard/sales/pos" routerLinkActive="active">
-      Punto de Venta (POS)
-    </a>
-    <a mat-list-item routerLink="/dashboard/sales/history" routerLinkActive="active">
-      Historial de Ventas
-    </a>
-  </div>
-
-  <div *ngIf="userRole === 'Admin'">
-    <a mat-list-item routerLink="/dashboard/products" routerLinkActive="active">
-      Productos
-    </a>
-    <a mat-list-item routerLink="/dashboard/categories" routerLinkActive="active">
-      Categorías
-    </a>
-    <a mat-list-item routerLink="/dashboard/clients" routerLinkActive="active">
-      Clientes
-    </a>
-    <a mat-list-item routerLink="/dashboard/inventory" routerLinkActive="active">
-      Ajuste de Inventario
-    </a>
-    <a mat-list-item routerLink="/dashboard/reports" routerLinkActive="active">
-      Reportes
-    </a>
+  <div class="sidebar-header">
+    <mat-icon class="sidebar-logo">storefront</mat-icon>
+    <span class="sidebar-title">StoreHub</span>
   </div>
 
   <mat-divider></mat-divider>
 
-  <a mat-list-item disabled>
-    Rol: {{ userRole }}
-  </a>
+  <mat-nav-list class="sidebar-content" role="list">
 
-</mat-nav-list>
+    <a mat-list-item routerLink="/dashboard" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+      <mat-icon matListItemIcon>dashboard</mat-icon>
+      <span matListItemTitle>Inicio (Dashboard)</span>
+    </a>
+
+    <a mat-list-item routerLink="/dashboard/profile" routerLinkActive="active">
+      <mat-icon matListItemIcon>account_circle</mat-icon>
+      <span matListItemTitle>Mi Perfil</span>
+    </a>
+
+    <mat-divider></mat-divider>
+    <h3 mat-subheader>Tienda</h3>
+
+    <div *ngIf="userRole === 'Admin' || userRole === 'Cajero'">
+      <a mat-list-item routerLink="/dashboard/sales/pos" routerLinkActive="active">
+        <mat-icon matListItemIcon>point_of_sale</mat-icon>
+        <span matListItemTitle>Punto de Venta (POS)</span>
+      </a>
+      <a mat-list-item routerLink="/dashboard/sales/history" routerLinkActive="active">
+        <mat-icon matListItemIcon>receipt_long</mat-icon>
+        <span matListItemTitle>Historial de Ventas</span>
+      </a>
+    </div>
+
+    <div *ngIf="userRole === 'Admin'">
+      <mat-divider></mat-divider>
+      <h3 mat-subheader>Administración</h3>
+
+      <a mat-list-item routerLink="/dashboard/reports" routerLinkActive="active">
+        <mat-icon matListItemIcon>assessment</mat-icon>
+        <span matListItemTitle>Reportes</span>
+      </a>
+      <a mat-list-item routerLink="/dashboard/products" routerLinkActive="active">
+        <mat-icon matListItemIcon>inventory_2</mat-icon>
+        <span matListItemTitle>Productos</span>
+      </a>
+      <a mat-list-item routerLink="/dashboard/categories" routerLinkActive="active">
+        <mat-icon matListItemIcon>category</mat-icon>
+        <span matListItemTitle>Categorías</span>
+      </a>
+      <a mat-list-item routerLink="/dashboard/clients" routerLinkActive="active">
+        <mat-icon matListItemIcon>people</mat-icon>
+        <span matListItemTitle>Clientes</span>
+      </a>
+      <a mat-list-item routerLink="/dashboard/inventory" routerLinkActive="active">
+        <mat-icon matListItemIcon>rule</mat-icon>
+        <span matListItemTitle>Ajuste de Inventario</span>
+      </a>
+    </div>
+  </mat-nav-list>
+
+  <div class="sidebar-footer">
+    <mat-icon>security</mat-icon>
+    <span>Rol: <strong>{{ userRole }}</strong></span>
+  </div>
+
+</div>
