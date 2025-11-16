@@ -1,6 +1,6 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angular/forms';
+import { ReactiveFormsModule, FormGroup, FormControl, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
 
 // Importaciones de Material
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -13,6 +13,20 @@ import { MatDividerModule } from '@angular/material/divider';
 
 // Servicio
 import { AuthService } from '../../../../services/auth.service';
+
+export function passwordsMatchValidator(control: AbstractControl): ValidationErrors | null {
+  const newPassword = control.get('newPassword');
+  const confirmPassword = control.get('confirmPassword');
+
+  if (newPassword && confirmPassword && newPassword.value !== confirmPassword.value) {
+    // Si no coinciden, marcamos el error en el control 'confirmPassword'
+    confirmPassword.setErrors({ passwordsNotMatching: true });
+    return { passwordsNotMatching: true };
+  }
+
+  // Si coinciden o los campos no existen, no hay error
+  return null;
+}
 
 @Component({
   selector: 'app-profile-edit',
@@ -33,18 +47,25 @@ import { AuthService } from '../../../../services/auth.service';
 export class ProfileEditComponent implements OnInit {
 
   profileForm!: FormGroup;
+  passwordForm!: FormGroup;
   userRole: string | null = null;
 
   private authService = inject(AuthService);
   private snackBar = inject(MatSnackBar);
 
   ngOnInit(): void {
+    // Formulario de datos personales
     this.profileForm = new FormGroup({
-      // El documento menciona nombre, apellidos, correo
-      // (Solo se usa nombre por simplicidad de la simulación)
       nombre: new FormControl('', [Validators.required]),
       email: new FormControl('', [Validators.required, Validators.email]),
     });
+
+    // Formulario de contraseña
+    this.passwordForm = new FormGroup({
+      currentPassword: new FormControl('', [Validators.required]),
+      newPassword: new FormControl('', [Validators.required, Validators.minLength(6)]),
+      confirmPassword: new FormControl('', [Validators.required])
+    }, { validators: passwordsMatchValidator });
 
     this.loadUserData();
   }
@@ -72,6 +93,19 @@ export class ProfileEditComponent implements OnInit {
       this.snackBar.open('Perfil actualizado con éxito', 'Cerrar', {
         duration: 3000
       });
+    }
+  }
+
+  // Método para el submit del formulario de contraseña
+  onPasswordSubmit(): void {
+    if (this.passwordForm.valid) {
+      console.log('Contraseña actualizada (simulado):', this.passwordForm.value);
+      this.snackBar.open('Contraseña actualizada con éxito', 'Cerrar', {
+        duration: 3000
+      });
+      this.passwordForm.reset();
+    } else {
+      console.error('El formulario de contraseña es inválido');
     }
   }
 }

@@ -26,10 +26,6 @@
           </mat-form-field>
         </div>
 
-        <mat-divider style="margin: 10px 0;"></mat-divider>
-
-        <p>(La funcionalidad para cambiar contraseña se implementará en el futuro)</p>
-
         <mat-card-actions align="end">
           <button
             mat-raised-button
@@ -37,6 +33,53 @@
             type="submit"
             [disabled]="profileForm.invalid">
             Guardar Cambios
+          </button>
+        </mat-card-actions>
+
+      </form>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card class="password-card">
+    <mat-card-header>
+      <mat-card-title>Cambiar Contraseña</mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content>
+
+      <form [formGroup]="passwordForm" (ngSubmit)="onPasswordSubmit()">
+
+        <div class="form-row">
+          <mat-form-field appearance="outline" class="form-field-full">
+            <mat-label>Contraseña Actual</mat-label>
+            <input matInput type="password" formControlName="currentPassword" required>
+          </mat-form-field>
+        </div>
+
+        <div class="form-row">
+          <mat-form-field appearance="outline" class="form-field-full">
+            <mat-label>Nueva Contraseña</mat-label>
+            <input matInput type="password" formControlName="newPassword" required>
+          </mat-form-field>
+        </div>
+
+        <div class="form-row">
+          <mat-form-field appearance="outline" class="form-field-full">
+            <mat-label>Confirmar Nueva Contraseña</mat-label>
+            <input matInput type="password" formControlName="confirmPassword" required>
+            <mat-error *ngIf="passwordForm.get('confirmPassword')?.hasError('passwordsNotMatching')">
+              Las contraseñas no coinciden.
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <mat-card-actions align="end">
+          <button
+            mat-raised-button
+            color="primary"
+            type="submit"
+            [disabled]="passwordForm.invalid">
+            Actualizar Contraseña
           </button>
         </mat-card-actions>
 
