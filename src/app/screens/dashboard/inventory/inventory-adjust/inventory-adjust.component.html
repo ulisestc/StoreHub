@@ -39,6 +39,11 @@
       <td mat-cell *matCellDef="let mov"> {{mov.cantidad}} </td>
     </ng-container>
 
+    <ng-container matColumnDef="motivo">
+      <th mat-header-cell *matHeaderCellDef> Motivo </th>
+      <td mat-cell *matCellDef="let mov"> {{mov.motivo}} </td>
+    </ng-container>
+    
     <ng-container matColumnDef="usuario">
       <th mat-header-cell *matHeaderCellDef> Realizado por </th>
       <td mat-cell *matCellDef="let mov"> {{mov.usuario}} </td>

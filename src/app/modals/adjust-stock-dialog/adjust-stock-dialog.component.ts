@@ -49,6 +49,7 @@ export class AdjustStockDialogComponent implements OnInit {
       producto: new FormControl('', [Validators.required]),
       tipo_movimiento: new FormControl('', [Validators.required]),
       cantidad: new FormControl(null, [Validators.required, Validators.min(1)]),
+      motivo: new FormControl('', [Validators.required])
     });
   }
 

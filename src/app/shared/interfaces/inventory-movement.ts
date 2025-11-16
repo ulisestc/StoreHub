@@ -1,8 +1,9 @@
 export interface InventoryMovement {
   id: string;
-  producto: string; // Nombre del producto o ID
+  producto: string;
   tipo_movimiento: 'entrada' | 'salida' | 'merma';
   cantidad: number;
-  usuario: string; // Nombre del admin o ID
+  usuario: string;
   fecha: Date;
+  motivo?: string;
 }

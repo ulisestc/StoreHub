@@ -32,7 +32,7 @@ import { AuthService } from '../../../../services/auth.service'; // 3. Importa A
 })
 export class InventoryAdjustComponent implements OnInit {
 
-  displayedColumns: string[] = ['fecha', 'producto', 'tipo_movimiento', 'cantidad', 'usuario'];
+  displayedColumns: string[] = ['fecha', 'producto', 'tipo_movimiento', 'cantidad', 'motivo', 'usuario'];
   dataSource: InventoryMovement[] = [];
 
   private inventoryService = inject(InventoryService);
@@ -76,6 +76,7 @@ export class InventoryAdjustComponent implements OnInit {
           producto: result.producto,
           tipo_movimiento: result.tipo_movimiento,
           cantidad: result.cantidad,
+          motivo: result.motivo,
           usuario: this.authService.getUserRole() ?? 'admin' // Obtenemos el usuario logueado
         };
 
