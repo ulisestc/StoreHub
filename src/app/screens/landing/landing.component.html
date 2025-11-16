@@ -1,7 +1,24 @@
-<div class="container" style="padding: 20px;">
-  <h1>Bienvenido a StoreHub</h1>
-  <p>La solución para gestionar tu inventario y ventas.</p>
+<div class="landing-container">
 
-  <a mat-raised-button color="primary" routerLink="/auth/login" style="margin-right: 8px;">Iniciar Sesión</a>
-  <a mat-button routerLink="/auth/register">Registrarse</a>
+  <mat-toolbar color="primary">
+    <span>StoreHub</span>
+    <span class="spacer"></span>
+
+    <a mat-button routerLink="/auth/login">Iniciar Sesión</a>
+    <a mat-stroked-button color="accent" routerLink="/auth/register" class="register-button">
+      Registrarse
+    </a>
+  </mat-toolbar>
+
+  <div class="hero-section">
+
+    <mat-icon class="hero-icon">storefront</mat-icon>
+
+    <h1 class="hero-title">Bienvenido a StoreHub</h1>
+    <p class="hero-slogan">
+      La solución integral para la gestión de tu inventario y punto de venta.
+    </p>
+
+    </div>
+
 </div>

@@ -1,0 +1,47 @@
+/* Estilo para el botón de registro en la barra */
+.register-button {
+  // Usamos 'white' porque el fondo es 'primary' (azul)
+  color: white;
+  border-color: white;
+}
+
+/* Spacer para la barra de navegación */
+.spacer {
+  flex: 1 1 auto;
+}
+
+/* Contenedor principal de la sección "Hero" */
+.hero-section {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+
+  // Ocupa el 100% de la altura de la pantalla, menos la altura del toolbar (64px)
+  height: calc(100vh - 64px);
+  padding: 0 24px;
+}
+
+/* Icono grande (simulando el logo) */
+.hero-icon {
+  font-size: 100px;
+  width: 100px;
+  height: 100px;
+  color: rgba(0, 0, 0, 0.6); // Un color más suave
+}
+
+/* Título principal */
+.hero-title {
+  // mat-headline-3 es una clase de tipografía de Angular Material
+  font: 500 56px/64px Roboto, "Helvetica Neue", sans-serif;
+  margin: 16px 0;
+}
+
+/* Slogan */
+.hero-slogan {
+  // mat-title-1
+  font: 400 20px/32px Roboto, "Helvetica Neue", sans-serif;
+  max-width: 500px; // Evita que sea demasiado ancho en pantallas grandes
+  color: rgba(0, 0, 0, 0.7);
+}

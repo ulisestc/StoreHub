@@ -37,7 +37,7 @@ export class AuthService {
   logout(): void {
     // Se borra el token y se redirige al login
     localStorage.removeItem('authToken');
-    this.router.navigate(['/auth/login']);
+    this.router.navigate(['/']);
   }
 
   // --- Método para obtener el token (lo usará el Interceptor) ---

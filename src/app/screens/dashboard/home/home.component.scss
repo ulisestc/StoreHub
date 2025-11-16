@@ -1,0 +1,52 @@
+.welcome-header {
+  margin-bottom: 20px;
+  background-color: transparent; // Quita el fondo del toolbar
+  border-bottom: 1px solid rgba(0,0,0,0.12);
+
+  span {
+    font-size: 1.5rem;
+    font-weight: 300;
+  }
+}
+
+.quick-actions-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.admin-actions {
+  display: grid;
+  // Crea una cuadrícula de 3 columnas en escritorio, 1 en móvil
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+.quick-action-card {
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+
+  &:hover {
+    // Añade una sombra más pronunciada al pasar el mouse
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    transform: translateY(-2px);
+  }
+
+  mat-card-header {
+    .mat-icon {
+      font-size: 40px;
+      width: 40px;
+      height: 40px;
+    }
+  }
+}
+
+// Estilo especial para la tarjeta grande de POS
+.pos-card {
+  background-color: #f4f7ff; // Un color de acento suave
+  border: 1px solid #3f51b5; // Color primario
+
+  mat-icon {
+    color: #3f51b5; // Color primario
+  }
+}
