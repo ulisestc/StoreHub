@@ -7,7 +7,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 
 @Component({
-  selector: 'app-confirm-sale-dialog',
+  selector: 'app-confirm-sale-modal',
   standalone: true,
   imports: [
     CommonModule,
@@ -15,14 +15,14 @@ import { MatIconModule } from '@angular/material/icon';
     MatButtonModule,
     MatIconModule
   ],
-  templateUrl: './confirm-sale-dialog.component.html',
-  styleUrl: './confirm-sale-dialog.component.scss'
+  templateUrl: './confirm-sale-modal.component.html',
+  styleUrl: './confirm-sale-modal.component.scss'
 })
-export class ConfirmSaleDialogComponent {
+export class ConfirmSaleModalComponent {
 
   // Inyectamos los datos (el total) y la referencia al diálogo
   constructor(
-    public dialogRef: MatDialogRef<ConfirmSaleDialogComponent>,
+    public dialogRef: MatDialogRef<ConfirmSaleModalComponent>,
     @Inject(MAT_DIALOG_DATA) public data: { total: number }
   ) { }
 

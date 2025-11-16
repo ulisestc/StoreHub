@@ -14,10 +14,10 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { MatDialog } from '@angular/material/dialog';
-import { ConfirmSaleDialogComponent } from '../../../../modals/confirm-sale-dialog/confirm-sale-dialog.component';
+import { ConfirmSaleModalComponent } from '../../../../modals/confirm-sale-modal/confirm-sale-modal.component';
 import { MatSelectModule } from '@angular/material/select';
-import { ClientQuickAddDialogComponent } from '../../../../modals/client-quick-add-dialog/client-quick-add-dialog.component';
-import { LowStockWarningDialogComponent } from '../../../../modals/low-stock-warning-dialog/low-stock-warning-dialog.component';
+import { ClientQuickAddModalComponent } from '../../../../modals/client-quick-add-modal/client-quick-add-modal.component';
+import { LowStockWarningModalComponent } from '../../../../modals/low-stock-warning-modal/low-stock-warning-modal.component';
 
 // 3. Servicios y Modelos
 import { ProductService } from '../../../../services/product.service';
@@ -179,7 +179,7 @@ export class PosComponent implements OnInit {
   onConfirmSale(): void {
     if (this.ticketItems.length === 0) return;
 
-    const dialogRef = this.dialog.open(ConfirmSaleDialogComponent, {
+    const dialogRef = this.dialog.open(ConfirmSaleModalComponent, {
       width: '400px',
       data: { total: this.totalVenta } // Pasa el total al diálogo
     });
@@ -246,7 +246,7 @@ export class PosComponent implements OnInit {
 
   // Método para abrir el diálogo de alta rápida
   openCreateClientDialog(): void {
-    const dialogRef = this.dialog.open(ClientQuickAddDialogComponent, {
+    const dialogRef = this.dialog.open(ClientQuickAddModalComponent, {
       width: '450px',
     });
 
@@ -272,7 +272,7 @@ export class PosComponent implements OnInit {
 
     // Si hay productos con stock bajo, muestra el modal
     if (lowStockProducts.length > 0) {
-      this.dialog.open(LowStockWarningDialogComponent, {
+      this.dialog.open(LowStockWarningModalComponent, {
         width: '450px',
         data: { products: lowStockProducts }
       });

@@ -14,7 +14,7 @@ import { ProductService } from '../../services/product.service';
 import { Product } from '../../shared/interfaces/product';
 
 @Component({
-  selector: 'app-adjust-stock-dialog',
+  selector: 'app-adjust-stock-modal',
   standalone: true,
   imports: [
     CommonModule,
@@ -25,10 +25,10 @@ import { Product } from '../../shared/interfaces/product';
     MatButtonModule,
     MatSelectModule
   ],
-  templateUrl: './adjust-stock-dialog.component.html',
-  styleUrl: './adjust-stock-dialog.component.scss'
+  templateUrl: './adjust-stock-modal.component.html',
+  styleUrl: './adjust-stock-modal.component.scss'
 })
-export class AdjustStockDialogComponent implements OnInit {
+export class AdjustStockModalComponent implements OnInit {
 
   adjustForm!: FormGroup;
   products: Product[] = []; // Para el <select> de productos
@@ -39,7 +39,7 @@ export class AdjustStockDialogComponent implements OnInit {
   private productService = inject(ProductService);
 
   constructor(
-    public dialogRef: MatDialogRef<AdjustStockDialogComponent>
+    public dialogRef: MatDialogRef<AdjustStockModalComponent>
   ) { }
 
   ngOnInit(): void {

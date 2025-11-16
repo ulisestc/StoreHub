@@ -12,7 +12,7 @@ import { MatDialog } from '@angular/material/dialog';
 // Importaciones del servicio y diálogo
 import { CategoryService } from '../../../../services/category.service';
 import { Category } from '../../../../shared/interfaces/category';
-import { ConfirmDialogComponent } from '../../../../modals/confirm-dialog/confirm-dialog.component';
+import { ConfirmDeleteModalComponent } from '../../../../modals/confirm-delete-modal/confirm-delete-modal.component';
 
 @Component({
   selector: 'app-category-list',
@@ -48,7 +48,7 @@ export class CategoryListComponent implements OnInit {
 
   // Método para abrir el diálogo de borrado
   openDeleteDialog(categoryId: string): void {
-    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+    const dialogRef = this.dialog.open(ConfirmDeleteModalComponent, {
       width: '350px',
       data: {
         title: 'Confirmar Borrado',

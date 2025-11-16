@@ -9,7 +9,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatChipsModule } from '@angular/material/chips';
 
 @Component({
-  selector: 'app-low-stock-warning-dialog',
+  selector: 'app-low-stock-warning-modal',
   standalone: true,
   imports: [
     CommonModule,
@@ -19,14 +19,14 @@ import { MatChipsModule } from '@angular/material/chips';
     MatListModule,
     MatChipsModule
   ],
-  templateUrl: './low-stock-warning-dialog.component.html',
-  styleUrl: './low-stock-warning-dialog.component.scss'
+  templateUrl: './low-stock-warning-modal.component.html',
+  styleUrl: './low-stock-warning-modal.component.scss'
 })
-export class LowStockWarningDialogComponent {
+export class LowStockWarningModalComponent {
 
   // Recibimos un array de productos que tienen stock bajo
   constructor(
-    public dialogRef: MatDialogRef<LowStockWarningDialogComponent>,
+    public dialogRef: MatDialogRef<LowStockWarningModalComponent>,
     @Inject(MAT_DIALOG_DATA) public data: { products: any[] }
   ) { }
 

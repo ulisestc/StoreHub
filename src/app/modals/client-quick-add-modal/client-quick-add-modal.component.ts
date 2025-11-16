@@ -12,7 +12,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { ClientService } from '../../services/client.service';
 
 @Component({
-  selector: 'app-client-quick-add-dialog',
+  selector: 'app-client-quick-add-modal',
   standalone: true,
   imports: [
     CommonModule,
@@ -22,16 +22,16 @@ import { ClientService } from '../../services/client.service';
     MatInputModule,
     MatButtonModule
   ],
-  templateUrl: './client-quick-add-dialog.component.html',
-  styleUrl: './client-quick-add-dialog.component.scss'
+  templateUrl: './client-quick-add-modal.component.html',
+  styleUrl: './client-quick-add-modal.component.scss'
 })
-export class ClientQuickAddDialogComponent implements OnInit {
+export class ClientQuickAddModalComponent implements OnInit {
 
   clientForm!: FormGroup;
   private clientService = inject(ClientService);
 
   constructor(
-    public dialogRef: MatDialogRef<ClientQuickAddDialogComponent>
+    public dialogRef: MatDialogRef<ClientQuickAddModalComponent>
   ) { }
 
   ngOnInit(): void {

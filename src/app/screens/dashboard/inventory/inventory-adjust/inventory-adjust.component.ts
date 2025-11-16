@@ -12,9 +12,9 @@ import { MatChipsModule } from '@angular/material/chips';
 import { InventoryService } from '../../../../services/inventory.service';
 import { InventoryMovement } from '../../../../shared/interfaces/inventory-movement';
 
-import { MatDialog } from '@angular/material/dialog'; // 1. Importa MatDialog
-import { AdjustStockDialogComponent } from '../../../../modals/adjust-stock-dialog/adjust-stock-dialog.component'; // 2. Importa tu diálogo
-import { AuthService } from '../../../../services/auth.service'; // 3. Importa AuthService
+import { MatDialog } from '@angular/material/dialog';
+import { AdjustStockModalComponent } from '../../../../modals/adjust-stock-modal/adjust-stock-modal.component';
+import { AuthService } from '../../../../services/auth.service';
 
 @Component({
   selector: 'app-inventory-adjust',
@@ -61,7 +61,7 @@ export class InventoryAdjustComponent implements OnInit {
 
   // Método para abrir el diálogo
   openAdjustDialog(): void {
-    const dialogRef = this.dialog.open(AdjustStockDialogComponent, {
+    const dialogRef = this.dialog.open(AdjustStockModalComponent, {
       width: '450px',
     });
 

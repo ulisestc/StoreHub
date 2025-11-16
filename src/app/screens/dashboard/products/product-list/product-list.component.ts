@@ -13,7 +13,7 @@ import { ProductService } from '../../../../services/product.service';
 import { Product } from '../../../../shared/interfaces/product';
 
 import { MatDialog } from '@angular/material/dialog';
-import { ConfirmDialogComponent } from '../../../../modals/confirm-dialog/confirm-dialog.component';
+import { ConfirmDeleteModalComponent } from '../../../../modals/confirm-delete-modal/confirm-delete-modal.component';
 
 @Component({
   selector: 'app-product-list',
@@ -54,8 +54,8 @@ export class ProductListComponent implements OnInit {
 
   // Método para abrir el diálogo
   openDeleteDialog(productId: string): void {
-    // Abre el componente ConfirmDialogComponent
-    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+    // Abre el componente ConfirmDeleteModalComponent
+    const dialogRef = this.dialog.open(ConfirmDeleteModalComponent, {
       width: '350px',
       data: {
         title: 'Confirmar Borrado',
