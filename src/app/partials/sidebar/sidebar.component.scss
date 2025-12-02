@@ -1,60 +1,85 @@
-/* Contenedor principal del sidebar */
+// Variables locales (mismas que en styles.scss)
+$color-beige: #EFECE3;
+$color-blue-light: #8FABD4;
+$color-blue-dark: #4A70A9;
+$color-black: #000000;
+
 .sidebar-container {
   display: flex;
   flex-direction: column;
-  height: 100%; // Ocupa toda la altura del sidenav
+  height: 100%;
+  
+
+  background-color: $color-blue-dark; 
+  color: $color-beige; 
+  width: 260px;
+  border-right: 1px solid rgba(0,0,0,0.1);
 }
 
-/* 1. Header */
 .sidebar-header {
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 16px;
+  padding: 24px 20px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 
   .sidebar-logo {
-    font-size: 32px;
-    width: 32px;
-    height: 32px;
+    color: $color-beige;
+    font-size: 28px;
+    width: 28px;
+    height: 28px;
   }
+  
   .sidebar-title {
-    font-size: 1.25rem;
-    font-weight: 500;
+    font-size: 1.3rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
   }
 }
 
-/* 2. Contenido (Lista) */
 .sidebar-content {
-  flex: 1 1 auto; // Hace que la lista ocupe el espacio sobrante
-  overflow-y: auto; // Añade scroll si los enlaces no caben
-  padding: 0 !important; // Sobreescribe el padding de mat-nav-list
+  flex: 1;
+  padding: 16px 12px !important;
+  
 
-  .mat-icon {
-    color: rgba(0,0,0,0.6); // Íconos un poco más suaves
-  }
-
-  // Estilo para el enlace activo
-  .active {
-    background: rgba(63, 81, 181, 0.1); // Color 'primary' con 10% opacidad
-    .mat-icon, span {
-      color: #3f51b5; // Color 'primary'
+  ::ng-deep .mat-mdc-list-item {
+    color: rgba(239, 236, 227, 0.8) !important; // Beige con transparencia
+    margin-bottom: 4px;
+    border-radius: 8px;
+    
+    &:hover {
+      background-color: rgba(255, 255, 255, 0.1) !important;
+      color: #fff !important;
     }
   }
+
+  ::ng-deep .mat-icon {
+    color: rgba(239, 236, 227, 0.8);
+    margin-right: 12px;
+  }
+
+  
+  .active {
+    background-color: $color-black !important;
+    
+    ::ng-deep .mat-mdc-list-item-title {
+      color: $color-beige !important;
+      font-weight: 600;
+    }
+    ::ng-deep .mat-icon {
+      color: $color-blue-light; 
+    }
+    
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  }
 }
 
-/* 3. Footer */
 .sidebar-footer {
+  padding: 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  color: rgba(239, 236, 227, 0.6);
+  font-size: 0.85rem;
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 16px;
-  border-top: 1px solid rgba(0,0,0,0.12);
-  font-size: 0.9rem;
-  color: rgba(0,0,0,0.7);
-
-  mat-icon {
-    font-size: 20px;
-    width: 20px;
-    height: 20px;
-  }
+  gap: 10px;
 }

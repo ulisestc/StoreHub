@@ -1,4 +1,60 @@
-/* You can add global styles to this file, and also import other style files */
+@use '@angular/material' as mat;
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+@include mat.core();
+
+
+$storehub-primary: mat.m2-define-palette(mat.$m2-blue-grey-palette);
+$storehub-accent:  mat.m2-define-palette(mat.$m2-grey-palette);
+$storehub-warn:    mat.m2-define-palette(mat.$m2-red-palette);
+
+$storehub-typography: mat.m2-define-typography-config(
+  $font-family: 'Poppins, sans-serif',
+);
+
+$storehub-theme: mat.m2-define-light-theme((
+  color: (
+    primary: $storehub-primary,
+    accent: $storehub-accent,
+    warn: $storehub-warn,
+  ),
+  typography: $storehub-typography,
+));
+
+@include mat.all-component-themes($storehub-theme);
+
+
+$color-beige: #EFECE3;
+$color-blue-light: #8FABD4;
+$color-blue-dark: #4A70A9;
+$color-black: #000000;
+
+
+body {
+  background-color: $color-beige; 
+  color: $color-black;
+  font-family: 'Poppins', sans-serif;
+  margin: 0;
+}
+
+
+.mat-mdc-raised-button.mat-primary, 
+.mat-mdc-unelevated-button.mat-primary {
+  background-color: $color-blue-dark !important;
+  color: $color-beige !important; // Texto claro para contraste
+  border-radius: 8px !important;
+}
+
+
+.mat-mdc-card {
+  background-color: #ffffff !important; // Blanco para que resalte sobre el beige
+  border: 1px solid rgba(0,0,0,0.05) !important;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05) !important;
+  border-radius: 12px !important;
+  color: $color-black !important;
+}
+
+
+.mdc-text-field--outlined {
+  --mdc-theme-primary: #4A70A9; // Color del borde al enfocar
+}

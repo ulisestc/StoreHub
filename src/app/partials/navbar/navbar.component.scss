@@ -1,0 +1,10 @@
+.main-navbar {
+  background-color: white; // Fondo blanco
+  color: #1a237e; // Texto/Iconos en Azul Navy
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05); // Sombra sutil
+  z-index: 10; // Para que pase por encima del contenido si se hace scroll
+  
+  // Alineación de botones
+  display: flex;
+  justify-content: space-between;
+}

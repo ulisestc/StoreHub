@@ -1,61 +1,76 @@
+
+$color-beige-dark: #E5E1D6; 
+$color-blue-steel: #4A70A9;
+$color-black: #000000;
+
 .footer-container {
-  background-color: #f5f5f5; 
-  border-top: 1px solid #e0e0e0; 
-  padding: 16px 24px;
-  margin-top: auto; 
+  background-color: $color-beige-dark;
+  color: $color-black;
+  padding: 24px 32px; // Un poco más de espacio se ve más elegante
+  margin-top: auto;   // Empuja el footer al final
+  border-top: 1px solid rgba(0, 0, 0, 0.05); // Línea muy sutil
 }
 
 .footer-content {
   display: flex;
-  flex-wrap: wrap; 
-  justify-content: space-between; 
+  flex-wrap: wrap;
+  justify-content: space-between;
   align-items: center;
   max-width: 1200px;
-  margin: 0 auto; 
-  gap: 16px;
+  margin: 0 auto;
+  gap: 20px;
 }
 
 .brand-section {
   display: flex;
-  flex-direction: column; 
+  flex-direction: column;
   
   @media (min-width: 600px) {
     flex-direction: row;
     align-items: center;
-    gap: 12px;
+    gap: 16px;
   }
 
   .brand-name {
-    font-weight: 500;
-    font-size: 1.1rem;
-    color: #3f51b5; 
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    font-size: 1.25rem;
+    color: $color-blue-steel;
+    letter-spacing: 0.5px;
   }
 
   .copyright {
     font-size: 0.85rem;
-    color: #666;
+    opacity: 0.7;
   }
 }
 
 .links-section {
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 8px;
 
   .footer-link {
-    color: #666;
-    font-weight: 400;
+    color: $color-black;
+    font-weight: 500;
+    font-size: 0.9rem;
     
     &:hover {
-      color: #3f51b5;
-      background-color: rgba(63, 81, 181, 0.04);
+      color: $color-blue-steel;
+      background-color: rgba(74, 112, 169, 0.1); 
     }
   }
   
   mat-icon {
-    color: #757575;
-    &:hover {
-      color: #3f51b5;
-    }
+    color: $color-black;
+    opacity: 0.8;
+    transition: all 0.2s ease;
+  }
+
+  
+  .mat-mdc-icon-button:hover mat-icon {
+    color: $color-blue-steel;
+    opacity: 1;
+    transform: translateY(-2px);
   }
 }
