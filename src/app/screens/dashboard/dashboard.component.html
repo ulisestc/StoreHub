@@ -8,10 +8,15 @@
 
     <app-navbar (menuToggle)="sidenav.toggle()"></app-navbar>
 
-    <div class="page-content" style="padding: 20px;">
-      <router-outlet></router-outlet>
-    </div>
+    <div style="display: flex; flex-direction: column; min-height: calc(100vh - 64px);">
+      
+      <div class="page-content" style="padding: 20px; flex: 1;">
+        <router-outlet></router-outlet>
+      </div>
 
-  </mat-sidenav-content>
+      <app-footer></app-footer> 
+      
+    </div>
+    </mat-sidenav-content>
 
 </mat-sidenav-container>
