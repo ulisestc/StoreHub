@@ -1,31 +1,95 @@
-import { HttpInterceptorFn } from '@angular/common/http';
+import { HttpInterceptorFn, HttpErrorResponse } from '@angular/common/http';
 import { inject } from '@angular/core';
+import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
+import { catchError, throwError } from 'rxjs';
 
 export const jwtInterceptor: HttpInterceptorFn = (req, next) => {
 
-  // Se inyecta el servicio de autenticación
   const authService = inject(AuthService);
+  const router = inject(Router);
 
-  // Se obtiene el token
+  // Obtener el token de autenticación
   const authToken = authService.getToken();
 
-  // Se verifica si tenemos un token
+  // Clonar la petición original
+  let clonedReq = req;
+
+  // Si hay token, agregar el header de Authorization
   if (authToken) {
-    // Si hay token, se clona la petición y se le añade la cabecera
-    // 'Authorization' con el 'Bearer token'.
-    // El backend (Django) esperará esta cabecera.
-    const clonedReq = req.clone({
+    clonedReq = req.clone({
       setHeaders: {
-        Authorization: `Bearer ${authToken}`
+        Authorization: `Bearer ${authToken}`,
+        'Content-Type': 'application/json'
       }
     });
-
-    // Dejamos que la petición clonada (y modificada) continúe
-    return next(clonedReq);
   }
 
-  // Si no hay token, dejamos que la petición original continúe
-  // (esto es para peticiones públicas como Login o Registro)
-  return next(req);
+  // Procesar la petición y manejar errores
+  return next(clonedReq).pipe(
+    catchError((error: HttpErrorResponse) => {
+
+      // Manejar diferentes tipos de errores HTTP
+      switch (error.status) {
+        case 401:
+          // Token inválido o expirado
+          console.error('Error 401: No autorizado. Token inválido o expirado.');
+          handleUnauthorized(authService, router);
+          break;
+
+        case 403:
+          // Acceso prohibido (el usuario no tiene permisos)
+          console.error('Error 403: Acceso prohibido. No tienes permisos para esta acción.');
+          router.navigate(['/dashboard']);
+          break;
+
+        case 404:
+          // Recurso no encontrado
+          console.error('Error 404: Recurso no encontrado.');
+          break;
+
+        case 500:
+          // Error del servidor
+          console.error('Error 500: Error interno del servidor. Intenta más tarde.');
+          break;
+
+        case 503:
+          // Servicio no disponible
+          console.error('Error 503: Servicio no disponible. El servidor está temporalmente fuera de servicio.');
+          break;
+
+        case 0:
+          // Error de red o CORS
+          console.error('Error de red: No se pudo conectar con el servidor. Verifica tu conexión.');
+          break;
+
+        default:
+          // Otros errores
+          console.error(`Error HTTP ${error.status}: ${error.message}`);
+      }
+
+      // Re-lanzar el error para que los componentes puedan manejarlo si es necesario
+      return throwError(() => error);
+    })
+  );
 };
+
+/**
+ * Maneja el error 401 (No autorizado)
+ * Cierra sesión y redirige al login
+ */
+function handleUnauthorized(authService: AuthService, router: Router): void {
+  // Verificar si realmente hay un token (para evitar loops)
+  if (authService.isLoggedIn()) {
+    // Cerrar sesión y limpiar el token
+    authService.logout();
+
+    // Mostrar mensaje al usuario (opcional, puedes usar un servicio de notificaciones)
+    console.warn('Tu sesión ha expirado. Por favor, inicia sesión nuevamente.');
+
+    // Redirigir al login con un parámetro de sesión expirada
+    router.navigate(['/auth/login'], {
+      queryParams: { sessionExpired: 'true' }
+    });
+  }
+}
