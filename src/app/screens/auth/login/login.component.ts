@@ -2,12 +2,14 @@ import { Component, inject } from '@angular/core';
 
 import { ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../../services/auth.service';
 
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-login',
@@ -16,9 +18,12 @@ import { MatButtonModule } from '@angular/material/button';
   imports: [
     CommonModule,
     ReactiveFormsModule,
+    RouterModule,
     MatFormFieldModule,
     MatInputModule,
-    MatButtonModule
+    MatButtonModule,
+    MatIconModule,
+    MatProgressSpinnerModule
   ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
@@ -29,13 +34,15 @@ export class LoginComponent {
   authService = inject(AuthService);
   router = inject(Router);
 
-  // (Variable para mostrar un mensaje de error)
+  // Variables de estado
   loginError: boolean = false;
+  hidePassword: boolean = true;
+  isLoading: boolean = false;
 
   // Definición del FormGroup para el formulario
   loginForm = new FormGroup({
     email: new FormControl('', [Validators.required, Validators.email]),
-    password: new FormControl('', [Validators.required])
+    password: new FormControl('', [Validators.required, Validators.minLength(6)])
   });
 
   // Método que se llamará al enviar el formulario
@@ -43,22 +50,32 @@ export class LoginComponent {
     // Se resetea el error
     this.loginError = false;
 
-  if (this.loginForm.valid) {
+    if (this.loginForm.valid) {
+      this.isLoading = true;
       const email = this.loginForm.value.email ?? '';
       const password = this.loginForm.value.password ?? '';
 
-      // Se llama al servicio de login
-      const loginExitoso = this.authService.login(email, password);
+      // Simulamos un pequeño delay para mostrar el loading
+      setTimeout(() => {
+        // Se llama al servicio de login
+        const loginExitoso = this.authService.login(email, password);
 
-      if (loginExitoso) {
-        // ¡Éxito! Se redirige al Dashboard
-        console.log('Login exitoso, redirigiendo...');
-        this.router.navigate(['/dashboard']);
-      } else {
-        // Error en las credenciales
-        console.log('Credenciales incorrectas');
-        this.loginError = true;
-      }
+        if (loginExitoso) {
+          // ¡Éxito! Se redirige al Dashboard
+          console.log('Login exitoso, redirigiendo...');
+          this.router.navigate(['/dashboard']);
+        } else {
+          // Error en las credenciales
+          console.log('Credenciales incorrectas');
+          this.loginError = true;
+          this.isLoading = false;
+        }
+      }, 500);
+    } else {
+      // Marca todos los campos como tocados para mostrar errores
+      Object.keys(this.loginForm.controls).forEach(key => {
+        this.loginForm.get(key)?.markAsTouched();
+      });
     }
   }
 }
