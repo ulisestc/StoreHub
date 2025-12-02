@@ -12,27 +12,42 @@
       <form [formGroup]="categoryForm" (ngSubmit)="onSubmit()">
 
         <div class="form-row">
-          <mat-form-field appearance="outline" class="form-field-full">
+          <mat-form-field appearance="outline" class="form-field-full" subscriptSizing="dynamic">
             <mat-label>Nombre de la Categoría</mat-label>
-            <input matInput formControlName="nombre" required>
+            <input matInput formControlName="nombre" required placeholder="Ej: Electrónica, Ropa, Hogar">
+            <mat-icon matSuffix>category</mat-icon>
+            <mat-error *ngIf="hasError('nombre')">
+              {{ getErrorMessage('nombre') }}
+            </mat-error>
+            <mat-hint>Mínimo 2 caracteres, solo letras y espacios</mat-hint>
           </mat-form-field>
         </div>
 
         <div class="form-row">
-          <mat-form-field appearance="outline" class="form-field-full">
+          <mat-form-field appearance="outline" class="form-field-full" subscriptSizing="dynamic">
             <mat-label>Descripción (Opcional)</mat-label>
-            <textarea matInput formControlName="descripcion"></textarea>
+            <textarea matInput formControlName="descripcion" rows="4" placeholder="Describe brevemente esta categoría"></textarea>
+            <mat-icon matSuffix>description</mat-icon>
+            <mat-hint>Máximo 200 caracteres</mat-hint>
+            <mat-error *ngIf="hasError('descripcion')">
+              {{ getErrorMessage('descripcion') }}
+            </mat-error>
           </mat-form-field>
         </div>
 
-        <mat-card-actions align="end">
-          <a mat-button routerLink="/dashboard/categories">Cancelar</a>
+        <mat-card-actions align="end" class="form-actions">
+          <a mat-button routerLink="/dashboard/categories" class="cancel-btn">
+            <mat-icon>cancel</mat-icon>
+            Cancelar
+          </a>
           <button
             mat-raised-button
             color="primary"
             type="submit"
-            [disabled]="categoryForm.invalid">
-            Guardar Categoría
+            [disabled]="categoryForm.invalid"
+            class="submit-btn">
+            <mat-icon>save</mat-icon>
+            {{ isEditMode ? 'Actualizar' : 'Guardar' }} Categoría
           </button>
         </mat-card-actions>
 
