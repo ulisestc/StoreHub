@@ -1,21 +1,119 @@
-.page-header {
-  margin-bottom: 20px;
+$color-primary: #448aff;
+$color-text-main: #f1f5f9;
+$color-text-muted: #94a3b8;
+$color-bg-card: #1e293b;
+
+.profile-container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding-bottom: 40px;
 }
 
-.form-container {
-  padding: 0 16px;
-}
-
-.form-row {
+.profile-header {
   display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 32px;
+  padding: 0 8px;
+
+  .header-content {
+    h1 {
+      font-family: 'Poppins', sans-serif;
+      font-size: 2rem;
+      font-weight: 700;
+      margin: 0;
+      color: $color-text-main;
+    }
+    p {
+      margin: 4px 0 0 0;
+      color: $color-text-muted;
+      font-size: 1rem;
+    }
+  }
+
+  .user-avatar {
+    mat-icon {
+      font-size: 64px;
+      width: 64px;
+      height: 64px;
+      color: $color-primary;
+      opacity: 0.8;
+    }
+  }
+}
+
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 24px;
+}
+
+.profile-card {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  height: 100%; 
+
+  mat-card-header {
+    margin-bottom: 24px;
+    padding: 0; 
+  }
+
+  mat-card-title {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 8px;
+    
+    .card-icon {
+      color: $color-primary;
+    }
+  }
+
+  mat-card-content {
+    padding: 0; 
+    flex: 1;
+  }
+}
+
+.role-badge {
+  background-color: rgba($color-primary, 0.15);
+  color: $color-primary;
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 0.8rem;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.form-column {
+  display: flex;
+  flex-direction: column;
   gap: 16px;
-  margin-bottom: 16px;
 }
 
-.form-field-full {
-  flex: 1 1 100%;
+.full-width {
+  width: 100%;
 }
 
-.password-card {
-  margin-top: 20px;
+.form-actions {
+  margin-top: 32px;
+  display: flex;
+  justify-content: flex-end;
+  
+  button {
+    min-width: 160px;
+    mat-icon {
+      margin-right: 8px;
+    }
+  }
+}
+
+::ng-deep .mat-mdc-form-field {
+  .mat-mdc-form-field-icon-suffix {
+    color: $color-text-muted; 
+  }
 }

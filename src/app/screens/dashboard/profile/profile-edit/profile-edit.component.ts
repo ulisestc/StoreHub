@@ -1,17 +1,12 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormGroup, FormControl, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
-
-// Importaciones de Material
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
-import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatCardModule } from '@angular/material/card';
+import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { MatDividerModule } from '@angular/material/divider';
-
-// Servicio
 import { AuthService } from '../../../../services/auth.service';
 
 export function passwordsMatchValidator(control: AbstractControl): ValidationErrors | null {
@@ -19,12 +14,9 @@ export function passwordsMatchValidator(control: AbstractControl): ValidationErr
   const confirmPassword = control.get('confirmPassword');
 
   if (newPassword && confirmPassword && newPassword.value !== confirmPassword.value) {
-    // Si no coinciden, marcamos el error en el control 'confirmPassword'
     confirmPassword.setErrors({ passwordsNotMatching: true });
     return { passwordsNotMatching: true };
   }
-
-  // Si coinciden o los campos no existen, no hay error
   return null;
 }
 
@@ -37,9 +29,8 @@ export function passwordsMatchValidator(control: AbstractControl): ValidationErr
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
-    MatToolbarModule,
     MatCardModule,
-    MatDividerModule
+    MatIconModule
   ],
   templateUrl: './profile-edit.component.html',
   styleUrl: './profile-edit.component.scss'
@@ -49,18 +40,20 @@ export class ProfileEditComponent implements OnInit {
   profileForm!: FormGroup;
   passwordForm!: FormGroup;
   userRole: string | null = null;
+  
+  hideCurrent = true;
+  hideNew = true;
+  hideConfirm = true;
 
   private authService = inject(AuthService);
   private snackBar = inject(MatSnackBar);
 
   ngOnInit(): void {
-    // Formulario de datos personales
     this.profileForm = new FormGroup({
       nombre: new FormControl('', [Validators.required]),
       email: new FormControl('', [Validators.required, Validators.email]),
     });
 
-    // Formulario de contraseña
     this.passwordForm = new FormGroup({
       currentPassword: new FormControl('', [Validators.required]),
       newPassword: new FormControl('', [Validators.required, Validators.minLength(6)]),
@@ -70,7 +63,6 @@ export class ProfileEditComponent implements OnInit {
     this.loadUserData();
   }
 
-  // Simula la carga de datos del usuario logueado
   loadUserData(): void {
     this.userRole = this.authService.getUserRole();
 
@@ -89,23 +81,25 @@ export class ProfileEditComponent implements OnInit {
 
   onSubmit(): void {
     if (this.profileForm.valid) {
-      console.log('Datos de perfil actualizados (simulado):', this.profileForm.value);
       this.snackBar.open('Perfil actualizado con éxito', 'Cerrar', {
-        duration: 3000
+        duration: 3000,
+        panelClass: ['snackbar-success']
       });
+      this.profileForm.markAsPristine(); 
     }
   }
 
-  // Método para el submit del formulario de contraseña
   onPasswordSubmit(): void {
     if (this.passwordForm.valid) {
-      console.log('Contraseña actualizada (simulado):', this.passwordForm.value);
       this.snackBar.open('Contraseña actualizada con éxito', 'Cerrar', {
-        duration: 3000
+        duration: 3000,
+        panelClass: ['snackbar-success']
       });
       this.passwordForm.reset();
-    } else {
-      console.error('El formulario de contraseña es inválido');
+      
+      this.hideCurrent = true;
+      this.hideNew = true;
+      this.hideConfirm = true;
     }
   }
 }
