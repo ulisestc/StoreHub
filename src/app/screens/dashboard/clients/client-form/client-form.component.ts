@@ -44,11 +44,23 @@ export class ClientFormComponent implements OnInit {
   private clientService = inject(ClientService);
 
   ngOnInit(): void {
-    // Define el formulario
+    // Define el formulario con validaciones completas
     this.clientForm = new FormGroup({
-      nombre: new FormControl('', [Validators.required]),
-      correo: new FormControl('', [Validators.email]),
-      telefono: new FormControl(''),
+      nombre: new FormControl('', [
+        Validators.required,
+        Validators.minLength(3),
+        Validators.maxLength(100),
+        Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/)
+      ]),
+      correo: new FormControl('', [
+        Validators.email,
+        Validators.maxLength(100)
+      ]),
+      telefono: new FormControl('', [
+        Validators.minLength(10),
+        Validators.maxLength(15),
+        Validators.pattern(/^[0-9+\-\s()]+$/)
+      ]),
     });
 
     // Comprueba si es modo edición
@@ -68,7 +80,36 @@ export class ClientFormComponent implements OnInit {
     });
   }
 
+  // Métodos helper para validaciones
+  getErrorMessage(fieldName: string): string {
+    const control = this.clientForm.get(fieldName);
+    if (!control || !control.errors || !control.touched) return '';
+
+    const errors = control.errors;
+
+    if (errors['required']) return 'Este campo es obligatorio';
+    if (errors['minlength']) return `Mínimo ${errors['minlength'].requiredLength} caracteres`;
+    if (errors['maxlength']) return `Máximo ${errors['maxlength'].requiredLength} caracteres`;
+    if (errors['email']) return 'Correo electrónico inválido';
+    if (errors['pattern']) {
+      if (fieldName === 'nombre') return 'Solo se permiten letras y espacios';
+      if (fieldName === 'telefono') return 'Formato de teléfono inválido';
+    }
+
+    return 'Campo inválido';
+  }
+
+  hasError(fieldName: string): boolean {
+    const control = this.clientForm.get(fieldName);
+    return !!(control && control.invalid && control.touched);
+  }
+
   onSubmit(): void {
+    // Marcar todos los campos como touched
+    Object.keys(this.clientForm.controls).forEach(key => {
+      this.clientForm.get(key)?.markAsTouched();
+    });
+
     if (this.clientForm.valid) {
       const clientData = this.clientForm.value;
 
@@ -84,6 +125,8 @@ export class ClientFormComponent implements OnInit {
         this.clientService.createClient(clientData)
           .subscribe(() => this.router.navigate(['/dashboard/clients']));
       }
+    } else {
+      console.log('Formulario inválido. Por favor, corrige los errores.');
     }
   }
 }

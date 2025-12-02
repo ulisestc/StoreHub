@@ -12,34 +12,54 @@
       <form [formGroup]="clientForm" (ngSubmit)="onSubmit()">
 
         <div class="form-row">
-          <mat-form-field appearance="outline" class="form-field-full">
+          <mat-form-field appearance="outline" class="form-field-full" subscriptSizing="dynamic">
             <mat-label>Nombre Completo</mat-label>
-            <input matInput formControlName="nombre" required>
+            <input matInput formControlName="nombre" required placeholder="Ej: Juan Pérez García">
+            <mat-icon matSuffix>person</mat-icon>
+            <mat-error *ngIf="hasError('nombre')">
+              {{ getErrorMessage('nombre') }}
+            </mat-error>
+            <mat-hint>Mínimo 3 caracteres, solo letras y espacios</mat-hint>
           </mat-form-field>
         </div>
 
         <div class="form-row">
-          <mat-form-field appearance="outline" class="form-field-full">
+          <mat-form-field appearance="outline" class="form-field-full" subscriptSizing="dynamic">
             <mat-label>Correo Electrónico (Opcional)</mat-label>
-            <input matInput type="email" formControlName="correo">
+            <input matInput type="email" formControlName="correo" placeholder="ejemplo@correo.com">
+            <mat-icon matSuffix>email</mat-icon>
+            <mat-error *ngIf="hasError('correo')">
+              {{ getErrorMessage('correo') }}
+            </mat-error>
+            <mat-hint>Formato: usuario@dominio.com</mat-hint>
           </mat-form-field>
         </div>
 
         <div class="form-row">
-          <mat-form-field appearance="outline" class="form-field-full">
+          <mat-form-field appearance="outline" class="form-field-full" subscriptSizing="dynamic">
             <mat-label>Teléfono (Opcional)</mat-label>
-            <input matInput type="tel" formControlName="telefono">
+            <input matInput type="tel" formControlName="telefono" placeholder="+52 123 456 7890">
+            <mat-icon matSuffix>phone</mat-icon>
+            <mat-error *ngIf="hasError('telefono')">
+              {{ getErrorMessage('telefono') }}
+            </mat-error>
+            <mat-hint>10-15 dígitos, puede incluir espacios, paréntesis y guiones</mat-hint>
           </mat-form-field>
         </div>
 
-        <mat-card-actions align="end">
-          <a mat-button routerLink="/dashboard/clients">Cancelar</a>
+        <mat-card-actions align="end" class="form-actions">
+          <a mat-button routerLink="/dashboard/clients" class="cancel-btn">
+            <mat-icon>cancel</mat-icon>
+            Cancelar
+          </a>
           <button
             mat-raised-button
             color="primary"
             type="submit"
-            [disabled]="clientForm.invalid">
-            Guardar Cliente
+            [disabled]="clientForm.invalid"
+            class="submit-btn">
+            <mat-icon>save</mat-icon>
+            {{ isEditMode ? 'Actualizar' : 'Guardar' }} Cliente
           </button>
         </mat-card-actions>
 
