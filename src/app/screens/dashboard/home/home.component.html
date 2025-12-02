@@ -1,49 +1,91 @@
-<mat-toolbar class="page-header welcome-header">
-  <span>¡Bienvenido, {{ userName }}!</span>
-</mat-toolbar>
+<div class="home-container">
 
-<div class="quick-actions-container">
+  <header class="dashboard-header">
+    <div class="header-text">
+      <h1>¡Hola, {{ userName }}! </h1>
+      <p>Bienvenido a tu panel de control.</p>
+    </div>
+    
+    <button mat-raised-button class="cta-button" routerLink="/dashboard/sales/pos">
+      <mat-icon>point_of_sale</mat-icon>
+      NUEVA VENTA
+    </button>
+  </header>
 
-  <div *ngIf="userRole === 'Admin' || userRole === 'Cajero'">
-
-    <mat-card class="quick-action-card pos-card" routerLink="/dashboard/sales/pos">
-      <mat-card-header>
-        <mat-icon mat-card-avatar>point_of_sale</mat-icon>
-        <mat-card-title>Punto de Venta</mat-card-title>
-        <mat-card-subtitle>Iniciar una nueva transacción</mat-card-subtitle>
-      </mat-card-header>
-      <mat-card-actions align="end">
-        <button mat-button color="primary">IR AHORA</button>
-      </mat-card-actions>
+  <div class="stats-grid" *ngIf="userRole === 'Admin'">
+    
+    <mat-card class="stat-card primary-card">
+      <mat-card-content>
+        <div class="stat-icon">
+          <mat-icon>payments</mat-icon>
+        </div>
+        <div class="stat-data">
+          <span class="stat-label">Ventas del Día</span>
+          <span class="stat-value">$ 0.00</span>
+        </div>
+      </mat-card-content>
     </mat-card>
 
+    <mat-card class="stat-card secondary-card">
+      <mat-card-content>
+        <div class="stat-icon">
+          <mat-icon>receipt_long</mat-icon>
+        </div>
+        <div class="stat-data">
+          <span class="stat-label">Transacciones</span>
+          <span class="stat-value">0</span>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="stat-card alert-card" routerLink="/dashboard/inventory">
+      <mat-card-content>
+        <div class="stat-icon warn-icon">
+          <mat-icon>inventory_2</mat-icon>
+        </div>
+        <div class="stat-data">
+          <span class="stat-label">Total Productos</span>
+          <span class="stat-value">--</span>
+        </div>
+      </mat-card-content>
+    </mat-card>
   </div>
 
-  <div *ngIf="userRole === 'Admin'" class="admin-actions">
-
-    <mat-card class="quick-action-card" routerLink="/dashboard/products">
-      <mat-card-header>
-        <mat-icon mat-card-avatar>inventory_2</mat-icon>
-        <mat-card-title>Productos</mat-card-title>
-        <mat-card-subtitle>Gestionar catálogo y stock</mat-card-subtitle>
-      </mat-card-header>
+  <h3 class="section-title">Accesos Rápidos</h3>
+  
+  <div class="actions-grid">
+    
+    <mat-card class="action-card" routerLink="/dashboard/sales/pos">
+      <mat-icon class="action-icon">point_of_sale</mat-icon>
+      <span class="action-title">Ir al POS</span>
+      <span class="action-desc">Realizar cobro</span>
     </mat-card>
 
-    <mat-card class="quick-action-card" routerLink="/dashboard/reports">
-      <mat-card-header>
-        <mat-icon mat-card-avatar>assessment</mat-icon>
-        <mat-card-title>Reportes</mat-card-title>
-        <mat-card-subtitle>Ver estadísticas de ventas</mat-card-subtitle>
-      </mat-card-header>
-    </mat-card>
+    <ng-container *ngIf="userRole === 'Admin'">
+      <mat-card class="action-card" routerLink="/dashboard/products">
+        <mat-icon class="action-icon">inventory_2</mat-icon>
+        <span class="action-title">Productos</span>
+        <span class="action-desc">Gestionar catálogo</span>
+      </mat-card>
 
-    <mat-card class="quick-action-card" routerLink="/dashboard/inventory">
-      <mat-card-header>
-        <mat-icon mat-card-avatar>rule</mat-icon>
-        <mat-card-title>Ajustes de Inventario</mat-card-title>
-        <mat-card-subtitle>Registrar entradas o mermas</mat-card-subtitle>
-      </mat-card-header>
-    </mat-card>
+      <mat-card class="action-card" routerLink="/dashboard/clients">
+        <mat-icon class="action-icon">people</mat-icon>
+        <span class="action-title">Clientes</span>
+        <span class="action-desc">Base de datos</span>
+      </mat-card>
+
+      <mat-card class="action-card" routerLink="/dashboard/reports">
+        <mat-icon class="action-icon">assessment</mat-icon>
+        <span class="action-title">Reportes</span>
+        <span class="action-desc">Ver estadísticas</span>
+      </mat-card>
+      
+      <mat-card class="action-card" routerLink="/dashboard/inventory">
+        <mat-icon class="action-icon">rule</mat-icon>
+        <span class="action-title">Inventario</span>
+        <span class="action-desc">Ajustes manuales</span>
+      </mat-card>
+    </ng-container>
 
   </div>
 

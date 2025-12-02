@@ -1,14 +1,14 @@
-
-$color-beige-dark: #E5E1D6; 
-$color-blue-steel: #4A70A9;
-$color-black: #000000;
+$color-bg-footer: #1e293b;
+$color-text-main: #f1f5f9;
+$color-text-muted: #94a3b8;
+$color-primary: #448aff;
 
 .footer-container {
-  background-color: $color-beige-dark;
-  color: $color-black;
-  padding: 24px 32px; // Un poco más de espacio se ve más elegante
-  margin-top: auto;   // Empuja el footer al final
-  border-top: 1px solid rgba(0, 0, 0, 0.05); // Línea muy sutil
+  background-color: $color-bg-footer;
+  color: $color-text-main;
+  padding: 24px 32px;
+  margin-top: auto;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .footer-content {
@@ -35,13 +35,14 @@ $color-black: #000000;
     font-family: 'Poppins', sans-serif;
     font-weight: 600;
     font-size: 1.25rem;
-    color: $color-blue-steel;
+    color: $color-primary;
     letter-spacing: 0.5px;
+    text-shadow: 0 0 10px rgba(68, 138, 255, 0.3);
   }
 
   .copyright {
     font-size: 0.85rem;
-    opacity: 0.7;
+    color: $color-text-muted;
   }
 }
 
@@ -51,26 +52,24 @@ $color-black: #000000;
   gap: 8px;
 
   .footer-link {
-    color: $color-black;
+    color: $color-text-muted;
     font-weight: 500;
     font-size: 0.9rem;
     
     &:hover {
-      color: $color-blue-steel;
-      background-color: rgba(74, 112, 169, 0.1); 
+      color: $color-primary;
+      background-color: rgba(68, 138, 255, 0.1);
     }
   }
   
   mat-icon {
-    color: $color-black;
-    opacity: 0.8;
+    color: $color-text-muted;
     transition: all 0.2s ease;
   }
 
-  
   .mat-mdc-icon-button:hover mat-icon {
-    color: $color-blue-steel;
-    opacity: 1;
+    color: $color-primary;
     transform: translateY(-2px);
+    filter: drop-shadow(0 0 5px rgba(68, 138, 255, 0.5));
   }
 }

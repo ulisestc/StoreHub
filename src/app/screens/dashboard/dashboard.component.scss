@@ -1,12 +1,27 @@
+$color-bg-main: #0f172a;
+$color-text-main: #f1f5f9;
+
 .dashboard-container {
   width: 100%;
   height: 100vh;
+  background-color: $color-bg-main !important;
 }
 
 .sidebar {
   width: 260px;
+  background-color: transparent !important;
+  border: none !important;
 }
 
 .main-content {
-  background-color: #fafafa;
+  background-color: $color-bg-main !important;
+  color: $color-text-main !important;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.page-content {
+  flex: 1 1 auto;
+  background-color: $color-bg-main !important;
 }
