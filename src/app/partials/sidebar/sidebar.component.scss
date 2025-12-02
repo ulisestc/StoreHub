@@ -134,3 +134,39 @@ $color-primary: #448aff;
   padding-left: 24px;
   background-color: transparent !important;
 }
+
+// === RESPONSIVE DESIGN ===
+@media (max-width: 968px) {
+  .sidebar-container {
+    width: 280px;
+  }
+
+  .sidebar-header {
+    padding: 24px 20px;
+  }
+}
+
+@media (max-width: 640px) {
+  .sidebar-container {
+    width: 260px;
+  }
+
+  .sidebar-header {
+    padding: 20px 16px;
+
+    .sidebar-title {
+      font-size: 1.2rem;
+    }
+  }
+
+  .sidebar-content {
+    ::ng-deep .mat-mdc-list-item {
+      font-size: 0.9rem;
+    }
+  }
+
+  .sidebar-footer {
+    padding: 16px;
+    font-size: 0.8rem;
+  }
+}

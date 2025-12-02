@@ -1,13 +1,110 @@
 $color-bg-card: #1e293b;
 $color-text-main: #f1f5f9;
+$color-primary: #448aff;
 
-mat-toolbar {
+.navbar {
   background-color: $color-bg-card !important;
   color: $color-text-main !important;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
   border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  min-height: 64px;
 }
 
-button mat-icon {
-  color: $color-text-main;
+.menu-btn {
+  margin-right: 12px;
+
+  mat-icon {
+    color: $color-text-main;
+  }
+}
+
+.navbar-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  .brand-icon {
+    color: $color-primary;
+    font-size: 28px;
+    width: 28px;
+    height: 28px;
+  }
+
+  .brand-text {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: $color-text-main;
+  }
+}
+
+.spacer {
+  flex: 1 1 auto;
+}
+
+.user-btn {
+  mat-icon {
+    color: $color-text-main;
+    font-size: 28px;
+    width: 28px;
+    height: 28px;
+  }
+
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+  }
+}
+
+::ng-deep .user-menu {
+  .mat-mdc-menu-content {
+    background-color: $color-bg-card !important;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+
+    .mat-mdc-menu-item {
+      color: $color-text-main !important;
+
+      mat-icon {
+        color: rgba(255, 255, 255, 0.7);
+        margin-right: 12px;
+      }
+
+      &:hover {
+        background-color: rgba(68, 138, 255, 0.1) !important;
+
+        mat-icon {
+          color: $color-primary;
+        }
+      }
+    }
+  }
+}
+
+// === RESPONSIVE DESIGN ===
+@media (max-width: 640px) {
+  .navbar {
+    padding: 0 8px;
+    min-height: 56px;
+  }
+
+  .navbar-brand {
+    .brand-text {
+      display: none;
+    }
+
+    .brand-icon {
+      font-size: 24px;
+      width: 24px;
+      height: 24px;
+    }
+  }
+
+  .menu-btn {
+    margin-right: 8px;
+  }
 }

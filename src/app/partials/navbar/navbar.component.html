@@ -1,14 +1,30 @@
-<mat-toolbar color="primary">
+<mat-toolbar class="navbar">
 
-  <button mat-icon-button (click)="onMenuToggle()">
+  <button mat-icon-button (click)="onMenuToggle()" class="menu-btn" aria-label="Toggle menu">
     <mat-icon>menu</mat-icon>
   </button>
 
-  <span>StoreHub</span>
+  <div class="navbar-brand">
+    <mat-icon class="brand-icon">storefront</mat-icon>
+    <span class="brand-text">StoreHub</span>
+  </div>
 
-  <span class="spacer" style="flex: 1 1 auto;"></span>
+  <span class="spacer"></span>
 
-  <button mat-button (click)="logout()">
-    Cerrar Sesión
+  <button mat-icon-button [matMenuTriggerFor]="userMenu" class="user-btn" aria-label="User menu">
+    <mat-icon>account_circle</mat-icon>
   </button>
+
+  <mat-menu #userMenu="matMenu" class="user-menu">
+    <button mat-menu-item routerLink="/dashboard/profile">
+      <mat-icon>person</mat-icon>
+      <span>Mi Perfil</span>
+    </button>
+    <mat-divider></mat-divider>
+    <button mat-menu-item (click)="logout()">
+      <mat-icon>logout</mat-icon>
+      <span>Cerrar Sesión</span>
+    </button>
+  </mat-menu>
+
 </mat-toolbar>

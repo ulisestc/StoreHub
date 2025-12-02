@@ -1,22 +1,27 @@
 <mat-sidenav-container class="dashboard-container">
 
-  <mat-sidenav #sidenav mode="over" class="sidebar">
-    <app-sidebar (click)="sidenav.close()"></app-sidebar>
+  <!-- Sidebar para desktop -->
+  <mat-sidenav #sidenav
+    [mode]="isDesktop ? 'side' : 'over'"
+    [opened]="isDesktop"
+    [fixedInViewport]="true"
+    class="sidebar">
+    <app-sidebar></app-sidebar>
   </mat-sidenav>
 
   <mat-sidenav-content class="main-content">
 
     <app-navbar (menuToggle)="sidenav.toggle()"></app-navbar>
 
-    <div style="display: flex; flex-direction: column; min-height: calc(100vh - 64px);">
-      
-      <div class="page-content" style="padding: 20px; flex: 1;">
+    <div class="content-wrapper">
+
+      <div class="page-content">
         <router-outlet></router-outlet>
       </div>
 
-      <app-footer></app-footer> 
-      
+      <app-footer></app-footer>
+
     </div>
-    </mat-sidenav-content>
+  </mat-sidenav-content>
 
 </mat-sidenav-container>

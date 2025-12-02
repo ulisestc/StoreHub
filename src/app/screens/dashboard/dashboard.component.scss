@@ -21,7 +21,29 @@ $color-text-main: #f1f5f9;
   height: 100%;
 }
 
+.content-wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: calc(100vh - 64px);
+  overflow-x: hidden;
+}
+
 .page-content {
   flex: 1 1 auto;
+  padding: 20px;
   background-color: $color-bg-main !important;
+  max-width: 100%;
+}
+
+// === RESPONSIVE DESIGN ===
+@media (max-width: 968px) {
+  .page-content {
+    padding: 16px;
+  }
+}
+
+@media (max-width: 640px) {
+  .page-content {
+    padding: 12px;
+  }
 }
