@@ -53,7 +53,7 @@ $color-border: rgba(255, 255, 255, 0.05);
     font-weight: 600;
     box-shadow: 0 0 15px rgba(68, 138, 255, 0.3);
     border-radius: 12px;
-    width: 100%; 
+    width: 100%;
 
     mat-icon {
       margin-right: 8px;
@@ -78,6 +78,47 @@ $color-border: rgba(255, 255, 255, 0.05);
   padding: 24px;
   display: flex;
   flex-direction: column;
+}
+
+.chart-card {
+  background-color: $color-bg-card !important;
+  border-radius: 16px !important;
+  border: 1px solid $color-border;
+  padding: 20px;
+
+  mat-card-header {
+    padding: 0;
+    margin-bottom: 20px;
+    border-bottom: 1px solid $color-border;
+    padding-bottom: 16px;
+  }
+
+  mat-card-title {
+    color: $color-text-main;
+    font-size: 1.1rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    mat-icon {
+      color: $color-primary;
+    }
+  }
+
+  mat-card-content {
+    padding: 0;
+  }
+
+  &.full-width {
+    grid-column: 1 / -1;
+  }
+}
+
+.chart-container {
+  position: relative;
+  height: 300px;
+  width: 100%;
 }
 
 .revenue-card {
@@ -124,7 +165,7 @@ $color-border: rgba(255, 255, 255, 0.05);
 
     .subtitle {
       font-size: 0.9rem;
-      color: #4ade80; 
+      color: #4ade80;
       font-weight: 500;
     }
   }
@@ -147,7 +188,7 @@ $color-border: rgba(255, 255, 255, 0.05);
     gap: 8px;
 
     mat-icon {
-      color: #fbbf24; 
+      color: #fbbf24;
     }
   }
 
