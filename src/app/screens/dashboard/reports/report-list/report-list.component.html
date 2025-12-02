@@ -1,72 +1,84 @@
-<mat-toolbar class="page-header">
-  <span>Reportes de Ventas</span>
-</mat-toolbar>
+<div class="reports-container">
 
-<mat-card class="filter-card">
-  <mat-card-content [formGroup]="filterForm" (ngSubmit)="onFilter()">
+  <header class="reports-header">
+    <h1>Reportes de Ventas</h1>
+    <p>Analiza el rendimiento de tu negocio</p>
+  </header>
 
-    <mat-form-field appearance="outline">
-      <mat-label>Filtrar por rango de fechas</mat-label>
-      <mat-date-range-input [formGroup]="filterForm" [rangePicker]="picker">
-        <input matStartDate formControlName="start" placeholder="Fecha inicio">
-        <input matEndDate formControlName="end" placeholder="Fecha fin">
-      </mat-date-range-input>
-      <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-      <mat-date-range-picker #picker></mat-date-range-picker>
-    </mat-form-field>
+  <mat-card class="filter-card">
+    <mat-card-content [formGroup]="filterForm">
+      
+      <div class="filters-grid">
+        <mat-form-field appearance="outline" class="filter-field" subscriptSizing="dynamic">
+          <mat-label>Rango de fechas</mat-label>
+          <mat-date-range-input [formGroup]="filterForm" [rangePicker]="picker">
+            <input matStartDate formControlName="start" placeholder="Inicio">
+            <input matEndDate formControlName="end" placeholder="Fin">
+          </mat-date-range-input>
+          <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-date-range-picker #picker></mat-date-range-picker>
+        </mat-form-field>
 
-    <mat-form-field appearance="outline">
-      <mat-label>Categoría</mat-label>
-      <mat-select formControlName="categoria">
-        <mat-option [value]="null">Todas</mat-option>
-        <mat-option *ngFor="let cat of categories" [value]="cat.id">
-          {{ cat.nombre }}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
+        <mat-form-field appearance="outline" class="filter-field" subscriptSizing="dynamic">
+          <mat-label>Categoría</mat-label>
+          <mat-select formControlName="categoria">
+            <mat-option [value]="null">Todas</mat-option>
+            <mat-option *ngFor="let cat of categories" [value]="cat.id">
+              {{ cat.nombre }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
 
-    <mat-form-field appearance="outline">
-      <mat-label>Vendedor</mat-label>
-      <mat-select formControlName="vendedor">
-        <mat-option [value]="null">Todos</mat-option>
-        <mat-option *ngFor="let vend of vendedoresSimulados" [value]="vend.id">
-          {{ vend.nombre }}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
+        <mat-form-field appearance="outline" class="filter-field" subscriptSizing="dynamic">
+          <mat-label>Vendedor</mat-label>
+          <mat-select formControlName="vendedor">
+            <mat-option [value]="null">Todos</mat-option>
+            <mat-option *ngFor="let vend of vendedoresSimulados" [value]="vend.id">
+              {{ vend.nombre }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
 
-    <button mat-raised-button color="primary" (click)="onFilter()">
-      <mat-icon>filter_alt</mat-icon>
-      Aplicar Filtro
-    </button>
-  </mat-card-content>
-</mat-card>
+        <button mat-raised-button class="filter-btn" (click)="onFilter()">
+          <mat-icon>filter_list</mat-icon>
+          Aplicar Filtros
+        </button>
+      </div>
 
-<div *ngIf="reportData" class="report-container">
-
-  <mat-card class="report-card">
-    <mat-card-header>
-      <mat-card-title>Ingresos Totales</mat-card-title>
-    </mat-card-header>
-    <mat-card-content>
-      <h2 class="total-revenue">{{ reportData.totalIngresos | currency }}</h2>
-      <p>{{ reportData.totalTransacciones }} transacciones</p>
     </mat-card-content>
   </mat-card>
 
-  <mat-card class="report-card">
-    <mat-card-header>
-      <mat-card-title>Productos Más Vendidos</mat-card-title>
-    </mat-card-header>
-    <mat-card-content>
-      <mat-list role="list">
-        <mat-list-item *ngFor="let product of reportData.topProducts" role="listitem">
-          {{ product.nombre }}
-          <span class="spacer" style="flex: 1 1 auto;"></span>
-          <strong>{{ product.vendidos }}</strong>
-        </mat-list-item>
-      </mat-list>
-    </mat-card-content>
-  </mat-card>
+  <div *ngIf="reportData" class="dashboard-grid">
+
+    <mat-card class="kpi-card revenue-card">
+      <div class="card-icon">
+        <mat-icon>attach_money</mat-icon>
+      </div>
+      <div class="card-info">
+        <h3>Ingresos Totales</h3>
+        <span class="big-number">{{ reportData.totalIngresos | currency }}</span>
+        <span class="subtitle">{{ reportData.totalTransacciones }} transacciones</span>
+      </div>
+    </mat-card>
+
+    <mat-card class="kpi-card products-card">
+      <mat-card-header>
+        <mat-card-title>
+          <mat-icon>star</mat-icon>
+          Top Productos
+        </mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="top-products-list">
+          <div class="product-item" *ngFor="let product of reportData.topProducts; let i = index">
+            <div class="rank-badge">{{ i + 1 }}</div>
+            <span class="prod-name">{{ product.nombre }}</span>
+            <span class="prod-sales">{{ product.vendidos }} vend.</span>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+  </div>
 
 </div>
