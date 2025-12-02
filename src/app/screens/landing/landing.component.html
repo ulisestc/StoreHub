@@ -1,24 +1,163 @@
 <div class="landing-container">
 
-  <mat-toolbar color="primary">
-    <span>StoreHub</span>
-    <span class="spacer"></span>
+  <!-- Navbar mejorada -->
+  <nav class="navbar">
+    <div class="navbar-content">
+      <div class="logo">
+        <mat-icon>storefront</mat-icon>
+        <span class="logo-text">StoreHub</span>
+      </div>
 
-    <a mat-button routerLink="/auth/login">Iniciar Sesión</a>
-    <a mat-stroked-button color="accent" routerLink="/auth/register" class="register-button">
-      Registrarse
-    </a>
-  </mat-toolbar>
-
-  <div class="hero-section">
-
-    <mat-icon class="hero-icon">storefront</mat-icon>
-
-    <h1 class="hero-title">Bienvenido a StoreHub</h1>
-    <p class="hero-slogan">
-      La solución integral para la gestión de tu inventario y punto de venta.
-    </p>
-
+      <div class="nav-actions">
+        <a mat-button routerLink="/auth/login" class="login-btn">
+          <mat-icon>login</mat-icon>
+          <span class="btn-text">Iniciar Sesión</span>
+        </a>
+        <a mat-raised-button routerLink="/auth/register" class="register-btn">
+          <mat-icon>person_add</mat-icon>
+          <span class="btn-text">Registrarse</span>
+        </a>
+      </div>
     </div>
+  </nav>
+
+  <!-- Hero Section mejorada -->
+  <section class="hero-section">
+    <div class="hero-content">
+      <div class="hero-badge">
+        <mat-icon>rocket_launch</mat-icon>
+        <span>Gestión inteligente para tu negocio</span>
+      </div>
+
+      <h1 class="hero-title">
+        Transforma tu negocio con
+        <span class="highlight">StoreHub</span>
+      </h1>
+
+      <p class="hero-description">
+        La solución completa para gestionar inventario, ventas, clientes y reportes
+        en tiempo real. Optimiza tus operaciones y aumenta tu productividad.
+      </p>
+
+      <div class="hero-actions">
+        <a mat-raised-button routerLink="/auth/register" class="cta-primary">
+          <mat-icon>rocket</mat-icon>
+          Comenzar gratis
+        </a>
+        <a mat-stroked-button routerLink="/auth/login" class="cta-secondary">
+          <mat-icon>arrow_forward</mat-icon>
+          Ver demo
+        </a>
+      </div>
+
+      <div class="hero-stats">
+        <div class="stat-item">
+          <mat-icon>inventory_2</mat-icon>
+          <div class="stat-content">
+            <span class="stat-number">500+</span>
+            <span class="stat-label">Productos</span>
+          </div>
+        </div>
+        <div class="stat-item">
+          <mat-icon>shopping_cart</mat-icon>
+          <div class="stat-content">
+            <span class="stat-number">1K+</span>
+            <span class="stat-label">Ventas</span>
+          </div>
+        </div>
+        <div class="stat-item">
+          <mat-icon>analytics</mat-icon>
+          <div class="stat-content">
+            <span class="stat-number">24/7</span>
+            <span class="stat-label">Reportes</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero-visual">
+      <div class="visual-card card-1">
+        <mat-icon>trending_up</mat-icon>
+        <span>Ventas en tiempo real</span>
+      </div>
+      <div class="visual-card card-2">
+        <mat-icon>inventory</mat-icon>
+        <span>Control de inventario</span>
+      </div>
+      <div class="visual-card card-3">
+        <mat-icon>groups</mat-icon>
+        <span>Gestión de clientes</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section class="features-section">
+    <div class="section-header">
+      <h2>Características principales</h2>
+      <p>Todo lo que necesitas para gestionar tu negocio en un solo lugar</p>
+    </div>
+
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%)">
+          <mat-icon>inventory_2</mat-icon>
+        </div>
+        <h3>Gestión de Inventario</h3>
+        <p>Control total de tu stock con alertas de bajo inventario y movimientos en tiempo real.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%)">
+          <mat-icon>point_of_sale</mat-icon>
+        </div>
+        <h3>Punto de Venta</h3>
+        <p>Sistema POS rápido e intuitivo para procesar ventas de manera eficiente.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)">
+          <mat-icon>people</mat-icon>
+        </div>
+        <h3>Clientes</h3>
+        <p>Administra tu base de clientes y mantén un registro completo de compras.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon" style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)">
+          <mat-icon>bar_chart</mat-icon>
+        </div>
+        <h3>Reportes Visuales</h3>
+        <p>Analiza el rendimiento de tu negocio con gráficas interactivas y métricas clave.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon" style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%)">
+          <mat-icon>category</mat-icon>
+        </div>
+        <h3>Categorías</h3>
+        <p>Organiza tus productos por categorías para una mejor gestión.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon" style="background: linear-gradient(135deg, #30cfd0 0%, #330867 100%)">
+          <mat-icon>security</mat-icon>
+        </div>
+        <h3>Roles y Permisos</h3>
+        <p>Control de acceso basado en roles para administradores y cajeros.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="landing-footer">
+    <div class="footer-content">
+      <div class="footer-brand">
+        <mat-icon>storefront</mat-icon>
+        <span>StoreHub</span>
+      </div>
+      <p>&copy; 2025 StoreHub. Todos los derechos reservados.</p>
+    </div>
+  </footer>
 
 </div>
