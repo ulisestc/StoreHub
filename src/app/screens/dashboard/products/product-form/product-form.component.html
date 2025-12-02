@@ -12,69 +12,109 @@
       <form [formGroup]="productForm" (ngSubmit)="onSubmit()">
 
         <div class="form-row">
-          <mat-form-field appearance="outline" class="form-field">
+          <mat-form-field appearance="outline" class="form-field" subscriptSizing="dynamic">
             <mat-label>Nombre del Producto</mat-label>
             <input matInput formControlName="nombre" required>
+            <mat-icon matSuffix>inventory_2</mat-icon>
+            <mat-error *ngIf="hasError('nombre')">
+              {{ getErrorMessage('nombre') }}
+            </mat-error>
           </mat-form-field>
 
-          <mat-form-field appearance="outline" class="form-field">
+          <mat-form-field appearance="outline" class="form-field" subscriptSizing="dynamic">
             <mat-label>Código de Barras (SKU)</mat-label>
             <input matInput formControlName="codigo_barras" required>
+            <mat-icon matSuffix>qr_code</mat-icon>
+            <mat-error *ngIf="hasError('codigo_barras')">
+              {{ getErrorMessage('codigo_barras') }}
+            </mat-error>
           </mat-form-field>
         </div>
 
         <div class="form-row">
-          <mat-form-field appearance="outline" class="form-field-full">
+          <mat-form-field appearance="outline" class="form-field-full" subscriptSizing="dynamic">
             <mat-label>Descripción (Opcional)</mat-label>
-            <textarea matInput formControlName="descripcion"></textarea>
+            <textarea matInput formControlName="descripcion" rows="3"></textarea>
+            <mat-icon matSuffix>description</mat-icon>
+            <mat-hint>Máximo 500 caracteres</mat-hint>
+            <mat-error *ngIf="hasError('descripcion')">
+              {{ getErrorMessage('descripcion') }}
+            </mat-error>
           </mat-form-field>
         </div>
 
         <div class="form-row">
-          <mat-form-field appearance="outline" class="form-field">
+          <mat-form-field appearance="outline" class="form-field" subscriptSizing="dynamic">
             <mat-label>Precio de Venta</mat-label>
-            <input matInput type="number" formControlName="precio_venta" required min="0">
+            <input matInput type="number" formControlName="precio_venta" required min="0" step="0.01">
+            <span matTextPrefix>$&nbsp;</span>
+            <mat-icon matSuffix>attach_money</mat-icon>
+            <mat-error *ngIf="hasError('precio_venta')">
+              {{ getErrorMessage('precio_venta') }}
+            </mat-error>
           </mat-form-field>
 
-          <mat-form-field appearance="outline" class="form-field">
+          <mat-form-field appearance="outline" class="form-field" subscriptSizing="dynamic">
             <mat-label>Costo de Adquisición</mat-label>
-            <input matInput type="number" formControlName="costo_adquisicion" required min="0">
+            <input matInput type="number" formControlName="costo_adquisicion" required min="0" step="0.01">
+            <span matTextPrefix>$&nbsp;</span>
+            <mat-icon matSuffix>shopping_cart</mat-icon>
+            <mat-error *ngIf="hasError('costo_adquisicion')">
+              {{ getErrorMessage('costo_adquisicion') }}
+            </mat-error>
           </mat-form-field>
         </div>
 
         <div class="form-row">
-          <mat-form-field appearance="outline" class="form-field">
+          <mat-form-field appearance="outline" class="form-field" subscriptSizing="dynamic">
             <mat-label>Cantidad en Stock</mat-label>
             <input matInput type="number" formControlName="cantidad_stock" required min="0">
+            <mat-icon matSuffix>inventory</mat-icon>
+            <mat-error *ngIf="hasError('cantidad_stock')">
+              {{ getErrorMessage('cantidad_stock') }}
+            </mat-error>
           </mat-form-field>
 
-          <mat-form-field appearance="outline" class="form-field">
+          <mat-form-field appearance="outline" class="form-field" subscriptSizing="dynamic">
             <mat-label>Categoría</mat-label>
             <mat-select formControlName="categoria" required>
               <mat-option *ngFor="let cat of categoriasSimuladas" [value]="cat">
                 {{cat}}
               </mat-option>
             </mat-select>
+            <mat-icon matSuffix>category</mat-icon>
+            <mat-error *ngIf="hasError('categoria')">
+              {{ getErrorMessage('categoria') }}
+            </mat-error>
           </mat-form-field>
 
-          <mat-form-field appearance="outline" class="form-field">
+          <mat-form-field appearance="outline" class="form-field" subscriptSizing="dynamic">
             <mat-label>Estado</mat-label>
             <mat-select formControlName="estado" required>
               <mat-option *ngFor="let estado of estadosSimulados" [value]="estado.value">
                 {{estado.viewValue}}
               </mat-option>
             </mat-select>
+            <mat-icon matSuffix>toggle_on</mat-icon>
+            <mat-error *ngIf="hasError('estado')">
+              {{ getErrorMessage('estado') }}
+            </mat-error>
           </mat-form-field>
         </div>
 
-        <mat-card-actions align="end">
-          <a mat-button routerLink="/dashboard/products">Cancelar</a>
+        <mat-card-actions align="end" class="form-actions">
+          <a mat-button routerLink="/dashboard/products" class="cancel-btn">
+            <mat-icon>cancel</mat-icon>
+            Cancelar
+          </a>
           <button
             mat-raised-button
             color="primary"
             type="submit"
-            [disabled]="productForm.invalid">
-            Guardar Producto
+            [disabled]="productForm.invalid"
+            class="submit-btn">
+            <mat-icon>save</mat-icon>
+            {{ isEditMode ? 'Actualizar' : 'Guardar' }} Producto
           </button>
         </mat-card-actions>
 
