@@ -1,14 +1,14 @@
 <div class="pos-container">
-  
+
   <header class="pos-header">
     <h1>Punto de Venta</h1>
     <p>Registra nuevas transacciones</p>
   </header>
 
   <div class="pos-layout">
-    
+
     <div class="left-panel">
-      
+
       <mat-card class="pos-card search-card">
         <mat-card-content>
           <form [formGroup]="searchForm" (ngSubmit)="onAddProduct()">
@@ -40,10 +40,46 @@
         </mat-card-content>
       </mat-card>
 
-      <div class="products-grid-placeholder">
-        <mat-icon>inventory_2</mat-icon>
-        <p>Escanea un producto para comenzar</p>
-      </div>
+      <mat-card class="pos-card products-card">
+        <mat-card-header>
+          <mat-card-title>
+            <mat-icon>inventory_2</mat-icon>
+            Productos Disponibles
+          </mat-card-title>
+        </mat-card-header>
+
+        <mat-card-content>
+          <mat-form-field appearance="outline" class="full-width search-products" subscriptSizing="dynamic">
+            <mat-label>Buscar producto...</mat-label>
+            <input matInput [(ngModel)]="searchQuery" (ngModelChange)="filterProducts()"
+                   placeholder="Nombre o código">
+            <mat-icon matPrefix>search</mat-icon>
+          </mat-form-field>
+
+          <div class="products-grid">
+            <div *ngFor="let product of filteredProducts"
+                 class="product-card"
+                 (click)="addProductToTicket(product)"
+                 [class.out-of-stock]="product.cantidad_stock === 0">
+              <div class="product-info">
+                <h4>{{ product.nombre }}</h4>
+                <p class="product-sku">SKU: {{ product.codigo_barras }}</p>
+                <p class="product-stock" [class.low-stock]="product.cantidad_stock <= 5">
+                  Stock: {{ product.cantidad_stock }}
+                </p>
+              </div>
+              <div class="product-price">
+                {{ product.precio_venta | currency }}
+              </div>
+            </div>
+
+            <div *ngIf="filteredProducts.length === 0" class="no-products">
+              <mat-icon>search_off</mat-icon>
+              <p>No se encontraron productos</p>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
 
     </div>
 
@@ -87,8 +123,8 @@
             <span>Total a Pagar</span>
             <span class="total-amount">{{ totalVenta | currency }}</span>
           </div>
-          
-          <button mat-raised-button class="pay-btn" 
+
+          <button mat-raised-button class="pay-btn"
                   [disabled]="ticketItems.length === 0"
                   (click)="onConfirmSale()">
             <mat-icon>payments</mat-icon>

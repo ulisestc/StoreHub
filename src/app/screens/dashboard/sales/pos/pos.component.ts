@@ -45,8 +45,10 @@ export class PosComponent implements OnInit {
   ticketItems: any[] = [];
   totalVenta: number = 0;
   allProducts: Product[] = [];
+  filteredProducts: Product[] = [];
   clients: Client[] = [];
   selectedClientId: string | null = null;
+  searchQuery: string = '';
 
   private productService = inject(ProductService);
   private snackBar = inject(MatSnackBar);
@@ -65,19 +67,78 @@ export class PosComponent implements OnInit {
   }
 
   loadAllProducts(): void {
-    this.productService.getProducts().subscribe(data => {
-      this.allProducts = data;
+    this.productService.getProducts().subscribe({
+      next: (data) => {
+        // Asegurar que data sea un array
+        this.allProducts = Array.isArray(data) ? data : [];
+        this.filteredProducts = this.allProducts;
+      },
+      error: (error) => {
+        console.error('Error cargando productos:', error);
+        this.allProducts = [];
+        this.filteredProducts = [];
+        this.showError('Error al cargar los productos');
+      }
     });
   }
 
   loadClients(): void {
-    this.clientService.getClients().subscribe(data => {
-      this.clients = data;
-      const defaultClient = data.find(c => c.nombre.includes('Mostrador'));
-      if (defaultClient) {
-        this.selectedClientId = defaultClient.id;
+    this.clientService.getClients().subscribe({
+      next: (data) => {
+        // Asegurar que data sea un array
+        this.clients = Array.isArray(data) ? data : [];
+        const defaultClient = this.clients.find(c => c.nombre.includes('Mostrador'));
+        if (defaultClient) {
+          this.selectedClientId = defaultClient.id;
+        }
+      },
+      error: (error) => {
+        console.error('Error cargando clientes:', error);
+        this.clients = [];
       }
     });
+  }
+
+  filterProducts(): void {
+    const query = this.searchQuery.toLowerCase().trim();
+    if (!query) {
+      this.filteredProducts = this.allProducts;
+    } else {
+      this.filteredProducts = this.allProducts.filter(p =>
+        p.nombre.toLowerCase().includes(query) ||
+        p.codigo_barras.toLowerCase().includes(query)
+      );
+    }
+  }
+
+  addProductToTicket(product: Product): void {
+    const itemInTicket = this.ticketItems.find(item => item.id === product.id);
+    const cantidadEnTicket = itemInTicket ? itemInTicket.cantidad : 0;
+
+    if (cantidadEnTicket >= product.cantidad_stock) {
+      this.showError('No hay más stock disponible para este producto.');
+      return;
+    }
+
+    if (product.cantidad_stock <= 0) {
+      this.showError('Producto agotado. No se puede añadir.');
+      return;
+    }
+
+    if (itemInTicket) {
+      itemInTicket.cantidad++;
+    } else {
+      this.ticketItems.push({
+        id: product.id,
+        nombre: product.nombre,
+        precio_venta: product.precio_venta,
+        cantidad: 1,
+        stock_disponible: product.cantidad_stock
+      });
+    }
+
+    this.calculateTotal();
+    this.showSuccess(`${product.nombre} agregado al ticket`);
   }
 
   onAddProduct(): void {
@@ -138,6 +199,13 @@ export class PosComponent implements OnInit {
     this.snackBar.open(message, 'Cerrar', {
       duration: 3000,
       panelClass: ['snackbar-error']
+    });
+  }
+
+  private showSuccess(message: string): void {
+    this.snackBar.open(message, 'Cerrar', {
+      duration: 2000,
+      panelClass: ['snackbar-success']
     });
   }
 
