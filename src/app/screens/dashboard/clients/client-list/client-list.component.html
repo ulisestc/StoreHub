@@ -1,50 +1,70 @@
-<mat-toolbar class="page-header">
-  <span>Gestión de Clientes</span>
-  <span class="spacer" style="flex: 1 1 auto;"></span>
+<div class="clients-container">
 
-  <a mat-raised-button color="primary" routerLink="/dashboard/clients/new">
-    <mat-icon>add</mat-icon>
-    Crear Cliente
-  </a>
-</mat-toolbar>
+  <header class="clients-header">
+    <div class="header-content">
+      <h1>Gestión de Clientes</h1>
+      <p>Administra tu base de datos de clientes</p>
+    </div>
+    <button mat-raised-button class="create-btn" routerLink="/dashboard/clients/new">
+      <mat-icon>person_add</mat-icon>
+      Nuevo Cliente
+    </button>
+  </header>
 
-<div class="table-container mat-elevation-z8">
+  <div class="table-container mat-elevation-z8">
+    <table mat-table [dataSource]="dataSource">
 
-  <table mat-table [dataSource]="dataSource">
+      <ng-container matColumnDef="nombre">
+        <th mat-header-cell *matHeaderCellDef> Nombre </th>
+        <td mat-cell *matCellDef="let client" class="name-cell">
+          <div class="cell-content">
+            <mat-icon class="avatar-icon">account_circle</mat-icon>
+            <span class="client-name">{{client.nombre}}</span>
+          </div>
+        </td>
+      </ng-container>
 
-    <ng-container matColumnDef="nombre">
-      <th mat-header-cell *matHeaderCellDef> Nombre </th>
-      <td mat-cell *matCellDef="let client"> {{client.nombre}} </td>
-    </ng-container>
+      <ng-container matColumnDef="correo">
+        <th mat-header-cell *matHeaderCellDef> Correo </th>
+        <td mat-cell *matCellDef="let client" class="email-cell">
+          {{client.correo || '-'}}
+        </td>
+      </ng-container>
 
-    <ng-container matColumnDef="correo">
-      <th mat-header-cell *matHeaderCellDef> Correo </th>
-      <td mat-cell *matCellDef="let client"> {{client.correo || '-'}} </td>
-    </ng-container>
+      <ng-container matColumnDef="telefono">
+        <th mat-header-cell *matHeaderCellDef> Teléfono </th>
+        <td mat-cell *matCellDef="let client" class="phone-cell">
+          {{client.telefono || '-'}}
+        </td>
+      </ng-container>
 
-    <ng-container matColumnDef="telefono">
-      <th mat-header-cell *matHeaderCellDef> Teléfono </th>
-      <td mat-cell *matCellDef="let client"> {{client.telefono || '-'}} </td>
-    </ng-container>
+      <ng-container matColumnDef="acciones">
+        <th mat-header-cell *matHeaderCellDef class="actions-header"> Acciones </th>
+        <td mat-cell *matCellDef="let client" class="actions-cell">
+          <div class="actions-wrapper">
+            <button mat-icon-button color="primary"
+                    [routerLink]="['/dashboard/clients/edit', client.id]"
+                    matTooltip="Editar cliente">
+              <mat-icon>edit</mat-icon>
+            </button>
+            <button mat-icon-button color="warn"
+                    (click)="openDeleteDialog(client.id)"
+                    matTooltip="Eliminar cliente">
+              <mat-icon>delete_outline</mat-icon>
+            </button>
+          </div>
+        </td>
+      </ng-container>
 
-    <ng-container matColumnDef="acciones">
-      <th mat-header-cell *matHeaderCellDef> Acciones </th>
-      <td mat-cell *matCellDef="let client">
-        <a mat-icon-button color="primary"
-           [routerLink]="['/dashboard/clients/edit', client.id]"
-           aria-label="Editar">
-          <mat-icon>edit</mat-icon>
-        </a>
-        <button mat-icon-button color="warn"
-                (click)="openDeleteDialog(client.id)"
-                aria-label="Eliminar">
-          <mat-icon>delete</mat-icon>
-        </button>
-      </td>
-    </ng-container>
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="data-row"></tr>
 
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
 
-  </table>
+    <div *ngIf="dataSource.length === 0" class="empty-state">
+      <mat-icon>group_off</mat-icon>
+      <p>No hay clientes registrados.</p>
+    </div>
+  </div>
+
 </div>

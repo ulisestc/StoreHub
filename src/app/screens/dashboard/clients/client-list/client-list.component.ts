@@ -1,15 +1,12 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-
-// Importaciones de Material
 import { MatTableModule } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatDialog } from '@angular/material/dialog';
-
-// Servicio y Diálogo
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { ClientService } from '../../../../services/client.service';
 import { Client } from '../../../../shared/interfaces/client';
 import { ConfirmDeleteModalComponent } from '../../../../modals/confirm-delete-modal/confirm-delete-modal.component';
@@ -23,7 +20,8 @@ import { ConfirmDeleteModalComponent } from '../../../../modals/confirm-delete-m
     MatTableModule,
     MatButtonModule,
     MatIconModule,
-    MatToolbarModule
+    MatToolbarModule,
+    MatTooltipModule
   ],
   templateUrl: './client-list.component.html',
   styleUrl: './client-list.component.scss'
@@ -46,7 +44,6 @@ export class ClientListComponent implements OnInit {
     });
   }
 
-  // Método para abrir el diálogo de borrado
   openDeleteDialog(clientId: string): void {
     const dialogRef = this.dialog.open(ConfirmDeleteModalComponent, {
       width: '350px',
@@ -58,7 +55,6 @@ export class ClientListComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result === true) {
-        // No permitir borrar al "Cliente Mostrador" (simulación de regla de negocio)
         if (clientId === '1') {
           alert('No se puede eliminar al "Cliente Mostrador"');
           return;
@@ -66,7 +62,7 @@ export class ClientListComponent implements OnInit {
 
         this.clientService.deleteClient(clientId).subscribe(success => {
           if (success) {
-            this.loadClients(); // Recargamos la lista
+            this.loadClients();
           }
         });
       }
