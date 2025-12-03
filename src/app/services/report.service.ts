@@ -1,27 +1,36 @@
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment';
+
+const apiUrl = environment.apiUrl;
 
 @Injectable({
   providedIn: 'root'
 })
 export class ReportService {
 
-  constructor() { }
+  constructor(private http: HttpClient) { }
 
-  // Simula la obtención de reportes. En el futuro, las fechas se usarán en el backend.
   getSalesReport(startDate?: Date, endDate?: Date): Observable<any> {
+    let params = new HttpParams();
 
-    // Simulación de datos (ignorando las fechas por ahora)
-    const simulatedData = {
-      totalIngresos: 12500.50,
-      totalTransacciones: 82,
-      topProducts: [
-        { nombre: 'Laptop Pro 15"', vendidos: 15 },
-        { nombre: 'Mouse Inalámbrico', vendidos: 30 },
-        { nombre: 'Teclado Mecánico', vendidos: 20 }
-      ]
-    };
+    if (startDate) {
+      params = params.set('start_date', startDate.toISOString().split('T')[0]);
+    }
+    if (endDate) {
+      params = params.set('end_date', endDate.toISOString().split('T')[0]);
+    }
 
-    return of(simulatedData);
+    return this.http.get<any>(`${apiUrl}/reports/sales-by-date/`, { params });
+  }
+
+  getInventoryReport(): Observable<any> {
+    return this.http.get<any>(`${apiUrl}/reports/low-stock-products/`);
+  }
+
+  getTopProducts(limit: number = 10): Observable<any> {
+    const params = new HttpParams().set('limit', limit.toString());
+    return this.http.get<any>(`${apiUrl}/reports/top-products/`, { params });
   }
 }

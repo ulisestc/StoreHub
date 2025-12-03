@@ -1,10 +1,28 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
+import { Observable, tap, catchError, of, switchMap } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 interface TokenData {
   token: string;
-  expiresAt: number; // Timestamp de expiración
+  expiresAt: number;
   role: 'Admin' | 'Cajero';
+}
+
+interface LoginResponse {
+  access: string;
+  refresh: string;
+}
+
+interface UserResponse {
+  id: number;
+  email: string;
+  first_name: string;
+  last_name: string;
+  role: string;
+  is_active: boolean;
+  is_staff: boolean;
 }
 
 @Injectable({
@@ -14,48 +32,62 @@ export class AuthService {
 
   private readonly TOKEN_KEY = 'authToken';
   private readonly TOKEN_DATA_KEY = 'authTokenData';
+  private readonly apiUrl = environment.apiUrl;
 
-  constructor(private router: Router) { }
+  constructor(
+    private router: Router,
+    private http: HttpClient
+  ) { }
 
   /**
-   * Simula el login y genera un token con expiración
+   * Login con el backend real
    */
-  login(email: string, password: string): boolean {
+  login(email: string, password: string): Observable<boolean> {
+    return this.http.post<LoginResponse>(`${this.apiUrl}/auth/jwt/create/`, {
+      email: email,
+      password: password
+    }).pipe(
+      switchMap(response => {
+        // Guardar token temporalmente
+        localStorage.setItem(this.TOKEN_KEY, response.access);
 
-    let role: 'Admin' | 'Cajero' | null = null;
-    let fakeToken = '';
+        // Hacer segunda llamada para obtener información del usuario
+        return this.http.get<UserResponse>(`${this.apiUrl}/auth/users/me/`, {
+          headers: {
+            'Authorization': `JWT ${response.access}`
+          }
+        }).pipe(
+          tap(userInfo => {
+            // Token expira en 8 horas
+            const expiresAt = Date.now() + (8 * 60 * 60 * 1000);
 
-    // Simulación de roles para las pruebas
-    if (email === 'admin@storehub.com' && password === 'admin123') {
-      role = 'Admin';
-      fakeToken = 'FAKE_ADMIN_TOKEN_123456';
-    } else if (email === 'cajero@storehub.com' && password === 'cajero123') {
-      role = 'Cajero';
-      fakeToken = 'FAKE_CAJERO_TOKEN_789012';
-    }
+            // Mapear el rol del backend al formato del frontend
+            const role: 'Admin' | 'Cajero' = userInfo.role === 'admin' ? 'Admin' : 'Cajero';
 
-    if (fakeToken && role) {
-      // Token expira en 8 horas (simulación)
-      const expiresAt = Date.now() + (8 * 60 * 60 * 1000);
+            const tokenData: TokenData = {
+              token: response.access,
+              expiresAt: expiresAt,
+              role: role
+            };
 
-      const tokenData: TokenData = {
-        token: fakeToken,
-        expiresAt: expiresAt,
-        role: role
-      };
+            // Guardar token y datos en localStorage
+            localStorage.setItem(this.TOKEN_KEY, response.access);
+            localStorage.setItem(this.TOKEN_DATA_KEY, JSON.stringify(tokenData));
 
-      // Guardar token y datos en localStorage
-      localStorage.setItem(this.TOKEN_KEY, fakeToken);
-      localStorage.setItem(this.TOKEN_DATA_KEY, JSON.stringify(tokenData));
-
-      return true;
-    }
-
-    // Si las credenciales son incorrectas
-    return false;
-  }
-
-  /**
+            console.log('Login exitoso, usuario:', userInfo.email, 'rol:', role);
+          }),
+          switchMap(() => of(true))
+        );
+      }),
+      catchError(error => {
+        console.error('Error en login:', error);
+        // Limpiar cualquier token que se haya guardado
+        localStorage.removeItem(this.TOKEN_KEY);
+        localStorage.removeItem(this.TOKEN_DATA_KEY);
+        return of(false);
+      })
+    );
+  }  /**
    * Cierra sesión y limpia todos los datos almacenados
    */
   logout(): void {
@@ -99,6 +131,11 @@ export class AuthService {
     const tokenDataStr = localStorage.getItem(this.TOKEN_DATA_KEY);
 
     if (!tokenDataStr) {
+      // Si no hay TOKEN_DATA pero sí hay TOKEN, asumir que es válido (recién logueado)
+      const token = localStorage.getItem(this.TOKEN_KEY);
+      if (token) {
+        return false; // Asumir que es válido
+      }
       return true; // Si no hay datos del token, considerarlo expirado
     }
 

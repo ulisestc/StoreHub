@@ -47,7 +47,7 @@ export class PosComponent implements OnInit {
   allProducts: Product[] = [];
   clients: Client[] = [];
   selectedClientId: string | null = null;
-  
+
   private productService = inject(ProductService);
   private snackBar = inject(MatSnackBar);
   private salesService = inject(SalesService);
@@ -157,7 +157,7 @@ export class PosComponent implements OnInit {
   }
 
   private processSale(): void {
-    this.salesService.createSale(this.ticketItems, this.totalVenta).subscribe(saleResponse => {
+    this.salesService.createSale({ items: this.ticketItems, total: this.totalVenta }).subscribe(saleResponse => {
       this.snackBar.open(`Venta #${saleResponse.id} registrada con éxito`, 'Cerrar', {
         duration: 3000,
         panelClass: ['snackbar-success']
@@ -165,7 +165,7 @@ export class PosComponent implements OnInit {
 
       const productsWithLowStock: any[] = [];
       let itemsProcessed = 0;
-      
+
       this.ticketItems.forEach(item => {
         this.productService.decreaseStock(item.id, item.cantidad).subscribe(() => {
           itemsProcessed++;

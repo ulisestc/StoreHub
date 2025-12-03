@@ -73,22 +73,29 @@ export class LoginComponent implements OnInit {
       const email = this.loginForm.value.email ?? '';
       const password = this.loginForm.value.password ?? '';
 
-      // Simulamos un pequeño delay para mostrar el loading
-      setTimeout(() => {
-        // Se llama al servicio de login
-        const loginExitoso = this.authService.login(email, password);
-
-        if (loginExitoso) {
-          // ¡Éxito! Se redirige al Dashboard
-          console.log('Login exitoso, redirigiendo...');
-          this.router.navigate(['/dashboard']);
-        } else {
-          // Error en las credenciales
-          console.log('Credenciales incorrectas');
+      // Llamar al servicio de login que ahora retorna un Observable
+      this.authService.login(email, password).subscribe({
+        next: (loginExitoso) => {
+          if (loginExitoso) {
+            // ¡Éxito! Se redirige al Dashboard
+            console.log('Login exitoso, redirigiendo...');
+            // Pequeño delay para asegurar que localStorage se actualizó
+            setTimeout(() => {
+              this.router.navigate(['/dashboard']);
+            }, 100);
+          } else {
+            // Error en las credenciales
+            console.log('Credenciales incorrectas');
+            this.loginError = true;
+            this.isLoading = false;
+          }
+        },
+        error: (error) => {
+          console.error('Error en el login:', error);
           this.loginError = true;
           this.isLoading = false;
         }
-      }, 500);
+      });
     } else {
       // Marca todos los campos como tocados para mostrar errores
       Object.keys(this.loginForm.controls).forEach(key => {
