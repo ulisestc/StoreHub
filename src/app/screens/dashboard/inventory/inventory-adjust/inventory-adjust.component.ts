@@ -1,17 +1,12 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
-// Importaciones de Angular Material
 import { MatTableModule } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatChipsModule } from '@angular/material/chips';
-
-// Servicio e Interfaz
 import { InventoryService } from '../../../../services/inventory.service';
 import { InventoryMovement } from '../../../../shared/interfaces/inventory-movement';
-
 import { MatDialog } from '@angular/material/dialog';
 import { AdjustStockModalComponent } from '../../../../modals/adjust-stock-modal/adjust-stock-modal.component';
 import { AuthService } from '../../../../services/auth.service';
@@ -49,8 +44,6 @@ export class InventoryAdjustComponent implements OnInit {
     });
   }
 
-  // PENDIENTE POR ARREGLAR: NO MUESTRA LOS COLORES
-  // Función para dar color a los chips
   getChipColor(tipo: 'entrada' | 'salida' | 'merma'): 'primary' | 'accent' | 'warn' {
     switch (tipo) {
       case 'entrada': return 'primary';
@@ -59,31 +52,23 @@ export class InventoryAdjustComponent implements OnInit {
     }
   }
 
-  // Método para abrir el diálogo
   openAdjustDialog(): void {
     const dialogRef = this.dialog.open(AdjustStockModalComponent, {
       width: '450px',
     });
 
-    // Se suscribe a lo que el diálogo devuelve al cerrarse
     dialogRef.afterClosed().subscribe(result => {
-      // Si el usuario guardó (result no es nulo y tiene datos)
       if (result) {
-        console.log('Datos del diálogo:', result);
-
-        // Preparamos el objeto de movimiento
         const newMovement = {
           producto: result.producto,
           tipo_movimiento: result.tipo_movimiento,
           cantidad: result.cantidad,
           motivo: result.motivo,
-          usuario: this.authService.getUserRole() ?? 'admin' // Obtenemos el usuario logueado
+          usuario: this.authService.getUserRole() ?? 'admin'
         };
 
-        // Llamamos al servicio para crear
         this.inventoryService.createMovement(newMovement).subscribe(() => {
-          console.log('Movimiento creado');
-          this.loadMovements(); // Recargamos la tabla
+          this.loadMovements();
         });
       }
     });
