@@ -1,15 +1,12 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-
-// Importaciones de Angular Material
 import { MatTableModule } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatDialog } from '@angular/material/dialog';
-
-// Importaciones del servicio y diálogo
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { CategoryService } from '../../../../services/category.service';
 import { Category } from '../../../../shared/interfaces/category';
 import { ConfirmDeleteModalComponent } from '../../../../modals/confirm-delete-modal/confirm-delete-modal.component';
@@ -23,7 +20,8 @@ import { ConfirmDeleteModalComponent } from '../../../../modals/confirm-delete-m
     MatTableModule,
     MatButtonModule,
     MatIconModule,
-    MatToolbarModule
+    MatToolbarModule,
+    MatTooltipModule
   ],
   templateUrl: './category-list.component.html',
   styleUrl: './category-list.component.scss'
@@ -46,7 +44,6 @@ export class CategoryListComponent implements OnInit {
     });
   }
 
-  // Método para abrir el diálogo de borrado
   openDeleteDialog(categoryId: string): void {
     const dialogRef = this.dialog.open(ConfirmDeleteModalComponent, {
       width: '350px',
@@ -60,10 +57,7 @@ export class CategoryListComponent implements OnInit {
       if (result === true) {
         this.categoryService.deleteCategory(categoryId).subscribe(success => {
           if (success) {
-            console.log('Categoría eliminada');
             this.loadCategories();
-          } else {
-            console.error('Error al eliminar la categoría');
           }
         });
       }
