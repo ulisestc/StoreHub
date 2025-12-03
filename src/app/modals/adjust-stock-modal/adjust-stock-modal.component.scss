@@ -1,8 +1,120 @@
+$color-bg-card: #1e293b;
+$color-primary: #448aff;
+$color-text-main: #f1f5f9;
+$color-text-muted: #94a3b8;
+$color-border: rgba(255, 255, 255, 0.1);
+
+.modal-container {
+  background-color: $color-bg-card;
+  color: $color-text-main;
+  border: 1px solid $color-border;
+  display: flex;
+  flex-direction: column;
+  max-height: 90vh;
+}
+
+.modal-header {
+  background-color: rgba(0, 0, 0, 0.2);
+  padding: 20px 24px;
+  border-bottom: 1px solid $color-border;
+
+  h1 {
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: $color-text-main;
+  }
+}
+
 .dialog-form {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 20px;
+  padding: 24px 0;
 }
+
 .form-field-full {
   width: 100%;
+}
+
+.modal-actions {
+  padding: 16px 24px 24px;
+  background-color: transparent;
+  gap: 12px;
+
+  .cancel-btn {
+    color: $color-text-muted;
+    
+    &:hover {
+      color: $color-text-main;
+      background-color: rgba(255, 255, 255, 0.05);
+    }
+  }
+
+  button[color="primary"] {
+    background-color: $color-primary !important;
+    color: white !important;
+    font-weight: 600;
+    border-radius: 8px;
+    padding: 0 24px;
+    height: 44px;
+    box-shadow: 0 0 15px rgba(68, 138, 255, 0.3);
+
+    &:hover:not(:disabled) {
+      background-color: lighten($color-primary, 5%) !important;
+    }
+
+    &:disabled {
+      background-color: rgba(255, 255, 255, 0.1) !important;
+      color: rgba(255, 255, 255, 0.3) !important;
+      box-shadow: none;
+    }
+  }
+}
+
+::ng-deep .mat-mdc-dialog-container .mat-mdc-dialog-surface {
+  background-color: $color-bg-card !important;
+  border-radius: 16px !important;
+}
+
+::ng-deep .mat-mdc-form-field {
+  .mat-mdc-text-field-wrapper {
+    background-color: rgba(0, 0, 0, 0.2);
+  }
+  
+  .mat-mdc-form-field-icon-suffix {
+    color: $color-text-muted;
+  }
+
+  .mat-mdc-select-value {
+    color: $color-text-main;
+  }
+
+  .mat-mdc-select-arrow {
+    color: $color-text-muted;
+  }
+
+  .mat-mdc-input-element {
+    color: $color-text-main !important;
+  }
+}
+
+::ng-deep .mat-mdc-option {
+  background-color: $color-bg-card !important;
+  color: $color-text-main !important;
+  
+  &:hover, &.mat-mdc-option-active {
+    background-color: rgba($color-primary, 0.15) !important;
+  }
+  
+  &.mat-mdc-option-selected:not(.mat-mdc-option-multiple) {
+    background-color: rgba($color-primary, 0.2) !important;
+    color: $color-primary !important;
+  }
+}
+
+::ng-deep .mat-mdc-select-panel {
+  background-color: $color-bg-card !important;
+  border: 1px solid $color-border;
 }

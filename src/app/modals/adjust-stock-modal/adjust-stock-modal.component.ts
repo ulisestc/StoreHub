@@ -1,15 +1,12 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angular/forms';
-
-// Importaciones de Material
 import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
-
-// Servicios y Modelos
+import { MatIconModule } from '@angular/material/icon';
 import { ProductService } from '../../services/product.service';
 import { Product } from '../../shared/interfaces/product';
 
@@ -23,7 +20,8 @@ import { Product } from '../../shared/interfaces/product';
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
-    MatSelectModule
+    MatSelectModule,
+    MatIconModule
   ],
   templateUrl: './adjust-stock-modal.component.html',
   styleUrl: './adjust-stock-modal.component.scss'
@@ -31,9 +29,7 @@ import { Product } from '../../shared/interfaces/product';
 export class AdjustStockModalComponent implements OnInit {
 
   adjustForm!: FormGroup;
-  products: Product[] = []; // Para el <select> de productos
-
-  // Tipos de movimiento según el documento
+  products: Product[] = [];
   tiposMovimiento = ['entrada', 'salida', 'merma'];
 
   private productService = inject(ProductService);
@@ -53,7 +49,6 @@ export class AdjustStockModalComponent implements OnInit {
     });
   }
 
-  // Carga los productos para el <select>
   loadProducts(): void {
     this.productService.getProducts().subscribe(data => {
       this.products = data;
@@ -61,12 +56,11 @@ export class AdjustStockModalComponent implements OnInit {
   }
 
   onCancel(): void {
-    this.dialogRef.close(); // Cierra sin devolver nada
+    this.dialogRef.close();
   }
 
   onSave(): void {
     if (this.adjustForm.valid) {
-      // Cierra y devuelve los datos del formulario
       this.dialogRef.close(this.adjustForm.value);
     }
   }
