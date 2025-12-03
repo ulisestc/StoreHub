@@ -37,6 +37,11 @@
         <span>Correo o contraseña incorrectos. Por favor, verifica tus credenciales.</span>
       </div>
 
+      <div *ngIf="isLoading" class="alert-info">
+        <mat-spinner diameter="20" style="display: inline-block; margin-right: 12px;"></mat-spinner>
+        <span>Conectando con el servidor, por favor espera...</span>
+      </div>
+
       <button
         mat-raised-button
         color="primary"
@@ -44,8 +49,7 @@
         class="submit-btn"
         [disabled]="loginForm.invalid || isLoading">
         <mat-icon *ngIf="!isLoading">login</mat-icon>
-        <mat-spinner *ngIf="isLoading" diameter="20" style="display: inline-block; margin-right: 8px;"></mat-spinner>
-        {{ isLoading ? 'Iniciando sesión...' : 'Iniciar Sesión' }}
+        {{ isLoading ? 'Autenticando...' : 'Iniciar Sesión' }}
       </button>
 
       <div class="form-footer">

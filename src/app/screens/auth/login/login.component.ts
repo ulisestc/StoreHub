@@ -76,22 +76,28 @@ export class LoginComponent implements OnInit {
       // Llamar al servicio de login que ahora retorna un Observable
       this.authService.login(email, password).subscribe({
         next: (loginExitoso) => {
+          console.log('📨 Respuesta del login:', loginExitoso);
+
           if (loginExitoso) {
             // ¡Éxito! Se redirige al Dashboard
-            console.log('Login exitoso, redirigiendo...');
+            console.log('✅ Login exitoso, preparando navegación...');
             // Pequeño delay para asegurar que localStorage se actualizó
             setTimeout(() => {
-              this.router.navigate(['/dashboard']);
+              console.log('🚀 Navegando al dashboard...');
+              this.router.navigate(['/dashboard']).then((navigated) => {
+                console.log('🎯 Navegación completada:', navigated);
+                this.isLoading = false;
+              });
             }, 100);
           } else {
             // Error en las credenciales
-            console.log('Credenciales incorrectas');
+            console.log('❌ Credenciales incorrectas');
             this.loginError = true;
             this.isLoading = false;
           }
         },
         error: (error) => {
-          console.error('Error en el login:', error);
+          console.error('❌ Error en el login:', error);
           this.loginError = true;
           this.isLoading = false;
         }

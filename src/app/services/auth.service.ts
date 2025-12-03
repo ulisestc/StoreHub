@@ -43,21 +43,24 @@ export class AuthService {
    * Login con el backend real
    */
   login(email: string, password: string): Observable<boolean> {
+    console.log('Iniciando login para:', email);
+
     return this.http.post<LoginResponse>(`${this.apiUrl}/auth/jwt/create/`, {
       email: email,
       password: password
     }).pipe(
+      tap(response => console.log('Token recibido del servidor')),
       switchMap(response => {
         // Guardar token temporalmente
         localStorage.setItem(this.TOKEN_KEY, response.access);
+        console.log('Token guardado temporalmente');
 
         // Hacer segunda llamada para obtener información del usuario
-        return this.http.get<UserResponse>(`${this.apiUrl}/auth/users/me/`, {
-          headers: {
-            'Authorization': `JWT ${response.access}`
-          }
-        }).pipe(
+        // El interceptor agregará automáticamente el header Authorization
+        return this.http.get<UserResponse>(`${this.apiUrl}/auth/users/me/`).pipe(
           tap(userInfo => {
+            console.log('Información del usuario recibida:', userInfo);
+
             // Token expira en 8 horas
             const expiresAt = Date.now() + (8 * 60 * 60 * 1000);
 
@@ -75,12 +78,21 @@ export class AuthService {
             localStorage.setItem(this.TOKEN_DATA_KEY, JSON.stringify(tokenData));
 
             console.log('Login exitoso, usuario:', userInfo.email, 'rol:', role);
+            console.log('Datos guardados en localStorage');
           }),
-          switchMap(() => of(true))
+          switchMap(() => {
+            console.log('Retornando true para indicar login exitoso');
+            return of(true);
+          })
         );
       }),
       catchError(error => {
         console.error('Error en login:', error);
+        console.error('Detalles del error:', {
+          status: error.status,
+          message: error.message,
+          error: error.error
+        });
         // Limpiar cualquier token que se haya guardado
         localStorage.removeItem(this.TOKEN_KEY);
         localStorage.removeItem(this.TOKEN_DATA_KEY);
@@ -113,14 +125,21 @@ export class AuthService {
    */
   isLoggedIn(): boolean {
     const token = localStorage.getItem(this.TOKEN_KEY);
-    if (!token) return false;
+    console.log('Verificando si está logueado. Token existe:', !!token);
+
+    if (!token) {
+      console.log('No hay token, usuario NO logueado');
+      return false;
+    }
 
     // Verificar si el token ha expirado
     if (this.isTokenExpired()) {
+      console.log('Token expirado, cerrando sesión');
       this.logout();
       return false;
     }
 
+    console.log('Usuario está logueado');
     return true;
   }
 

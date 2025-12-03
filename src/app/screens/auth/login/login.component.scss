@@ -156,6 +156,28 @@ $color-text-muted: #94a3b8;
     }
   }
 
+  .alert-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: linear-gradient(135deg, rgba(68, 138, 255, 0.15) 0%, rgba(92, 154, 255, 0.1) 100%);
+    color: #448aff;
+    padding: 14px 18px;
+    border-radius: 12px;
+    border: 1px solid rgba(68, 138, 255, 0.3);
+    font-size: 14px;
+    animation: pulse 2s ease-in-out infinite;
+
+    ::ng-deep .mat-mdc-progress-spinner {
+      --mdc-circular-progress-active-indicator-color: #448aff;
+    }
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.85; }
+  }
+
   @keyframes shake {
     0%, 100% { transform: translateX(0); }
     25% { transform: translateX(-5px); }
