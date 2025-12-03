@@ -1,5 +1,13 @@
 <div class="form-container">
-  <div class="login-card">
+  <!-- Overlay de carga que cubre toda la pantalla -->
+  <div *ngIf="isLoading" class="loading-overlay">
+    <div class="spinner-container">
+      <mat-spinner diameter="60"></mat-spinner>
+      <p>Iniciando sesión...</p>
+    </div>
+  </div>
+
+  <div class="login-card" [class.hidden]="isLoading">
     <h2>Iniciar Sesión</h2>
     <p class="subtitle">Ingresa tus credenciales para continuar</p>
 
@@ -35,11 +43,6 @@
       <div *ngIf="loginError" class="alert-danger">
         <mat-icon>error</mat-icon>
         <span>Correo o contraseña incorrectos. Por favor, verifica tus credenciales.</span>
-      </div>
-
-      <div *ngIf="isLoading" class="alert-info">
-        <mat-spinner diameter="20" style="display: inline-block; margin-right: 12px;"></mat-spinner>
-        <span>Conectando con el servidor, por favor espera...</span>
       </div>
 
       <button

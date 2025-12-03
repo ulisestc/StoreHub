@@ -4,6 +4,7 @@ import { ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angula
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule, ActivatedRoute } from '@angular/router';
 import { AuthService } from '../../../services/auth.service';
+import { LoadingService } from '../../../services/loading.service';
 
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -37,6 +38,7 @@ export class LoginComponent implements OnInit {
   router = inject(Router);
   route = inject(ActivatedRoute);
   snackBar = inject(MatSnackBar);
+  loadingService = inject(LoadingService);
 
   // Variables de estado
   loginError: boolean = false;
@@ -70,6 +72,7 @@ export class LoginComponent implements OnInit {
 
     if (this.loginForm.valid) {
       this.isLoading = true;
+      this.loadingService.show();
       const email = this.loginForm.value.email ?? '';
       const password = this.loginForm.value.password ?? '';
 
@@ -78,21 +81,27 @@ export class LoginComponent implements OnInit {
         next: (loginExitoso) => {
 
           if (loginExitoso) {
-            // ¡Éxito! Mantener el spinner mientras navega
+            // ¡Éxito! Navegar al dashboard
             console.log('Login exitoso, navegando al dashboard...');
             this.router.navigate(['/dashboard']).then(() => {
-              this.isLoading = false;
+              // Delay para asegurar que el dashboard esté renderizado
+              setTimeout(() => {
+                this.loadingService.hide();
+                this.isLoading = false;
+              }, 400);
             });
           } else {
             // Error en las credenciales
             this.loginError = true;
             this.isLoading = false;
+            this.loadingService.hide();
           }
         },
         error: (error) => {
           console.error('❌ Error en el login:', error);
           this.loginError = true;
           this.isLoading = false;
+          this.loadingService.hide();
         }
       });
     } else {

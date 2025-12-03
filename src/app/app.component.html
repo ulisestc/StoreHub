@@ -1,1 +1,9 @@
+<!-- Overlay global de loading -->
+<div *ngIf="loading$ | async" class="global-loading-overlay">
+  <div class="spinner-container">
+    <mat-spinner diameter="60"></mat-spinner>
+    <p>Cargando...</p>
+  </div>
+</div>
+
 <router-outlet></router-outlet>
