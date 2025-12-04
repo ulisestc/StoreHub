@@ -9,7 +9,7 @@
       <mat-form-field appearance="outline" class="form-field-full" subscriptSizing="dynamic">
         <mat-label>Producto</mat-label>
         <mat-select formControlName="producto" required>
-          <mat-option *ngFor="let prod of products" [value]="prod.name">
+          <mat-option *ngFor="let prod of products" [value]="prod.id">
             {{ prod.name }} (Stock: {{ prod.stock }})
           </mat-option>
         </mat-select>
@@ -19,8 +19,8 @@
       <mat-form-field appearance="outline" class="form-field-full" subscriptSizing="dynamic">
         <mat-label>Tipo de Movimiento</mat-label>
         <mat-select formControlName="tipo_movimiento" required>
-          <mat-option *ngFor="let tipo of tiposMovimiento" [value]="tipo">
-            {{ tipo | titlecase }}
+          <mat-option *ngFor="let tipo of tiposMovimiento" [value]="tipo.value">
+            {{ tipo.label }}
           </mat-option>
         </mat-select>
         <mat-icon matSuffix>swap_vert</mat-icon>
@@ -30,11 +30,6 @@
         <mat-label>Cantidad</mat-label>
         <input matInput type="number" formControlName="cantidad" required min="1">
         <mat-icon matSuffix>numbers</mat-icon>
-      </mat-form-field>
-
-      <mat-form-field appearance="outline" class="form-field-full" subscriptSizing="dynamic">
-        <mat-label>Motivo del Ajuste</mat-label>
-        <textarea matInput formControlName="motivo" required rows="3"></textarea>
       </mat-form-field>
 
     </form>

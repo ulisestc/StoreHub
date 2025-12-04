@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { InventoryMovement } from '../shared/interfaces/inventory-movement';
+import { InventoryResponse, InventoryMovement } from '../shared/interfaces/inventory-movement';
 import { environment } from '../../environments/environment';
 
 const apiUrl = environment.apiUrl;
@@ -14,13 +14,13 @@ export class InventoryService {
 
   constructor(private http: HttpClient) { }
 
-  getMovements(): Observable<InventoryMovement[]> {
-    return this.http.get<any>(`${apiUrl}/inventory/`).pipe(
-      map(response => response.results || response)
-    );
+  getMovements(page: number = 1): Observable<InventoryResponse> {
+    let params = new HttpParams().set('page', page.toString());
+
+    return this.http.get<InventoryResponse>(`${apiUrl}/inventory/`, { params });
   }
 
-  createMovement(movement: Omit<InventoryMovement, 'id' | 'fecha'>): Observable<InventoryMovement> {
+  createMovement(movement: { product: string, type: string, quantity: number }): Observable<InventoryMovement> {
     return this.http.post<InventoryMovement>(`${apiUrl}/inventory/`, movement);
   }
 
