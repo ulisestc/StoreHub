@@ -1,54 +1,81 @@
 <div class="reports-container">
 
   <header class="reports-header">
-    <h1>Reportes de Ventas</h1>
-    <p>Analiza el rendimiento de tu negocio</p>
+    <h1>Reportes de Ventas (Backend)</h1>
+    <p>Generación de reportes directos del servidor</p>
   </header>
 
-  <div class="filter-card" *ngIf="showFilters">
-    <!-- filtrado por fecvhas -->
-    <div class="filter-row">
-      <mat-form-field appearance="outline">
-        <mat-label>Fecha inicio</mat-label>
-        <input matInput [matDatepicker]="pickerStart">
-        <mat-datepicker-toggle matIconSuffix [for]="pickerStart"></mat-datepicker-toggle>
-        <mat-datepicker #pickerStart></mat-datepicker>
-      </mat-form-field>
+  <mat-card class="filter-card">
+    <div class="filter-content">
 
-      <mat-form-field appearance="outline">
-        <mat-label>Fecha fin</mat-label>
-        <input matInput [matDatepicker]="pickerEnd">
-        <mat-datepicker-toggle matIconSuffix [for]="pickerEnd"></mat-datepicker-toggle>
-        <mat-datepicker #pickerEnd></mat-datepicker>
-      </mat-form-field>
+      <div class="filter-section">
+        <h3>Ventas por Período</h3>
+        <div class="filter-row">
+          <mat-form-field appearance="outline">
+            <mat-label>Inicio</mat-label>
+            <input matInput [matDatepicker]="pickerStart" [(ngModel)]="startDate">
+            <mat-datepicker-toggle matIconSuffix [for]="pickerStart"></mat-datepicker-toggle>
+            <mat-datepicker #pickerStart></mat-datepicker>
+          </mat-form-field>
 
-      <button mat-raised-button color="primary">
-        Ventas por fecha
-      </button>
+          <mat-form-field appearance="outline">
+            <mat-label>Fin</mat-label>
+            <input matInput [matDatepicker]="pickerEnd" [(ngModel)]="endDate">
+            <mat-datepicker-toggle matIconSuffix [for]="pickerEnd"></mat-datepicker-toggle>
+            <mat-datepicker #pickerEnd></mat-datepicker>
+          </mat-form-field>
+
+          <button mat-raised-button color="primary" type="button" (click)="loadSalesByDate()">
+            <mat-icon>search</mat-icon> Generar
+          </button>
+        </div>
+      </div>
+
+      <mat-divider></mat-divider>
+
+      <div class="filter-section">
+        <h3>Productos más vendidos</h3>
+        <div class="filter-row">
+          <mat-form-field appearance="outline" class="small-input">
+            <mat-label>Límite</mat-label>
+            <input matInput type="number" [(ngModel)]="limit" min="1">
+          </mat-form-field>
+          <button mat-raised-button color="primary" type="button" (click)="loadTopProducts()">
+            <mat-icon>search</mat-icon> Generar
+          </button>
+        </div>
+      </div>
+
+      <mat-divider></mat-divider>
+
+      <div class="filter-section">
+        <h3>Alertas de Stock Bajo</h3>
+        <div class="filter-row">
+          <mat-form-field appearance="outline" class="small-input">
+            <mat-label>Mínimo</mat-label>
+            <input matInput type="number" [(ngModel)]="threshold" min="1">
+          </mat-form-field>
+          <button mat-raised-button color="primary" type="button" (click)="loadLowStock()">
+            <mat-icon>search</mat-icon> Generar
+          </button>
+        </div>
+      </div>
+
     </div>
+  </mat-card>
 
-    <div class="separator"></div>
-
-    <!-- filtrado por top ventas (threshold)-->
-    <div class="filter-row">
-      <mat-form-field appearance="outline" class="small-input">
-        <input matInput type="number" value="10">
-      </mat-form-field>
-      <button mat-raised-button color="primary">
-        Productos más vendidos
-      </button>
-    </div>
-
-    <div class="separator"></div>
-
-    <!-- filtrado por stock bajo (threshold) -->
-    <div class="filter-row">
-      <mat-form-field appearance="outline" class="small-input">
-        <input matInput type="number" value="10">
-      </mat-form-field>
-      <button mat-raised-button color="primary">
-        Productos con stock bajo
-      </button>
-    </div>
+  <div class="report-viewer" *ngIf="reportHtml">
+    <mat-card>
+      <div class="backend-html-content" [innerHTML]="reportHtml"></div>
+    </mat-card>
   </div>
+
+  <!-- <div *ngIf="!reportHtml && !isLoading" class="empty-state">
+    <p>Selecciona un filtro y genera un reporte para verlo aquí.</p>
+  </div> -->
+
+  <div *ngIf="isLoading" class="loading">
+    <p>Cargando reporte...</p>
+  </div>
+
 </div>
