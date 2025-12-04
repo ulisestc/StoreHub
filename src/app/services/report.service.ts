@@ -27,7 +27,6 @@ export class ReportService {
   constructor(private http: HttpClient) { }
 
   getSalesReport(startDate?: Date, endDate?: Date): Observable<any> {
-    // Obtener ventas, productos y categorías para calcular el reporte en el frontend
     return forkJoin({
       sales: this.http.get<any>(`${apiUrl}/sales/`).pipe(
         map(response => response.results || response || []),
@@ -43,12 +42,11 @@ export class ReportService {
       )
     }).pipe(
       map(({ sales, products, categories }) => {
-        console.log('📊 Calculando reporte desde ventas, productos y categorías');
-        console.log('📦 Ventas:', sales.length);
-        console.log('📦 Productos:', products.length);
-        console.log('📦 Categorías:', categories.length);
+        console.log('Calculando reporte desde ventas, productos y categorías');
+        console.log('Ventas:', sales.length);
+        console.log('Productos:', products.length);
+        console.log('Categorías:', categories.length);
 
-        // Filtrar ventas por fecha si se especificó
         let filteredSales = sales;
         if (startDate && endDate) {
           const start = new Date(startDate);
@@ -59,15 +57,13 @@ export class ReportService {
           });
         }
 
-        console.log('📊 Ventas filtradas:', filteredSales.length);
+        console.log('Ventas filtradas:', filteredSales.length);
 
-        // Calcular totales
         const totalIngresos = filteredSales.reduce((sum: number, sale: Sale) =>
           sum + (Number(sale.total) || 0), 0
         );
         const totalTransacciones = filteredSales.length;
 
-        // Calcular productos más vendidos
         const productSales = new Map<number, { quantity: number, product: any }>();
 
         filteredSales.forEach((sale: Sale) => {
@@ -80,25 +76,22 @@ export class ReportService {
           }
         });
 
-        console.log('📊 Productos vendidos:', productSales.size);
+        console.log('Productos vendidos:', productSales.size);
 
-        // Mapear con información del producto y categoría
         const topProducts = Array.from(productSales.entries())
           .map(([productId, data]) => {
             const product = products.find((p: any) => p.id === productId);
             let categoryName = 'Sin categoría';
 
             if (product?.category) {
-              // Si category es un número (ID), buscar la categoría
               if (typeof product.category === 'number') {
                 const category = categories.find((c: any) => c.id === product.category);
                 categoryName = category?.name || 'Sin categoría';
               }
-              // Si category es un objeto, usar su nombre
+
               else if (typeof product.category === 'object' && product.category.name) {
                 categoryName = product.category.name;
               }
-              // Si category es un string, usarlo directamente
               else if (typeof product.category === 'string') {
                 categoryName = product.category;
               }
@@ -114,7 +107,7 @@ export class ReportService {
           .sort((a, b) => b.sold - a.sold)
           .slice(0, 10);
 
-        console.log('📊 Top productos:', topProducts);
+        console.log('Top productos:', topProducts);
 
         return {
           totalIngresos,
@@ -123,7 +116,7 @@ export class ReportService {
         };
       }),
       catchError(error => {
-        console.error('❌ Error calculando reporte:', error);
+        console.error('Error calculando reporte:', error);
         return of({
           totalIngresos: 0,
           totalTransacciones: 0,
@@ -134,7 +127,6 @@ export class ReportService {
   }
 
   getInventoryReport(threshold: number = 10): Observable<any> {
-    // Calcular productos con stock bajo desde el endpoint de productos
     return this.http.get<any>(`${apiUrl}/products/`).pipe(
       map(response => {
         const products = response.results || response || [];
@@ -145,14 +137,13 @@ export class ReportService {
         };
       }),
       catchError(error => {
-        console.error('❌ Error en getInventoryReport:', error);
+        console.error('Error en getInventoryReport:', error);
         return of({ products: [], threshold });
       })
     );
   }
 
   getTopProducts(limit: number = 10): Observable<any> {
-    // Usar el reporte de ventas para obtener top productos
     return this.getSalesReport().pipe(
       map(report => ({
         products: report.topProducts.slice(0, limit)
