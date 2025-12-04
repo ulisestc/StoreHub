@@ -32,6 +32,10 @@ export class SalesService {
     );
   }
 
+  getSalesHistoryPaginated(page: number, pageSize: number = 10): Observable<{ count: number; results: Sale[] }> {
+    return this.http.get<{ count: number; results: Sale[] }>(`${apiUrl}/sales/?page=${page}&page_size=${pageSize}`);
+  }
+
   getSaleById(id: number): Observable<Sale> {
     return this.http.get<Sale>(`${apiUrl}/sales/${id}/`);
   }

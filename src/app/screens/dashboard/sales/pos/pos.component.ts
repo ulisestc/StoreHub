@@ -50,9 +50,7 @@ export class PosComponent implements OnInit {
 
   ticketItems: any[] = [];
   totalVenta: number = 0;
-  allProducts: Product[] = [];
   filteredProducts: Product[] = [];
-  paginatedProducts: Product[] = [];
   clients: Client[] = [];
   categories: Category[] = [];
   selectedClientId: string | null = null;
@@ -81,24 +79,28 @@ export class PosComponent implements OnInit {
     this.loadCategories();
   }
 
-  loadAllProducts(): void {
+  loadAllProducts(pageIndex: number = 0): void {
     this.isLoading = true;
+    const backendPage = pageIndex + 1;
     console.log('Iniciando carga de productos...');
-    this.productService.getProducts().subscribe({
-      next: (data) => {
-        console.log('Respuesta del servidor:', data);
-        this.allProducts = data || [];
-        this.filteredProducts = [...this.allProducts];
-        this.totalProducts = this.filteredProducts.length;
-        this.updatePaginatedProducts();
-        console.log('🎯 Productos cargados:', this.allProducts.length);
+
+    this.productService.getProducts(
+      this.searchQuery || undefined,
+      this.selectedCategoryId,
+      backendPage,
+      this.pageSize
+    ).subscribe({
+      next: (response) => {
+        console.log('Respuesta del servidor:', response);
+        this.filteredProducts = response.results || [];
+        this.totalProducts = response.count || 0;
+        this.currentPage = pageIndex;
+        console.log('Productos cargados:', this.filteredProducts.length);
         this.isLoading = false;
       },
       error: (error) => {
         console.error('Error cargando productos:', error);
-        this.allProducts = [];
         this.filteredProducts = [];
-        this.paginatedProducts = [];
         this.totalProducts = 0;
         this.showError('Error al cargar los productos');
         this.isLoading = false;
@@ -112,15 +114,15 @@ export class PosComponent implements OnInit {
       next: (data) => {
         console.log('Respuesta clientes:', data);
         this.clients = data.results || [];
-        console.log('🎯 Clientes cargados:', this.clients.length);
+        console.log('Clientes cargados:', this.clients.length);
         const defaultClient = this.clients.find(c => c.name.includes('Mostrador'));
         if (defaultClient) {
           this.selectedClientId = defaultClient.id;
-          console.log('✅ Cliente por defecto seleccionado:', defaultClient.name);
+          console.log('Cliente por defecto seleccionado:', defaultClient.name);
         }
       },
       error: (error) => {
-        console.error('❌ Error cargando clientes:', error);
+        console.error('Error cargando clientes:', error);
         this.clients = [];
       }
     });
@@ -139,55 +141,24 @@ export class PosComponent implements OnInit {
   }
 
   onSearchChange(): void {
-    this.applyFilters();
+    this.currentPage = 0;
+    this.loadAllProducts(0);
   }
 
   onCategoryChange(): void {
-    this.applyFilters();
-  }
-
-  applyFilters(): void {
-    let filtered = [...this.allProducts];
-
-    // Filtrar por búsqueda
-    if (this.searchQuery && this.searchQuery.trim()) {
-      const query = this.searchQuery.toLowerCase().trim();
-      filtered = filtered.filter(p =>
-        p.name.toLowerCase().includes(query) ||
-        p.sku.toLowerCase().includes(query)
-      );
-    }
-
-    // Filtrar por categoría
-    if (this.selectedCategoryId) {
-      filtered = filtered.filter(p => p.category === this.selectedCategoryId);
-    }
-
-    this.filteredProducts = filtered;
-    this.totalProducts = filtered.length;
     this.currentPage = 0;
-    this.updatePaginatedProducts();
+    this.loadAllProducts(0);
   }
 
   clearFilters(): void {
     this.searchQuery = '';
     this.selectedCategoryId = undefined;
-    this.filteredProducts = [...this.allProducts];
-    this.totalProducts = this.filteredProducts.length;
     this.currentPage = 0;
-    this.updatePaginatedProducts();
-  }
-
-  updatePaginatedProducts(): void {
-    const startIndex = this.currentPage * this.pageSize;
-    const endIndex = startIndex + this.pageSize;
-    this.paginatedProducts = this.filteredProducts.slice(startIndex, endIndex);
+    this.loadAllProducts(0);
   }
 
   onPageChange(event: PageEvent): void {
-    this.currentPage = event.pageIndex;
-    this.pageSize = event.pageSize;
-    this.updatePaginatedProducts();
+    this.loadAllProducts(event.pageIndex);
   }
 
   addProductToTicket(product: Product): void {
@@ -226,7 +197,7 @@ export class PosComponent implements OnInit {
     if (this.searchForm.invalid) return;
 
     const sku = this.searchForm.value.sku;
-    const productFound = this.allProducts.find(p => p.sku === sku);
+    const productFound = this.filteredProducts.find(p => p.sku === sku);
 
     if (productFound) {
       const itemInTicket = this.ticketItems.find(item => item.id === productFound.id);
@@ -307,7 +278,6 @@ export class PosComponent implements OnInit {
   }
 
   private processSale(): void {
-    // Transformar ticketItems al formato que espera el backend
     const saleDetails = this.ticketItems.map(item => ({
       product: item.id,
       quantity: item.cantidad
@@ -330,7 +300,7 @@ export class PosComponent implements OnInit {
       this.ticketItems.forEach(item => {
         this.productService.decreaseStock(item.id, item.cantidad).subscribe(() => {
           itemsProcessed++;
-          const updatedProduct = this.allProducts.find(p => p.id === item.id);
+          const updatedProduct = this.filteredProducts.find((p: Product) => p.id === item.id);
 
           if (updatedProduct && updatedProduct.stock <= this.LOW_STOCK_THRESHOLD) {
             productsWithLowStock.push(updatedProduct);
@@ -362,7 +332,7 @@ export class PosComponent implements OnInit {
   private finishSale(lowStockProducts: any[]): void {
     this.ticketItems = [];
     this.calculateTotal();
-    this.loadAllProducts();
+    this.loadAllProducts(this.currentPage);
 
     if (lowStockProducts.length > 0) {
       this.dialog.open(LowStockWarningModalComponent, {

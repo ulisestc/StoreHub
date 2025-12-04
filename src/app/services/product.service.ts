@@ -17,7 +17,7 @@ export class ProductService {
 
   constructor(private http: HttpClient) { }
 
-  getProducts(search?: string, categoryId?: number | string): Observable<Product[]> {
+  getProducts(search?: string, categoryId?: number | string, page?: number, pageSize: number = 10): Observable<{count: number, results: Product[]}> {
     let params = new HttpParams();
 
     // Agregar parámetros si hay búsqueda o filtro de categoría
@@ -27,9 +27,30 @@ export class ProductService {
     if (categoryId) {
       params = params.set('category', categoryId);
     }
+    if (page) {
+      params = params.set('page', page.toString());
+      params = params.set('page_size', pageSize.toString());
+    }
 
     return this.http.get<any>(`${apiUrl}/products/`, { params }).pipe(
-      map((response => response.results || response))
+      map((response) => {
+        if (response && response.results) {
+          return {
+            count: response.count || 0,
+            results: response.results || []
+          };
+        } else if (Array.isArray(response)) {
+          return {
+            count: response.length,
+            results: response
+          };
+        } else {
+          return {
+            count: 0,
+            results: []
+          };
+        }
+      })
     );
   }
 
@@ -57,7 +78,6 @@ export class ProductService {
           count = 0;
         }
 
-        // Agregar el nombre de la categoría a cada producto
         const productsWithCategoryName = products.map(product => ({
           ...product,
           categoryName: categoryMap.get(product.category) || 'Sin categoría'

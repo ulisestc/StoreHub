@@ -44,12 +44,15 @@ export class SaleHistoryComponent implements OnInit {
     this.loadSalesHistory();
   }
 
-  loadSalesHistory(): void {
+  loadSalesHistory(pageIndex: number = 0): void {
     this.isLoading = true;
-    this.salesService.getSalesHistory().subscribe({
-      next: (data) => {
-        this.dataSource = [...data];
-        this.totalSales = data.length;
+    const backendPage = pageIndex + 1;
+
+    this.salesService.getSalesHistoryPaginated(backendPage, this.pageSize).subscribe({
+      next: (response) => {
+        this.dataSource = [...response.results];
+        this.totalSales = response.count;
+        this.currentPage = pageIndex;
         this.isLoading = false;
       },
       error: (error) => {
@@ -60,8 +63,7 @@ export class SaleHistoryComponent implements OnInit {
   }
 
   onPageChange(event: PageEvent): void {
-    this.currentPage = event.pageIndex;
-    this.pageSize = event.pageSize;
+    this.loadSalesHistory(event.pageIndex);
   }
 
   viewSaleDetails(sale: Sale): void {
