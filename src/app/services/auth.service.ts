@@ -1,7 +1,7 @@
 ﻿import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
-import { Observable, tap, catchError, of, switchMap } from 'rxjs';
+import { Observable, tap, catchError, of, switchMap, throwError } from 'rxjs';
 import { environment } from '../../environments/environment';
 
 interface TokenData {
@@ -24,6 +24,13 @@ interface UserResponse {
   role: string;
   is_active: boolean;
   is_staff: boolean;
+}
+
+export interface RegisterData {
+  email: string;
+  password: string;
+  first_name: string;
+  last_name: string;
 }
 
 @Injectable({
@@ -82,6 +89,18 @@ export class AuthService {
         localStorage.removeItem(this.REFRESH_TOKEN_KEY);
         localStorage.removeItem(this.TOKEN_DATA_KEY);
         return of(false);
+      })
+    );
+  }
+
+  register(userData: RegisterData): Observable<any> {
+    console.log('Registrando usuario:', userData.email);
+
+    return this.http.post(`${this.apiUrl}/auth/users/`, userData).pipe(
+      tap(() => console.log('Registro exitoso')),
+      catchError(error => {
+        console.error('Error en registro:', error);
+        return throwError(() => error);
       })
     );
   }

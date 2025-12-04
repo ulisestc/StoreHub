@@ -8,6 +8,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { CategoryService } from '../../../../services/category.service';
 
 @Component({
@@ -38,6 +39,7 @@ export class CategoryFormComponent implements OnInit {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private categoryService = inject(CategoryService);
+  private snackBar = inject(MatSnackBar);
 
   ngOnInit(): void {
     this.categoryForm = new FormGroup({
@@ -59,18 +61,35 @@ export class CategoryFormComponent implements OnInit {
       }
     });
   }
-
   onSubmit(): void {
     if (this.categoryForm.valid) {
       const categoryData = this.categoryForm.value;
 
       if (this.isEditMode && this.currentCategoryId) {
         this.categoryService.updateCategory(this.currentCategoryId, categoryData)
-          .subscribe(() => this.router.navigate(['/dashboard/categories']));
+          .subscribe({
+            next: () => {
+              this.snackBar.open('Categoría actualizada exitosamente', 'Cerrar', { duration: 3000 });
+              this.router.navigate(['/dashboard/categories']);
+            },
+            error: (error) => {
+              console.error('Error actualizando categoría:', error);
+              this.snackBar.open('Error al actualizar la categoría', 'Cerrar', { duration: 3000 });
+            }
+          });
 
       } else {
         this.categoryService.createCategory(categoryData)
-          .subscribe(() => this.router.navigate(['/dashboard/categories']));
+          .subscribe({
+            next: () => {
+              this.snackBar.open('Categoría creada exitosamente', 'Cerrar', { duration: 3000 });
+              this.router.navigate(['/dashboard/categories']);
+            },
+            error: (error) => {
+              console.error('Error creando categoría:', error);
+              this.snackBar.open('Error al crear la categoría', 'Cerrar', { duration: 3000 });
+            }
+          });
       }
     }
   }

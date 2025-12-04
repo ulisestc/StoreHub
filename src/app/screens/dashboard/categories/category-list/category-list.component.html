@@ -57,10 +57,9 @@
 
     </table>
 
-    <div *ngIf="dataSource.length === 0 && !isLoading" class="empty-state">
+    <div *ngIf="!isLoading && dataSource.length === 0" class="empty-state">
       <mat-icon>category</mat-icon>
       <p>No hay categorías registradas.</p>
     </div>
   </div>
-
 </div>
