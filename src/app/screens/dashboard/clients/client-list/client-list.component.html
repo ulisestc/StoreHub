@@ -71,6 +71,16 @@
       <mat-icon>group_off</mat-icon>
       <p>No hay clientes registrados.</p>
     </div>
+
+    <mat-paginator
+      *ngIf="!isLoading && totalClients > 0"
+      [length]="totalClients"
+      [pageSize]="pageSize"
+      [pageIndex]="pageIndex"
+      [pageSizeOptions]="pageSizeOptions"
+      (page)="onPageChange($event)"
+      showFirstLastButtons>
+    </mat-paginator>
   </div>
 
 </div>

@@ -9,6 +9,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { ClientService } from '../../../../services/client.service';
 import { Client } from '../../../../shared/interfaces/client';
 import { ConfirmDeleteModalComponent } from '../../../../modals/confirm-delete-modal/confirm-delete-modal.component';
@@ -24,7 +25,8 @@ import { ConfirmDeleteModalComponent } from '../../../../modals/confirm-delete-m
     MatIconModule,
     MatToolbarModule,
     MatTooltipModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    MatPaginatorModule
   ],
   templateUrl: './client-list.component.html',
   styleUrl: './client-list.component.scss'
@@ -33,7 +35,13 @@ export class ClientListComponent implements OnInit {
 
   displayedColumns: string[] = ['name', 'email', 'phone', 'acciones'];
   dataSource: Client[] = [];
+  allClients: Client[] = [];
   isLoading = false;
+
+  totalClients = 0;
+  pageSize = 5;
+  pageIndex = 0;
+  pageSizeOptions = [5, 10, 25, 50];
 
   private clientService = inject(ClientService);
   private dialog = inject(MatDialog);
@@ -45,9 +53,11 @@ export class ClientListComponent implements OnInit {
 
   loadClients(): void {
     this.isLoading = true;
-    this.clientService.getClients().subscribe({
-      next: (data) => {
-        this.dataSource = [...data];
+    this.clientService.getClients(1, 1000).subscribe({
+      next: (response) => {
+        this.allClients = [...response.results];
+        this.totalClients = this.allClients.length;
+        this.updatePageData();
         this.isLoading = false;
       },
       error: (error) => {
@@ -56,6 +66,18 @@ export class ClientListComponent implements OnInit {
         this.isLoading = false;
       }
     });
+  }
+
+  updatePageData(): void {
+    const startIndex = this.pageIndex * this.pageSize;
+    const endIndex = startIndex + this.pageSize;
+    this.dataSource = this.allClients.slice(startIndex, endIndex);
+  }
+
+  onPageChange(event: PageEvent): void {
+    this.pageIndex = event.pageIndex;
+    this.pageSize = event.pageSize;
+    this.updatePageData();
   }
 
   openDeleteDialog(clientId: string): void {

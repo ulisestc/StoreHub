@@ -14,9 +14,29 @@ export class ClientService {
 
   constructor(private http: HttpClient) { }
 
-  getClients(): Observable<Client[]> {
-    return this.http.get<any>(`${apiUrl}/clients/`).pipe(
-      map(response => response.results || response)
+  getClients(page: number = 1, pageSize: number = 10): Observable<{count: number, results: Client[]}> {
+    return this.http.get<any>(
+      `${apiUrl}/clients/?page=${page}&page_size=${pageSize}`
+    ).pipe(
+      map(response => {
+        if (response && response.results && Array.isArray(response.results)) {
+          return {
+            count: response.count || response.results.length,
+            results: response.results
+          };
+        }
+        if (Array.isArray(response)) {
+          return {
+            count: response.length,
+            results: response
+          };
+        }
+        // Fallback
+        return {
+          count: 0,
+          results: []
+        };
+      })
     );
   }
 
