@@ -40,7 +40,7 @@ export class ProfileEditComponent implements OnInit {
   profileForm!: FormGroup;
   passwordForm!: FormGroup;
   userRole: string | null = null;
-  
+
   hideCurrent = true;
   hideNew = true;
   hideConfirm = true;
@@ -50,7 +50,8 @@ export class ProfileEditComponent implements OnInit {
 
   ngOnInit(): void {
     this.profileForm = new FormGroup({
-      nombre: new FormControl('', [Validators.required]),
+      first_name: new FormControl('', [Validators.required]),
+      last_name: new FormControl('', [Validators.required]),
       email: new FormControl('', [Validators.required, Validators.email]),
     });
 
@@ -66,26 +67,43 @@ export class ProfileEditComponent implements OnInit {
   loadUserData(): void {
     this.userRole = this.authService.getUserRole();
 
-    if (this.userRole === 'Admin') {
-      this.profileForm.patchValue({
-        nombre: 'Administrador Principal',
-        email: 'admin@storehub.com'
-      });
-    } else if (this.userRole === 'Cajero') {
-      this.profileForm.patchValue({
-        nombre: 'Cajero de Turno',
-        email: 'cajero@storehub.com'
-      });
-    }
+    this.authService.getUserProfile().subscribe({
+      next: (user) => {
+        this.profileForm.patchValue({
+          first_name: user.first_name,
+          last_name: user.last_name,
+          email: user.email
+        });
+      },
+      error: (error) => {
+        console.error('Error al cargar datos del usuario:', error);
+        this.snackBar.open('Error al cargar datos del perfil', 'Cerrar', {
+          duration: 3000,
+        });
+      }
+    });
   }
 
   onSubmit(): void {
     if (this.profileForm.valid) {
-      this.snackBar.open('Perfil actualizado con éxito', 'Cerrar', {
-        duration: 3000,
-        panelClass: ['snackbar-success']
+      const { first_name, last_name } = this.profileForm.value;
+
+      this.authService.updateUserProfile({ first_name, last_name }).subscribe({
+        next: () => {
+          this.snackBar.open('Perfil actualizado con éxito', 'Cerrar', {
+            duration: 3000,
+            panelClass: ['snackbar-success']
+          });
+          this.profileForm.markAsPristine();
+        },
+        error: (error) => {
+          console.error('Error al actualizar perfil:', error);
+          this.snackBar.open('Error al actualizar el perfil', 'Cerrar', {
+            duration: 3000,
+            panelClass: ['snackbar-error']
+          });
+        }
       });
-      this.profileForm.markAsPristine(); 
     }
   }
 
@@ -96,7 +114,7 @@ export class ProfileEditComponent implements OnInit {
         panelClass: ['snackbar-success']
       });
       this.passwordForm.reset();
-      
+
       this.hideCurrent = true;
       this.hideNew = true;
       this.hideConfirm = true;

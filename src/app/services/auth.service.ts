@@ -16,7 +16,7 @@ interface LoginResponse {
   refresh: string;
 }
 
-interface UserResponse {
+export interface UserResponse {
   id: number;
   email: string;
   first_name: string;
@@ -244,5 +244,13 @@ export class AuthService {
 
   isCajero(): boolean {
     return this.hasRole('Cajero');
+  }
+
+  getUserProfile(): Observable<UserResponse> {
+    return this.http.get<UserResponse>(`${this.apiUrl}/auth/users/me/`);
+  }
+
+  updateUserProfile(data: { first_name: string; last_name: string }): Observable<UserResponse> {
+    return this.http.patch<UserResponse>(`${this.apiUrl}/auth/users/me/`, data);
   }
 }

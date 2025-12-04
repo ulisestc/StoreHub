@@ -1,18 +1,18 @@
 <div class="profile-container">
-  
+
   <header class="profile-header">
     <div class="header-content">
       <h1>Mi Perfil</h1>
       <p>Administra tu información personal y seguridad.</p>
     </div>
-    
+
     <div class="user-avatar">
       <mat-icon>account_circle</mat-icon>
     </div>
   </header>
 
   <div class="cards-grid">
-    
+
     <mat-card class="profile-card info-card">
       <mat-card-header>
         <mat-card-title>
@@ -26,11 +26,17 @@
 
       <mat-card-content>
         <form [formGroup]="profileForm" (ngSubmit)="onSubmit()">
-          
+
           <div class="form-column">
             <mat-form-field appearance="outline" class="full-width">
-              <mat-label>Nombre Completo</mat-label>
-              <input matInput formControlName="nombre" required>
+              <mat-label>Nombre</mat-label>
+              <input matInput formControlName="first_name" required>
+              <mat-icon matSuffix>person</mat-icon>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Apellido</mat-label>
+              <input matInput formControlName="last_name" required>
               <mat-icon matSuffix>person</mat-icon>
             </mat-form-field>
 
@@ -43,7 +49,8 @@
           </div>
 
           <div class="form-actions">
-            <button mat-raised-button color="primary" type="submit" [disabled]="profileForm.invalid || profileForm.pristine">
+            <button mat-raised-button color="primary" type="submit"
+              [disabled]="profileForm.invalid || profileForm.pristine">
               <mat-icon>save</mat-icon>
               Guardar Cambios
             </button>
@@ -85,7 +92,7 @@
             <mat-form-field appearance="outline" class="full-width">
               <mat-label>Confirmar Nueva Contraseña</mat-label>
               <input matInput [type]="hideConfirm ? 'password' : 'text'" formControlName="confirmPassword" required>
-              
+
               <mat-error *ngIf="passwordForm.get('confirmPassword')?.hasError('passwordsNotMatching')">
                 Las contraseñas no coinciden.
               </mat-error>
