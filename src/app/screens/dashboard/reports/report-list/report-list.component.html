@@ -1,8 +1,8 @@
 <div class="reports-container">
 
   <header class="reports-header">
-    <h1>Reportes de Ventas (Backend)</h1>
-    <p>Generación de reportes directos del servidor</p>
+    <h1>Reportes de Ventas</h1>
+    <p>Analiza el rendimiento del negocio</p>
   </header>
 
   <mat-card class="filter-card">
@@ -70,12 +70,14 @@
     </mat-card>
   </div>
 
-  <!-- <div *ngIf="!reportHtml && !isLoading" class="empty-state">
-    <p>Selecciona un filtro y genera un reporte para verlo aquí.</p>
-  </div> -->
-
-  <div *ngIf="isLoading" class="loading">
+  <div *ngIf="isLoading" class="loading-spinner">
+    <mat-spinner diameter="50"></mat-spinner>
     <p>Cargando reporte...</p>
+  </div>
+
+  <div *ngIf="!reportHtml && !isLoading" class="empty-state">
+    <mat-icon>assessment</mat-icon>
+    <p>Selecciona un filtro y genera un reporte para verlo aquí.</p>
   </div>
 
 </div>

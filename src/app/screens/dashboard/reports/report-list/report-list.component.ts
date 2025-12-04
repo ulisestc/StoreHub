@@ -10,6 +10,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 import { ReportService } from '../../../../services/report.service';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
@@ -27,13 +28,14 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
     MatButtonModule,
     MatIconModule,
     MatCardModule,
-    MatDividerModule
+    MatDividerModule,
+    MatProgressSpinnerModule
   ],
   templateUrl: './report-list.component.html',
   styleUrl: './report-list.component.scss'
 })
 export class ReportListComponent {
-  
+
   // Inyecciones
   private reportService = inject(ReportService);
   private sanitizer = inject(DomSanitizer);
