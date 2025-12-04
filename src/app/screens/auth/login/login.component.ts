@@ -33,20 +33,17 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 })
 export class LoginComponent implements OnInit {
 
-  // Se inyectan los servicios
   authService = inject(AuthService);
   router = inject(Router);
   route = inject(ActivatedRoute);
   snackBar = inject(MatSnackBar);
   loadingService = inject(LoadingService);
 
-  // Variables de estado
   loginError: boolean = false;
   hidePassword: boolean = true;
   isLoading: boolean = false;
 
   ngOnInit() {
-    // Verificar si hay parámetro sessionExpired en la URL
     this.route.queryParams.subscribe(params => {
       if (params['sessionExpired'] === 'true') {
         this.snackBar.open('Tu sesión ha expirado. Por favor, inicia sesión nuevamente.', 'Cerrar', {
@@ -59,15 +56,11 @@ export class LoginComponent implements OnInit {
     });
   }
 
-  // Definición del FormGroup para el formulario
   loginForm = new FormGroup({
     email: new FormControl('', [Validators.required, Validators.email]),
     password: new FormControl('', [Validators.required, Validators.minLength(6)])
   });
-
-  // Método que se llamará al enviar el formulario
   onSubmit() {
-    // Se resetea el error
     this.loginError = false;
 
     if (this.loginForm.valid) {
@@ -76,22 +69,18 @@ export class LoginComponent implements OnInit {
       const email = this.loginForm.value.email ?? '';
       const password = this.loginForm.value.password ?? '';
 
-      // Llamar al servicio de login que ahora retorna un Observable
       this.authService.login(email, password).subscribe({
         next: (loginExitoso) => {
 
           if (loginExitoso) {
-            // ¡Éxito! Navegar al dashboard
             console.log('Login exitoso, navegando al dashboard...');
             this.router.navigate(['/dashboard']).then(() => {
-              // Delay para asegurar que el dashboard esté renderizado
               setTimeout(() => {
                 this.loadingService.hide();
                 this.isLoading = false;
               }, 400);
             });
           } else {
-            // Error en las credenciales
             this.loginError = true;
             this.isLoading = false;
             this.loadingService.hide();
@@ -105,7 +94,6 @@ export class LoginComponent implements OnInit {
         }
       });
     } else {
-      // Marca todos los campos como tocados para mostrar errores
       Object.keys(this.loginForm.controls).forEach(key => {
         this.loginForm.get(key)?.markAsTouched();
       });

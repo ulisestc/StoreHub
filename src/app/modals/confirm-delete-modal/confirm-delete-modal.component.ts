@@ -1,7 +1,6 @@
-import { Component, Inject } from '@angular/core'; // Importa Inject
+import { Component, Inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-// Importaciones de Material
 import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 
@@ -18,8 +17,6 @@ import { MatButtonModule } from '@angular/material/button';
 })
 export class ConfirmDeleteModalComponent {
 
-  // Inyectamos MAT_DIALOG_DATA para recibir datos
-  // Inyectamos MatDialogRef para poder cerrar el diálogo
   constructor(
     public dialogRef: MatDialogRef<ConfirmDeleteModalComponent>,
     @Inject(MAT_DIALOG_DATA) public data: { title: string, message: string }

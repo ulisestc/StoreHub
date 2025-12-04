@@ -21,7 +21,12 @@
         </div>
         <div class="stat-data">
           <span class="stat-label">Ventas del Día</span>
-          <span class="stat-value">{{ salesToday | currency }}</span>
+
+          <div class="value-wrapper">
+            <mat-spinner *ngIf="loadingSales" diameter="30" color="accent"></mat-spinner>
+            <span *ngIf="!loadingSales" class="stat-value">{{ salesToday | currency }}</span>
+          </div>
+
         </div>
       </mat-card-content>
     </mat-card>
@@ -33,19 +38,29 @@
         </div>
         <div class="stat-data">
           <span class="stat-label">Transacciones</span>
-          <span class="stat-value">{{ transactionsToday }}</span>
+
+          <div class="value-wrapper">
+            <mat-spinner *ngIf="loadingSales" diameter="30"></mat-spinner>
+            <span *ngIf="!loadingSales" class="stat-value">{{ transactionsToday }}</span>
+          </div>
+
         </div>
       </mat-card-content>
     </mat-card>
 
-    <mat-card class="stat-card alert-card" routerLink="/dashboard/inventory">
+    <mat-card class="stat-card alert-card" routerLink="/dashboard/products">
       <mat-card-content>
         <div class="stat-icon warn-icon">
           <mat-icon>inventory_2</mat-icon>
         </div>
         <div class="stat-data">
           <span class="stat-label">Total Productos</span>
-          <span class="stat-value">{{ totalProducts }}</span>
+
+          <div class="value-wrapper">
+            <mat-spinner *ngIf="loadingProducts" diameter="30" color="warn"></mat-spinner>
+            <span *ngIf="!loadingProducts" class="stat-value">{{ totalProducts }}</span>
+          </div>
+
         </div>
       </mat-card-content>
     </mat-card>
@@ -54,7 +69,6 @@
   <h3 class="section-title">Accesos Rápidos</h3>
 
   <div class="actions-grid">
-
     <mat-card class="action-card" routerLink="/dashboard/sales/pos">
       <mat-icon class="action-icon">point_of_sale</mat-icon>
       <span class="action-title">Ir al POS</span>
@@ -86,7 +100,6 @@
         <span class="action-desc">Ajustes manuales</span>
       </mat-card>
     </ng-container>
-
   </div>
 
 </div>

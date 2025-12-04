@@ -25,7 +25,6 @@ export class SidebarComponent implements OnInit {
   authService = inject(AuthService);
   userRole: 'Admin' | 'Cajero' | null = null;
 
-  // ngOnInit se ejecuta cuando el componente se inicia
   ngOnInit(): void {
     this.userRole = this.authService.getUserRole();
   }

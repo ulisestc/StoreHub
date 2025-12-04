@@ -6,6 +6,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 import { AuthService } from '../../../services/auth.service';
 import { ProductService } from '../../../services/product.service';
@@ -20,7 +21,8 @@ import { ReportService } from '../../../services/report.service';
     MatCardModule,
     MatButtonModule,
     MatIconModule,
-    MatToolbarModule
+    MatToolbarModule,
+    MatProgressSpinnerModule
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
@@ -28,11 +30,14 @@ import { ReportService } from '../../../services/report.service';
 export class HomeComponent implements OnInit {
 
   userRole: 'Admin' | 'Cajero' | null = null;
-  userName: string = 'Usuario'; // Nombre simulado
+  userName: string = 'Usuario';
 
   salesToday: number = 0;
   transactionsToday: number = 0;
-  totalProducts: number | string = '--';
+  totalProducts: number = 0;
+
+  loadingSales: boolean = false;
+  loadingProducts: boolean = false;
 
   private authService = inject(AuthService);
   private productService = inject(ProductService);
@@ -54,14 +59,21 @@ export class HomeComponent implements OnInit {
   }
 
   loadDashboardMetrics(): void {
+    this.loadingProducts = true;
     this.productService.getProductsCount().subscribe({
-      next: (count) => this.totalProducts = count,
-      error: (err) => console.error('Error cargando total productos', err)
+      next: (count) => {
+        this.totalProducts = count;
+        this.loadingProducts = false;
+      },
+      error: (err) => {
+        console.error('Error cargando total productos', err);
+        this.loadingProducts = false;
+      }
     });
 
+    this.loadingSales = true;
     const todayStart = new Date();
     todayStart.setHours(0, 0, 0, 0);
-
     const todayEnd = new Date();
     todayEnd.setHours(23, 59, 59, 999);
 
@@ -69,8 +81,12 @@ export class HomeComponent implements OnInit {
       next: (report) => {
         this.salesToday = report.totalIngresos;
         this.transactionsToday = report.totalTransacciones;
+        this.loadingSales = false;
       },
-      error: (err) => console.error('Error cargando reporte de ventas', err)
+      error: (err) => {
+        console.error('Error cargando reporte de ventas', err);
+        this.loadingSales = false;
+      }
     });
   }
 }

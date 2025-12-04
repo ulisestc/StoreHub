@@ -22,15 +22,12 @@ import { ClientFormComponent } from './screens/dashboard/clients/client-form/cli
 
 import { ProfileEditComponent } from './screens/dashboard/profile/profile-edit/profile-edit.component';
 
-// Se importa el Guard
 import { authGuard } from './shared/guards/auth.guard';
 
-// Se importa el guard de rol
 import { roleGuard } from './shared/guards/role.guard';
 
 export const routes: Routes = [
   // --- RUTAS PÚBLICAS ---
-  // La Landing Page será la ruta raíz
   {
     path: '',
     component: LandingComponent
@@ -45,64 +42,57 @@ export const routes: Routes = [
     component: RegisterComponent
   },
 
-  // --- RUTAS PRIVADAS (Protegidas) ---
-  // Usamos el DashboardComponent como layout principal
+  // --- RUTAS PRIVADAS ---
   {
     path: 'dashboard',
     component: DashboardComponent,
-    canActivate: [authGuard], // Se aplica el Guard aquí
-    // Estas son las "Rutas Hijas" que se cargarán dentro del <router-outlet> del Dashboard
+    canActivate: [authGuard],
     children: [
       {
-        path: '', // Esta es la ruta por defecto (ej. /dashboard)
+        path: '',
         component: HomeComponent
       },
-      // --- NUEVA RUTA DE PERFIL (Para todos los roles) ---
+      // --- RUTA DE PERFIL  ---
       {
         path: 'profile',
         component: ProfileEditComponent
-        // No necesita RoleGuard
       },
       // --- RUTAS DE CAJERO Y ADMIN ---
-      // No necesitan RoleGuard porque el AuthGuard ya hizo el trabajo
-      // y el Sidebar los muestra a ambos.
       { path: 'sales/pos', component: PosComponent },
       { path: 'sales/history', component: SaleHistoryComponent },
 
       // --- RUTAS DE PRODUCTOS ---
       {
-        path: 'products/new', // Ruta para crear
+        path: 'products/new',
         component: ProductFormComponent,
         canActivate: [roleGuard],
         data: { expectedRoles: ['Admin'] }
       },
       {
-        path: 'products/edit/:id', // Ruta para editar
+        path: 'products/edit/:id',
         component: ProductFormComponent,
         canActivate: [roleGuard],
         data: { expectedRoles: ['Admin'] }
       },
-      // Aquí aplicamos el RoleGuard
       {
         path: 'products',
         component: ProductListComponent,
-        canActivate: [roleGuard], // <-- Aplicamos el guard
-        data: { expectedRoles: ['Admin'] } // <-- Le decimos al guard qué rol esperamos
+        canActivate: [roleGuard],
+        data: { expectedRoles: ['Admin'] }
       },
       // --- RUTAS DE CATEGORÍAS ---
       {
-        path: 'categories/new', // Ruta para crear
+        path: 'categories/new',
         component: CategoryFormComponent,
         canActivate: [roleGuard],
         data: { expectedRoles: ['Admin'] }
       },
       {
-        path: 'categories/edit/:id', // Ruta para editar
+        path: 'categories/edit/:id',
         component: CategoryFormComponent,
         canActivate: [roleGuard],
         data: { expectedRoles: ['Admin'] }
       },
-      // Aquí aplicamos el RoleGuard
       {
         path: 'categories',
         component: CategoryListComponent,

@@ -1,7 +1,6 @@
 import { Component, Inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-// Importaciones de Material
 import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -20,17 +19,16 @@ import { MatIconModule } from '@angular/material/icon';
 })
 export class ConfirmSaleModalComponent {
 
-  // Inyectamos los datos (el total) y la referencia al diálogo
   constructor(
     public dialogRef: MatDialogRef<ConfirmSaleModalComponent>,
     @Inject(MAT_DIALOG_DATA) public data: { total: number }
   ) { }
 
   onCancel(): void {
-    this.dialogRef.close(false); // Devuelve 'false' si cancela
+    this.dialogRef.close(false);
   }
 
   onConfirm(): void {
-    this.dialogRef.close(true); // Devuelve 'true' si confirma
+    this.dialogRef.close(true);
   }
 }

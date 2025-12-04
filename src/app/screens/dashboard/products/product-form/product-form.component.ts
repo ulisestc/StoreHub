@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angular/forms';
 
-// Importaciones de Angular Material
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
@@ -41,7 +40,6 @@ import { Category } from '../../../../shared/interfaces/category';
 })
 export class ProductFormComponent implements OnInit {
 
-  // Título de la página (cambiará si es 'editar')
   pageTitle: string = 'Crear Nuevo Producto';
 
   // Categorías y estados
@@ -51,12 +49,10 @@ export class ProductFormComponent implements OnInit {
     { value: false, viewValue: 'Inactivo' },
   ];
 
-  // Nueva propiedad para guardar el ID actual
   private currentProductId: string | null = null;
   isEditMode = false;
   isLoading = false;
 
-  // Inyecta los servicios
   private route = inject(ActivatedRoute);
   private productService = inject(ProductService);
   private categoryService = inject(CategoryService);
@@ -68,7 +64,6 @@ export class ProductFormComponent implements OnInit {
   ngOnInit(): void {
     this.initForm();
 
-    // Cargar categorías
     this.categoryService.getCategories().subscribe({
       next: (categories) => {
         this.categories = categories;
@@ -79,21 +74,17 @@ export class ProductFormComponent implements OnInit {
       }
     });
 
-    // Lee el ID de la URL
     this.route.paramMap.subscribe(params => {
       this.currentProductId = params.get('id');
 
       if (this.currentProductId) {
-        // --- MODO EDICIÓN ---
         this.isEditMode = true;
         this.pageTitle = 'Editar Producto';
         this.isLoading = true;
 
-        // Carga los datos del producto
         this.productService.getProductById(this.currentProductId).subscribe({
           next: (product) => {
             if (product) {
-              // Rellena el formulario con los datos
               this.productForm.patchValue({
                 name: product.name,
                 description: product.description || '',
@@ -115,7 +106,6 @@ export class ProductFormComponent implements OnInit {
           }
         });
       } else {
-        // --- MODO CREAR ---
         this.isEditMode = false;
         this.pageTitle = 'Crear Nuevo Producto';
       }
@@ -159,7 +149,6 @@ export class ProductFormComponent implements OnInit {
     });
   }
 
-  // Métodos helper para obtener errores
   getErrorMessage(fieldName: string): string {
     const control = this.productForm.get(fieldName);
     if (!control || !control.errors || !control.touched) return '';
@@ -187,7 +176,6 @@ export class ProductFormComponent implements OnInit {
   }
 
   onSubmit(): void {
-    // Marcar todos los campos como touched para mostrar errores
     Object.keys(this.productForm.controls).forEach(key => {
       this.productForm.get(key)?.markAsTouched();
     });
@@ -196,7 +184,6 @@ export class ProductFormComponent implements OnInit {
       const productData = this.productForm.value;
 
       if (this.isEditMode && this.currentProductId) {
-        // --- Lógica de ACTUALIZAR ---
         this.productService.updateProduct(this.currentProductId, productData).subscribe({
           next: () => {
             this.snackBar.open('Producto actualizado exitosamente', 'Cerrar', { duration: 3000 });
@@ -208,7 +195,6 @@ export class ProductFormComponent implements OnInit {
           }
         });
       } else {
-        // --- Lógica de CREAR ---
         this.productService.createProduct(productData).subscribe({
           next: () => {
             this.snackBar.open('Producto creado exitosamente', 'Cerrar', { duration: 3000 });

@@ -31,7 +31,6 @@ export class ClientService {
             results: response
           };
         }
-        // Fallback
         return {
           count: 0,
           results: []
