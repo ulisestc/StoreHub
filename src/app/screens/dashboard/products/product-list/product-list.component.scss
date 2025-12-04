@@ -62,13 +62,33 @@ $color-danger: #f87171;
   overflow: hidden;
   border: 1px solid $color-border;
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+  min-height: 300px;
+  position: relative;
+
+  .loading-spinner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 80px 20px;
+    color: $color-text-muted;
+
+    mat-spinner {
+      margin-bottom: 20px;
+    }
+
+    p {
+      font-size: 1rem;
+      margin: 0;
+    }
+  }
 
   table {
     width: 100%;
     background-color: transparent;
     border-collapse: separate;
     border-spacing: 0;
-    
+
     th.mat-mdc-header-cell {
       background-color: rgba(0, 0, 0, 0.2);
       color: $color-text-muted;
@@ -81,7 +101,7 @@ $color-danger: #f87171;
       vertical-align: middle;
       height: 56px;
     }
-    
+
     td.mat-mdc-cell {
       color: $color-text-main;
       border-bottom: 1px solid $color-border;
@@ -130,7 +150,7 @@ $color-danger: #f87171;
 
     .stock-cell {
       font-weight: 500;
-      
+
       .low-stock {
         color: $color-danger;
         font-weight: 700;
@@ -146,13 +166,13 @@ $color-danger: #f87171;
         text-transform: uppercase;
         letter-spacing: 0.5px;
         display: inline-block;
-        
+
         &.active {
           background-color: rgba($color-success, 0.15);
           color: $color-success;
           border: 1px solid rgba($color-success, 0.3);
         }
-        
+
         &.inactive {
           background-color: rgba($color-danger, 0.15);
           color: $color-danger;
@@ -168,14 +188,14 @@ $color-danger: #f87171;
 
     .actions-cell {
       text-align: right;
-      
+
       .actions-wrapper {
         display: flex;
         justify-content: flex-end;
         align-items: center;
         gap: 8px;
       }
-      
+
       button {
         width: 40px;
         height: 40px;
@@ -183,7 +203,7 @@ $color-danger: #f87171;
         align-items: center;
         justify-content: center;
         border-radius: 50%;
-        
+
         mat-icon {
           font-size: 20px;
           width: 20px;
@@ -202,7 +222,7 @@ $color-danger: #f87171;
 
     .data-row {
       transition: background-color 0.2s ease;
-      
+
       &:hover {
         background-color: rgba(255, 255, 255, 0.03);
       }
@@ -234,7 +254,7 @@ $color-danger: #f87171;
 @media (max-width: 768px) {
   .table-container {
     overflow-x: auto;
-    
+
     table {
       min-width: 800px;
     }

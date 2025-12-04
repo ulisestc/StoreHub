@@ -19,8 +19,6 @@ import { Product } from '../../../../shared/interfaces/product';
 import { SalesService } from '../../../../services/sales.service';
 import { ClientService } from '../../../../services/client.service';
 import { Client } from '../../../../shared/interfaces/client';
-import { Category } from '../../../../shared/interfaces/category';
-import { CategoryService } from '../../../../services/category.service';
 
 @Component({
   selector: 'app-pos',
@@ -51,15 +49,11 @@ export class PosComponent implements OnInit {
   clients: Client[] = [];
   selectedClientId: string | null = null;
   searchQuery: string = '';
-  categories: Category[] = [];
-  selectedCategoryId: string | undefined = undefined;
 
-  // Inyecciones
   private productService = inject(ProductService);
   private snackBar = inject(MatSnackBar);
   private salesService = inject(SalesService);
   private clientService = inject(ClientService);
-  private categoryService = inject(CategoryService);
   private dialog = inject(MatDialog);
   private LOW_STOCK_THRESHOLD = 5;
 
@@ -68,37 +62,25 @@ export class PosComponent implements OnInit {
   });
 
   ngOnInit(): void {
-    this.loadCategories();
-    this.loadProducts();
+    this.loadAllProducts();
     this.loadClients();
   }
 
-  loadCategories(): void {
-    this.categoryService.getCategories().subscribe({
+  loadAllProducts(): void {
+    console.log('🔍 Iniciando carga de productos...');
+    this.productService.getProducts().subscribe({
       next: (data) => {
-        this.categories = data;
-      },
-      error: (error) => {
-        console.error('Error al cargar categorías:', error);
-      }
-    });
-  }
-
-  loadProducts(): void {
-    console.log('Iniciando carga de productos...');
-    this.productService.getProducts(this.searchQuery, this.selectedCategoryId).subscribe({
-      next: (data) => {
-        console.log(' Respuesta del servidor:', data);
-        console.log('Tipo de dato recibido:', typeof data);
-        console.log('Es array?:', Array.isArray(data));
+        console.log('✅ Respuesta del servidor:', data);
+        console.log('📊 Tipo de dato recibido:', typeof data);
+        console.log('📦 Es array?:', Array.isArray(data));
         // Asegurar que data sea un array
         this.allProducts = Array.isArray(data) ? data : [];
         this.filteredProducts = this.allProducts;
-        console.log('Productos cargados:', this.allProducts.length);
+        console.log('🎯 Productos cargados:', this.allProducts.length);
       },
       error: (error) => {
-        console.error('Error cargando productos:', error);
-        console.error('Detalles del error:', {
+        console.error('❌ Error cargando productos:', error);
+        console.error('📄 Detalles del error:', {
           status: error.status,
           statusText: error.statusText,
           message: error.message,
@@ -109,20 +91,6 @@ export class PosComponent implements OnInit {
         this.showError('Error al cargar los productos');
       }
     });
-  }
-
-  onSearchChange(): void {
-    this.loadProducts();
-  }
-
-  onCategoryChange(): void {
-    this.loadProducts();
-  }
-
-  clearFilters(): void {
-    this.searchQuery = '';
-    this.selectedCategoryId = undefined;
-    this.loadProducts();
   }
 
   loadClients(): void {
@@ -335,7 +303,7 @@ export class PosComponent implements OnInit {
   private finishSale(lowStockProducts: any[]): void {
     this.ticketItems = [];
     this.calculateTotal();
-    this.loadProducts();
+    this.loadAllProducts();
 
     if (lowStockProducts.length > 0) {
       this.dialog.open(LowStockWarningModalComponent, {

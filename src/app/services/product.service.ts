@@ -1,8 +1,9 @@
-import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Injectable, inject } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable, forkJoin } from 'rxjs';
+import { map, switchMap } from 'rxjs/operators';
 import { Product } from '../shared/interfaces/product';
+import { CategoryService } from './category.service';
 import { environment } from '../../environments/environment';
 
 const apiUrl = environment.apiUrl;
@@ -12,20 +13,45 @@ const apiUrl = environment.apiUrl;
 })
 export class ProductService {
 
+  private categoryService = inject(CategoryService);
+
   constructor(private http: HttpClient) { }
 
+  getProducts(page: number = 1, pageSize: number = 10): Observable<{count: number, results: Product[]}> {
+    return forkJoin({
+      productsData: this.http.get<any>(`${apiUrl}/products/?page=${page}&page_size=${pageSize}`),
+      categories: this.categoryService.getCategories()
+    }).pipe(
+      map(({productsData, categories}) => {
+        // Crear un mapa de categorías por ID
+        const categoryMap = new Map(categories.map(cat => [cat.id, cat.name]));
 
-getProducts(search?: string, categoryId?: number | string): Observable<Product[]> {
-    let params = new HttpParams();
-    // metemos parametros si hay
-    if (search) {
-      params = params.set('search', search);
-    }
-    if (categoryId) {
-      params = params.set('category', categoryId);
-    }
-    return this.http.get<any>(`${apiUrl}/products/`, { params }).pipe(
-      map(response => response.results || response)
+        let products: Product[];
+        let count: number;
+
+        // Manejar diferentes formatos de respuesta
+        if (productsData && productsData.results && Array.isArray(productsData.results)) {
+          products = productsData.results;
+          count = productsData.count || products.length;
+        } else if (Array.isArray(productsData)) {
+          products = productsData;
+          count = products.length;
+        } else {
+          products = [];
+          count = 0;
+        }
+
+        // Agregar el nombre de la categoría a cada producto
+        const productsWithCategoryName = products.map(product => ({
+          ...product,
+          categoryName: categoryMap.get(product.category) || 'Sin categoría'
+        }));
+
+        return {
+          count,
+          results: productsWithCategoryName
+        };
+      })
     );
   }
 

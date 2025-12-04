@@ -20,10 +20,31 @@ $color-error: #ef4444;
     background-color: $color-bg-card !important;
     border-radius: 16px !important;
     border: 1px solid rgba(255, 255, 255, 0.05);
+    position: relative;
+    min-height: 400px;
   }
 
   mat-card-content {
     padding: 32px 24px !important;
+  }
+
+  .loading-spinner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 400px;
+    padding: 80px 20px;
+    color: $color-text-muted;
+
+    mat-spinner {
+      margin-bottom: 20px;
+    }
+
+    p {
+      font-size: 1rem;
+      margin: 0;
+    }
   }
 }
 

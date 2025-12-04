@@ -9,7 +9,13 @@
   <mat-card>
     <mat-card-content>
 
-      <form [formGroup]="productForm" (ngSubmit)="onSubmit()">
+      <!-- Spinner mientras se cargan los datos -->
+      <div class="loading-spinner" *ngIf="isLoading">
+        <mat-spinner diameter="50"></mat-spinner>
+        <p>Cargando datos del producto...</p>
+      </div>
+
+      <form [formGroup]="productForm" (ngSubmit)="onSubmit()" *ngIf="!isLoading">
 
         <div class="form-row">
           <mat-form-field appearance="outline" class="form-field" subscriptSizing="dynamic">
@@ -78,8 +84,8 @@
           <mat-form-field appearance="outline" class="form-field" subscriptSizing="dynamic">
             <mat-label>Categoría</mat-label>
             <mat-select formControlName="category" required>
-              <mat-option *ngFor="let cat of categoriasSimuladas" [value]="cat">
-                {{cat}}
+              <mat-option *ngFor="let cat of categories" [value]="cat.id">
+                {{cat.name}}
               </mat-option>
             </mat-select>
             <mat-icon matSuffix>category</mat-icon>
@@ -90,14 +96,14 @@
 
           <mat-form-field appearance="outline" class="form-field" subscriptSizing="dynamic">
             <mat-label>Estado</mat-label>
-            <mat-select formControlName="estado" required>
+            <mat-select formControlName="is_active" required>
               <mat-option *ngFor="let estado of estadosSimulados" [value]="estado.value">
                 {{estado.viewValue}}
               </mat-option>
             </mat-select>
             <mat-icon matSuffix>toggle_on</mat-icon>
-            <mat-error *ngIf="hasError('estado')">
-              {{ getErrorMessage('estado') }}
+            <mat-error *ngIf="hasError('is_active')">
+              {{ getErrorMessage('is_active') }}
             </mat-error>
           </mat-form-field>
         </div>

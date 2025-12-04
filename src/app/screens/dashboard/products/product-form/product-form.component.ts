@@ -11,10 +11,14 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 import { ActivatedRoute } from '@angular/router';
 import { ProductService } from '../../../../services/product.service';
+import { CategoryService } from '../../../../services/category.service';
 import { Product } from '../../../../shared/interfaces/product';
+import { Category } from '../../../../shared/interfaces/category';
 
 @Component({
   selector: 'app-product-form',
@@ -29,7 +33,8 @@ import { Product } from '../../../../shared/interfaces/product';
     MatSelectModule,
     MatToolbarModule,
     MatCardModule,
-    MatIconModule
+    MatIconModule,
+    MatProgressSpinnerModule
   ],
   templateUrl: './product-form.component.html',
   styleUrl: './product-form.component.scss'
@@ -39,27 +44,40 @@ export class ProductFormComponent implements OnInit {
   // Título de la página (cambiará si es 'editar')
   pageTitle: string = 'Crear Nuevo Producto';
 
-  // Datos simulados para los <select>
-  // En el futuro, las categorías vendrán de un servicio
-  categoriasSimuladas = ['Electrónica', 'Accesorios', 'Ropa', 'Hogar'];
+  // Categorías y estados
+  categories: Category[] = [];
   estadosSimulados = [
-    { value: 'activo', viewValue: 'Activo' },
-    { value: 'inactivo', viewValue: 'Inactivo' },
+    { value: true, viewValue: 'Activo' },
+    { value: false, viewValue: 'Inactivo' },
   ];
 
   // Nueva propiedad para guardar el ID actual
   private currentProductId: string | null = null;
   isEditMode = false;
+  isLoading = false;
 
   // Inyecta los servicios
   private route = inject(ActivatedRoute);
   private productService = inject(ProductService);
+  private categoryService = inject(CategoryService);
   private router = inject(Router);
+  private snackBar = inject(MatSnackBar);
 
   productForm!: FormGroup;
 
   ngOnInit(): void {
     this.initForm();
+
+    // Cargar categorías
+    this.categoryService.getCategories().subscribe({
+      next: (categories) => {
+        this.categories = categories;
+      },
+      error: (error) => {
+        console.error('Error cargando categorías:', error);
+        this.snackBar.open('Error al cargar las categorías', 'Cerrar', { duration: 3000 });
+      }
+    });
 
     // Lee el ID de la URL
     this.route.paramMap.subscribe(params => {
@@ -69,14 +87,30 @@ export class ProductFormComponent implements OnInit {
         // --- MODO EDICIÓN ---
         this.isEditMode = true;
         this.pageTitle = 'Editar Producto';
+        this.isLoading = true;
 
         // Carga los datos del producto
-        this.productService.getProductById(this.currentProductId).subscribe(product => {
-          if (product) {
-            // Rellena el formulario con los datos
-            this.productForm.patchValue(product);
-          } else {
-            // (Opcional) Manejar caso de producto no encontrado
+        this.productService.getProductById(this.currentProductId).subscribe({
+          next: (product) => {
+            if (product) {
+              // Rellena el formulario con los datos
+              this.productForm.patchValue({
+                name: product.name,
+                description: product.description || '',
+                sku: product.sku,
+                price: product.price,
+                cost_price: product.cost_price,
+                stock: product.stock,
+                category: product.category,
+                is_active: product.is_active
+              });
+            }
+            this.isLoading = false;
+          },
+          error: (error) => {
+            console.error('Error cargando producto:', error);
+            this.snackBar.open('Error al cargar los datos del producto', 'Cerrar', { duration: 3000 });
+            this.isLoading = false;
             this.router.navigate(['/dashboard/products']);
           }
         });
@@ -121,7 +155,7 @@ export class ProductFormComponent implements OnInit {
         Validators.pattern(/^\d+$/)
       ]),
       category: new FormControl('', [Validators.required]),
-      estado: new FormControl('activo', [Validators.required]),
+      is_active: new FormControl(true, [Validators.required]),
     });
   }
 
@@ -162,17 +196,30 @@ export class ProductFormComponent implements OnInit {
       const productData = this.productForm.value;
 
       if (this.isEditMode && this.currentProductId) {
-        // --- Lógica de ACTUALIZAR (Simulada) ---
-        console.log('Modo Edición. Datos:', productData);
-        // En el futuro: this.productService.updateProduct(this.currentProductId, productData)...
-        this.router.navigate(['/dashboard/products']); // Redirige a la lista
+        // --- Lógica de ACTUALIZAR ---
+        this.productService.updateProduct(this.currentProductId, productData).subscribe({
+          next: () => {
+            this.snackBar.open('Producto actualizado exitosamente', 'Cerrar', { duration: 3000 });
+            this.router.navigate(['/dashboard/products']);
+          },
+          error: (error) => {
+            console.error('Error actualizando producto:', error);
+            this.snackBar.open('Error al actualizar el producto', 'Cerrar', { duration: 3000 });
+          }
+        });
       } else {
-        // --- Lógica de CREAR (Simulada) ---
-        console.log('Modo Creación. Datos:', productData);
-        // En el futuro: this.productService.createProduct(productData)...
-        this.router.navigate(['/dashboard/products']); // Redirige a la lista
+        // --- Lógica de CREAR ---
+        this.productService.createProduct(productData).subscribe({
+          next: () => {
+            this.snackBar.open('Producto creado exitosamente', 'Cerrar', { duration: 3000 });
+            this.router.navigate(['/dashboard/products']);
+          },
+          error: (error) => {
+            console.error('Error creando producto:', error);
+            this.snackBar.open('Error al crear el producto', 'Cerrar', { duration: 3000 });
+          }
+        });
       }
-
     } else {
       console.log('Formulario inválido. Por favor, corrige los errores.');
     }
