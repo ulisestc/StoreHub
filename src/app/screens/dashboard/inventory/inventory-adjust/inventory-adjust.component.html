@@ -12,7 +12,13 @@
   </header>
 
   <div class="table-container mat-elevation-z8">
-    <table mat-table [dataSource]="dataSource">
+
+    <div *ngIf="isLoading" class="loading-spinner">
+      <mat-spinner diameter="50"></mat-spinner>
+      <p>Cargando movimientos de inventario...</p>
+    </div>
+
+    <table mat-table [dataSource]="dataSource" *ngIf="!isLoading">
 
       <ng-container matColumnDef="timestamp">
         <th mat-header-cell *matHeaderCellDef> Fecha </th>
@@ -55,12 +61,13 @@
 
     </table>
 
-    <div *ngIf="dataSource.length === 0" class="empty-state">
+    <div *ngIf="!isLoading && dataSource.length === 0" class="empty-state">
       <mat-icon>history_toggle_off</mat-icon>
       <p>No hay movimientos registrados.</p>
     </div>
 
     <mat-paginator
+      *ngIf="!isLoading && totalItems > 0"
       [length]="totalItems"
       [pageSize]="pageSize"
       [pageIndex]="currentPage"

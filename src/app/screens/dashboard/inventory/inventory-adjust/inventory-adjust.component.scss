@@ -57,6 +57,28 @@ $color-merma: #f87171;
   }
 }
 
+.loading-spinner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 20px;
+  gap: 24px;
+  min-height: 300px;
+
+  mat-spinner {
+    ::ng-deep circle {
+      stroke: $color-primary !important;
+    }
+  }
+
+  p {
+    color: $color-text-muted;
+    font-size: 1rem;
+    margin: 0;
+  }
+}
+
 .table-container {
   background-color: $color-bg-card;
   border-radius: 16px;
@@ -69,7 +91,7 @@ $color-merma: #f87171;
     background-color: transparent;
     border-collapse: separate;
     border-spacing: 0;
-    
+
     th.mat-mdc-header-cell {
       background-color: rgba(0, 0, 0, 0.2);
       color: $color-text-muted;
@@ -82,7 +104,7 @@ $color-merma: #f87171;
       vertical-align: middle;
       height: 56px;
     }
-    
+
     td.mat-mdc-cell {
       color: $color-text-main;
       border-bottom: 1px solid $color-border;
@@ -126,13 +148,13 @@ $color-merma: #f87171;
         text-transform: uppercase;
         letter-spacing: 0.5px;
         display: inline-block;
-        
+
         &.entrada {
           background-color: rgba($color-entrada, 0.15);
           color: $color-entrada;
           border: 1px solid rgba($color-entrada, 0.3);
         }
-        
+
         &.salida {
           background-color: rgba($color-salida, 0.15);
           color: $color-salida;
@@ -163,7 +185,7 @@ $color-merma: #f87171;
         align-items: center;
         gap: 8px;
         color: $color-text-muted;
-        
+
         mat-icon {
           font-size: 18px;
           width: 18px;
@@ -174,7 +196,7 @@ $color-merma: #f87171;
 
     .data-row {
       transition: background-color 0.2s ease;
-      
+
       &:hover {
         background-color: rgba(255, 255, 255, 0.03);
       }
@@ -206,7 +228,7 @@ $color-merma: #f87171;
 @media (max-width: 768px) {
   .table-container {
     overflow-x: auto;
-    
+
     table {
       min-width: 800px;
     }

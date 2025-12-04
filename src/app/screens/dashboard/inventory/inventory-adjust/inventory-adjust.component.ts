@@ -6,6 +6,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { MatChipsModule } from '@angular/material/chips';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { InventoryService } from '../../../../services/inventory.service';
 import { InventoryMovement } from '../../../../shared/interfaces/inventory-movement';
 import { MatDialog } from '@angular/material/dialog';
@@ -23,7 +24,8 @@ import { MatSnackBar } from '@angular/material/snack-bar';
     MatIconModule,
     MatToolbarModule,
     MatChipsModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    MatProgressSpinnerModule
   ],
   templateUrl: './inventory-adjust.component.html',
   styleUrl: './inventory-adjust.component.scss'
@@ -32,6 +34,7 @@ export class InventoryAdjustComponent implements OnInit {
 
   displayedColumns: string[] = ['timestamp', 'product', 'type', 'quantity'];
   dataSource: InventoryMovement[] = [];
+  isLoading = false;
 
   totalItems = 0;
   pageSize = 10;
@@ -47,12 +50,20 @@ export class InventoryAdjustComponent implements OnInit {
   }
 
   loadMovements(pageIndex: number = 0): void {
+    this.isLoading = true;
     const backendPage = pageIndex + 1;
 
-    this.inventoryService.getMovements(backendPage).subscribe(response => {
-      this.dataSource = response.results;
-      this.totalItems = response.count;
-      this.currentPage = pageIndex;
+    this.inventoryService.getMovements(backendPage).subscribe({
+      next: (response) => {
+        this.dataSource = response.results;
+        this.totalItems = response.count;
+        this.currentPage = pageIndex;
+        this.isLoading = false;
+      },
+      error: (error) => {
+        console.error('Error cargando movimientos:', error);
+        this.isLoading = false;
+      }
     });
   }
 
