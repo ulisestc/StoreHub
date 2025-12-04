@@ -20,7 +20,6 @@ export class ProductService {
   getProducts(search?: string, categoryId?: number | string, page?: number, pageSize: number = 10): Observable<{count: number, results: Product[]}> {
     let params = new HttpParams();
 
-    // Agregar parámetros si hay búsqueda o filtro de categoría
     if (search) {
       params = params.set('search', search);
     }
@@ -60,13 +59,11 @@ export class ProductService {
       categories: this.categoryService.getCategories()
     }).pipe(
       map(({productsData, categories}) => {
-        // Crear un mapa de categorías por ID
         const categoryMap = new Map(categories.map(cat => [cat.id, cat.name]));
 
         let products: Product[];
         let count: number;
 
-        // Manejar diferentes formatos de respuesta
         if (productsData && productsData.results && Array.isArray(productsData.results)) {
           products = productsData.results;
           count = productsData.count || products.length;
@@ -88,6 +85,12 @@ export class ProductService {
           results: productsWithCategoryName
         };
       })
+    );
+  }
+
+  getProductsCount(): Observable<number> {
+    return this.http.get<any>(`${apiUrl}/products/?page=1&page_size=1`).pipe(
+      map(response => response.count || 0)
     );
   }
 

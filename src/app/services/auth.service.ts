@@ -9,6 +9,7 @@ interface TokenData {
   refreshToken: string;
   expiresAt: number;
   role: 'Admin' | 'Cajero';
+  name: string;
 }
 
 interface LoginResponse {
@@ -71,7 +72,8 @@ export class AuthService {
               token: response.access,
               refreshToken: response.refresh,
               expiresAt: expiresAt,
-              role: role
+              role: role,
+              name: `${userInfo.first_name} ${userInfo.last_name}`
             };
 
             localStorage.setItem(this.TOKEN_KEY, response.access);
@@ -212,6 +214,22 @@ export class AuthService {
       return Math.max(0, Math.floor(timeRemaining / (60 * 1000)));
     } catch (error) {
       return 0;
+    }
+  }
+
+  getUserName(): string | null {
+    if (!this.isLoggedIn()) {
+      return null;
+    }
+    const tokenDataStr = localStorage.getItem(this.TOKEN_DATA_KEY);
+    if (!tokenDataStr) {
+      return null;
+    }
+    try {
+      const tokenData: TokenData = JSON.parse(tokenDataStr);
+      return tokenData.name || null;
+    } catch (error) {
+      return null;
     }
   }
 

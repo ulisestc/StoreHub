@@ -5,7 +5,7 @@
       <h1>¡Hola, {{ userName }}! </h1>
       <p>Bienvenido a tu panel de control.</p>
     </div>
-    
+
     <button mat-raised-button class="cta-button" routerLink="/dashboard/sales/pos">
       <mat-icon>point_of_sale</mat-icon>
       NUEVA VENTA
@@ -13,7 +13,7 @@
   </header>
 
   <div class="stats-grid" *ngIf="userRole === 'Admin'">
-    
+
     <mat-card class="stat-card primary-card">
       <mat-card-content>
         <div class="stat-icon">
@@ -21,7 +21,7 @@
         </div>
         <div class="stat-data">
           <span class="stat-label">Ventas del Día</span>
-          <span class="stat-value">$ 0.00</span>
+          <span class="stat-value">{{ salesToday | currency }}</span>
         </div>
       </mat-card-content>
     </mat-card>
@@ -33,7 +33,7 @@
         </div>
         <div class="stat-data">
           <span class="stat-label">Transacciones</span>
-          <span class="stat-value">0</span>
+          <span class="stat-value">{{ transactionsToday }}</span>
         </div>
       </mat-card-content>
     </mat-card>
@@ -45,16 +45,16 @@
         </div>
         <div class="stat-data">
           <span class="stat-label">Total Productos</span>
-          <span class="stat-value">--</span>
+          <span class="stat-value">{{ totalProducts }}</span>
         </div>
       </mat-card-content>
     </mat-card>
   </div>
 
   <h3 class="section-title">Accesos Rápidos</h3>
-  
+
   <div class="actions-grid">
-    
+
     <mat-card class="action-card" routerLink="/dashboard/sales/pos">
       <mat-icon class="action-icon">point_of_sale</mat-icon>
       <span class="action-title">Ir al POS</span>
@@ -79,7 +79,7 @@
         <span class="action-title">Reportes</span>
         <span class="action-desc">Ver estadísticas</span>
       </mat-card>
-      
+
       <mat-card class="action-card" routerLink="/dashboard/inventory">
         <mat-icon class="action-icon">rule</mat-icon>
         <span class="action-title">Inventario</span>
