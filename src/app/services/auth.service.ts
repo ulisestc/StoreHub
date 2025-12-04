@@ -253,4 +253,8 @@ export class AuthService {
   updateUserProfile(data: { first_name: string; last_name: string }): Observable<UserResponse> {
     return this.http.patch<UserResponse>(`${this.apiUrl}/auth/users/me/`, data);
   }
+
+  changePassword(data: { new_password: string; re_new_password: string; current_password: string }): Observable<void> {
+    return this.http.post<void>(`${this.apiUrl}/auth/users/set_password/`, data);
+  }
 }

@@ -1,6 +1,6 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule, FormGroup, FormControl, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
+import { ReactiveFormsModule, FormGroup, FormControl, Validators, AbstractControl, ValidationErrors, FormGroupDirective } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
@@ -8,6 +8,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AuthService } from '../../../../services/auth.service';
+import { delay } from 'rxjs';
 
 export function passwordsMatchValidator(control: AbstractControl): ValidationErrors | null {
   const newPassword = control.get('newPassword');
@@ -36,6 +37,8 @@ export function passwordsMatchValidator(control: AbstractControl): ValidationErr
   styleUrl: './profile-edit.component.scss'
 })
 export class ProfileEditComponent implements OnInit {
+
+  @ViewChild('passwordFormDirective') passwordFormDirective!: FormGroupDirective;
 
   profileForm!: FormGroup;
   passwordForm!: FormGroup;
@@ -109,15 +112,37 @@ export class ProfileEditComponent implements OnInit {
 
   onPasswordSubmit(): void {
     if (this.passwordForm.valid) {
-      this.snackBar.open('Contraseña actualizada con éxito', 'Cerrar', {
-        duration: 3000,
-        panelClass: ['snackbar-success']
-      });
-      this.passwordForm.reset();
+      const { currentPassword, newPassword, confirmPassword } = this.passwordForm.value;
 
-      this.hideCurrent = true;
-      this.hideNew = true;
-      this.hideConfirm = true;
+      const passwordData = {
+        new_password: newPassword,
+        re_new_password: confirmPassword,
+        current_password: currentPassword
+      };
+
+      this.authService.changePassword(passwordData).subscribe({
+        next: () => {
+          this.snackBar.open('Contraseña actualizada con éxito', 'Cerrar', {
+            duration: 3000,
+            panelClass: ['snackbar-success']
+          }).afterDismissed().subscribe(() => {
+            this.authService.logout();
+          });
+
+          this.passwordFormDirective.resetForm();
+
+          this.hideCurrent = true;
+          this.hideNew = true;
+          this.hideConfirm = true;
+        },
+        error: (error) => {
+          console.error('Error al cambiar contraseña:', error);
+          this.snackBar.open('Error al cambiar la contraseña. Verifique su contraseña actual.', 'Cerrar', {
+            duration: 3000,
+            panelClass: ['snackbar-error']
+          });
+        }
+      }); 
     }
   }
 }
