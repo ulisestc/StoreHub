@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { InventoryMovement } from '../shared/interfaces/inventory-movement';
 import { environment } from '../../environments/environment';
 
@@ -14,7 +15,9 @@ export class InventoryService {
   constructor(private http: HttpClient) { }
 
   getMovements(): Observable<InventoryMovement[]> {
-    return this.http.get<InventoryMovement[]>(`${apiUrl}/inventory/`);
+    return this.http.get<any>(`${apiUrl}/inventory/`).pipe(
+      map(response => response.results || response)
+    );
   }
 
   createMovement(movement: Omit<InventoryMovement, 'id' | 'fecha'>): Observable<InventoryMovement> {

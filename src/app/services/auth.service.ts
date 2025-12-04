@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+﻿import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { Observable, tap, catchError, of, switchMap } from 'rxjs';
@@ -6,6 +6,7 @@ import { environment } from '../../environments/environment';
 
 interface TokenData {
   token: string;
+  refreshToken: string;
   expiresAt: number;
   role: 'Admin' | 'Cajero';
 }
@@ -31,6 +32,7 @@ interface UserResponse {
 export class AuthService {
 
   private readonly TOKEN_KEY = 'authToken';
+  private readonly REFRESH_TOKEN_KEY = 'refreshToken';
   private readonly TOKEN_DATA_KEY = 'authTokenData';
   private readonly apiUrl = environment.apiUrl;
 
@@ -39,9 +41,6 @@ export class AuthService {
     private http: HttpClient
   ) { }
 
-  /**
-   * Login con el backend real
-   */
   login(email: string, password: string): Observable<boolean> {
     console.log('Iniciando login para:', email);
 
@@ -51,128 +50,137 @@ export class AuthService {
     }).pipe(
       tap(response => console.log('Token recibido del servidor')),
       switchMap(response => {
-        // Guardar token temporalmente
         localStorage.setItem(this.TOKEN_KEY, response.access);
         console.log('Token guardado temporalmente');
 
-        // Hacer segunda llamada para obtener información del usuario
-        // El interceptor agregará automáticamente el header Authorization
         return this.http.get<UserResponse>(`${this.apiUrl}/auth/users/me/`).pipe(
           tap(userInfo => {
             console.log('Información del usuario recibida:', userInfo);
 
-            // Token expira en 8 horas
             const expiresAt = Date.now() + (8 * 60 * 60 * 1000);
-
-            // Mapear el rol del backend al formato del frontend
             const role: 'Admin' | 'Cajero' = userInfo.role === 'admin' ? 'Admin' : 'Cajero';
 
             const tokenData: TokenData = {
               token: response.access,
+              refreshToken: response.refresh,
               expiresAt: expiresAt,
               role: role
             };
 
-            // Guardar token y datos en localStorage
             localStorage.setItem(this.TOKEN_KEY, response.access);
+            localStorage.setItem(this.REFRESH_TOKEN_KEY, response.refresh);
             localStorage.setItem(this.TOKEN_DATA_KEY, JSON.stringify(tokenData));
 
             console.log('Login exitoso, usuario:', userInfo.email, 'rol:', role);
-            console.log('Datos guardados en localStorage');
           }),
-          switchMap(() => {
-            console.log('Retornando true para indicar login exitoso');
-            return of(true);
-          })
+          switchMap(() => of(true))
         );
       }),
       catchError(error => {
         console.error('Error en login:', error);
-        console.error('Detalles del error:', {
-          status: error.status,
-          message: error.message,
-          error: error.error
-        });
-        // Limpiar cualquier token que se haya guardado
         localStorage.removeItem(this.TOKEN_KEY);
+        localStorage.removeItem(this.REFRESH_TOKEN_KEY);
         localStorage.removeItem(this.TOKEN_DATA_KEY);
         return of(false);
       })
     );
-  }  /**
-   * Cierra sesión y limpia todos los datos almacenados
-   */
+  }
+
+  refreshToken(): Observable<boolean> {
+    const refreshToken = localStorage.getItem(this.REFRESH_TOKEN_KEY);
+
+    if (!refreshToken) {
+      console.log('No hay refresh token disponible');
+      return of(false);
+    }
+
+    console.log('Renovando token...');
+
+    return this.http.post<{ access: string }>(`${this.apiUrl}/auth/jwt/refresh/`, {
+      refresh: refreshToken
+    }).pipe(
+      tap(response => {
+        const newExpiresAt = Date.now() + (8 * 60 * 60 * 1000);
+        localStorage.setItem(this.TOKEN_KEY, response.access);
+
+        const tokenDataStr = localStorage.getItem(this.TOKEN_DATA_KEY);
+        if (tokenDataStr) {
+          const tokenData: TokenData = JSON.parse(tokenDataStr);
+          tokenData.token = response.access;
+          tokenData.expiresAt = newExpiresAt;
+          localStorage.setItem(this.TOKEN_DATA_KEY, JSON.stringify(tokenData));
+        }
+      }),
+      switchMap(() => of(true)),
+      catchError(error => {
+        console.error('Error al renovar token:', error);
+        this.logout();
+        return of(false);
+      })
+    );
+  }
+
   logout(): void {
     localStorage.removeItem(this.TOKEN_KEY);
+    localStorage.removeItem(this.REFRESH_TOKEN_KEY);
     localStorage.removeItem(this.TOKEN_DATA_KEY);
     this.router.navigate(['/']);
   }
 
-  /**
-   * Obtiene el token actual
-   */
   getToken(): string | null {
-    // Verificar si el token ha expirado
-    if (this.isTokenExpired()) {
-      this.logout();
-      return null;
-    }
-    return localStorage.getItem(this.TOKEN_KEY);
-  }
-
-  /**
-   * Verifica si el usuario está autenticado y el token es válido
-   */
-  isLoggedIn(): boolean {
     const token = localStorage.getItem(this.TOKEN_KEY);
-    console.log('Verificando si está logueado. Token existe:', !!token);
 
     if (!token) {
-      console.log('No hay token, usuario NO logueado');
+      return null;
+    }
+
+    if (this.isTokenExpired()) {
+      return token;
+    }
+
+    const timeRemaining = this.getTokenExpirationTime();
+    if (timeRemaining < 30 && timeRemaining > 0) {
+      this.refreshToken().subscribe();
+    }
+
+    return token;
+  }
+
+  isLoggedIn(): boolean {
+    const token = localStorage.getItem(this.TOKEN_KEY);
+
+    if (!token) {
       return false;
     }
 
-    // Verificar si el token ha expirado
     if (this.isTokenExpired()) {
-      console.log('Token expirado, cerrando sesión');
       this.logout();
       return false;
     }
 
-    console.log('Usuario está logueado');
     return true;
   }
 
-  /**
-   * Verifica si el token ha expirado
-   */
   isTokenExpired(): boolean {
     const tokenDataStr = localStorage.getItem(this.TOKEN_DATA_KEY);
 
     if (!tokenDataStr) {
-      // Si no hay TOKEN_DATA pero sí hay TOKEN, asumir que es válido (recién logueado)
       const token = localStorage.getItem(this.TOKEN_KEY);
       if (token) {
-        return false; // Asumir que es válido
+        return false;
       }
-      return true; // Si no hay datos del token, considerarlo expirado
+      return true;
     }
 
     try {
       const tokenData: TokenData = JSON.parse(tokenDataStr);
       const now = Date.now();
-
-      // Verificar si la fecha de expiración ya pasó
       return now >= tokenData.expiresAt;
     } catch (error) {
-      console.error('Error al parsear datos del token:', error);
-      return true; // En caso de error, considerar el token como expirado
+      return true;
     }
   }
 
-  /**
-   * Obtiene el tiempo restante hasta la expiración del token (en minutos)
-   */
   getTokenExpirationTime(): number {
     const tokenDataStr = localStorage.getItem(this.TOKEN_DATA_KEY);
 
@@ -182,17 +190,12 @@ export class AuthService {
       const tokenData: TokenData = JSON.parse(tokenDataStr);
       const now = Date.now();
       const timeRemaining = tokenData.expiresAt - now;
-
-      // Convertir de milisegundos a minutos
       return Math.max(0, Math.floor(timeRemaining / (60 * 1000)));
     } catch (error) {
       return 0;
     }
   }
 
-  /**
-   * Obtiene el rol del usuario desde el token
-   */
   getUserRole(): 'Admin' | 'Cajero' | null {
     if (!this.isLoggedIn()) {
       return null;
@@ -201,15 +204,6 @@ export class AuthService {
     const tokenDataStr = localStorage.getItem(this.TOKEN_DATA_KEY);
 
     if (!tokenDataStr) {
-      // Fallback a la lógica antigua para tokens sin datos estructurados
-      const token = localStorage.getItem(this.TOKEN_KEY);
-      if (!token) return null;
-
-      if (token.includes('FAKE_ADMIN_TOKEN')) {
-        return 'Admin';
-      } else if (token.includes('FAKE_CAJERO_TOKEN')) {
-        return 'Cajero';
-      }
       return null;
     }
 
@@ -217,28 +211,18 @@ export class AuthService {
       const tokenData: TokenData = JSON.parse(tokenDataStr);
       return tokenData.role;
     } catch (error) {
-      console.error('Error al obtener el rol del usuario:', error);
       return null;
     }
   }
 
-  /**
-   * Verifica si el usuario tiene un rol específico
-   */
   hasRole(role: 'Admin' | 'Cajero'): boolean {
     return this.getUserRole() === role;
   }
 
-  /**
-   * Verifica si el usuario es administrador
-   */
   isAdmin(): boolean {
     return this.hasRole('Admin');
   }
 
-  /**
-   * Verifica si el usuario es cajero
-   */
   isCajero(): boolean {
     return this.hasRole('Cajero');
   }

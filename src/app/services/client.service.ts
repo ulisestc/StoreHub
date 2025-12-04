@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { Client } from '../shared/interfaces/client';
 import { environment } from '../../environments/environment';
 
@@ -14,7 +15,9 @@ export class ClientService {
   constructor(private http: HttpClient) { }
 
   getClients(): Observable<Client[]> {
-    return this.http.get<Client[]>(`${apiUrl}/clients/`);
+    return this.http.get<any>(`${apiUrl}/clients/`).pipe(
+      map(response => response.results || response)
+    );
   }
 
   getClientById(id: string): Observable<Client> {
