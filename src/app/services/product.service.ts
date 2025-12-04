@@ -110,9 +110,4 @@ export class ProductService {
     return this.http.delete(`${apiUrl}/products/${id}/`);
   }
 
-  decreaseStock(productId: string, quantity: number): Observable<any> {
-    return this.http.post(`${apiUrl}/products/${productId}/decrease-stock/`, {
-      quantity: quantity
-    });
-  }
 }

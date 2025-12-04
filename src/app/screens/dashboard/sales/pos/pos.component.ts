@@ -297,20 +297,6 @@ export class PosComponent implements OnInit {
       const productsWithLowStock: any[] = [];
       let itemsProcessed = 0;
 
-      this.ticketItems.forEach(item => {
-        this.productService.decreaseStock(item.id, item.cantidad).subscribe(() => {
-          itemsProcessed++;
-          const updatedProduct = this.filteredProducts.find((p: Product) => p.id === item.id);
-
-          if (updatedProduct && updatedProduct.stock <= this.LOW_STOCK_THRESHOLD) {
-            productsWithLowStock.push(updatedProduct);
-          }
-
-          if (itemsProcessed === this.ticketItems.length) {
-            this.finishSale(productsWithLowStock);
-          }
-        });
-      });
     });
   }
 
