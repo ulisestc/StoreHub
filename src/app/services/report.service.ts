@@ -26,7 +26,7 @@ export class ReportService {
 
   constructor(private http: HttpClient) { }
 
-  // Método del compañero: Obtiene HTML del backend
+
   getReportHtml(endpoint: string, params: any = {}): Observable<string> {
     let httpParams = new HttpParams();
     Object.keys(params).forEach(key => {
@@ -41,7 +41,6 @@ export class ReportService {
     });
   }
 
-  // Métodos propios: Calculan reportes en el frontend
   getSalesReport(startDate?: Date, endDate?: Date): Observable<any> {
     return forkJoin({
       sales: this.http.get<any>(`${apiUrl}/sales/`).pipe(
@@ -58,10 +57,10 @@ export class ReportService {
       )
     }).pipe(
       map(({ sales, products, categories }) => {
-        console.log('📊 Calculando reporte desde ventas, productos y categorías');
-        console.log('📦 Ventas:', sales.length);
-        console.log('📦 Productos:', products.length);
-        console.log('📦 Categorías:', categories.length);
+        console.log('Calculando reporte desde ventas, productos y categorías');
+        console.log('Ventas:', sales.length);
+        console.log('Productos:', products.length);
+        console.log('Categorías:', categories.length);
 
         let filteredSales = sales;
         if (startDate && endDate) {
@@ -73,7 +72,7 @@ export class ReportService {
           });
         }
 
-        console.log('📊 Ventas filtradas:', filteredSales.length);
+        console.log('Ventas filtradas:', filteredSales.length);
 
         const totalIngresos = filteredSales.reduce((sum: number, sale: Sale) =>
           sum + (Number(sale.total) || 0), 0
@@ -92,7 +91,7 @@ export class ReportService {
           }
         });
 
-        console.log('📊 Productos vendidos:', productSales.size);
+        console.log('Productos vendidos:', productSales.size);
 
         const topProducts = Array.from(productSales.entries())
           .map(([productId, data]) => {
@@ -122,7 +121,7 @@ export class ReportService {
           .sort((a, b) => b.sold - a.sold)
           .slice(0, 10);
 
-        console.log('📊 Top productos:', topProducts);
+        console.log('Top productos:', topProducts);
 
         return {
           totalIngresos,
@@ -131,7 +130,7 @@ export class ReportService {
         };
       }),
       catchError(error => {
-        console.error('❌ Error calculando reporte:', error);
+        console.error('Error calculando reporte:', error);
         return of({
           totalIngresos: 0,
           totalTransacciones: 0,
@@ -152,7 +151,7 @@ export class ReportService {
         };
       }),
       catchError(error => {
-        console.error('❌ Error en getInventoryReport:', error);
+        console.error('Error en getInventoryReport:', error);
         return of({ products: [], threshold });
       })
     );
