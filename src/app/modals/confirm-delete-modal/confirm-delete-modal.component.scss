@@ -1,0 +1,70 @@
+$color-bg-card: #1e293b;
+$color-primary: #448aff;
+$color-danger: #ef4444;
+$color-text-main: #f1f5f9;
+$color-text-muted: #94a3b8;
+$color-border: rgba(255, 255, 255, 0.05);
+
+::ng-deep .mat-mdc-dialog-container .mat-mdc-dialog-surface {
+  background-color: $color-bg-card !important;
+  border-radius: 16px !important;
+  color: $color-text-main;
+  max-width: 450px;
+}
+
+::ng-deep .mat-mdc-dialog-title {
+  font-family: 'Poppins', sans-serif;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: $color-text-main;
+  padding: 24px 24px 8px;
+  margin: 0;
+  background: linear-gradient(135deg, rgba($color-primary, 0.1) 0%, rgba($color-primary, 0.05) 100%);
+}
+
+::ng-deep .mat-mdc-dialog-content {
+  padding: 20px 24px;
+  color: $color-text-muted;
+  font-size: 1rem;
+  line-height: 1.6;
+
+  p {
+    margin: 0;
+  }
+}
+
+::ng-deep .mat-mdc-dialog-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  padding: 20px 24px;
+  background-color: rgba(0, 0, 0, 0.2);
+  border-top: 1px solid $color-border;
+  margin: 0;
+
+  button[mat-button]:not([color="warn"]) {
+    color: $color-text-muted;
+    padding: 0 20px;
+
+    &:hover {
+      color: $color-text-main;
+      background-color: rgba(255, 255, 255, 0.05);
+    }
+  }
+
+  button[color="warn"] {
+    background: linear-gradient(135deg, $color-primary 0%, #667eea 100%);
+    color: white !important;
+    font-weight: 600;
+    border-radius: 8px;
+    padding: 0 24px;
+    height: 44px;
+    min-width: 140px;
+    box-shadow: 0 4px 15px rgba($color-primary, 0.3);
+
+    &:hover {
+      box-shadow: 0 6px 20px rgba($color-primary, 0.4);
+      transform: translateY(-2px);
+    }
+  }
+}

@@ -6,9 +6,25 @@ $color-error: #ef4444;
 
 .page-header {
   margin-bottom: 20px;
-  background-color: $color-bg-card !important;
+  background: linear-gradient(135deg, rgba($color-primary, 0.1) 0%, rgba($color-primary, 0.05) 100%);
   color: $color-text-main !important;
   border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  padding: 16px;
+  border-radius: 16px 16px 0 0;
+
+  a[mat-icon-button] {
+    color: $color-primary;
+
+    &:hover {
+      background-color: rgba($color-primary, 0.1);
+    }
+  }
+
+  span {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+  }
 }
 
 .form-container {
@@ -22,6 +38,8 @@ $color-error: #ef4444;
     border: 1px solid rgba(255, 255, 255, 0.05);
     position: relative;
     min-height: 400px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
   }
 
   mat-card-content {
@@ -156,18 +174,20 @@ $color-error: #ef4444;
   display: flex;
   justify-content: flex-end;
   gap: 12px;
-  padding: 24px 0 0 0 !important;
+  padding: 20px 0 0 0 !important;
   margin-top: 8px;
   border-top: 1px solid rgba(255, 255, 255, 0.05);
 
   .cancel-btn {
     color: $color-text-muted !important;
+    padding: 0 20px;
 
     mat-icon {
       margin-right: 4px;
     }
 
     &:hover {
+      color: $color-text-main !important;
       background-color: rgba(255, 255, 255, 0.05) !important;
     }
   }
@@ -176,20 +196,28 @@ $color-error: #ef4444;
     background: linear-gradient(135deg, $color-primary 0%, #667eea 100%) !important;
     color: white !important;
     font-weight: 600;
-    box-shadow: 0 4px 15px rgba(68, 138, 255, 0.3);
+    border-radius: 8px;
+    padding: 0 24px;
+    height: 44px;
+    min-width: 160px;
+    box-shadow: 0 4px 15px rgba($color-primary, 0.3);
 
     mat-icon {
       margin-right: 8px;
     }
 
     &:hover:not([disabled]) {
-      box-shadow: 0 6px 20px rgba(68, 138, 255, 0.4);
+      box-shadow: 0 6px 20px rgba($color-primary, 0.4);
       transform: translateY(-2px);
       transition: all 0.3s ease;
     }
 
     &[disabled] {
-      opacity: 0.5;
+      background: rgba(255, 255, 255, 0.1) !important;
+      color: rgba(255, 255, 255, 0.3) !important;
+      box-shadow: none;
+      transform: none;
+      opacity: 1;
       cursor: not-allowed;
     }
   }
