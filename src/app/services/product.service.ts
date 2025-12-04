@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable, forkJoin } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 import { Product } from '../shared/interfaces/product';
@@ -17,7 +17,23 @@ export class ProductService {
 
   constructor(private http: HttpClient) { }
 
-  getProducts(page: number = 1, pageSize: number = 10): Observable<{count: number, results: Product[]}> {
+  getProducts(search?: string, categoryId?: number | string): Observable<Product[]> {
+    let params = new HttpParams();
+
+    // Agregar parámetros si hay búsqueda o filtro de categoría
+    if (search) {
+      params = params.set('search', search);
+    }
+    if (categoryId) {
+      params = params.set('category', categoryId);
+    }
+
+    return this.http.get<any>(`${apiUrl}/products/`, { params }).pipe(
+      map((response => response.results || response))
+    );
+  }
+
+  getProductsPaginated(page: number = 1, pageSize: number = 10): Observable<{count: number, results: Product[]}> {
     return forkJoin({
       productsData: this.http.get<any>(`${apiUrl}/products/?page=${page}&page_size=${pageSize}`),
       categories: this.categoryService.getCategories()

@@ -15,7 +15,9 @@ import { ConfirmSaleModalComponent } from '../../../../modals/confirm-sale-modal
 import { ClientQuickAddModalComponent } from '../../../../modals/client-quick-add-modal/client-quick-add-modal.component';
 import { LowStockWarningModalComponent } from '../../../../modals/low-stock-warning-modal/low-stock-warning-modal.component';
 import { ProductService } from '../../../../services/product.service';
+import { CategoryService } from '../../../../services/category.service';
 import { Product } from '../../../../shared/interfaces/product';
+import { Category } from '../../../../shared/interfaces/category';
 import { SalesService } from '../../../../services/sales.service';
 import { ClientService } from '../../../../services/client.service';
 import { Client } from '../../../../shared/interfaces/client';
@@ -47,10 +49,13 @@ export class PosComponent implements OnInit {
   allProducts: Product[] = [];
   filteredProducts: Product[] = [];
   clients: Client[] = [];
+  categories: Category[] = [];
   selectedClientId: string | null = null;
+  selectedCategoryId: string | undefined = undefined;
   searchQuery: string = '';
 
   private productService = inject(ProductService);
+  private categoryService = inject(CategoryService);
   private snackBar = inject(MatSnackBar);
   private salesService = inject(SalesService);
   private clientService = inject(ClientService);
@@ -64,28 +69,20 @@ export class PosComponent implements OnInit {
   ngOnInit(): void {
     this.loadAllProducts();
     this.loadClients();
+    this.loadCategories();
   }
 
   loadAllProducts(): void {
-    console.log('🔍 Iniciando carga de productos...');
+    console.log('Iniciando carga de productos...');
     this.productService.getProducts().subscribe({
       next: (data) => {
-        console.log('✅ Respuesta del servidor:', data);
-        console.log('📊 Tipo de dato recibido:', typeof data);
-        console.log('📦 Es array?:', Array.isArray(data));
-        // Asegurar que data sea un array
-        this.allProducts = Array.isArray(data) ? data : [];
-        this.filteredProducts = this.allProducts;
+        console.log('Respuesta del servidor:', data);
+        this.allProducts = data || [];
+        this.filteredProducts = [...this.allProducts];
         console.log('🎯 Productos cargados:', this.allProducts.length);
       },
       error: (error) => {
-        console.error('❌ Error cargando productos:', error);
-        console.error('📄 Detalles del error:', {
-          status: error.status,
-          statusText: error.statusText,
-          message: error.message,
-          url: error.url
-        });
+        console.error('Error cargando productos:', error);
         this.allProducts = [];
         this.filteredProducts = [];
         this.showError('Error al cargar los productos');
@@ -94,14 +91,11 @@ export class PosComponent implements OnInit {
   }
 
   loadClients(): void {
-    console.log('🔍 Iniciando carga de clientes...');
-    this.clientService.getClients().subscribe({
+    console.log('Iniciando carga de clientes...');
+    this.clientService.getClients(1, 1000).subscribe({
       next: (data) => {
-        console.log('✅ Respuesta clientes:', data);
-        console.log('📊 Tipo de dato recibido:', typeof data);
-        console.log('📦 Es array?:', Array.isArray(data));
-        // Asegurar que data sea un array
-        this.clients = Array.isArray(data) ? data : [];
+        console.log('Respuesta clientes:', data);
+        this.clients = data.results || [];
         console.log('🎯 Clientes cargados:', this.clients.length);
         const defaultClient = this.clients.find(c => c.name.includes('Mostrador'));
         if (defaultClient) {
@@ -111,27 +105,55 @@ export class PosComponent implements OnInit {
       },
       error: (error) => {
         console.error('❌ Error cargando clientes:', error);
-        console.error('📄 Detalles del error:', {
-          status: error.status,
-          statusText: error.statusText,
-          message: error.message,
-          url: error.url
-        });
         this.clients = [];
       }
     });
   }
 
-  filterProducts(): void {
-    const query = this.searchQuery.toLowerCase().trim();
-    if (!query) {
-      this.filteredProducts = this.allProducts;
-    } else {
-      this.filteredProducts = this.allProducts.filter(p =>
+  loadCategories(): void {
+    this.categoryService.getCategories().subscribe({
+      next: (data) => {
+        this.categories = data;
+      },
+      error: (error) => {
+        console.error('Error cargando categorías:', error);
+        this.categories = [];
+      }
+    });
+  }
+
+  onSearchChange(): void {
+    this.applyFilters();
+  }
+
+  onCategoryChange(): void {
+    this.applyFilters();
+  }
+
+  applyFilters(): void {
+    let filtered = [...this.allProducts];
+
+    // Filtrar por búsqueda
+    if (this.searchQuery && this.searchQuery.trim()) {
+      const query = this.searchQuery.toLowerCase().trim();
+      filtered = filtered.filter(p =>
         p.name.toLowerCase().includes(query) ||
         p.sku.toLowerCase().includes(query)
       );
     }
+
+    // Filtrar por categoría
+    if (this.selectedCategoryId) {
+      filtered = filtered.filter(p => p.category === this.selectedCategoryId);
+    }
+
+    this.filteredProducts = filtered;
+  }
+
+  clearFilters(): void {
+    this.searchQuery = '';
+    this.selectedCategoryId = undefined;
+    this.filteredProducts = [...this.allProducts];
   }
 
   addProductToTicket(product: Product): void {

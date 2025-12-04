@@ -9,7 +9,14 @@
 
   <mat-card class="form-card">
     <mat-card-content>
-      <form [formGroup]="categoryForm" (ngSubmit)="onSubmit()">
+
+      <!-- Spinner mientras se cargan los datos -->
+      <div class="loading-spinner" *ngIf="isLoading">
+        <mat-spinner diameter="50"></mat-spinner>
+        <p>Cargando datos de la categoría...</p>
+      </div>
+
+      <form [formGroup]="categoryForm" (ngSubmit)="onSubmit()" *ngIf="!isLoading">
 
         <div class="form-section">
           <mat-form-field appearance="outline" class="full-width" subscriptSizing="dynamic">

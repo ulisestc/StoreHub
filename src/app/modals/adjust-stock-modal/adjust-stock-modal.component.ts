@@ -53,8 +53,8 @@ export class AdjustStockModalComponent implements OnInit {
   }
 
   loadProducts(): void {
-    this.productService.getProducts(1, 1000).subscribe(data => {
-      this.products = data.results;
+    this.productService.getProducts().subscribe(data => {
+      this.products = data || [];
     });
   }
 

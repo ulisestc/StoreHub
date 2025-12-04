@@ -8,6 +8,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { CategoryService } from '../../../../services/category.service';
 
@@ -23,7 +24,8 @@ import { CategoryService } from '../../../../services/category.service';
     MatButtonModule,
     MatToolbarModule,
     MatCardModule,
-    MatIconModule
+    MatIconModule,
+    MatProgressSpinnerModule
   ],
   templateUrl: './category-form.component.html',
   styleUrl: './category-form.component.scss'
@@ -32,6 +34,7 @@ export class CategoryFormComponent implements OnInit {
 
   pageTitle: string = 'Crear Nueva Categoría';
   isEditMode = false;
+  isLoading = false;
   private currentCategoryId: string | null = null;
 
   categoryForm!: FormGroup;
@@ -52,10 +55,20 @@ export class CategoryFormComponent implements OnInit {
       if (this.currentCategoryId) {
         this.isEditMode = true;
         this.pageTitle = 'Editar Categoría';
+        this.isLoading = true;
 
-        this.categoryService.getCategoryById(this.currentCategoryId).subscribe(category => {
-          if (category) {
-            this.categoryForm.patchValue(category);
+        this.categoryService.getCategoryById(this.currentCategoryId).subscribe({
+          next: (category) => {
+            if (category) {
+              this.categoryForm.patchValue(category);
+            }
+            this.isLoading = false;
+          },
+          error: (error) => {
+            console.error('Error cargando categoría:', error);
+            this.snackBar.open('Error al cargar los datos de la categoría', 'Cerrar', { duration: 3000 });
+            this.isLoading = false;
+            this.router.navigate(['/dashboard/categories']);
           }
         });
       }

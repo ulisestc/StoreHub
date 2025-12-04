@@ -76,8 +76,8 @@
       *ngIf="!isLoading && totalClients > 0"
       [length]="totalClients"
       [pageSize]="pageSize"
-      [pageIndex]="pageIndex"
-      [pageSizeOptions]="pageSizeOptions"
+      [pageIndex]="currentPage"
+      [hidePageSize]="true"
       (page)="onPageChange($event)"
       showFirstLastButtons>
     </mat-paginator>

@@ -52,7 +52,7 @@ export class ProductListComponent implements OnInit {
     this.isLoading = true;
     const backendPage = pageIndex + 1;
 
-    this.productService.getProducts(backendPage, this.pageSize).subscribe({
+    this.productService.getProductsPaginated(backendPage, this.pageSize).subscribe({
       next: (response) => {
         this.dataSource = [...response.results];
         this.totalProducts = response.count;

@@ -35,13 +35,11 @@ export class ClientListComponent implements OnInit {
 
   displayedColumns: string[] = ['name', 'email', 'phone', 'acciones'];
   dataSource: Client[] = [];
-  allClients: Client[] = [];
   isLoading = false;
 
   totalClients = 0;
-  pageSize = 5;
-  pageIndex = 0;
-  pageSizeOptions = [5, 10, 25, 50];
+  pageSize = 10;
+  currentPage = 0;
 
   private clientService = inject(ClientService);
   private dialog = inject(MatDialog);
@@ -51,13 +49,15 @@ export class ClientListComponent implements OnInit {
     this.loadClients();
   }
 
-  loadClients(): void {
+  loadClients(pageIndex: number = 0): void {
     this.isLoading = true;
-    this.clientService.getClients(1, 1000).subscribe({
+    const backendPage = pageIndex + 1;
+
+    this.clientService.getClients(backendPage, this.pageSize).subscribe({
       next: (response) => {
-        this.allClients = [...response.results];
-        this.totalClients = this.allClients.length;
-        this.updatePageData();
+        this.dataSource = [...response.results];
+        this.totalClients = response.count;
+        this.currentPage = pageIndex;
         this.isLoading = false;
       },
       error: (error) => {
@@ -68,16 +68,8 @@ export class ClientListComponent implements OnInit {
     });
   }
 
-  updatePageData(): void {
-    const startIndex = this.pageIndex * this.pageSize;
-    const endIndex = startIndex + this.pageSize;
-    this.dataSource = this.allClients.slice(startIndex, endIndex);
-  }
-
   onPageChange(event: PageEvent): void {
-    this.pageIndex = event.pageIndex;
-    this.pageSize = event.pageSize;
-    this.updatePageData();
+    this.loadClients(event.pageIndex);
   }
 
   openDeleteDialog(clientId: string): void {

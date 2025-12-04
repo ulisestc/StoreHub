@@ -34,14 +34,10 @@ $color-error: #ef4444;
     align-items: center;
     justify-content: center;
     min-height: 400px;
-    padding: 80px 20px;
-    color: $color-text-muted;
-
-    mat-spinner {
-      margin-bottom: 20px;
-    }
+    gap: 24px;
 
     p {
+      color: $color-text-muted;
       font-size: 1rem;
       margin: 0;
     }
