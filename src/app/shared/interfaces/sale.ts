@@ -1,12 +1,19 @@
 export interface Sale {
-  id: string;
-  client: string; // ID del cliente
-  details: SaleDetail[]; // Detalles de la venta
-  total?: number; // Calculado automáticamente por el backend
-  created_at?: string; // Fecha de creación
+  id: number;
+  user: string;
+  client: number | null;
+  client_name?: string;
+  subtotal: string;
+  impuestos: string;
+  total: string;
+  created_at: string;
+  details: SaleDetail[];
 }
 
 export interface SaleDetail {
-  product: string; // ID del producto
-  quantity: number; // Cantidad vendida
+  id: number;
+  product: number;
+  product_name: string;
+  quantity: number;
+  price_at_sale: string;
 }

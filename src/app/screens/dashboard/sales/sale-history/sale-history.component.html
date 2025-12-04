@@ -6,7 +6,13 @@
   </header>
 
   <div class="table-container mat-elevation-z8">
-    <table mat-table [dataSource]="dataSource">
+
+    <div *ngIf="isLoading" class="loading-spinner">
+      <mat-spinner diameter="50"></mat-spinner>
+      <p>Cargando historial de ventas...</p>
+    </div>
+
+    <table mat-table [dataSource]="dataSource" *ngIf="!isLoading">
 
       <ng-container matColumnDef="created_at">
         <th mat-header-cell *matHeaderCellDef> Fecha </th>
@@ -23,13 +29,23 @@
         </td>
       </ng-container>
 
-      <ng-container matColumnDef="client">
+      <ng-container matColumnDef="client_name">
         <th mat-header-cell *matHeaderCellDef> Cliente </th>
         <td mat-cell *matCellDef="let sale" class="user-cell">
           <div class="user-info">
             <mat-icon>person</mat-icon>
-            {{sale.client}}
+            {{sale.client_name || sale.client}}
           </div>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="items">
+        <th mat-header-cell *matHeaderCellDef> Productos </th>
+        <td mat-cell *matCellDef="let sale" class="items-cell">
+          <span class="items-badge">
+            <mat-icon>shopping_cart</mat-icon>
+            {{getTotalItems(sale)}} items
+          </span>
         </td>
       </ng-container>
 
@@ -57,7 +73,7 @@
 
     </table>
 
-    <div *ngIf="dataSource.length === 0" class="empty-state">
+    <div *ngIf="!isLoading && dataSource.length === 0" class="empty-state">
       <mat-icon>history</mat-icon>
       <p>No hay ventas registradas aún.</p>
     </div>

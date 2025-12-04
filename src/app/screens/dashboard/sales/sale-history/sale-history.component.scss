@@ -35,13 +35,15 @@ $color-border: rgba(255, 255, 255, 0.05);
   overflow: hidden;
   border: 1px solid $color-border;
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+  position: relative;
+  min-height: 300px;
 
   table {
     width: 100%;
     background-color: transparent;
     border-collapse: separate;
     border-spacing: 0;
-    
+
     th.mat-mdc-header-cell {
       background-color: rgba(0, 0, 0, 0.2);
       color: $color-text-muted;
@@ -53,7 +55,7 @@ $color-border: rgba(255, 255, 255, 0.05);
       padding: 20px 24px;
       vertical-align: middle !important;
     }
-    
+
     td.mat-mdc-cell {
       color: $color-text-main;
       border-bottom: 1px solid $color-border;
@@ -68,7 +70,7 @@ $color-border: rgba(255, 255, 255, 0.05);
       display: flex;
       align-items: center;
       gap: 8px;
-      
+
       .mini-icon {
         font-size: 16px;
         width: 16px;
@@ -96,7 +98,7 @@ $color-border: rgba(255, 255, 255, 0.05);
         display: flex;
         align-items: center;
         gap: 8px;
-        
+
         mat-icon {
           font-size: 20px;
           width: 20px;
@@ -112,6 +114,26 @@ $color-border: rgba(255, 255, 255, 0.05);
       font-size: 1rem;
     }
 
+    .items-cell {
+      .items-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        background-color: rgba(102, 126, 234, 0.1);
+        color: #667eea;
+        padding: 6px 12px;
+        border-radius: 8px;
+        font-size: 0.85rem;
+        font-weight: 500;
+
+        mat-icon {
+          font-size: 16px;
+          width: 16px;
+          height: 16px;
+        }
+      }
+    }
+
     .actions-header {
       text-align: right;
       padding-right: 32px;
@@ -119,7 +141,7 @@ $color-border: rgba(255, 255, 255, 0.05);
 
     .actions-cell {
       text-align: right;
-      
+
       .view-btn {
         color: $color-primary;
         background-color: rgba($color-primary, 0.1);
@@ -130,12 +152,12 @@ $color-border: rgba(255, 255, 255, 0.05);
         justify-content: center;
         padding: 0;
         border-radius: 50%;
-        
+
         &:hover {
           background-color: $color-primary;
           color: white;
         }
-        
+
         mat-icon {
           font-size: 20px;
           width: 20px;
@@ -147,11 +169,31 @@ $color-border: rgba(255, 255, 255, 0.05);
 
     .data-row {
       transition: background-color 0.2s ease;
-      
+
       &:hover {
         background-color: rgba(255, 255, 255, 0.03);
       }
     }
+  }
+}
+
+.loading-spinner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 20px;
+  gap: 24px;
+  min-height: 300px;
+
+  mat-spinner {
+    margin-bottom: 20px;
+  }
+
+  p {
+    color: $color-text-muted;
+    font-size: 1rem;
+    margin: 0;
   }
 }
 
@@ -176,10 +218,17 @@ $color-border: rgba(255, 255, 255, 0.05);
   }
 }
 
+::ng-deep .sale-detail-dialog {
+  .mdc-dialog__surface {
+    background-color: transparent !important;
+    box-shadow: none !important;
+  }
+}
+
 @media (max-width: 768px) {
   .table-container {
     overflow-x: auto;
-    
+
     table {
       min-width: 600px;
     }
