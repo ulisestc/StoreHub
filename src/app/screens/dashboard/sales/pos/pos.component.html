@@ -40,16 +40,17 @@
         </mat-card-header>
 
         <mat-card-content>
-          
+
           <div class="filters-container" style="display: flex; gap: 12px; margin-bottom: 16px;">
-            
+
             <mat-form-field appearance="outline" class="search-products" subscriptSizing="dynamic" style="flex: 1;">
               <mat-label>Buscar producto...</mat-label>
               <input matInput [(ngModel)]="searchQuery" (ngModelChange)="onSearchChange()"
-                     placeholder="Nombre o código">
+                placeholder="Nombre o código">
               <mat-icon matPrefix>search</mat-icon>
-              <button *ngIf="searchQuery" matSuffix mat-icon-button aria-label="Limpiar" (click)="searchQuery=''; onSearchChange()">
-                  <mat-icon>close</mat-icon>
+              <button *ngIf="searchQuery" matSuffix mat-icon-button aria-label="Limpiar"
+                (click)="searchQuery=''; onSearchChange()">
+                <mat-icon>close</mat-icon>
               </button>
             </mat-form-field>
 
@@ -65,10 +66,8 @@
           </div>
 
           <div class="products-grid">
-            <div *ngFor="let product of filteredProducts"
-                 class="product-card"
-                 (click)="addProductToTicket(product)"
-                 [class.out-of-stock]="product.stock === 0">
+            <div *ngFor="let product of filteredProducts" class="product-card" (click)="addProductToTicket(product)"
+              [class.out-of-stock]="product.stock === 0">
               <div class="product-info">
                 <h4>{{ product.name }}</h4>
                 <p class="product-sku">SKU: {{ product.sku }}</p>
@@ -111,20 +110,19 @@
 
           <mat-list *ngIf="ticketItems.length > 0">
             <mat-list-item *ngFor="let item of ticketItems; let i = index" class="ticket-item">
-              <div class="item-content">
-                <div class="item-info">
-                  <span class="item-name">{{ item.nombre }}</span>
-                  <span class="item-sku">{{ item.id }}</span>
-                </div>
+              <span matListItemTitle class="item-name">{{ item.nombre }}</span>
+              <span matListItemLine class="item-sku">{{ item.sku }}</span>
+              <div matListItemMeta class="item-actions">
                 <div class="item-pricing">
                   <span class="item-calc">{{ item.cantidad }} x {{ item.precio_venta | currency }}</span>
                   <span class="item-total">{{ (item.precio_venta * item.cantidad) | currency }}</span>
                 </div>
+                <button mat-icon-button color="warn" (click)="removeItem(i)">
+                  <mat-icon>delete_outline</mat-icon>
+                </button>
               </div>
-              <button mat-icon-button color="warn" (click)="removeItem(i)">
-                <mat-icon>delete_outline</mat-icon>
-              </button>
             </mat-list-item>
+
           </mat-list>
         </mat-card-content>
 
@@ -134,9 +132,7 @@
             <span class="total-amount">{{ totalVenta | currency }}</span>
           </div>
 
-          <button mat-raised-button class="pay-btn"
-                  [disabled]="ticketItems.length === 0"
-                  (click)="onConfirmSale()">
+          <button mat-raised-button class="pay-btn" [disabled]="ticketItems.length === 0" (click)="onConfirmSale()">
             <mat-icon>payments</mat-icon>
             COBRAR
           </button>

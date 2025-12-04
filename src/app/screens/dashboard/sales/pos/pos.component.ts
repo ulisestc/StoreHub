@@ -185,6 +185,7 @@ export class PosComponent implements OnInit {
     } else {
       this.ticketItems.push({
         id: product.id,
+        sku: product.sku,
         nombre: product.name,
         precio_venta: product.price,
         cantidad: 1,
@@ -194,6 +195,7 @@ export class PosComponent implements OnInit {
 
     this.calculateTotal();
     this.showSuccess(`${product.name} agregado al ticket`);
+    console.log (this.ticketItems);
   }
 
   onAddProduct(): void {
@@ -223,6 +225,7 @@ export class PosComponent implements OnInit {
       } else {
         this.ticketItems.push({
           id: productFound.id,
+          sku: productFound.sku,
           nombre: productFound.name,
           precio_venta: productFound.price,
           cantidad: 1,
