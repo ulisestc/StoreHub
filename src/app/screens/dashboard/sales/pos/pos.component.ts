@@ -11,6 +11,8 @@ import { MatListModule } from '@angular/material/list';
 import { MatSnackBarModule, MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSelectModule } from '@angular/material/select';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { ConfirmSaleModalComponent } from '../../../../modals/confirm-sale-modal/confirm-sale-modal.component';
 import { ClientQuickAddModalComponent } from '../../../../modals/client-quick-add-modal/client-quick-add-modal.component';
 import { LowStockWarningModalComponent } from '../../../../modals/low-stock-warning-modal/low-stock-warning-modal.component';
@@ -37,6 +39,8 @@ import { Client } from '../../../../shared/interfaces/client';
     MatListModule,
     MatSnackBarModule,
     MatSelectModule,
+    MatProgressSpinnerModule,
+    MatPaginatorModule,
     FormsModule
   ],
   templateUrl: './pos.component.html',
@@ -48,11 +52,16 @@ export class PosComponent implements OnInit {
   totalVenta: number = 0;
   allProducts: Product[] = [];
   filteredProducts: Product[] = [];
+  paginatedProducts: Product[] = [];
   clients: Client[] = [];
   categories: Category[] = [];
   selectedClientId: string | null = null;
   selectedCategoryId: string | undefined = undefined;
   searchQuery: string = '';
+  isLoading = false;
+  pageSize = 10;
+  currentPage = 0;
+  totalProducts = 0;
 
   private productService = inject(ProductService);
   private categoryService = inject(CategoryService);
@@ -73,19 +82,26 @@ export class PosComponent implements OnInit {
   }
 
   loadAllProducts(): void {
+    this.isLoading = true;
     console.log('Iniciando carga de productos...');
     this.productService.getProducts().subscribe({
       next: (data) => {
         console.log('Respuesta del servidor:', data);
         this.allProducts = data || [];
         this.filteredProducts = [...this.allProducts];
+        this.totalProducts = this.filteredProducts.length;
+        this.updatePaginatedProducts();
         console.log('🎯 Productos cargados:', this.allProducts.length);
+        this.isLoading = false;
       },
       error: (error) => {
         console.error('Error cargando productos:', error);
         this.allProducts = [];
         this.filteredProducts = [];
+        this.paginatedProducts = [];
+        this.totalProducts = 0;
         this.showError('Error al cargar los productos');
+        this.isLoading = false;
       }
     });
   }
@@ -148,12 +164,30 @@ export class PosComponent implements OnInit {
     }
 
     this.filteredProducts = filtered;
+    this.totalProducts = filtered.length;
+    this.currentPage = 0;
+    this.updatePaginatedProducts();
   }
 
   clearFilters(): void {
     this.searchQuery = '';
     this.selectedCategoryId = undefined;
     this.filteredProducts = [...this.allProducts];
+    this.totalProducts = this.filteredProducts.length;
+    this.currentPage = 0;
+    this.updatePaginatedProducts();
+  }
+
+  updatePaginatedProducts(): void {
+    const startIndex = this.currentPage * this.pageSize;
+    const endIndex = startIndex + this.pageSize;
+    this.paginatedProducts = this.filteredProducts.slice(startIndex, endIndex);
+  }
+
+  onPageChange(event: PageEvent): void {
+    this.currentPage = event.pageIndex;
+    this.pageSize = event.pageSize;
+    this.updatePaginatedProducts();
   }
 
   addProductToTicket(product: Product): void {

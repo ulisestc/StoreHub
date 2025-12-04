@@ -65,8 +65,15 @@
             </mat-form-field>
           </div>
 
-          <div class="products-grid">
-            <div *ngFor="let product of filteredProducts" class="product-card" (click)="addProductToTicket(product)"
+          <!-- Spinner -->
+          <div *ngIf="isLoading" class="loading-spinner">
+            <mat-spinner diameter="50"></mat-spinner>
+            <p>Cargando productos...</p>
+          </div>
+
+          <!-- Grid de productos -->
+          <div *ngIf="!isLoading" class="products-grid">
+            <div *ngFor="let product of paginatedProducts" class="product-card" (click)="addProductToTicket(product)"
               [class.out-of-stock]="product.stock === 0">
               <div class="product-info">
                 <h4>{{ product.name }}</h4>
@@ -80,12 +87,23 @@
               </div>
             </div>
 
-            <div *ngIf="filteredProducts.length === 0" class="no-products">
+            <div *ngIf="paginatedProducts.length === 0" class="no-products">
               <mat-icon>search_off</mat-icon>
               <p>No se encontraron productos</p>
               <button mat-button color="primary" (click)="clearFilters()">Limpiar filtros</button>
             </div>
           </div>
+
+          <!-- Paginador -->
+          <mat-paginator
+            *ngIf="!isLoading && totalProducts > 0"
+            [length]="totalProducts"
+            [pageSize]="pageSize"
+            [pageIndex]="currentPage"
+            [hidePageSize]="true"
+            (page)="onPageChange($event)"
+            showFirstLastButtons>
+          </mat-paginator>
 
         </mat-card-content>
       </mat-card>
