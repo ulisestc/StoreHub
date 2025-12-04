@@ -1,11 +1,9 @@
 export interface Product {
   id: string;
-  nombre: string;
-  descripcion?: string;
-  codigo_barras: string;
-  precio_venta: number;
-  costo_adquisicion: number;
-  cantidad_stock: number;
-  categoria: string;
-  estado: 'activo' | 'inactivo';
+  name: string;
+  sku: string; // código de barras
+  price: number; // precio de venta
+  stock: number; // cantidad en stock
+  category: string; // ID de categoría
+  cost_price: number; // precio de costo
 }

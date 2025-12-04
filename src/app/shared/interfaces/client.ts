@@ -1,6 +1,6 @@
 export interface Client {
   id: string;
-  nombre: string;
-  correo?: string;
-  telefono?: string;
+  name: string;
+  email?: string; // Opcional según backend
+  phone?: string; // Opcional
 }
