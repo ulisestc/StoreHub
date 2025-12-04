@@ -1,251 +1,27 @@
-$color-primary: #448aff;
-$color-text-main: #f1f5f9;
-$color-text-muted: #94a3b8;
-$color-bg-card: #1e293b;
-$color-border: rgba(255, 255, 255, 0.05);
 
-.reports-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding-bottom: 40px;
-}
 
-.reports-header {
-  margin-bottom: 32px;
+  .filter-row {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    flex-wrap: wrap;
 
-  h1 {
-    font-family: 'Poppins', sans-serif;
-    font-size: 2rem;
-    font-weight: 700;
-    margin: 0;
-    color: $color-text-main;
+    mat-form-field {
+      margin-bottom: 0;
+
+      ::ng-deep .mat-mdc-form-field-subscript-wrapper {
+        display: none;
+      }
+    }
+
+    .small-input {
+      width: 100px;
+    }
   }
 
-  p {
-    margin: 4px 0 0 0;
-    color: $color-text-muted;
-    font-size: 1rem;
-  }
-}
-
-.filter-card {
-  background-color: $color-bg-card !important;
-  border-radius: 16px !important;
-  border: 1px solid $color-border;
-  margin-bottom: 32px;
-  padding: 24px;
-
-  mat-card-content {
-    padding: 0;
-  }
-}
-
-.filters-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 16px;
-  align-items: center;
-
-  .filter-btn {
-    height: 56px;
-    background-color: $color-primary !important;
-    color: white !important;
-    font-weight: 600;
-    box-shadow: 0 0 15px rgba(68, 138, 255, 0.3);
-    border-radius: 12px;
+  .separator {
+    height: 1px;
+    background-color: $color-border;
+    margin: 24px 0;
     width: 100%;
-
-    mat-icon {
-      margin-right: 8px;
-    }
-
-    &:hover {
-      background-color: lighten($color-primary, 5%) !important;
-    }
   }
-}
-
-.dashboard-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 24px;
-}
-
-.kpi-card {
-  background-color: $color-bg-card !important;
-  border-radius: 16px !important;
-  border: 1px solid $color-border;
-  padding: 24px;
-  display: flex;
-  flex-direction: column;
-}
-
-.chart-card {
-  background-color: $color-bg-card !important;
-  border-radius: 16px !important;
-  border: 1px solid $color-border;
-  padding: 20px;
-
-  mat-card-header {
-    padding: 0;
-    margin-bottom: 20px;
-    border-bottom: 1px solid $color-border;
-    padding-bottom: 16px;
-  }
-
-  mat-card-title {
-    color: $color-text-main;
-    font-size: 1.1rem;
-    font-weight: 600;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-
-    mat-icon {
-      color: $color-primary;
-    }
-  }
-
-  mat-card-content {
-    padding: 0;
-  }
-
-  &.full-width {
-    grid-column: 1 / -1;
-  }
-}
-
-.chart-container {
-  position: relative;
-  height: 300px;
-  width: 100%;
-}
-
-.revenue-card {
-  flex-direction: row;
-  align-items: center;
-  gap: 24px;
-  background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%) !important;
-
-  .card-icon {
-    width: 64px;
-    height: 64px;
-    border-radius: 16px;
-    background-color: rgba($color-primary, 0.1);
-    color: $color-primary;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    mat-icon {
-      font-size: 32px;
-      width: 32px;
-      height: 32px;
-    }
-  }
-
-  .card-info {
-    h3 {
-      margin: 0;
-      font-size: 0.9rem;
-      color: $color-text-muted;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-
-    .big-number {
-      display: block;
-      font-family: 'Poppins', sans-serif;
-      font-size: 2.5rem;
-      font-weight: 700;
-      color: $color-text-main;
-      line-height: 1.2;
-      margin: 4px 0;
-    }
-
-    .subtitle {
-      font-size: 0.9rem;
-      color: #4ade80;
-      font-weight: 500;
-    }
-  }
-}
-
-.products-card {
-  mat-card-header {
-    padding: 0;
-    margin-bottom: 20px;
-    border-bottom: 1px solid $color-border;
-    padding-bottom: 16px;
-  }
-
-  mat-card-title {
-    color: $color-text-main;
-    font-size: 1.1rem;
-    font-weight: 600;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-
-    mat-icon {
-      color: #fbbf24;
-    }
-  }
-
-  mat-card-content {
-    padding: 0;
-  }
-}
-
-.top-products-list {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-
-  .product-item {
-    display: flex;
-    align-items: center;
-    background-color: rgba(255, 255, 255, 0.03);
-    padding: 12px;
-    border-radius: 12px;
-    transition: background-color 0.2s;
-
-    &:hover {
-      background-color: rgba(255, 255, 255, 0.05);
-    }
-
-    .rank-badge {
-      width: 28px;
-      height: 28px;
-      border-radius: 50%;
-      background-color: rgba($color-primary, 0.1);
-      color: $color-primary;
-      font-weight: 700;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      margin-right: 12px;
-      font-size: 0.85rem;
-    }
-
-    .prod-name {
-      flex: 1;
-      color: $color-text-main;
-      font-weight: 500;
-    }
-
-    .prod-sales {
-      color: $color-text-muted;
-      font-size: 0.9rem;
-      font-weight: 600;
-    }
-  }
-}
-
-::ng-deep .mat-date-range-input-inner {
-  color: $color-text-main;
-}
-
-::ng-deep .mat-date-range-input-separator {
-  color: $color-text-muted;
-}
