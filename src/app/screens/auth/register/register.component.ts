@@ -30,18 +30,15 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 })
 export class RegisterComponent {
 
-  // Inyectamos servicios
   authService = inject(AuthService);
   router = inject(Router);
 
-  // Variables de estado
   hidePassword: boolean = true;
   hideConfirmPassword: boolean = true;
   isLoading: boolean = false;
   registerError: string = '';
   registerSuccess: boolean = false;
 
-  // Validador personalizado para confirmar contraseña
   passwordMatchValidator(control: AbstractControl): ValidationErrors | null {
     const password = control.get('password')?.value;
     const confirmPassword = control.get('confirmPassword')?.value;
@@ -52,7 +49,6 @@ export class RegisterComponent {
     return null;
   }
 
-  // Definición del FormGroup para el registro
   registerForm = new FormGroup({
     nombre: new FormControl('', [
       Validators.required,
@@ -76,34 +72,51 @@ export class RegisterComponent {
     confirmPassword: new FormControl('', [Validators.required])
   }, { validators: this.passwordMatchValidator.bind(this) });
 
-  // Método que se llamará al enviar
   onSubmit() {
     this.registerError = '';
     this.registerSuccess = false;
 
     if (this.registerForm.valid) {
       this.isLoading = true;
-      const { nombre, apellidos, email, password } = this.registerForm.value;
 
-      // Simulamos un delay para el registro
-      setTimeout(() => {
-        // Aquí llamaríamos al servicio de registro
-        // Por ahora solo mostramos un mensaje de éxito
-        console.log('Datos de registro:', { nombre, apellidos, email });
+      const formValue = this.registerForm.value;
 
-        this.registerSuccess = true;
-        this.isLoading = false;
+      const registerPayload = {
+        email: formValue.email!,
+        password: formValue.password!,
+        first_name: formValue.nombre!,
+        last_name: formValue.apellidos!
+      };
 
-        // Redirigir al login después de 2 segundos
-        setTimeout(() => {
-          this.router.navigate(['/auth/login']);
-        }, 2000);
-      }, 500);
-    } else {
-      // Marcar todos los campos como tocados para mostrar errores
-      Object.keys(this.registerForm.controls).forEach(key => {
-        this.registerForm.get(key)?.markAsTouched();
+      this.authService.register(registerPayload).subscribe({
+        next: () => {
+          this.isLoading = false;
+          this.registerSuccess = true;
+
+          setTimeout(() => {
+            this.router.navigate(['/auth/login']);
+          }, 2000);
+        },
+        error: (err) => {
+          this.isLoading = false;
+          console.error('Error desde componente:', err);
+
+          if (err.status === 400) {
+            if (err.error?.email) {
+              this.registerError = 'Este correo electrónico ya está registrado.';
+            } else if (err.error?.password) {
+              this.registerError = 'La contraseña es muy común o inválida.';
+            } else {
+              this.registerError = 'Datos inválidos. Verifica la información.';
+            }
+          } else {
+            this.registerError = 'Ocurrió un error en el servidor. Intenta más tarde.';
+          }
+        }
       });
+
+    } else {
+      this.registerForm.markAllAsTouched();
     }
   }
 }
