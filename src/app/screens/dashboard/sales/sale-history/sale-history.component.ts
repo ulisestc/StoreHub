@@ -6,6 +6,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { MatDialog } from '@angular/material/dialog';
 import { SalesService } from '../../../../services/sales.service';
 import { Sale } from '../../../../shared/interfaces/sale';
@@ -21,7 +22,8 @@ import { SaleDetailModalComponent } from '../../../../modals/sale-detail-modal/s
     MatButtonModule,
     MatIconModule,
     MatTooltipModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    MatPaginatorModule
   ],
   templateUrl: './sale-history.component.html',
   styleUrl: './sale-history.component.scss'
@@ -31,6 +33,9 @@ export class SaleHistoryComponent implements OnInit {
   displayedColumns: string[] = ['created_at', 'id', 'client_name', 'items', 'total', 'acciones'];
   dataSource: Sale[] = [];
   isLoading = false;
+  pageSize = 10;
+  currentPage = 0;
+  totalSales = 0;
 
   private salesService = inject(SalesService);
   private dialog = inject(MatDialog);
@@ -44,6 +49,7 @@ export class SaleHistoryComponent implements OnInit {
     this.salesService.getSalesHistory().subscribe({
       next: (data) => {
         this.dataSource = [...data];
+        this.totalSales = data.length;
         this.isLoading = false;
       },
       error: (error) => {
@@ -51,6 +57,11 @@ export class SaleHistoryComponent implements OnInit {
         this.isLoading = false;
       }
     });
+  }
+
+  onPageChange(event: PageEvent): void {
+    this.currentPage = event.pageIndex;
+    this.pageSize = event.pageSize;
   }
 
   viewSaleDetails(sale: Sale): void {

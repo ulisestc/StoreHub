@@ -77,6 +77,16 @@
       <mat-icon>history</mat-icon>
       <p>No hay ventas registradas aún.</p>
     </div>
+
+    <mat-paginator
+      *ngIf="!isLoading && totalSales > 0"
+      [length]="totalSales"
+      [pageSize]="pageSize"
+      [pageIndex]="currentPage"
+      [hidePageSize]="true"
+      (page)="onPageChange($event)"
+      showFirstLastButtons>
+    </mat-paginator>
   </div>
 
 </div>
