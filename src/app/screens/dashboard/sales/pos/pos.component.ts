@@ -67,14 +67,25 @@ export class PosComponent implements OnInit {
   }
 
   loadAllProducts(): void {
+    console.log('🔍 Iniciando carga de productos...');
     this.productService.getProducts().subscribe({
       next: (data) => {
+        console.log('✅ Respuesta del servidor:', data);
+        console.log('📊 Tipo de dato recibido:', typeof data);
+        console.log('📦 Es array?:', Array.isArray(data));
         // Asegurar que data sea un array
         this.allProducts = Array.isArray(data) ? data : [];
         this.filteredProducts = this.allProducts;
+        console.log('🎯 Productos cargados:', this.allProducts.length);
       },
       error: (error) => {
-        console.error('Error cargando productos:', error);
+        console.error('❌ Error cargando productos:', error);
+        console.error('📄 Detalles del error:', {
+          status: error.status,
+          statusText: error.statusText,
+          message: error.message,
+          url: error.url
+        });
         this.allProducts = [];
         this.filteredProducts = [];
         this.showError('Error al cargar los productos');
@@ -83,17 +94,29 @@ export class PosComponent implements OnInit {
   }
 
   loadClients(): void {
+    console.log('🔍 Iniciando carga de clientes...');
     this.clientService.getClients().subscribe({
       next: (data) => {
+        console.log('✅ Respuesta clientes:', data);
+        console.log('📊 Tipo de dato recibido:', typeof data);
+        console.log('📦 Es array?:', Array.isArray(data));
         // Asegurar que data sea un array
         this.clients = Array.isArray(data) ? data : [];
-        const defaultClient = this.clients.find(c => c.nombre.includes('Mostrador'));
+        console.log('🎯 Clientes cargados:', this.clients.length);
+        const defaultClient = this.clients.find(c => c.name.includes('Mostrador'));
         if (defaultClient) {
           this.selectedClientId = defaultClient.id;
+          console.log('✅ Cliente por defecto seleccionado:', defaultClient.name);
         }
       },
       error: (error) => {
-        console.error('Error cargando clientes:', error);
+        console.error('❌ Error cargando clientes:', error);
+        console.error('📄 Detalles del error:', {
+          status: error.status,
+          statusText: error.statusText,
+          message: error.message,
+          url: error.url
+        });
         this.clients = [];
       }
     });
@@ -105,8 +128,8 @@ export class PosComponent implements OnInit {
       this.filteredProducts = this.allProducts;
     } else {
       this.filteredProducts = this.allProducts.filter(p =>
-        p.nombre.toLowerCase().includes(query) ||
-        p.codigo_barras.toLowerCase().includes(query)
+        p.name.toLowerCase().includes(query) ||
+        p.sku.toLowerCase().includes(query)
       );
     }
   }
@@ -115,12 +138,12 @@ export class PosComponent implements OnInit {
     const itemInTicket = this.ticketItems.find(item => item.id === product.id);
     const cantidadEnTicket = itemInTicket ? itemInTicket.cantidad : 0;
 
-    if (cantidadEnTicket >= product.cantidad_stock) {
+    if (cantidadEnTicket >= product.stock) {
       this.showError('No hay más stock disponible para este producto.');
       return;
     }
 
-    if (product.cantidad_stock <= 0) {
+    if (product.stock <= 0) {
       this.showError('Producto agotado. No se puede añadir.');
       return;
     }
@@ -130,34 +153,34 @@ export class PosComponent implements OnInit {
     } else {
       this.ticketItems.push({
         id: product.id,
-        nombre: product.nombre,
-        precio_venta: product.precio_venta,
+        nombre: product.name,
+        precio_venta: product.price,
         cantidad: 1,
-        stock_disponible: product.cantidad_stock
+        stock_disponible: product.stock
       });
     }
 
     this.calculateTotal();
-    this.showSuccess(`${product.nombre} agregado al ticket`);
+    this.showSuccess(`${product.name} agregado al ticket`);
   }
 
   onAddProduct(): void {
     if (this.searchForm.invalid) return;
 
     const sku = this.searchForm.value.sku;
-    const productFound = this.allProducts.find(p => p.codigo_barras === sku);
+    const productFound = this.allProducts.find(p => p.sku === sku);
 
     if (productFound) {
       const itemInTicket = this.ticketItems.find(item => item.id === productFound.id);
       const cantidadEnTicket = itemInTicket ? itemInTicket.cantidad : 0;
 
-      if (cantidadEnTicket >= productFound.cantidad_stock) {
+      if (cantidadEnTicket >= productFound.stock) {
         this.showError('No hay más stock disponible para este producto.');
         this.searchForm.reset();
         return;
       }
 
-      if (productFound.cantidad_stock <= 0) {
+      if (productFound.stock <= 0) {
         this.showError('Producto agotado. No se puede añadir.');
         this.searchForm.reset();
         return;
@@ -168,10 +191,10 @@ export class PosComponent implements OnInit {
       } else {
         this.ticketItems.push({
           id: productFound.id,
-          nombre: productFound.nombre,
-          precio_venta: productFound.precio_venta,
+          nombre: productFound.name,
+          precio_venta: productFound.price,
           cantidad: 1,
-          stock_disponible: productFound.cantidad_stock
+          stock_disponible: productFound.stock
         });
       }
 
@@ -225,7 +248,18 @@ export class PosComponent implements OnInit {
   }
 
   private processSale(): void {
-    this.salesService.createSale({ items: this.ticketItems, total: this.totalVenta }).subscribe(saleResponse => {
+    // Transformar ticketItems al formato que espera el backend
+    const saleDetails = this.ticketItems.map(item => ({
+      product: item.id,
+      quantity: item.cantidad
+    }));
+
+    const saleData = {
+      client: this.selectedClientId || '',
+      details: saleDetails
+    };
+
+    this.salesService.createSale(saleData).subscribe(saleResponse => {
       this.snackBar.open(`Venta #${saleResponse.id} registrada con éxito`, 'Cerrar', {
         duration: 3000,
         panelClass: ['snackbar-success']
@@ -239,7 +273,7 @@ export class PosComponent implements OnInit {
           itemsProcessed++;
           const updatedProduct = this.allProducts.find(p => p.id === item.id);
 
-          if (updatedProduct && updatedProduct.cantidad_stock <= this.LOW_STOCK_THRESHOLD) {
+          if (updatedProduct && updatedProduct.stock <= this.LOW_STOCK_THRESHOLD) {
             productsWithLowStock.push(updatedProduct);
           }
 
@@ -259,7 +293,7 @@ export class PosComponent implements OnInit {
     dialogRef.afterClosed().subscribe((newClient: Client | undefined) => {
       if (newClient) {
         this.selectedClientId = newClient.id;
-        this.snackBar.open(`Cliente "${newClient.nombre}" creado y seleccionado`, 'Cerrar', {
+        this.snackBar.open(`Cliente "${newClient.name}" creado y seleccionado`, 'Cerrar', {
           duration: 3000
         });
       }

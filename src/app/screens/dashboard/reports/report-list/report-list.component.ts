@@ -219,17 +219,38 @@ export class ReportListComponent implements OnInit {
   }
 
   loadCategories(): void {
-    this.categoryService.getCategories().subscribe(data => {
-      this.categories = data;
+    console.log('🔍 Cargando categorías para reportes...');
+    this.categoryService.getCategories().subscribe({
+      next: (data) => {
+        console.log('✅ Categorías recibidas:', data);
+        this.categories = Array.isArray(data) ? data : [];
+        console.log('🎯 Total categorías:', this.categories.length);
+      },
+      error: (error) => {
+        console.error('❌ Error cargando categorías:', error);
+        this.categories = [];
+      }
     });
   }
 
   loadReport(): void {
     const { start, end } = this.filterForm.value;
+    console.log('🔍 Cargando reporte de ventas...', { start, end });
     this.reportService.getSalesReport(start ?? undefined, end ?? undefined)
-      .subscribe(data => {
-        this.reportData = data;
-        this.updateCharts();
+      .subscribe({
+        next: (data) => {
+          console.log('✅ Datos del reporte recibidos:', data);
+          this.reportData = data;
+          this.updateCharts();
+        },
+        error: (error) => {
+          console.error('❌ Error cargando reporte:', error);
+          this.reportData = {
+            totalIngresos: 0,
+            totalTransacciones: 0,
+            topProducts: []
+          };
+        }
       });
   }
 
@@ -245,8 +266,8 @@ export class ReportListComponent implements OnInit {
     if (this.reportData.topProducts && this.reportData.topProducts.length > 0) {
       const categoryMap = new Map<string, number>();
       this.reportData.topProducts.forEach((product: any) => {
-        const category = product.categoria || 'Sin categoría';
-        categoryMap.set(category, (categoryMap.get(category) || 0) + product.vendidos);
+        const category = product.category || 'Sin categoría';
+        categoryMap.set(category, (categoryMap.get(category) || 0) + product.sold);
       });
 
       this.doughnutChartData.labels = Array.from(categoryMap.keys());
@@ -256,8 +277,8 @@ export class ReportListComponent implements OnInit {
     // Actualizar gráfica de barras (top productos)
     if (this.reportData.topProducts && this.reportData.topProducts.length > 0) {
       const top5 = this.reportData.topProducts.slice(0, 5);
-      this.barChartData.labels = top5.map((p: any) => p.nombre);
-      this.barChartData.datasets[0].data = top5.map((p: any) => p.vendidos);
+      this.barChartData.labels = top5.map((p: any) => p.name);
+      this.barChartData.datasets[0].data = top5.map((p: any) => p.sold);
     }
 
     // Forzar actualización de las gráficas

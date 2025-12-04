@@ -41,8 +41,8 @@ export class CategoryFormComponent implements OnInit {
 
   ngOnInit(): void {
     this.categoryForm = new FormGroup({
-      nombre: new FormControl('', [Validators.required]),
-      descripcion: new FormControl(''),
+      name: new FormControl('', [Validators.required]),
+      description: new FormControl(''),
     });
 
     this.route.paramMap.subscribe(params => {

@@ -24,7 +24,7 @@ import { Sale } from '../../../../shared/interfaces/sale';
 })
 export class SaleHistoryComponent implements OnInit {
 
-  displayedColumns: string[] = ['fecha', 'id', 'usuario', 'total', 'acciones'];
+  displayedColumns: string[] = ['created_at', 'id', 'client', 'total', 'acciones'];
   dataSource: Sale[] = [];
 
   private salesService = inject(SalesService);
@@ -40,6 +40,6 @@ export class SaleHistoryComponent implements OnInit {
   }
 
   viewSaleDetails(sale: Sale): void {
-    alert(`Detalles de la Venta #${sale.id}\nTotal: ${sale.total}\nItems: ${sale.items.length}`);
+    alert(`Detalles de la Venta #${sale.id}\nTotal: ${sale.total}\nItems: ${sale.details?.length || 0}`);
   }
 }

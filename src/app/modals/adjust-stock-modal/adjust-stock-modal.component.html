@@ -9,8 +9,8 @@
       <mat-form-field appearance="outline" class="form-field-full" subscriptSizing="dynamic">
         <mat-label>Producto</mat-label>
         <mat-select formControlName="producto" required>
-          <mat-option *ngFor="let prod of products" [value]="prod.nombre">
-            {{ prod.nombre }} (Stock: {{ prod.cantidad_stock }})
+          <mat-option *ngFor="let prod of products" [value]="prod.name">
+            {{ prod.name }} (Stock: {{ prod.stock }})
           </mat-option>
         </mat-select>
         <mat-icon matSuffix>inventory_2</mat-icon>

@@ -28,7 +28,7 @@ import { ConfirmDeleteModalComponent } from '../../../../modals/confirm-delete-m
 })
 export class ClientListComponent implements OnInit {
 
-  displayedColumns: string[] = ['nombre', 'correo', 'telefono', 'acciones'];
+  displayedColumns: string[] = ['name', 'email', 'phone', 'acciones'];
   dataSource: Client[] = [];
 
   private clientService = inject(ClientService);

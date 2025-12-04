@@ -27,7 +27,7 @@ import { AuthService } from '../../../../services/auth.service';
 })
 export class InventoryAdjustComponent implements OnInit {
 
-  displayedColumns: string[] = ['fecha', 'producto', 'tipo_movimiento', 'cantidad', 'motivo', 'usuario'];
+  displayedColumns: string[] = ['created_at', 'product', 'type', 'quantity'];
   dataSource: InventoryMovement[] = [];
 
   private inventoryService = inject(InventoryService);
@@ -44,11 +44,11 @@ export class InventoryAdjustComponent implements OnInit {
     });
   }
 
-  getChipColor(tipo: 'entrada' | 'salida' | 'merma'): 'primary' | 'accent' | 'warn' {
+  getChipColor(tipo: 'in' | 'out' | 'loss'): 'primary' | 'accent' | 'warn' {
     switch (tipo) {
-      case 'entrada': return 'primary';
-      case 'salida': return 'accent';
-      case 'merma': return 'warn';
+      case 'in': return 'primary';
+      case 'out': return 'accent';
+      case 'loss': return 'warn';
     }
   }
 
@@ -60,11 +60,11 @@ export class InventoryAdjustComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         const newMovement = {
-          producto: result.producto,
-          tipo_movimiento: result.tipo_movimiento,
-          cantidad: result.cantidad,
-          motivo: result.motivo,
-          usuario: this.authService.getUserRole() ?? 'admin'
+          product: result.producto,
+          type: result.tipo_movimiento,
+          quantity: result.cantidad,
+          reason: result.motivo,
+          user: this.authService.getUserRole() ?? 'admin'
         };
 
         this.inventoryService.createMovement(newMovement).subscribe(() => {

@@ -41,9 +41,9 @@ export class ClientFormComponent implements OnInit {
 
   ngOnInit(): void {
     this.clientForm = new FormGroup({
-      nombre: new FormControl('', [Validators.required]),
-      correo: new FormControl('', [Validators.email]),
-      telefono: new FormControl(''),
+      name: new FormControl('', [Validators.required]),
+      email: new FormControl('', [Validators.email]),
+      phone: new FormControl(''),
     });
 
     this.route.paramMap.subscribe(params => {

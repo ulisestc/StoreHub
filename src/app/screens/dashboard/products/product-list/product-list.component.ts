@@ -26,7 +26,7 @@ import { ConfirmDeleteModalComponent } from '../../../../modals/confirm-delete-m
 })
 export class ProductListComponent implements OnInit {
 
-  displayedColumns: string[] = ['nombre', 'codigo_barras', 'precio_venta', 'cantidad_stock', 'estado', 'acciones'];
+  displayedColumns: string[] = ['name', 'sku', 'price', 'stock', 'estado', 'acciones'];
   dataSource: Product[] = [];
 
   private productService = inject(ProductService);

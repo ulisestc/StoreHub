@@ -90,37 +90,37 @@ export class ProductFormComponent implements OnInit {
 
   initForm(): void {
     this.productForm = new FormGroup({
-      nombre: new FormControl('', [
+      name: new FormControl('', [
         Validators.required,
         Validators.minLength(3),
         Validators.maxLength(100)
       ]),
-      descripcion: new FormControl('', [
+      description: new FormControl('', [
         Validators.maxLength(500)
       ]),
-      codigo_barras: new FormControl('', [
+      sku: new FormControl('', [
         Validators.required,
         Validators.minLength(3),
         Validators.maxLength(50),
         Validators.pattern(/^[a-zA-Z0-9-_]+$/)
       ]),
-      precio_venta: new FormControl(0, [
+      price: new FormControl(0, [
         Validators.required,
         Validators.min(0.01),
         Validators.max(999999)
       ]),
-      costo_adquisicion: new FormControl(0, [
+      cost_price: new FormControl(0, [
         Validators.required,
         Validators.min(0),
         Validators.max(999999)
       ]),
-      cantidad_stock: new FormControl(0, [
+      stock: new FormControl(0, [
         Validators.required,
         Validators.min(0),
         Validators.max(999999),
         Validators.pattern(/^\d+$/)
       ]),
-      categoria: new FormControl('', [Validators.required]),
+      category: new FormControl('', [Validators.required]),
       estado: new FormControl('activo', [Validators.required]),
     });
   }

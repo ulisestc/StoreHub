@@ -28,7 +28,7 @@ import { ConfirmDeleteModalComponent } from '../../../../modals/confirm-delete-m
 })
 export class CategoryListComponent implements OnInit {
 
-  displayedColumns: string[] = ['nombre', 'descripcion', 'acciones'];
+  displayedColumns: string[] = ['name', 'description', 'acciones'];
   dataSource: Category[] = [];
 
   private categoryService = inject(CategoryService);

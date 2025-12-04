@@ -8,42 +8,42 @@
   <div class="table-container mat-elevation-z8">
     <table mat-table [dataSource]="dataSource">
 
-      <ng-container matColumnDef="fecha">
+      <ng-container matColumnDef="created_at">
         <th mat-header-cell *matHeaderCellDef> Fecha </th>
-        <td mat-cell *matCellDef="let sale" class="date-cell"> 
+        <td mat-cell *matCellDef="let sale" class="date-cell">
           <mat-icon class="mini-icon">calendar_today</mat-icon>
-          {{sale.fecha | date:'short'}} 
+          {{sale.created_at | date:'short'}}
         </td>
       </ng-container>
 
       <ng-container matColumnDef="id">
         <th mat-header-cell *matHeaderCellDef> N° Ticket </th>
-        <td mat-cell *matCellDef="let sale" class="ticket-cell"> 
-          <span class="ticket-badge">#{{sale.id.slice(-6) }}</span>
-        </td> 
+        <td mat-cell *matCellDef="let sale" class="ticket-cell">
+          <span class="ticket-badge">#{{sale.id}}</span>
+        </td>
       </ng-container>
 
-      <ng-container matColumnDef="usuario">
-        <th mat-header-cell *matHeaderCellDef> Cajero </th>
-        <td mat-cell *matCellDef="let sale" class="user-cell"> 
+      <ng-container matColumnDef="client">
+        <th mat-header-cell *matHeaderCellDef> Cliente </th>
+        <td mat-cell *matCellDef="let sale" class="user-cell">
           <div class="user-info">
             <mat-icon>person</mat-icon>
-            {{sale.usuario}} 
+            {{sale.client}}
           </div>
         </td>
       </ng-container>
 
       <ng-container matColumnDef="total">
         <th mat-header-cell *matHeaderCellDef> Total </th>
-        <td mat-cell *matCellDef="let sale" class="total-cell"> 
-          {{sale.total | currency}} 
+        <td mat-cell *matCellDef="let sale" class="total-cell">
+          {{sale.total | currency}}
         </td>
       </ng-container>
 
       <ng-container matColumnDef="acciones">
         <th mat-header-cell *matHeaderCellDef class="actions-header"> Acciones </th>
         <td mat-cell *matCellDef="let sale" class="actions-cell">
-          <button mat-icon-button 
+          <button mat-icon-button
                   (click)="viewSaleDetails(sale)"
                   matTooltip="Ver detalles del ticket"
                   class="view-btn">
