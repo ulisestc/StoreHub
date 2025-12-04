@@ -12,7 +12,13 @@
   </header>
 
   <div class="table-container mat-elevation-z8">
-    <table mat-table [dataSource]="dataSource">
+
+    <div *ngIf="isLoading" class="loading-spinner">
+      <mat-spinner diameter="50"></mat-spinner>
+      <p>Cargando categorías...</p>
+    </div>
+
+    <table mat-table [dataSource]="dataSource" *ngIf="!isLoading">
 
       <ng-container matColumnDef="name">
         <th mat-header-cell *matHeaderCellDef> Nombre </th>
@@ -51,7 +57,7 @@
 
     </table>
 
-    <div *ngIf="dataSource.length === 0" class="empty-state">
+    <div *ngIf="dataSource.length === 0 && !isLoading" class="empty-state">
       <mat-icon>category</mat-icon>
       <p>No hay categorías registradas.</p>
     </div>
