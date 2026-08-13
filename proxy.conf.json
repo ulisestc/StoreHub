@@ -1,7 +1,7 @@
 {
   "/api": {
-    "target": "https://storehub-backend-xhr1.onrender.com",
-    "secure": true,
+    "target": "http://localhost:8000",
+    "secure": false,
     "changeOrigin": true,
     "logLevel": "debug"
   }

@@ -1,0 +1,125 @@
+$color-bg-main: #0f172a;
+$color-bg-card: #1e293b;
+$color-primary: #448aff;
+$color-text-main: #f1f5f9;
+$color-text-muted: #94a3b8;
+
+.activation-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: $color-bg-main;
+  padding: 24px;
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(68, 138, 255, 0.1) 0%, transparent 70%);
+    animation: float 20s ease-in-out infinite;
+  }
+
+  .activation-card {
+    background: $color-bg-card;
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+    max-width: 450px;
+    width: 100%;
+    text-align: center;
+    padding: 48px 32px;
+    position: relative;
+    z-index: 1;
+    backdrop-filter: blur(10px);
+    animation: slideIn 0.5s ease-out;
+
+    mat-icon {
+      font-size: 72px;
+      height: 72px;
+      width: 72px;
+      margin-bottom: 24px;
+
+      &.spin {
+        animation: spin 1.5s linear infinite;
+        color: $color-primary;
+      }
+    }
+
+    h2 {
+      margin: 0 0 16px 0;
+      font-size: 28px;
+      font-weight: 700;
+      background: none;
+      color: $color-text-main;
+    }
+
+    p {
+      color: $color-text-muted;
+      margin-bottom: 32px;
+      font-size: 16px;
+      line-height: 1.5;
+    }
+    
+    .state-success {
+      mat-icon { color: #69f0ae; }
+      h2 { color: #69f0ae; }
+      
+      button {
+        padding: 8px 32px;
+        font-size: 16px;
+        font-weight: 600;
+      }
+    }
+
+    .state-error {
+      mat-icon { color: #ff5252; }
+      h2 { color: #ff5252; }
+      
+      button {
+        padding: 8px 32px;
+        font-size: 16px;
+        font-weight: 600;
+        border-color: rgba(255, 82, 82, 0.5);
+        
+        &:hover {
+          background: rgba(255, 82, 82, 0.1);
+        }
+      }
+    }
+    
+    .state-loading {
+      h2 {
+        background: linear-gradient(135deg, $color-primary 0%, #5c9aff 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+    }
+  }
+}
+
+@keyframes spin {
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes float {
+  0%, 100% { transform: translate(0, 0); }
+  50% { transform: translate(10%, 10%); }
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

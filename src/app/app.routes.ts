@@ -21,6 +21,8 @@ import { ClientListComponent } from './screens/dashboard/clients/client-list/cli
 import { ClientFormComponent } from './screens/dashboard/clients/client-form/client-form.component';
 
 import { ProfileEditComponent } from './screens/dashboard/profile/profile-edit/profile-edit.component';
+import { EmployeeManagementComponent } from './screens/dashboard/employees/employee-management/employee-management.component';
+import { ActivateAccountComponent } from './screens/auth/activate-account/activate-account.component';
 
 import { authGuard } from './shared/guards/auth.guard';
 
@@ -41,6 +43,10 @@ export const routes: Routes = [
     path: 'auth/register',
     component: RegisterComponent
   },
+  {
+    path: 'activate/:uid/:token',
+    component: ActivateAccountComponent
+  },
 
   // --- RUTAS PRIVADAS ---
   {
@@ -56,6 +62,13 @@ export const routes: Routes = [
       {
         path: 'profile',
         component: ProfileEditComponent
+      },
+      // --- RUTA DE EMPLEADOS ---
+      {
+        path: 'employees',
+        component: EmployeeManagementComponent,
+        canActivate: [roleGuard],
+        data: { expectedRoles: ['Admin'] }
       },
       // --- RUTAS DE CAJERO Y ADMIN ---
       { path: 'sales/pos', component: PosComponent },

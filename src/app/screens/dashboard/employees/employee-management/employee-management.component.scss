@@ -1,0 +1,74 @@
+.employees-container {
+  padding: 24px;
+  max-width: 1200px;
+  margin: 0 auto;
+
+  .page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+
+    .header-content {
+      h1 { margin: 0; font-size: 24px; font-weight: 500; }
+      p { margin: 4px 0 0 0; color: #666; }
+    }
+    
+    .header-icon mat-icon {
+      font-size: 48px;
+      height: 48px;
+      width: 48px;
+      color: #3f51b5;
+    }
+  }
+
+  .invite-card {
+    margin-bottom: 24px;
+    
+    .invite-form {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      align-items: center;
+      
+      mat-form-field {
+        flex: 1;
+        min-width: 200px;
+      }
+      
+      button {
+        height: 56px;
+        margin-bottom: 22px; // Alineación visual con los inputs
+      }
+    }
+  }
+
+  .list-card {
+    .employees-table {
+      width: 100%;
+      
+      .status-badge {
+        padding: 4px 8px;
+        border-radius: 12px;
+        font-size: 12px;
+        font-weight: bold;
+        
+        &.active {
+          background-color: #e8f5e9;
+          color: #2e7d32;
+        }
+        
+        &.inactive {
+          background-color: #ffebee;
+          color: #c62828;
+        }
+      }
+    }
+    
+    .empty-state {
+      padding: 48px;
+      text-align: center;
+      color: #666;
+    }
+  }
+}

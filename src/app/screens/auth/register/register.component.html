@@ -1,9 +1,10 @@
 <div class="form-container">
   <div class="register-card">
-    <h2>Crear Cuenta</h2>
-    <p class="subtitle">Completa tus datos para registrarte</p>
+    <ng-container *ngIf="!registerSuccess">
+      <h2>Crear Cuenta</h2>
+      <p class="subtitle">Completa tus datos para registrarte</p>
 
-    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="register-form">
+      <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="register-form">
 
       <div class="name-row">
         <mat-form-field appearance="outline" class="half-width">
@@ -75,11 +76,6 @@
         </mat-error>
       </mat-form-field>
 
-      <div *ngIf="registerSuccess" class="alert-success">
-        <mat-icon>check_circle</mat-icon>
-        <span>¡Registro exitoso! Redirigiendo al inicio de sesión...</span>
-      </div>
-
       <div *ngIf="registerError" class="alert-danger">
         <mat-icon>error</mat-icon>
         <span>{{ registerError }}</span>
@@ -100,6 +96,19 @@
         <p>¿Ya tienes cuenta? <a routerLink="/auth/login">Inicia sesión aquí</a></p>
       </div>
 
-    </form>
+      </form>
+    </ng-container>
+
+    <div *ngIf="registerSuccess" class="success-box">
+      <mat-icon class="success-icon">mark_email_unread</mat-icon>
+      <h2>¡Registro Exitoso!</h2>
+      <p>Hemos enviado un correo de activación a <strong>{{ registerForm.get('email')?.value }}</strong>.</p>
+      <p class="instructions">Por favor, revisa tu bandeja de entrada o la carpeta de SPAM y haz clic en el enlace para activar tu cuenta.</p>
+      
+      <button mat-raised-button color="primary" class="continue-btn" (click)="goToLogin()">
+        <mat-icon>login</mat-icon>
+        Continuar al Inicio de Sesión
+      </button>
+    </div>
   </div>
 </div>

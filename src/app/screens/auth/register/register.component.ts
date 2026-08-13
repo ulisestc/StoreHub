@@ -92,10 +92,6 @@ export class RegisterComponent {
         next: () => {
           this.isLoading = false;
           this.registerSuccess = true;
-
-          setTimeout(() => {
-            this.router.navigate(['/auth/login']);
-          }, 2000);
         },
         error: (err) => {
           this.isLoading = false;
@@ -118,5 +114,9 @@ export class RegisterComponent {
     } else {
       this.registerForm.markAllAsTouched();
     }
+  }
+
+  goToLogin() {
+    this.router.navigate(['/auth/login']);
   }
 }

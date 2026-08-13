@@ -1,4 +1,4 @@
-﻿import { Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { Observable, tap, catchError, of, switchMap, throwError } from 'rxjs';
@@ -17,6 +17,14 @@ interface LoginResponse {
   refresh: string;
 }
 
+export interface Store {
+  id: number;
+  name: string;
+  is_premium: boolean;
+  max_products: number;
+  max_users: number;
+}
+
 export interface UserResponse {
   id: number;
   email: string;
@@ -25,6 +33,7 @@ export interface UserResponse {
   role: string;
   is_active: boolean;
   is_staff: boolean;
+  store: Store;
 }
 
 export interface RegisterData {

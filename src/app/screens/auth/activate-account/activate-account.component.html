@@ -1,0 +1,27 @@
+<div class="activation-container">
+  <mat-card class="activation-card">
+    <div *ngIf="status === 'loading'" class="state-loading">
+      <mat-icon class="spin">sync</mat-icon>
+      <h2>Activando tu cuenta...</h2>
+      <p>Por favor espera un momento.</p>
+    </div>
+
+    <div *ngIf="status === 'success'" class="state-success">
+      <mat-icon color="primary">check_circle</mat-icon>
+      <h2>¡Cuenta Activada!</h2>
+      <p>Tu cuenta ha sido confirmada exitosamente. Ya puedes acceder al sistema.</p>
+      <button mat-raised-button color="primary" (click)="goToLogin()">
+        Ir al Login
+      </button>
+    </div>
+
+    <div *ngIf="status === 'error'" class="state-error">
+      <mat-icon color="warn">error</mat-icon>
+      <h2>Error de Activación</h2>
+      <p>El enlace es inválido o ha expirado. Por favor, solicita a tu administrador que te envíe una nueva invitación.</p>
+      <button mat-stroked-button color="warn" (click)="goToLogin()">
+        Volver al Login
+      </button>
+    </div>
+  </mat-card>
+</div>
