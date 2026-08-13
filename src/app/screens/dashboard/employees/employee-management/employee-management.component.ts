@@ -34,8 +34,7 @@ export class EmployeeManagementComponent implements OnInit {
     this.inviteForm = this.fb.group({
       first_name: ['', Validators.required],
       last_name: ['', Validators.required],
-      email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(8)]]
+      email: ['', [Validators.required, Validators.email]]
     });
   }
 
@@ -76,15 +75,15 @@ export class EmployeeManagementComponent implements OnInit {
     });
   }
 
-  deactivate(employee: Employee): void {
-    if (confirm(`¿Estás seguro de desactivar a ${employee.first_name}? No podrá iniciar sesión.`)) {
+  deleteEmployee(employee: Employee): void {
+    if (confirm(`¿Estás seguro de ELIMINAR a ${employee.first_name}? Esta acción liberará espacio de tu plan.`)) {
       this.employeeService.deactivateEmployee(employee.id).subscribe({
         next: () => {
-          this.snackBar.open('Empleado desactivado correctamente', 'Cerrar', { duration: 3000 });
+          this.snackBar.open('Empleado eliminado correctamente', 'Cerrar', { duration: 3000 });
           this.loadEmployees();
         },
         error: () => {
-          this.snackBar.open('Error al desactivar', 'Cerrar', { duration: 3000 });
+          this.snackBar.open('Error al eliminar', 'Cerrar', { duration: 3000 });
         }
       });
     }

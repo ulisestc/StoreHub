@@ -1,0 +1,52 @@
+<div class="setup-container">
+  <div class="setup-card">
+    <div class="header-content">
+      <div class="icon-circle">
+        <mat-icon>rocket_launch</mat-icon>
+      </div>
+      <h2>¡Bienvenido, {{userName}}!</h2>
+      <p>Antes de comenzar a vender, configuremos los datos básicos de tu tienda. Esta información aparecerá en tus tickets y recibos.</p>
+    </div>
+
+    <form [formGroup]="setupForm" (ngSubmit)="onSave()" class="setup-form">
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Nombre de la Tienda</mat-label>
+        <input matInput formControlName="name" placeholder="Ej. Abarrotes Don Julio">
+        <mat-icon matPrefix>store</mat-icon>
+        <mat-error *ngIf="setupForm.get('name')?.hasError('required')">El nombre es obligatorio.</mat-error>
+      </mat-form-field>
+
+      <div class="row">
+        <mat-form-field appearance="outline" class="half-width">
+          <mat-label>Correo de Contacto</mat-label>
+          <input matInput formControlName="email" type="email" placeholder="contacto@mitienda.com">
+          <mat-icon matPrefix>email</mat-icon>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="half-width">
+          <mat-label>Teléfono</mat-label>
+          <input matInput formControlName="phone" placeholder="Ej. 55 1234 5678">
+          <mat-icon matPrefix>phone</mat-icon>
+        </mat-form-field>
+      </div>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Dirección Física</mat-label>
+        <input matInput formControlName="address" placeholder="Ej. Av. Siempre Viva 123">
+        <mat-icon matPrefix>location_on</mat-icon>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Mensaje de Agradecimiento (Ticket)</mat-label>
+        <textarea matInput formControlName="receipt_message" rows="3" placeholder="Ej. ¡Gracias por su preferencia!"></textarea>
+        <mat-icon matPrefix>receipt_long</mat-icon>
+      </mat-form-field>
+
+      <button mat-raised-button color="primary" type="submit" class="submit-btn" [disabled]="setupForm.invalid || isLoading">
+        <span>{{ isLoading ? 'Guardando...' : 'Comenzar a usar StoreHub' }}</span>
+        <mat-icon *ngIf="!isLoading">arrow_forward</mat-icon>
+        <mat-icon *ngIf="isLoading" class="spin">autorenew</mat-icon>
+      </button>
+    </form>
+  </div>
+</div>

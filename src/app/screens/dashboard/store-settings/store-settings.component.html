@@ -1,0 +1,58 @@
+<div class="settings-container">
+  <div class="header">
+    <h2>Configuración de Tienda</h2>
+    <p>Administra los detalles de tu negocio para los tickets y recibos.</p>
+  </div>
+
+  <mat-card class="settings-card">
+    <mat-card-content>
+      <form [formGroup]="storeForm" (ngSubmit)="onSave()" class="settings-form">
+        
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Nombre de la Tienda</mat-label>
+          <input matInput formControlName="name" placeholder="Ej. Abarrotes Don Julio">
+          <mat-icon matPrefix>store</mat-icon>
+          <mat-error *ngIf="storeForm.get('name')?.hasError('required')">
+            El nombre de la tienda es obligatorio.
+          </mat-error>
+        </mat-form-field>
+
+        <div class="row">
+          <mat-form-field appearance="outline" class="half-width">
+            <mat-label>Correo Electrónico de Contacto</mat-label>
+            <input matInput formControlName="email" type="email" placeholder="contacto@mitienda.com">
+            <mat-icon matPrefix>email</mat-icon>
+            <mat-error *ngIf="storeForm.get('email')?.hasError('email')">
+              El correo no es válido.
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="half-width">
+            <mat-label>Teléfono</mat-label>
+            <input matInput formControlName="phone" placeholder="Ej. 55 1234 5678">
+            <mat-icon matPrefix>phone</mat-icon>
+          </mat-form-field>
+        </div>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Dirección Física</mat-label>
+          <input matInput formControlName="address" placeholder="Ej. Av. Siempre Viva 123">
+          <mat-icon matPrefix>location_on</mat-icon>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Mensaje para el Ticket / Recibo</mat-label>
+          <textarea matInput formControlName="receipt_message" rows="3" placeholder="Ej. ¡Gracias por su compra, vuelva pronto!"></textarea>
+          <mat-icon matPrefix>receipt_long</mat-icon>
+        </mat-form-field>
+
+        <div class="form-actions">
+          <button mat-raised-button color="primary" type="submit" [disabled]="storeForm.invalid || isLoading">
+            <mat-icon>save</mat-icon>
+            {{ isLoading ? 'Guardando...' : 'Guardar Cambios' }}
+          </button>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>

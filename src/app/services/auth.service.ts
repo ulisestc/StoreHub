@@ -10,6 +10,8 @@ interface TokenData {
   expiresAt: number;
   role: 'Admin' | 'Cajero';
   name: string;
+  mustChangePassword?: boolean;
+  isSetupComplete?: boolean;
 }
 
 interface LoginResponse {
@@ -23,6 +25,7 @@ export interface Store {
   is_premium: boolean;
   max_products: number;
   max_users: number;
+  is_setup_complete?: boolean;
 }
 
 export interface UserResponse {
@@ -33,6 +36,7 @@ export interface UserResponse {
   role: string;
   is_active: boolean;
   is_staff: boolean;
+  must_change_password?: boolean;
   store: Store;
 }
 
@@ -82,7 +86,9 @@ export class AuthService {
               refreshToken: response.refresh,
               expiresAt: expiresAt,
               role: role,
-              name: `${userInfo.first_name} ${userInfo.last_name}`
+              name: `${userInfo.first_name} ${userInfo.last_name}`,
+              mustChangePassword: userInfo.must_change_password,
+              isSetupComplete: userInfo.store?.is_setup_complete
             };
 
             localStorage.setItem(this.TOKEN_KEY, response.access);
@@ -90,6 +96,15 @@ export class AuthService {
             localStorage.setItem(this.TOKEN_DATA_KEY, JSON.stringify(tokenData));
 
             console.log('Login exitoso, usuario:', userInfo.email, 'rol:', role);
+            
+            // Lógica de redirección basada en estado de setup o contraseña
+            setTimeout(() => {
+              if (userInfo.must_change_password) {
+                this.router.navigate(['/auth/force-change-password']);
+              } else {
+                this.router.navigate(['/dashboard']);
+              }
+            }, 400);
           }),
           switchMap(() => of(true))
         );
@@ -261,6 +276,28 @@ export class AuthService {
     }
   }
 
+  isSetupComplete(): boolean {
+    const tokenDataStr = localStorage.getItem(this.TOKEN_DATA_KEY);
+    if (!tokenDataStr) return false;
+    try {
+      const tokenData: TokenData = JSON.parse(tokenDataStr);
+      return tokenData.isSetupComplete ?? true; // Default true para evitar bloqueos si falla
+    } catch {
+      return true;
+    }
+  }
+
+  mustChangePassword(): boolean {
+    const tokenDataStr = localStorage.getItem(this.TOKEN_DATA_KEY);
+    if (!tokenDataStr) return false;
+    try {
+      const tokenData: TokenData = JSON.parse(tokenDataStr);
+      return tokenData.mustChangePassword ?? false;
+    } catch {
+      return false;
+    }
+  }
+
   hasRole(role: 'Admin' | 'Cajero'): boolean {
     return this.getUserRole() === role;
   }
@@ -283,5 +320,27 @@ export class AuthService {
 
   changePassword(data: { new_password: string; re_new_password: string; current_password: string }): Observable<void> {
     return this.http.post<void>(`${this.apiUrl}/auth/users/set_password/`, data);
+  }
+
+  sendPasswordResetEmail(email: string): Observable<void> {
+    return this.http.post<void>(`${this.apiUrl}/auth/users/reset_password/`, { email });
+  }
+
+  confirmPasswordReset(data: { uid: string; token: string; new_password: string; re_new_password: string }): Observable<void> {
+    return this.http.post<void>(`${this.apiUrl}/auth/users/reset_password_confirm/`, data);
+  }
+
+  forceChangePassword(data: { new_password: string; re_new_password: string; current_password: string }): Observable<any> {
+    return this.http.post(`${this.apiUrl}/auth/users/force_change_password/`, data).pipe(
+      tap(() => {
+        // Actualizar el token data para quitar el flag
+        const tokenDataStr = localStorage.getItem(this.TOKEN_DATA_KEY);
+        if (tokenDataStr) {
+          const tokenData: TokenData = JSON.parse(tokenDataStr);
+          tokenData.mustChangePassword = false;
+          localStorage.setItem(this.TOKEN_DATA_KEY, JSON.stringify(tokenData));
+        }
+      })
+    );
   }
 }

@@ -266,35 +266,30 @@ $color-text-muted: #94a3b8;
     margin-top: 24px;
     text-align: center;
 
-    p {
-      margin: 0;
-      color: $color-text-muted;
-      font-size: 14px;
+    .links {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
 
       a {
         color: $color-primary;
         text-decoration: none;
-        font-weight: 600;
+        font-weight: 500;
+        font-size: 14px;
         transition: all 0.2s;
-        position: relative;
-
-        &::after {
-          content: '';
-          position: absolute;
-          bottom: -2px;
-          left: 0;
-          width: 0;
-          height: 2px;
-          background: $color-primary;
-          transition: width 0.3s ease;
-        }
-
+        
         &:hover {
           color: #5c9aff;
+          text-decoration: underline;
+        }
+      }
+      
+      .forgot-link {
+        font-weight: 400;
+        color: $color-text-muted;
 
-          &::after {
-            width: 100%;
-          }
+        &:hover {
+          color: $color-text-main;
         }
       }
     }

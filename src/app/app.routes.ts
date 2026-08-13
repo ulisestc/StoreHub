@@ -23,10 +23,16 @@ import { ClientFormComponent } from './screens/dashboard/clients/client-form/cli
 import { ProfileEditComponent } from './screens/dashboard/profile/profile-edit/profile-edit.component';
 import { EmployeeManagementComponent } from './screens/dashboard/employees/employee-management/employee-management.component';
 import { ActivateAccountComponent } from './screens/auth/activate-account/activate-account.component';
+import { ForgotPasswordComponent } from './screens/auth/forgot-password/forgot-password.component';
+import { ResetPasswordComponent } from './screens/auth/reset-password/reset-password.component';
+import { StoreSettingsComponent } from './screens/dashboard/store-settings/store-settings.component';
+
+import { ForceChangePasswordComponent } from './screens/auth/force-change-password/force-change-password.component';
+import { SetupComponent } from './screens/dashboard/setup/setup.component';
 
 import { authGuard } from './shared/guards/auth.guard';
-
 import { roleGuard } from './shared/guards/role.guard';
+import { setupGuard } from './shared/guards/setup.guard';
 
 export const routes: Routes = [
   // --- RUTAS PÚBLICAS ---
@@ -47,6 +53,20 @@ export const routes: Routes = [
     path: 'activate/:uid/:token',
     component: ActivateAccountComponent
   },
+  {
+    path: 'auth/forgot-password',
+    component: ForgotPasswordComponent
+  },
+  {
+    path: 'reset-password/:uid/:token',
+    component: ResetPasswordComponent
+  },
+
+  {
+    path: 'auth/force-change-password',
+    component: ForceChangePasswordComponent,
+    canActivate: [authGuard]
+  },
 
   // --- RUTAS PRIVADAS ---
   {
@@ -56,60 +76,76 @@ export const routes: Routes = [
     children: [
       {
         path: '',
-        component: HomeComponent
+        component: HomeComponent,
+        canActivate: [setupGuard]
+      },
+      // --- RUTA DE SETUP (Solo Admin) ---
+      {
+        path: 'setup',
+        component: SetupComponent,
+        canActivate: [roleGuard],
+        data: { expectedRoles: ['Admin'] }
       },
       // --- RUTA DE PERFIL  ---
       {
         path: 'profile',
-        component: ProfileEditComponent
+        component: ProfileEditComponent,
+        canActivate: [setupGuard]
       },
       // --- RUTA DE EMPLEADOS ---
       {
         path: 'employees',
         component: EmployeeManagementComponent,
-        canActivate: [roleGuard],
+        canActivate: [roleGuard, setupGuard],
+        data: { expectedRoles: ['Admin'] }
+      },
+      // --- RUTA DE CONFIGURACIÓN DE TIENDA ---
+      {
+        path: 'settings',
+        component: StoreSettingsComponent,
+        canActivate: [roleGuard, setupGuard],
         data: { expectedRoles: ['Admin'] }
       },
       // --- RUTAS DE CAJERO Y ADMIN ---
-      { path: 'sales/pos', component: PosComponent },
-      { path: 'sales/history', component: SaleHistoryComponent },
+      { path: 'sales/pos', component: PosComponent, canActivate: [setupGuard] },
+      { path: 'sales/history', component: SaleHistoryComponent, canActivate: [setupGuard] },
 
       // --- RUTAS DE PRODUCTOS ---
       {
         path: 'products/new',
         component: ProductFormComponent,
-        canActivate: [roleGuard],
+        canActivate: [roleGuard, setupGuard],
         data: { expectedRoles: ['Admin'] }
       },
       {
         path: 'products/edit/:id',
         component: ProductFormComponent,
-        canActivate: [roleGuard],
+        canActivate: [roleGuard, setupGuard],
         data: { expectedRoles: ['Admin'] }
       },
       {
         path: 'products',
         component: ProductListComponent,
-        canActivate: [roleGuard],
+        canActivate: [roleGuard, setupGuard],
         data: { expectedRoles: ['Admin'] }
       },
       // --- RUTAS DE CATEGORÍAS ---
       {
         path: 'categories/new',
         component: CategoryFormComponent,
-        canActivate: [roleGuard],
+        canActivate: [roleGuard, setupGuard],
         data: { expectedRoles: ['Admin'] }
       },
       {
         path: 'categories/edit/:id',
         component: CategoryFormComponent,
-        canActivate: [roleGuard],
+        canActivate: [roleGuard, setupGuard],
         data: { expectedRoles: ['Admin'] }
       },
       {
         path: 'categories',
         component: CategoryListComponent,
-        canActivate: [roleGuard],
+        canActivate: [roleGuard, setupGuard],
         data: { expectedRoles: ['Admin'] }
       },
 
@@ -117,19 +153,19 @@ export const routes: Routes = [
       {
         path: 'clients/new',
         component: ClientFormComponent,
-        canActivate: [roleGuard],
+        canActivate: [roleGuard, setupGuard],
         data: { expectedRoles: ['Admin'] }
       },
       {
         path: 'clients/edit/:id',
         component: ClientFormComponent,
-        canActivate: [roleGuard],
+        canActivate: [roleGuard, setupGuard],
         data: { expectedRoles: ['Admin'] }
       },
       {
         path: 'clients',
         component: ClientListComponent,
-        canActivate: [roleGuard],
+        canActivate: [roleGuard, setupGuard],
         data: { expectedRoles: ['Admin'] }
       },
 
@@ -137,13 +173,13 @@ export const routes: Routes = [
       {
         path: 'inventory',
         component: InventoryAdjustComponent,
-        canActivate: [roleGuard],
+        canActivate: [roleGuard, setupGuard],
         data: { expectedRoles: ['Admin'] }
       },
       {
         path: 'reports',
         component: ReportListComponent,
-        canActivate: [roleGuard],
+        canActivate: [roleGuard, setupGuard],
         data: { expectedRoles: ['Admin'] }
       },
     ]
