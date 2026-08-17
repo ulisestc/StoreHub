@@ -10,3 +10,4 @@ export interface Product {
   description?: string;
   categoryName?: string;
 }
+

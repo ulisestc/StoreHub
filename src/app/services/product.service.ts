@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Observable, forkJoin } from 'rxjs';
+import { Observable, forkJoin, of } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 import { Product } from '../shared/interfaces/product';
 import { CategoryService } from './category.service';
@@ -18,6 +18,33 @@ export class ProductService {
   constructor(private http: HttpClient) { }
 
   getProducts(search?: string, categoryId?: number | string, page?: number, pageSize: number = 10): Observable<{count: number, results: Product[]}> {
+    if (!navigator.onLine) {
+      const cached = localStorage.getItem('storehub_offline_catalog');
+      let catalog: Product[] = cached ? JSON.parse(cached) : [];
+
+      if (search) {
+        const s = search.toLowerCase();
+        catalog = catalog.filter(p => 
+          p.name.toLowerCase().includes(s) || 
+          p.sku.toLowerCase().includes(s)
+        );
+      }
+
+      if (categoryId) {
+        catalog = catalog.filter(p => p.category?.toString() === categoryId?.toString());
+      }
+
+      const count = catalog.length;
+      if (page) {
+        const start = (page - 1) * pageSize;
+        catalog = catalog.slice(start, start + pageSize);
+      } else {
+        catalog = catalog.slice(0, pageSize);
+      }
+
+      return of({ count, results: catalog });
+    }
+
     let params = new HttpParams();
 
     if (search) {
@@ -55,7 +82,7 @@ export class ProductService {
 
   getProductsPaginated(page: number = 1, pageSize: number = 10): Observable<{count: number, results: Product[]}> {
     return forkJoin({
-      productsData: this.http.get<any>(`${apiUrl}/products/?page=${page}&page_size=${pageSize}`),
+      productsData: this.getProducts(undefined, undefined, page, pageSize),
       categories: this.categoryService.getCategories()
     }).pipe(
       map(({productsData, categories}) => {

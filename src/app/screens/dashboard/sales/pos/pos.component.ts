@@ -13,6 +13,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatSelectModule } from '@angular/material/select';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { ConfirmSaleModalComponent } from '../../../../modals/confirm-sale-modal/confirm-sale-modal.component';
 import { ClientQuickAddModalComponent } from '../../../../modals/client-quick-add-modal/client-quick-add-modal.component';
 import { LowStockWarningModalComponent } from '../../../../modals/low-stock-warning-modal/low-stock-warning-modal.component';
@@ -23,6 +24,9 @@ import { Category } from '../../../../shared/interfaces/category';
 import { SalesService } from '../../../../services/sales.service';
 import { ClientService } from '../../../../services/client.service';
 import { Client } from '../../../../shared/interfaces/client';
+import { OfflineSyncService } from '../../../../services/offline-sync.service';
+import { ZXingScannerModule } from '@zxing/ngx-scanner';
+import { BarcodeFormat } from '@zxing/library';
 
 @Component({
   selector: 'app-pos',
@@ -41,7 +45,9 @@ import { Client } from '../../../../shared/interfaces/client';
     MatSelectModule,
     MatProgressSpinnerModule,
     MatPaginatorModule,
-    FormsModule
+    FormsModule,
+    ZXingScannerModule,
+    MatTooltipModule
   ],
   templateUrl: './pos.component.html',
   styleUrl: './pos.component.scss'
@@ -57,15 +63,23 @@ export class PosComponent implements OnInit {
   selectedCategoryId: string | undefined = undefined;
   searchQuery: string = '';
   isLoading = false;
+  isOnline: boolean = true;
   pageSize = 10;
   currentPage = 0;
   totalProducts = 0;
+
+  allowedFormats = [ BarcodeFormat.QR_CODE, BarcodeFormat.EAN_13, BarcodeFormat.CODE_128, BarcodeFormat.UPC_A ];
+  scannerEnabled = true;
+  hasDevices = false;
+  lastScannedCode = '';
+  lastScanTime = 0;
 
   private productService = inject(ProductService);
   private categoryService = inject(CategoryService);
   private snackBar = inject(MatSnackBar);
   private salesService = inject(SalesService);
   private clientService = inject(ClientService);
+  private offlineSyncService = inject(OfflineSyncService);
   private dialog = inject(MatDialog);
   private LOW_STOCK_THRESHOLD = 5;
 
@@ -77,6 +91,9 @@ export class PosComponent implements OnInit {
     this.loadAllProducts();
     this.loadClients();
     this.loadCategories();
+    this.offlineSyncService.isOnline.subscribe(online => {
+      this.isOnline = online;
+    });
   }
 
   loadAllProducts(pageIndex: number = 0): void {
@@ -288,16 +305,31 @@ export class PosComponent implements OnInit {
       details: saleDetails
     };
 
-    this.salesService.createSale(saleData).subscribe(saleResponse => {
-      this.snackBar.open(`Venta #${saleResponse.id} registrada con éxito`, 'Cerrar', {
-        duration: 3000,
-        panelClass: ['snackbar-success']
+    if (this.isOnline) {
+      this.salesService.createSale(saleData).subscribe(saleResponse => {
+        this.snackBar.open(`Venta #${saleResponse.id} registrada con éxito`, 'Cerrar', {
+          duration: 3000,
+          panelClass: ['snackbar-success']
+        });
+
+        const productsWithLowStock: any[] = [];
+        for (const item of this.ticketItems) {
+          if (item.stock_disponible - item.cantidad <= this.LOW_STOCK_THRESHOLD) {
+            productsWithLowStock.push(item);
+          }
+        }
+
+        this.finishSale(productsWithLowStock);
       });
-
-      const productsWithLowStock: any[] = [];
-      let itemsProcessed = 0;
-
-    });
+    } else {
+      this.offlineSyncService.queueSale(saleData);
+      this.snackBar.open(
+        'Venta guardada localmente. Se sincronizará al recuperar conexión.',
+        'Cerrar',
+        { duration: 3000, panelClass: ['snackbar-success'] }
+      );
+      this.finishSale([]);
+    }
   }
 
   openCreateClientDialog(): void {
@@ -325,6 +357,70 @@ export class PosComponent implements OnInit {
         width: '450px',
         data: { products: lowStockProducts }
       });
+    }
+  }
+
+  toggleScanner() {
+    this.scannerEnabled = !this.scannerEnabled;
+  }
+
+  camerasFound(devices: MediaDeviceInfo[]) {
+    this.hasDevices = devices && devices.length > 0;
+  }
+
+  camerasNotFound() {
+    this.hasDevices = false;
+    this.snackBar.open('No se encontraron cámaras disponibles.', 'Cerrar', { duration: 3000, panelClass: ['snackbar-error'] });
+  }
+
+  scanSuccess(resultString: string) {
+    if (!resultString) return;
+
+    const now = Date.now();
+    if (resultString === this.lastScannedCode && (now - this.lastScanTime) < 2000) {
+      // Ignorar el mismo código si se escanea dentro de 2 segundos para evitar rebotes
+      return;
+    }
+    
+    this.lastScannedCode = resultString;
+    this.lastScanTime = now;
+    
+    this.playScanSound();
+
+    // Buscar y agregar al carrito
+    this.productService.getProducts(resultString, undefined, 1, 1).subscribe({
+      next: (response) => {
+        const found = response.results.find((p: Product) => p.sku === resultString);
+        if (found) {
+          this.addProductToTicket(found);
+          this.snackBar.open(`¡${found.name} agregado!`, 'Cerrar', { duration: 1500, panelClass: ['snackbar-success'] });
+        } else {
+          this.snackBar.open(`Producto con SKU ${resultString} no encontrado.`, 'Cerrar', { duration: 2500, panelClass: ['snackbar-warning'] });
+        }
+      }
+    });
+  }
+
+  playScanSound() {
+    try {
+      // Un sonido sintético simple (beep) con Web Audio API
+      const context = new (window.AudioContext || (window as any).webkitAudioContext)();
+      const oscillator = context.createOscillator();
+      const gainNode = context.createGain();
+      
+      oscillator.type = 'sine';
+      oscillator.frequency.setValueAtTime(800, context.currentTime); // 800 Hz
+      
+      gainNode.gain.setValueAtTime(0.1, context.currentTime);
+      gainNode.gain.exponentialRampToValueAtTime(0.00001, context.currentTime + 0.1);
+      
+      oscillator.connect(gainNode);
+      gainNode.connect(context.destination);
+      
+      oscillator.start(context.currentTime);
+      oscillator.stop(context.currentTime + 0.1);
+    } catch(e) {
+      console.warn('Audio no soportado o silenciado por el navegador');
     }
   }
 }

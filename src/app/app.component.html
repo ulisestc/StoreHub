@@ -7,3 +7,9 @@
 </div>
 
 <router-outlet></router-outlet>
+
+<!-- Aviso global de modo offline -->
+<div *ngIf="(isOnline$ | async) === false" class="global-offline-banner">
+  <mat-icon>cloud_off</mat-icon>
+  <span>Modo Offline</span>
+</div>

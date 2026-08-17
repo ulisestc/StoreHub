@@ -12,12 +12,15 @@ import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 import { ActivatedRoute } from '@angular/router';
 import { ProductService } from '../../../../services/product.service';
 import { CategoryService } from '../../../../services/category.service';
 import { Product } from '../../../../shared/interfaces/product';
 import { Category } from '../../../../shared/interfaces/category';
+import { ZXingScannerModule } from '@zxing/ngx-scanner';
+import { BarcodeFormat } from '@zxing/library';
 
 @Component({
   selector: 'app-product-form',
@@ -33,7 +36,9 @@ import { Category } from '../../../../shared/interfaces/category';
     MatToolbarModule,
     MatCardModule,
     MatIconModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    ZXingScannerModule,
+    MatTooltipModule
   ],
   templateUrl: './product-form.component.html',
   styleUrl: './product-form.component.scss'
@@ -60,6 +65,38 @@ export class ProductFormComponent implements OnInit {
   private snackBar = inject(MatSnackBar);
 
   productForm!: FormGroup;
+
+  showScanner = false;
+  allowedFormats = [ BarcodeFormat.QR_CODE, BarcodeFormat.EAN_13, BarcodeFormat.CODE_128, BarcodeFormat.UPC_A ];
+
+  toggleScanner() {
+    this.showScanner = !this.showScanner;
+  }
+
+  scanSuccess(resultString: string) {
+    if (resultString) {
+      this.productForm.patchValue({ sku: resultString });
+      this.showScanner = false;
+      this.snackBar.open('Código escaneado correctamente', 'Cerrar', { duration: 2000, panelClass: ['snackbar-success'] });
+      this.playScanSound();
+    }
+  }
+
+  playScanSound() {
+    try {
+      const context = new (window.AudioContext || (window as any).webkitAudioContext)();
+      const oscillator = context.createOscillator();
+      const gainNode = context.createGain();
+      oscillator.type = 'sine';
+      oscillator.frequency.setValueAtTime(800, context.currentTime);
+      gainNode.gain.setValueAtTime(0.1, context.currentTime);
+      gainNode.gain.exponentialRampToValueAtTime(0.00001, context.currentTime + 0.1);
+      oscillator.connect(gainNode);
+      gainNode.connect(context.destination);
+      oscillator.start(context.currentTime);
+      oscillator.stop(context.currentTime + 0.1);
+    } catch(e) {}
+  }
 
   ngOnInit(): void {
     this.initForm();

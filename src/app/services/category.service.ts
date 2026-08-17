@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Observable, of } from 'rxjs';
+import { map, tap } from 'rxjs/operators';
 import { Category } from '../shared/interfaces/category';
 import { environment } from '../../environments/environment';
 
@@ -15,8 +15,16 @@ export class CategoryService {
   constructor(private http: HttpClient) { }
 
   getCategories(): Observable<Category[]> {
+    if (!navigator.onLine) {
+      const cached = localStorage.getItem('storehub_categories');
+      return of(cached ? JSON.parse(cached) : []);
+    }
+
     return this.http.get<any>(`${apiUrl}/categories/`).pipe(
-      map(response => response.results || response)
+      map(response => response.results || response),
+      tap(categories => {
+        localStorage.setItem('storehub_categories', JSON.stringify(categories));
+      })
     );
   }
 

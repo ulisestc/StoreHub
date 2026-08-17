@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Sale } from '../shared/interfaces/sale';
 import { environment } from '../../environments/environment';
@@ -27,16 +27,36 @@ export class SalesService {
   }
 
   getSalesHistory(): Observable<Sale[]> {
+    if (!navigator.onLine) {
+      const cached = localStorage.getItem('storehub_offline_sales_history');
+      return of(cached ? JSON.parse(cached) : []);
+    }
+
     return this.http.get<any>(`${apiUrl}/sales/`).pipe(
       map(response => response.results || response)
     );
   }
 
   getSalesHistoryPaginated(page: number, pageSize: number = 10): Observable<{ count: number; results: Sale[] }> {
+    if (!navigator.onLine) {
+      const cached = localStorage.getItem('storehub_offline_sales_history');
+      let sales: Sale[] = cached ? JSON.parse(cached) : [];
+
+      const count = sales.length;
+      const start = (page - 1) * pageSize;
+      sales = sales.slice(start, start + pageSize);
+
+      return of({ count, results: sales });
+    }
+
     return this.http.get<{ count: number; results: Sale[] }>(`${apiUrl}/sales/?page=${page}&page_size=${pageSize}`);
   }
 
   getSaleById(id: number): Observable<Sale> {
     return this.http.get<Sale>(`${apiUrl}/sales/${id}/`);
+  }
+
+  bulkSync(sales: CreateSaleData[]): Observable<any> {
+    return this.http.post<any>(`${apiUrl}/sales/bulk-sync/`, sales);
   }
 }

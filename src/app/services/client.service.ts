@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Client } from '../shared/interfaces/client';
 import { environment } from '../../environments/environment';
@@ -15,6 +15,17 @@ export class ClientService {
   constructor(private http: HttpClient) { }
 
   getClients(page: number = 1, pageSize: number = 10): Observable<{count: number, results: Client[]}> {
+    if (!navigator.onLine) {
+      const cached = localStorage.getItem('storehub_offline_clients');
+      let clients: Client[] = cached ? JSON.parse(cached) : [];
+
+      const count = clients.length;
+      const start = (page - 1) * pageSize;
+      clients = clients.slice(start, start + pageSize);
+
+      return of({ count, results: clients });
+    }
+
     return this.http.get<any>(
       `${apiUrl}/clients/?page=${page}&page_size=${pageSize}`
     ).pipe(

@@ -1,5 +1,7 @@
 <div class="pos-container">
 
+
+
   <header class="pos-header">
     <h1>Punto de Venta</h1>
     <p>Registra nuevas transacciones</p>
@@ -28,6 +30,36 @@
               Nuevo
             </button>
           </div>
+        </mat-card-content>
+      </mat-card>
+
+      <!-- Escáner Card -->
+      <mat-card class="pos-card scanner-card">
+        <mat-card-header style="display: flex; justify-content: space-between; align-items: center;">
+          <mat-card-title style="display: flex; align-items: center; gap: 8px;">
+            <mat-icon>qr_code_scanner</mat-icon>
+            Escáner de Productos
+          </mat-card-title>
+          <button mat-icon-button (click)="toggleScanner()" [matTooltip]="scannerEnabled ? 'Apagar cámara' : 'Encender cámara'">
+            <mat-icon>{{ scannerEnabled ? 'videocam_off' : 'videocam' }}</mat-icon>
+          </button>
+        </mat-card-header>
+        <mat-card-content *ngIf="scannerEnabled" style="display: flex; justify-content: center; padding-top: 10px;">
+          <div class="scanner-wrapper">
+            <zxing-scanner
+              [formats]="allowedFormats"
+              [tryHarder]="true"
+              [timeBetweenScans]="100"
+              [delayBetweenScanSuccess]="100"
+              (scanSuccess)="scanSuccess($event)"
+              (camerasFound)="camerasFound($event)"
+              (camerasNotFound)="camerasNotFound()">
+            </zxing-scanner>
+          </div>
+        </mat-card-content>
+        <mat-card-content *ngIf="!scannerEnabled" style="text-align: center; padding: 20px;">
+          <mat-icon style="font-size: 40px; height: 40px; width: 40px; color: #888;">videocam_off</mat-icon>
+          <p style="color: #888; margin-top: 8px;">Cámara apagada</p>
         </mat-card-content>
       </mat-card>
 
