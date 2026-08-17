@@ -25,6 +25,7 @@
     "@zxing/ngx-scanner": "^19.0.0",
     "chart.js": "^4.5.1",
     "ng2-charts": "^8.0.0",
+    "ngx-mat-select-search": "^9.0.0",
     "puppeteer": "^25.7.0",
     "rxjs": "~7.8.0",
     "serve-handler": "^6.1.7",

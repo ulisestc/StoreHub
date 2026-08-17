@@ -7,6 +7,9 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
 import { MatIconModule } from '@angular/material/icon';
+import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
+import { debounceTime, distinctUntilChanged, switchMap, startWith } from 'rxjs/operators';
+import { Observable, of } from 'rxjs';
 import { ProductService } from '../../services/product.service';
 import { Product } from '../../shared/interfaces/product';
 
@@ -21,7 +24,8 @@ import { Product } from '../../shared/interfaces/product';
     MatInputModule,
     MatButtonModule,
     MatSelectModule,
-    MatIconModule
+    MatIconModule,
+    NgxMatSelectSearchModule
   ],
   templateUrl: './adjust-stock-modal.component.html',
   styleUrl: './adjust-stock-modal.component.scss'
@@ -29,7 +33,8 @@ import { Product } from '../../shared/interfaces/product';
 export class AdjustStockModalComponent implements OnInit {
 
   adjustForm!: FormGroup;
-  products: Product[] = [];
+  searchControl = new FormControl('');
+  products$: Observable<Product[]> = of([]);
   tiposMovimiento = [
     { value: 'in', label: 'Entrada' },
     { value: 'out', label: 'Salida' },
@@ -43,19 +48,30 @@ export class AdjustStockModalComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.loadProducts();
-
     this.adjustForm = new FormGroup({
       producto: new FormControl('', [Validators.required]),
       tipo_movimiento: new FormControl('', [Validators.required]),
       cantidad: new FormControl(null, [Validators.required, Validators.min(1)])
     });
-  }
 
-  loadProducts(): void {
-    this.productService.getProducts().subscribe(data => {
-      this.products = data.results || [];
-    });
+    this.products$ = this.searchControl.valueChanges.pipe(
+      startWith(''),
+      debounceTime(300),
+      distinctUntilChanged(),
+      switchMap(query => {
+        if (!query) {
+          return this.productService.getProducts().pipe(
+            switchMap(res => of(res.results || []))
+          );
+        }
+        return this.productService.getProducts(query).pipe(
+          switchMap(res => of(res.results || []))
+        );
+      })
+    );
+
+    // Initial load
+    this.searchControl.setValue('');
   }
 
   onCancel(): void {
