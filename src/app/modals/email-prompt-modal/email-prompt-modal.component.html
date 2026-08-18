@@ -1,0 +1,37 @@
+<div class="modal-container">
+  <div class="modal-header">
+    <div class="header-content">
+      <mat-icon class="header-icon">mark_email_read</mat-icon>
+      <div class="header-text">
+        <h2>Enviar Ticket de Venta</h2>
+        <p class="subtitle">Venta #{{data.saleId}}</p>
+      </div>
+    </div>
+    <button mat-icon-button (click)="onCancel()" class="close-btn" [disabled]="isSending">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <div class="modal-body" [formGroup]="emailForm">
+    <p class="description">Ingresa el correo electrónico del cliente para enviarle su comprobante de compra.</p>
+    
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Correo Electrónico</mat-label>
+      <input matInput formControlName="email" type="email" placeholder="ejemplo@correo.com">
+      <mat-icon matPrefix>mail</mat-icon>
+      <mat-error *ngIf="emailForm.get('email')?.hasError('required')">El correo es obligatorio</mat-error>
+      <mat-error *ngIf="emailForm.get('email')?.hasError('email')">Formato de correo inválido</mat-error>
+    </mat-form-field>
+  </div>
+
+  <div class="modal-footer">
+    <button mat-button (click)="onCancel()" [disabled]="isSending">
+      Cancelar
+    </button>
+    <button mat-raised-button color="primary" (click)="sendEmail()" [disabled]="emailForm.invalid || isSending" class="send-btn">
+      <mat-spinner diameter="20" *ngIf="isSending" class="btn-spinner"></mat-spinner>
+      <mat-icon *ngIf="!isSending">send</mat-icon>
+      {{ isSending ? 'Enviando...' : 'Enviar Ticket' }}
+    </button>
+  </div>
+</div>

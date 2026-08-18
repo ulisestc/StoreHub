@@ -232,21 +232,36 @@ $color-success: #4ade80;
 .modal-footer {
   display: flex;
   justify-content: center;
+  gap: 16px;
   padding: 20px 24px;
   background-color: rgba(0, 0, 0, 0.2);
   border-top: 1px solid $color-border;
 
   button {
     min-width: 200px;
+    height: 48px;
+    border-radius: 12px;
+    font-weight: 600;
 
-    &[color="primary"] {
+    &.btn-primary {
       background: linear-gradient(135deg, $color-primary 0%, #667eea 100%);
       color: white;
       box-shadow: 0 4px 15px rgba($color-primary, 0.3);
+      border: none;
 
       &:hover {
         box-shadow: 0 6px 20px rgba($color-primary, 0.4);
         transform: translateY(-2px);
+      }
+    }
+
+    &.btn-secondary {
+      background: rgba(255, 255, 255, 0.05);
+      color: $color-text-main;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+
+      &:hover {
+        background: rgba(255, 255, 255, 0.1);
       }
     }
   }

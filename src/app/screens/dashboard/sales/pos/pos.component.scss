@@ -3,7 +3,8 @@ $color-text-main: #f1f5f9;
 $color-text-muted: #94a3b8;
 $color-bg-card: #1e293b;
 $color-bg-darker: #0f172a;
-$color-border: rgba(255, 255, 255, 0.1);
+$color-border: rgba(255, 255, 255, 0.05);
+$color-success: #4ade80;
 
 .pos-container {
   height: calc(100vh - 100px);
@@ -443,18 +444,34 @@ $color-border: rgba(255, 255, 255, 0.1);
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 20px;
+    margin-bottom: 8px;
 
     span:first-child {
-      font-size: 1.1rem;
+      font-size: 1rem;
       color: $color-text-muted;
     }
 
     .total-amount {
-      font-size: 2rem;
-      font-weight: 700;
+      font-size: 1.1rem;
+      font-weight: 500;
       color: $color-text-main;
       font-family: 'Poppins', sans-serif;
+    }
+
+    &.final-total {
+      margin-top: 16px;
+      margin-bottom: 24px;
+
+      span:first-child {
+        font-size: 1.2rem;
+        color: $color-text-muted;
+      }
+
+      .total-amount {
+        font-size: 2.2rem;
+        font-weight: 700;
+        color: $color-success;
+      }
     }
   }
 

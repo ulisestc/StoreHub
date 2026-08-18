@@ -3,6 +3,7 @@ $color-text-main: #f1f5f9;
 $color-text-muted: #94a3b8;
 $color-primary: #448aff;
 $color-error: #ef4444;
+$color-success: #4ade80;
 
 .page-header {
   margin-bottom: 20px;
@@ -64,9 +65,22 @@ $color-error: #ef4444;
 
 .form-row {
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: row;
   gap: 20px;
-  margin-bottom: 20px;
+  margin-bottom: 24px;
+
+  .form-field {
+    flex: 1;
+
+    .tax-hint {
+      color: $color-success;
+      font-weight: 500;
+    }
+  }
+
+  .form-field-full {
+    flex: 1;
+  }
 }
 
 .form-field {

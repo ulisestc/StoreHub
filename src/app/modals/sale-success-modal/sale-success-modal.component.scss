@@ -1,0 +1,123 @@
+$color-primary: #448aff;
+$color-text-main: #f1f5f9;
+$color-text-muted: #94a3b8;
+$color-bg-card: #1e293b;
+$color-success: #4ade80;
+
+.success-modal-container {
+  background-color: $color-bg-card;
+  color: $color-text-main;
+  border-radius: 20px;
+  overflow: hidden;
+  max-width: 450px;
+  width: 100%;
+  text-align: center;
+}
+
+.modal-header {
+  padding: 40px 24px 20px;
+
+  .success-icon-wrapper {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: 80px;
+    height: 80px;
+    background-color: rgba($color-success, 0.1);
+    border-radius: 50%;
+    margin-bottom: 20px;
+    animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+
+    .success-icon {
+      font-size: 50px;
+      width: 50px;
+      height: 50px;
+      color: $color-success;
+    }
+  }
+
+  h2 {
+    margin: 0;
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: $color-text-main;
+  }
+
+  .subtitle {
+    margin: 8px 0 0 0;
+    font-size: 1rem;
+    color: $color-text-muted;
+  }
+}
+
+.modal-body {
+  padding: 0 32px 24px;
+
+  .full-width {
+    width: 100%;
+  }
+
+  ::ng-deep .mat-mdc-text-field-wrapper {
+    background-color: rgba(255, 255, 255, 0.03) !important;
+  }
+  
+  ::ng-deep .mdc-text-field--outlined:not(.mdc-text-field--disabled) .mdc-notched-outline__leading, 
+  ::ng-deep .mdc-text-field--outlined:not(.mdc-text-field--disabled) .mdc-notched-outline__notch, 
+  ::ng-deep .mdc-text-field--outlined:not(.mdc-text-field--disabled) .mdc-notched-outline__trailing {
+    border-color: rgba(255, 255, 255, 0.1) !important;
+  }
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  padding: 24px;
+  background-color: rgba(0, 0, 0, 0.1);
+
+  button {
+    flex: 1;
+    height: 48px;
+    border-radius: 12px;
+    font-weight: 600;
+  }
+
+  .skip-btn {
+    border-color: rgba(255, 255, 255, 0.2);
+    color: $color-text-main;
+
+    &:hover {
+      background-color: rgba(255, 255, 255, 0.05);
+    }
+  }
+
+  .send-btn {
+    background: linear-gradient(135deg, $color-primary 0%, #667eea 100%);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+
+    .btn-spinner {
+      ::ng-deep circle {
+        stroke: white !important;
+      }
+    }
+
+    &:hover:not(:disabled) {
+      box-shadow: 0 4px 15px rgba($color-primary, 0.4);
+      transform: translateY(-2px);
+    }
+
+    &:disabled {
+      background: rgba(255,255,255,0.1);
+      color: rgba(255,255,255,0.3);
+    }
+  }
+}
+
+@keyframes popIn {
+  0% { transform: scale(0.5); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}

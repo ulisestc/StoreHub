@@ -1,0 +1,29 @@
+<div class="success-modal-container">
+  <div class="modal-header">
+    <div class="success-icon-wrapper">
+      <mat-icon class="success-icon">check_circle</mat-icon>
+    </div>
+    <h2>¡Venta Exitosa!</h2>
+    <p class="subtitle">La venta #{{data.saleId}} ha sido registrada correctamente.</p>
+  </div>
+
+  <div class="modal-body" [formGroup]="emailForm">
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Enviar ticket por correo (Opcional)</mat-label>
+      <input matInput formControlName="email" type="email" placeholder="ejemplo@correo.com">
+      <mat-icon matPrefix>mail</mat-icon>
+      <mat-error *ngIf="emailForm.get('email')?.hasError('email')">Formato inválido</mat-error>
+    </mat-form-field>
+  </div>
+
+  <div class="modal-footer">
+    <button mat-stroked-button (click)="onSkip()" [disabled]="isSending" class="skip-btn">
+      Omitir y continuar
+    </button>
+    <button mat-raised-button color="primary" (click)="sendEmail()" [disabled]="emailForm.invalid || !emailForm.value.email || isSending" class="send-btn">
+      <mat-spinner diameter="20" *ngIf="isSending" class="btn-spinner"></mat-spinner>
+      <mat-icon *ngIf="!isSending">send</mat-icon>
+      {{ isSending ? 'Enviando...' : 'Enviar Ticket' }}
+    </button>
+  </div>
+</div>

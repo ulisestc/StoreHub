@@ -58,6 +58,9 @@ export class ProductFormComponent implements OnInit {
   isEditMode = false;
   isLoading = false;
 
+  subtotalPreview: number = 0;
+  ivaPreview: number = 0;
+
   private route = inject(ActivatedRoute);
   private productService = inject(ProductService);
   private categoryService = inject(CategoryService);
@@ -160,10 +163,7 @@ export class ProductFormComponent implements OnInit {
         Validators.maxLength(500)
       ]),
       sku: new FormControl('', [
-        Validators.required,
-        Validators.minLength(3),
-        Validators.maxLength(50),
-        Validators.pattern(/^[a-zA-Z0-9-_]+$/)
+        Validators.maxLength(50)
       ]),
       price: new FormControl(0, [
         Validators.required,
@@ -182,7 +182,13 @@ export class ProductFormComponent implements OnInit {
         Validators.pattern(/^\d+$/)
       ]),
       category: new FormControl('', [Validators.required]),
-      is_active: new FormControl(true, [Validators.required]),
+      is_active: new FormControl(true, [Validators.required])
+    });
+
+    this.productForm.get('price')?.valueChanges.subscribe(val => {
+      const price = parseFloat(val) || 0;
+      this.subtotalPreview = price / 1.16;
+      this.ivaPreview = price - this.subtotalPreview;
     });
   }
 

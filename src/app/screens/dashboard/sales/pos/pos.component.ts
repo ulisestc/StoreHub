@@ -17,6 +17,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { ConfirmSaleModalComponent } from '../../../../modals/confirm-sale-modal/confirm-sale-modal.component';
 import { ClientQuickAddModalComponent } from '../../../../modals/client-quick-add-modal/client-quick-add-modal.component';
 import { LowStockWarningModalComponent } from '../../../../modals/low-stock-warning-modal/low-stock-warning-modal.component';
+import { SaleSuccessModalComponent } from '../../../../modals/sale-success-modal/sale-success-modal.component';
 import { ProductService } from '../../../../services/product.service';
 import { CategoryService } from '../../../../services/category.service';
 import { Product } from '../../../../shared/interfaces/product';
@@ -56,6 +57,8 @@ export class PosComponent implements OnInit {
 
   ticketItems: any[] = [];
   totalVenta: number = 0;
+  subtotalVenta: number = 0;
+  ivaVenta: number = 0;
   filteredProducts: Product[] = [];
   clients: Client[] = [];
   categories: Category[] = [];
@@ -258,6 +261,8 @@ export class PosComponent implements OnInit {
     this.totalVenta = this.ticketItems.reduce((acc, item) => {
       return acc + (item.precio_venta * item.cantidad);
     }, 0);
+    this.subtotalVenta = this.totalVenta / 1.16;
+    this.ivaVenta = this.totalVenta - this.subtotalVenta;
   }
 
   removeItem(index: number): void {
@@ -307,19 +312,26 @@ export class PosComponent implements OnInit {
 
     if (this.isOnline) {
       this.salesService.createSale(saleData).subscribe(saleResponse => {
-        this.snackBar.open(`Venta #${saleResponse.id} registrada con éxito`, 'Cerrar', {
-          duration: 3000,
-          panelClass: ['snackbar-success']
+        const selectedClientEmail = this.clients.find(c => c.id === this.selectedClientId)?.email;
+        
+        const dialogRef = this.dialog.open(SaleSuccessModalComponent, {
+          width: '450px',
+          disableClose: true,
+          data: {
+            saleId: saleResponse.id,
+            clientEmail: selectedClientEmail
+          }
         });
 
-        const productsWithLowStock: any[] = [];
-        for (const item of this.ticketItems) {
-          if (item.stock_disponible - item.cantidad <= this.LOW_STOCK_THRESHOLD) {
-            productsWithLowStock.push(item);
+        dialogRef.afterClosed().subscribe(() => {
+          const productsWithLowStock: any[] = [];
+          for (const item of this.ticketItems) {
+            if (item.stock_disponible - item.cantidad <= this.LOW_STOCK_THRESHOLD) {
+              productsWithLowStock.push(item);
+            }
           }
-        }
-
-        this.finishSale(productsWithLowStock);
+          this.finishSale(productsWithLowStock);
+        });
       });
     } else {
       this.offlineSyncService.queueSale(saleData);

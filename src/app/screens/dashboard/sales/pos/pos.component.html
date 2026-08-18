@@ -49,6 +49,7 @@
             <zxing-scanner
               [formats]="allowedFormats"
               [tryHarder]="true"
+              [autofocusEnabled]="true"
               [timeBetweenScans]="100"
               [delayBetweenScanSuccess]="100"
               (scanSuccess)="scanSuccess($event)"
@@ -175,7 +176,16 @@
         </mat-card-content>
 
         <div class="ticket-footer">
-          <div class="total-row">
+          <div class="total-row subtotal">
+            <span>Subtotal</span>
+            <span class="total-amount">{{ subtotalVenta | currency }}</span>
+          </div>
+          <div class="total-row iva">
+            <span>IVA (16%)</span>
+            <span class="total-amount">{{ ivaVenta | currency }}</span>
+          </div>
+          <mat-divider style="margin: 8px 0;"></mat-divider>
+          <div class="total-row final-total">
             <span>Total a Pagar</span>
             <span class="total-amount">{{ totalVenta | currency }}</span>
           </div>

@@ -29,7 +29,7 @@
 
           <mat-form-field appearance="outline" class="form-field" subscriptSizing="dynamic">
             <mat-label>Código de Barras (SKU)</mat-label>
-            <input matInput formControlName="sku" required>
+            <input matInput formControlName="sku">
             <button mat-icon-button matSuffix type="button" (click)="toggleScanner()" matTooltip="Escanear código">
               <mat-icon>qr_code_scanner</mat-icon>
             </button>
@@ -48,6 +48,7 @@
           <zxing-scanner
             [formats]="allowedFormats"
             [tryHarder]="true"
+            [autofocusEnabled]="true"
             [timeBetweenScans]="100"
             [delayBetweenScanSuccess]="100"
             (scanSuccess)="scanSuccess($event)">
@@ -75,6 +76,9 @@
             <mat-error *ngIf="hasError('price')">
               {{ getErrorMessage('price') }}
             </mat-error>
+            <mat-hint class="tax-hint" *ngIf="productForm.get('price')?.value">
+              Subtotal: {{ subtotalPreview | currency }} | IVA (16%): {{ ivaPreview | currency }}
+            </mat-hint>
           </mat-form-field>
 
           <mat-form-field appearance="outline" class="form-field" subscriptSizing="dynamic">

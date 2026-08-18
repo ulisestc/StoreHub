@@ -59,4 +59,9 @@ export class SalesService {
   bulkSync(sales: CreateSaleData[]): Observable<any> {
     return this.http.post<any>(`${apiUrl}/sales/bulk-sync/`, sales);
   }
+
+  sendTicketEmail(saleId: number, email?: string): Observable<any> {
+    const payload = email ? { email } : {};
+    return this.http.post(`${apiUrl}/sales/${saleId}/send-ticket/`, payload);
+  }
 }
