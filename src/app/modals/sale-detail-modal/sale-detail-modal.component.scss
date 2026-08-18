@@ -60,6 +60,25 @@ $color-success: #4ade80;
   }
 }
 
+.store-header-section {
+  text-align: center;
+  padding: 16px;
+  background: rgba($color-primary, 0.05);
+
+  .store-name {
+    margin: 0 0 8px;
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: $color-primary;
+  }
+
+  .store-address, .store-phone {
+    margin: 0;
+    font-size: 0.9rem;
+    color: $color-text-muted;
+  }
+}
+
 .modal-body {
   padding: 0;
   max-height: 60vh;
@@ -226,6 +245,18 @@ $color-success: #4ade80;
 
   mat-divider {
     margin: 8px 0;
+  }
+}
+
+.powered-by-section {
+  text-align: center;
+  margin-top: 16px;
+  font-size: 0.8rem;
+  color: rgba($color-text-muted, 0.6);
+  
+  strong {
+    color: $color-primary;
+    font-weight: 600;
   }
 }
 

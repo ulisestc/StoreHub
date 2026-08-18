@@ -8,6 +8,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { Sale } from '../../shared/interfaces/sale';
 import { SalesService } from '../../services/sales.service';
+import { AuthService } from '../../services/auth.service';
 import { EmailPromptModalComponent } from '../email-prompt-modal/email-prompt-modal.component';
 
 @Component({
@@ -30,13 +31,25 @@ export class SaleDetailModalComponent {
   displayedColumns: string[] = ['product_name', 'quantity', 'price', 'subtotal'];
 
   isSendingEmail: boolean = false;
+  
+  storeName: string | null = null;
+  storeAddress: string | null = null;
+  storePhone: string | null = null;
+  storeReceiptMessage: string | null = null;
+
   constructor(
     public dialogRef: MatDialogRef<SaleDetailModalComponent>,
     @Inject(MAT_DIALOG_DATA) public sale: Sale,
     private salesService: SalesService,
     private snackBar: MatSnackBar,
-    private dialog: MatDialog
-  ) {}
+    private dialog: MatDialog,
+    private authService: AuthService
+  ) {
+    this.storeName = this.authService.getStoreName();
+    this.storeAddress = this.authService.getStoreAddress();
+    this.storePhone = this.authService.getStorePhone();
+    this.storeReceiptMessage = this.authService.getStoreReceiptMessage();
+  }
 
   onClose(): void {
     this.dialogRef.close();

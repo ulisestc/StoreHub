@@ -12,6 +12,10 @@ interface TokenData {
   name: string;
   mustChangePassword?: boolean;
   isSetupComplete?: boolean;
+  storeName?: string;
+  storeAddress?: string;
+  storePhone?: string;
+  storeReceiptMessage?: string;
 }
 
 interface LoginResponse {
@@ -22,6 +26,10 @@ interface LoginResponse {
 export interface Store {
   id: number;
   name: string;
+  address?: string;
+  phone?: string;
+  email?: string;
+  receipt_message?: string;
   is_premium: boolean;
   max_products: number;
   max_users: number;
@@ -88,7 +96,11 @@ export class AuthService {
               role: role,
               name: `${userInfo.first_name} ${userInfo.last_name}`,
               mustChangePassword: userInfo.must_change_password,
-              isSetupComplete: userInfo.store?.is_setup_complete
+              isSetupComplete: userInfo.store?.is_setup_complete,
+              storeName: userInfo.store?.name,
+              storeAddress: userInfo.store?.address,
+              storePhone: userInfo.store?.phone,
+              storeReceiptMessage: userInfo.store?.receipt_message
             };
 
             localStorage.setItem(this.TOKEN_KEY, response.access);
@@ -252,6 +264,50 @@ export class AuthService {
     try {
       const tokenData: TokenData = JSON.parse(tokenDataStr);
       return tokenData.name || null;
+    } catch (error) {
+      return null;
+    }
+  }
+
+  getStoreName(): string | null {
+    const tokenDataStr = localStorage.getItem(this.TOKEN_DATA_KEY);
+    if (!tokenDataStr) return null;
+    try {
+      const tokenData: TokenData = JSON.parse(tokenDataStr);
+      return tokenData.storeName || null;
+    } catch (error) {
+      return null;
+    }
+  }
+
+  getStoreAddress(): string | null {
+    const tokenDataStr = localStorage.getItem(this.TOKEN_DATA_KEY);
+    if (!tokenDataStr) return null;
+    try {
+      const tokenData: TokenData = JSON.parse(tokenDataStr);
+      return tokenData.storeAddress || null;
+    } catch (error) {
+      return null;
+    }
+  }
+
+  getStorePhone(): string | null {
+    const tokenDataStr = localStorage.getItem(this.TOKEN_DATA_KEY);
+    if (!tokenDataStr) return null;
+    try {
+      const tokenData: TokenData = JSON.parse(tokenDataStr);
+      return tokenData.storePhone || null;
+    } catch (error) {
+      return null;
+    }
+  }
+
+  getStoreReceiptMessage(): string | null {
+    const tokenDataStr = localStorage.getItem(this.TOKEN_DATA_KEY);
+    if (!tokenDataStr) return null;
+    try {
+      const tokenData: TokenData = JSON.parse(tokenDataStr);
+      return tokenData.storeReceiptMessage || null;
     } catch (error) {
       return null;
     }

@@ -14,6 +14,14 @@
 
   <mat-divider></mat-divider>
 
+  <div class="store-header-section" *ngIf="storeName">
+    <h3 class="store-name">{{storeName}}</h3>
+    <p class="store-address" *ngIf="storeAddress">{{storeAddress}}</p>
+    <p class="store-phone" *ngIf="storePhone">Tel: {{storePhone}}</p>
+  </div>
+
+  <mat-divider></mat-divider>
+
   <div class="modal-body">
     <div class="info-section">
       <div class="info-card">
@@ -84,6 +92,7 @@
         <span class="total-value">{{sale.total | currency}}</span>
       </div>
     </div>
+
   </div>
 
   <div class="modal-footer">

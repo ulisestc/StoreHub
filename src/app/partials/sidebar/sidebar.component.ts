@@ -24,8 +24,10 @@ export class SidebarComponent implements OnInit {
 
   authService = inject(AuthService);
   userRole: 'Admin' | 'Cajero' | null = null;
+  storeName: string | null = null;
 
   ngOnInit(): void {
     this.userRole = this.authService.getUserRole();
+    this.storeName = this.authService.getStoreName();
   }
 }

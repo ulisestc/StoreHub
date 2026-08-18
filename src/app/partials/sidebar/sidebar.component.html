@@ -1,8 +1,11 @@
 <div class="sidebar-container">
 
   <div class="sidebar-header">
-    <mat-icon class="sidebar-logo">storefront</mat-icon>
-    <span class="sidebar-title">StoreHub</span>
+    <div class="logo-wrapper">
+      <mat-icon class="sidebar-logo">storefront</mat-icon>
+      <span class="sidebar-title">StoreHub</span>
+    </div>
+    <span class="store-name" *ngIf="storeName">{{ storeName }}</span>
   </div>
 
   <mat-divider></mat-divider>
