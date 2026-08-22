@@ -1,0 +1,195 @@
+<div class="analytics-container" *ngIf="!isLoading">
+  <div class="header">
+    <h1>Analytics Overview</h1>
+    <p class="subtitle">Métricas y rendimiento de tu negocio</p>
+  </div>
+
+  <div class="kpi-grid">
+    <mat-card class="kpi-card kpi-blue">
+      <div class="kpi-icon"><mat-icon>shopping_cart</mat-icon></div>
+      <div class="kpi-content">
+        <div class="kpi-title">Ventas Hoy</div>
+        <div class="kpi-value">{{ kpiData?.ventas_hoy }}</div>
+      </div>
+    </mat-card>
+    <mat-card class="kpi-card kpi-green">
+      <div class="kpi-icon"><mat-icon>attach_money</mat-icon></div>
+      <div class="kpi-content">
+        <div class="kpi-title">Ingresos Hoy</div>
+        <div class="kpi-value">${{ kpiData?.ingresos_hoy | number:'1.2-2' }}</div>
+      </div>
+    </mat-card>
+    <mat-card class="kpi-card kpi-amber">
+      <div class="kpi-icon"><mat-icon>receipt</mat-icon></div>
+      <div class="kpi-content">
+        <div class="kpi-title">Ticket Promedio</div>
+        <div class="kpi-value">${{ kpiData?.ticket_promedio | number:'1.2-2' }}</div>
+      </div>
+    </mat-card>
+    <mat-card class="kpi-card kpi-purple">
+      <div class="kpi-icon"><mat-icon>account_balance_wallet</mat-icon></div>
+      <div class="kpi-content">
+        <div class="kpi-title">Ingresos del Mes</div>
+        <div class="kpi-value">${{ kpiData?.ingresos_mes | number:'1.2-2' }}</div>
+      </div>
+    </mat-card>
+  </div>
+
+  <div class="charts-grid">
+    <mat-card class="chart-card full-width glass-card">
+      <mat-card-header>
+        <mat-icon mat-card-avatar>timeline</mat-icon>
+        <mat-card-title>Ingresos (Últimos 30 días)</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="canvas-container">
+          <canvas baseChart
+                  [data]="salesLineChartData"
+                  [options]="salesLineChartOptions"
+                  [type]="'line'">
+          </canvas>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="chart-card half-width glass-card">
+      <mat-card-header>
+        <mat-icon mat-card-avatar>leaderboard</mat-icon>
+        <mat-card-title>Top Productos Vendidos</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="canvas-container">
+          <canvas baseChart
+                  [data]="topProductsChartData"
+                  [options]="topProductsChartOptions"
+                  [type]="'bar'">
+          </canvas>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="chart-card half-width glass-card">
+      <mat-card-header>
+        <mat-icon mat-card-avatar>pie_chart</mat-icon>
+        <mat-card-title>Ventas por Categoría</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="canvas-container">
+          <canvas baseChart
+                  [data]="categoryChartData"
+                  [options]="categoryChartOptions"
+                  [type]="'doughnut'">
+          </canvas>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="chart-card half-width glass-card">
+      <mat-card-header>
+        <mat-icon mat-card-avatar>bar_chart</mat-icon>
+        <mat-card-title>Ventas por Hora</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="canvas-container">
+          <canvas baseChart
+                  [data]="salesByHourChartData"
+                  [options]="salesByHourChartOptions"
+                  [type]="'bar'">
+          </canvas>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="chart-card half-width glass-card">
+      <mat-card-header>
+        <mat-icon mat-card-avatar>emoji_events</mat-icon>
+        <mat-card-title>Top Vendedores</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <table mat-table [dataSource]="topSellers" class="sellers-table">
+          <ng-container matColumnDef="seller">
+            <th mat-header-cell *matHeaderCellDef> Vendedor </th>
+            <td mat-cell *matCellDef="let element"> {{element.seller}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="ventas">
+            <th mat-header-cell *matHeaderCellDef> Ventas </th>
+            <td mat-cell *matCellDef="let element"> {{element.ventas}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="monto">
+            <th mat-header-cell *matHeaderCellDef> Monto </th>
+            <td mat-cell *matCellDef="let element"> ${{element.monto | number:'1.2-2'}} </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumnsSellers"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumnsSellers;"></tr>
+        </table>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <!-- Premium Features Section -->
+  <div class="premium-section" [class.locked]="!isPremium">
+    <div class="section-header">
+      <h2>Características Premium</h2>
+    </div>
+    
+    <div class="charts-grid">
+      <mat-card class="chart-card half-width glass-card" style="border: 1px solid rgba(245, 158, 11, 0.3);">
+        <mat-card-header>
+          <mat-icon mat-card-avatar style="color: #f59e0b;">batch_prediction</mat-icon>
+          <mat-card-title>Predicción de Demanda IA</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="canvas-container" *ngIf="isPremium">
+            <canvas baseChart
+                    [data]="predictionsChartData"
+                    [options]="predictionsChartOptions"
+                    [type]="'bar'">
+            </canvas>
+          </div>
+          <div class="placeholder-content" *ngIf="!isPremium" style="height: 300px; display: flex; align-items: center; justify-content: center; color: #64748b; font-style: italic;">
+            <p>Análisis predictivo basado en histórico de ventas</p>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card class="chart-card half-width glass-card" style="border: 1px solid rgba(245, 158, 11, 0.3);">
+        <mat-card-header>
+          <mat-icon mat-card-avatar style="color: #f59e0b;">price_check</mat-icon>
+          <mat-card-title>Rentabilidad por Producto</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="canvas-container" *ngIf="isPremium">
+            <canvas baseChart
+                    [data]="profitabilityChartData"
+                    [options]="profitabilityChartOptions"
+                    [type]="'bar'">
+            </canvas>
+          </div>
+          <div class="placeholder-content" *ngIf="!isPremium" style="height: 300px; display: flex; align-items: center; justify-content: center; color: #64748b; font-style: italic;">
+            <p>Márgenes de ganancia reales y sugerencias de precios</p>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+
+    <!-- Lock Overlay -->
+    <div class="lock-overlay" *ngIf="!isPremium">
+      <div class="lock-content">
+        <mat-icon>lock</mat-icon>
+        <h3>Desbloquea el poder de tus datos</h3>
+        <p>Obtén predicciones con IA, análisis de rentabilidad y un asistente virtual 24/7.</p>
+        <a mat-raised-button color="primary" routerLink="/dashboard/premium" class="upgrade-btn">
+          Ver Planes Premium
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="loading-state" *ngIf="isLoading">
+  <mat-icon class="spinner">autorenew</mat-icon>
+  <p>Cargando Analytics...</p>
+</div>

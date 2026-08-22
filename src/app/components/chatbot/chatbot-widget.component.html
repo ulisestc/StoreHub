@@ -1,0 +1,45 @@
+<div class="chatbot-wrapper" *ngIf="isPremium">
+  <!-- Floating Action Button -->
+  <button mat-fab class="chatbot-fab pulse" (click)="toggleChat()">
+    <mat-icon>{{ isOpen ? 'close' : 'smart_toy' }}</mat-icon>
+  </button>
+
+  <!-- Chat Window -->
+  <div class="chat-window" *ngIf="isOpen">
+    <div class="chat-header">
+      <div class="header-info">
+        <mat-icon>smart_toy</mat-icon>
+        <span>Asistente IA</span>
+      </div>
+      <button mat-icon-button (click)="toggleChat()">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+
+    <div class="suggestion-chips">
+      <mat-chip-set>
+        <mat-chip *ngFor="let suggestion of suggestions" (click)="sendSuggestion(suggestion)" class="chip-item">
+          {{ suggestion }}
+        </mat-chip>
+      </mat-chip-set>
+    </div>
+
+    <div class="messages-container" #messagesContainer>
+      <div class="message-bubble" *ngFor="let msg of messages" [ngClass]="msg.role">
+        <div class="bubble-content" [innerHTML]="msg.content | formatChat"></div>
+        <div class="bubble-time">{{ msg.timestamp | date:'shortTime' }}</div>
+      </div>
+      
+      <div class="typing-indicator" *ngIf="isTyping">
+        <span></span><span></span><span></span>
+      </div>
+    </div>
+
+    <div class="input-area">
+      <input type="text" [(ngModel)]="messageText" (keyup.enter)="sendMessage()" placeholder="Escribe tu mensaje..." class="chat-input" />
+      <button mat-icon-button color="primary" (click)="sendMessage()" [disabled]="!messageText.trim() || isTyping">
+        <mat-icon>send</mat-icon>
+      </button>
+    </div>
+  </div>
+</div>

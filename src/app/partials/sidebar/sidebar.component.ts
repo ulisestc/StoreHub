@@ -25,9 +25,11 @@ export class SidebarComponent implements OnInit {
   authService = inject(AuthService);
   userRole: 'Admin' | 'Cajero' | null = null;
   storeName: string | null = null;
+  isPremium: boolean = false;
 
   ngOnInit(): void {
     this.userRole = this.authService.getUserRole();
     this.storeName = this.authService.getStoreName();
+    this.isPremium = this.authService.isPremium();
   }
 }

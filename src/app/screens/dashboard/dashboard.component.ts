@@ -4,6 +4,7 @@ import { NavbarComponent } from '../../partials/navbar/navbar.component';
 import { SidebarComponent } from '../../partials/sidebar/sidebar.component';
 import { FooterComponent } from '../../partials/footer/footer.component';
 import { MatSidenavModule } from '@angular/material/sidenav';
+import { ChatbotWidgetComponent } from '../../components/chatbot/chatbot-widget.component';
 
 @Component({
   selector: 'app-dashboard',
@@ -13,7 +14,8 @@ import { MatSidenavModule } from '@angular/material/sidenav';
     NavbarComponent,
     SidebarComponent,
     FooterComponent,
-    MatSidenavModule
+    MatSidenavModule,
+    ChatbotWidgetComponent
   ],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss'

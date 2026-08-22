@@ -47,6 +47,7 @@
         <mat-card-content *ngIf="scannerEnabled" style="display: flex; justify-content: center; padding-top: 10px;">
           <div class="scanner-wrapper">
             <zxing-scanner
+              [device]="currentDevice"
               [formats]="allowedFormats"
               [tryHarder]="true"
               [autofocusEnabled]="true"

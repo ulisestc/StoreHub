@@ -1,0 +1,526 @@
+$color-bg: #0f172a;
+$color-card: #1e293b;
+$color-border: rgba(255, 255, 255, 0.06);
+$color-text: #f1f5f9;
+$color-muted: #94a3b8;
+$color-primary: #448aff;
+$color-success: #22c55e;
+$color-danger: #ef4444;
+$color-premium-accent: #6366f1;
+
+.plan-page {
+  padding: 32px;
+  max-width: 960px;
+  margin: 0 auto;
+  color: $color-text;
+}
+
+// ── Page header ──
+.page-header {
+  margin-bottom: 40px;
+
+  h1 {
+    font-size: 1.75rem;
+    font-weight: 600;
+    margin: 0 0 6px;
+    color: $color-text;
+  }
+
+  .page-subtitle {
+    color: $color-muted;
+    font-size: 0.95rem;
+    margin: 0;
+  }
+}
+
+// ── Plans grid ──
+.pricing-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+
+  @media (max-width: 700px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.plan-card {
+  background: $color-card;
+  border: 1px solid $color-border;
+  border-radius: 12px;
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  transition: border-color 0.2s;
+
+  &.featured {
+    border-color: $color-premium-accent;
+    box-shadow: 0 0 0 1px $color-premium-accent;
+  }
+
+  &:hover {
+    border-color: rgba(255, 255, 255, 0.12);
+  }
+
+  &.featured:hover {
+    border-color: $color-premium-accent;
+  }
+}
+
+.plan-card-header {
+  margin-bottom: 20px;
+}
+
+.plan-badge {
+  display: inline-block;
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 3px 10px;
+  border-radius: 4px;
+  margin-bottom: 12px;
+
+  &.free-badge {
+    background: rgba(148, 163, 184, 0.15);
+    color: $color-muted;
+  }
+
+  &.premium-badge {
+    background: rgba(99, 102, 241, 0.15);
+    color: $color-premium-accent;
+  }
+}
+
+.plan-name {
+  font-size: 1.35rem;
+  font-weight: 600;
+  margin: 0 0 4px;
+}
+
+.plan-description {
+  color: $color-muted;
+  font-size: 0.85rem;
+  margin: 0 0 16px;
+}
+
+.plan-price {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+
+  .price-amount {
+    font-size: 2.25rem;
+    font-weight: 700;
+  }
+
+  .price-period {
+    color: $color-muted;
+    font-size: 0.85rem;
+  }
+}
+
+.plan-features {
+  list-style: none;
+  padding: 0;
+  margin: 20px 0;
+  flex: 1;
+
+  li {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 6px 0;
+    font-size: 0.9rem;
+    color: $color-text;
+
+    &.feat-disabled {
+      color: rgba(148, 163, 184, 0.5);
+    }
+  }
+
+  .feat-check {
+    color: $color-success;
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+  }
+
+  .feat-x {
+    color: rgba(148, 163, 184, 0.3);
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+  }
+}
+
+.plan-card-footer {
+  margin-top: auto;
+
+  .plan-btn {
+    width: 100%;
+    padding: 12px 0;
+    font-size: 0.9rem;
+    border-radius: 8px;
+  }
+
+  .primary-btn {
+    background: $color-premium-accent;
+    color: white;
+    font-weight: 600;
+
+    &:hover {
+      background: color-mix(in srgb, #6366f1, black 6%);
+    }
+  }
+}
+
+// ── Checkout ──
+.checkout-layout {
+  display: grid;
+  grid-template-columns: 1fr 1.3fr;
+  gap: 32px;
+
+  @media (max-width: 700px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.order-summary {
+  background: $color-card;
+  border: 1px solid $color-border;
+  border-radius: 12px;
+  padding: 24px;
+  align-self: start;
+
+  h3 {
+    margin: 0 0 16px;
+    font-size: 1rem;
+    font-weight: 600;
+  }
+
+  .summary-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+    font-size: 0.9rem;
+    color: $color-muted;
+
+    &.total {
+      font-weight: 700;
+      color: $color-text;
+      font-size: 1.05rem;
+    }
+  }
+
+  .summary-note {
+    color: $color-muted;
+    font-size: 0.75rem;
+    margin-top: 16px;
+    line-height: 1.5;
+  }
+}
+
+.payment-form {
+  background: $color-card;
+  border: 1px solid $color-border;
+  border-radius: 12px;
+  padding: 24px;
+
+  h3 {
+    margin: 0 0 16px;
+    font-size: 1rem;
+    font-weight: 600;
+  }
+
+  .card-brands {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: $color-muted;
+    font-size: 0.8rem;
+    margin-bottom: 20px;
+    padding: 10px 14px;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 8px;
+
+    mat-icon {
+      font-size: 20px;
+      width: 20px;
+      height: 20px;
+    }
+  }
+}
+
+.form-group {
+  margin-bottom: 16px;
+
+  label {
+    display: block;
+    font-size: 0.8rem;
+    color: $color-muted;
+    margin-bottom: 6px;
+    font-weight: 500;
+  }
+
+  input {
+    width: 100%;
+    padding: 10px 14px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid $color-border;
+    border-radius: 8px;
+    color: $color-text;
+    font-size: 0.9rem;
+    outline: none;
+    transition: border-color 0.2s;
+    box-sizing: border-box;
+
+    &:focus {
+      border-color: $color-premium-accent;
+    }
+
+    &::placeholder {
+      color: rgba(148, 163, 184, 0.4);
+    }
+  }
+}
+
+.form-row {
+  display: flex;
+  gap: 16px;
+
+  .half {
+    flex: 1;
+  }
+}
+
+.form-error {
+  color: $color-danger;
+  font-size: 0.8rem;
+  margin: 0 0 12px;
+}
+
+.form-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 20px;
+
+  .btn-back {
+    flex: 0 0 auto;
+    border-radius: 8px;
+  }
+
+  .btn-pay {
+    flex: 1;
+    padding: 12px 0;
+    background: $color-premium-accent;
+    color: white;
+    font-weight: 600;
+    border-radius: 8px;
+    font-size: 0.9rem;
+
+    &:disabled {
+      opacity: 0.4;
+    }
+  }
+}
+
+.secure-note {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: $color-muted;
+  font-size: 0.75rem;
+  margin-top: 16px;
+
+  mat-icon {
+    font-size: 14px;
+    width: 14px;
+    height: 14px;
+  }
+}
+
+// ── Processing / Success ──
+.processing-view {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 400px;
+}
+
+.processing-content {
+  text-align: center;
+
+  h2 {
+    margin: 24px 0 8px;
+    font-size: 1.4rem;
+    font-weight: 600;
+  }
+
+  p {
+    color: $color-muted;
+    font-size: 0.9rem;
+  }
+
+  &.success {
+    .success-check {
+      font-size: 56px;
+      width: 56px;
+      height: 56px;
+      color: $color-success;
+    }
+  }
+}
+
+// ── Manage view ──
+.manage-card {
+  background: $color-card;
+  border: 1px solid $color-border;
+  border-radius: 12px;
+  max-width: 600px;
+}
+
+.manage-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24px;
+
+  .manage-plan-info {
+    h2 {
+      margin: 8px 0 0;
+      font-size: 1.2rem;
+      font-weight: 600;
+    }
+  }
+
+  .manage-price {
+    text-align: right;
+
+    .price-amount {
+      font-size: 1.75rem;
+      font-weight: 700;
+    }
+
+    .price-period {
+      display: block;
+      color: $color-muted;
+      font-size: 0.8rem;
+    }
+  }
+}
+
+.manage-details {
+  padding: 16px 24px;
+}
+
+.detail-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0;
+  font-size: 0.9rem;
+
+  .detail-label {
+    color: $color-muted;
+  }
+
+  .detail-value {
+    color: $color-text;
+    font-weight: 500;
+  }
+
+  .active-status {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: $color-success;
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: $color-success;
+    }
+  }
+}
+
+.manage-includes {
+  padding: 16px 24px;
+
+  h4 {
+    margin: 0 0 12px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: $color-muted;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+}
+
+.includes-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+
+  span {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.85rem;
+    color: $color-text;
+
+    mat-icon {
+      color: $color-success;
+      font-size: 16px;
+      width: 16px;
+      height: 16px;
+    }
+  }
+
+  @media (max-width: 500px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.manage-footer {
+  padding: 20px 24px;
+}
+
+.btn-cancel-trigger {
+  color: $color-muted;
+  border-color: $color-border;
+  font-size: 0.85rem;
+  border-radius: 8px;
+}
+
+.cancel-confirm {
+  .cancel-warning {
+    color: $color-muted;
+    font-size: 0.85rem;
+    line-height: 1.6;
+    margin: 0 0 16px;
+    padding: 12px;
+    background: rgba($color-danger, 0.06);
+    border-radius: 8px;
+    border-left: 3px solid $color-danger;
+  }
+}
+
+.cancel-actions {
+  display: flex;
+  gap: 12px;
+
+  button {
+    border-radius: 8px;
+  }
+
+  .btn-cancel-confirm {
+    background: $color-danger;
+    color: white;
+    font-weight: 600;
+
+    &:disabled {
+      opacity: 0.5;
+    }
+  }
+}

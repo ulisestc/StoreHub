@@ -74,6 +74,8 @@ export class PosComponent implements OnInit {
   allowedFormats = [ BarcodeFormat.QR_CODE, BarcodeFormat.EAN_13, BarcodeFormat.CODE_128, BarcodeFormat.UPC_A ];
   scannerEnabled = true;
   hasDevices = false;
+  availableDevices: MediaDeviceInfo[] = [];
+  currentDevice: MediaDeviceInfo | undefined = undefined;
   lastScannedCode = '';
   lastScanTime = 0;
 
@@ -378,10 +380,19 @@ export class PosComponent implements OnInit {
 
   camerasFound(devices: MediaDeviceInfo[]) {
     this.hasDevices = devices && devices.length > 0;
+    this.availableDevices = devices;
+    
+    // Explicitly select a camera, preferring the back camera if available
+    if (this.hasDevices && !this.currentDevice) {
+      const backCamera = devices.find(d => d.label.toLowerCase().includes('back') || d.label.toLowerCase().includes('trasera'));
+      this.currentDevice = backCamera || devices[0];
+    }
   }
 
   camerasNotFound() {
     this.hasDevices = false;
+    this.availableDevices = [];
+    this.currentDevice = undefined;
     this.snackBar.open('No se encontraron cámaras disponibles.', 'Cerrar', { duration: 3000, panelClass: ['snackbar-error'] });
   }
 

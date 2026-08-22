@@ -16,6 +16,7 @@ interface TokenData {
   storeAddress?: string;
   storePhone?: string;
   storeReceiptMessage?: string;
+  isPremium?: boolean;
 }
 
 interface LoginResponse {
@@ -100,7 +101,8 @@ export class AuthService {
               storeName: userInfo.store?.name,
               storeAddress: userInfo.store?.address,
               storePhone: userInfo.store?.phone,
-              storeReceiptMessage: userInfo.store?.receipt_message
+              storeReceiptMessage: userInfo.store?.receipt_message,
+              isPremium: userInfo.store?.is_premium
             };
 
             localStorage.setItem(this.TOKEN_KEY, response.access);
@@ -311,6 +313,15 @@ export class AuthService {
     } catch (error) {
       return null;
     }
+  }
+
+  isPremium(): boolean {
+    const tokenDataStr = localStorage.getItem(this.TOKEN_DATA_KEY);
+    if (!tokenDataStr) return false;
+    try {
+      const tokenData: TokenData = JSON.parse(tokenDataStr);
+      return tokenData.isPremium ?? false;
+    } catch { return false; }
   }
 
   getUserRole(): 'Admin' | 'Cajero' | null {

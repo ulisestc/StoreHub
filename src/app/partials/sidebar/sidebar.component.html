@@ -40,9 +40,9 @@
       <mat-divider></mat-divider>
       <h3 mat-subheader>Administración</h3>
 
-      <a mat-list-item routerLink="/dashboard/reports" routerLinkActive="active">
-        <mat-icon matListItemIcon>assessment</mat-icon>
-        <span matListItemTitle>Reportes</span>
+      <a mat-list-item routerLink="/dashboard/analytics" routerLinkActive="active">
+        <mat-icon matListItemIcon>insights</mat-icon>
+        <span matListItemTitle>Analytics</span>
       </a>
       <a mat-list-item routerLink="/dashboard/employees" routerLinkActive="active">
         <mat-icon matListItemIcon>manage_accounts</mat-icon>
@@ -69,6 +69,18 @@
         <span matListItemTitle>Ajuste de Inventario</span>
       </a>
     </div>
+
+    <!-- Premium / Mi Plan Link -->
+    <a mat-list-item routerLink="/dashboard/premium" routerLinkActive="active" class="premium-link"
+       [ngStyle]="{'margin-top': '16px', 'background': isPremium ? 'rgba(99, 102, 241, 0.08)' : 'rgba(99, 102, 241, 0.08)', 'border-left': '3px solid #6366f1'}">
+      <mat-icon matListItemIcon style="color: #6366f1;">
+        {{ isPremium ? 'verified' : 'workspace_premium' }}
+      </mat-icon>
+      <span matListItemTitle style="color: #a5b4fc; font-weight: 500;">
+        {{ isPremium ? 'Mi plan' : 'Mejorar plan' }}
+      </span>
+    </a>
+
   </mat-nav-list>
 
   <div class="sidebar-footer">

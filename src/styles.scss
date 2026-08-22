@@ -126,3 +126,12 @@ body, html {
     transform: scale(1.1);
   }
 }
+
+/* === Fix Hardware Acceleration for Video on Linux === */
+zxing-scanner video {
+  transform: translateZ(0) !important;
+  will-change: transform !important;
+  object-fit: contain !important; /* El escalado 'cover' a veces rompe el hardware overlay */
+  border-radius: 1px !important; 
+  background: #000 !important;
+}

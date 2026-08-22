@@ -29,10 +29,12 @@ import { StoreSettingsComponent } from './screens/dashboard/store-settings/store
 
 import { ForceChangePasswordComponent } from './screens/auth/force-change-password/force-change-password.component';
 import { SetupComponent } from './screens/dashboard/setup/setup.component';
+import { AnalyticsDashboardComponent } from './screens/dashboard/analytics/analytics-dashboard/analytics-dashboard.component';
 
 import { authGuard } from './shared/guards/auth.guard';
 import { roleGuard } from './shared/guards/role.guard';
 import { setupGuard } from './shared/guards/setup.guard';
+import { PremiumUpgradeComponent } from './screens/dashboard/premium/premium-upgrade/premium-upgrade.component';
 
 export const routes: Routes = [
   // --- RUTAS PÚBLICAS ---
@@ -173,6 +175,18 @@ export const routes: Routes = [
       {
         path: 'inventory',
         component: InventoryAdjustComponent,
+        canActivate: [roleGuard, setupGuard],
+        data: { expectedRoles: ['Admin'] }
+      },
+      {
+        path: 'analytics',
+        component: AnalyticsDashboardComponent,
+        canActivate: [roleGuard, setupGuard],
+        data: { expectedRoles: ['Admin'] }
+      },
+      {
+        path: 'premium',
+        component: PremiumUpgradeComponent,
         canActivate: [roleGuard, setupGuard],
         data: { expectedRoles: ['Admin'] }
       },
