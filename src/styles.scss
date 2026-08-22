@@ -21,6 +21,18 @@ $storehub-theme: mat.m2-define-dark-theme((
 
 @include mat.all-component-themes($storehub-theme);
 
+:root {
+  --bg-main: #0f172a;
+  --bg-card: #1e293b;
+  --bg-card-solid: #1e293b;
+  --primary-bg: #448aff;
+  --primary-hover: #5c9aff;
+  --primary-fg: #ffffff;
+  --text-main: #f1f5f9;
+  --text-muted: #94a3b8;
+  --border-color: rgba(255, 255, 255, 0.05);
+  --shadow-card: 0 4px 6px -1px rgba(0, 0, 0, 0.5);
+}
 $color-bg-main: #0f172a;
 $color-bg-card: #1e293b;
 $color-primary: #448aff;

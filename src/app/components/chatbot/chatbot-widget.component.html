@@ -16,7 +16,7 @@
       </button>
     </div>
 
-    <div class="suggestion-chips">
+    <div class="suggestion-chips" *ngIf="messages.length === 1">
       <mat-chip-set>
         <mat-chip *ngFor="let suggestion of suggestions" (click)="sendSuggestion(suggestion)" class="chip-item">
           {{ suggestion }}

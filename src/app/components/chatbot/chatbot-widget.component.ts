@@ -11,6 +11,8 @@ import { AnalyticsService } from '../../services/analytics.service';
 import { AuthService } from '../../services/auth.service';
 
 import { Pipe, PipeTransform } from '@angular/core';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import { marked } from 'marked';
 
 interface ChatMessage {
   role: 'user' | 'assistant';
@@ -23,11 +25,21 @@ interface ChatMessage {
   standalone: true
 })
 export class FormatChatPipe implements PipeTransform {
-  transform(value: string): string {
+  constructor(private sanitizer: DomSanitizer) {}
+
+  transform(value: string): SafeHtml {
     if (!value) return '';
-    let formatted = value.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
-    formatted = formatted.replace(/\n/g, '<br/>');
-    return formatted;
+    try {
+      // Configuramos marked para que respete saltos de línea (breaks) y sea asíncrono-safe
+      marked.setOptions({
+        breaks: true,
+        gfm: true
+      });
+      const html = marked.parse(value) as string;
+      return this.sanitizer.bypassSecurityTrustHtml(html);
+    } catch (e) {
+      return this.sanitizer.bypassSecurityTrustHtml(value);
+    }
   }
 }
 
