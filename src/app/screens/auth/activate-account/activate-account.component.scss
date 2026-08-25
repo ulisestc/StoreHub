@@ -1,15 +1,9 @@
-$color-bg-main: #0f172a;
-$color-bg-card: #1e293b;
-$color-primary: #448aff;
-$color-text-main: #f1f5f9;
-$color-text-muted: #94a3b8;
-
 .activation-container {
   display: flex;
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  background-color: $color-bg-main;
+  background-color: var(--talavera-bg);
   padding: 24px;
   position: relative;
   overflow: hidden;
@@ -26,10 +20,10 @@ $color-text-muted: #94a3b8;
   }
 
   .activation-card {
-    background: $color-bg-card;
+    background: var(--talavera-surface);
     border-radius: 16px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+    border: 1px solid var(--talavera-line);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
     max-width: 450px;
     width: 100%;
     text-align: center;
@@ -47,7 +41,7 @@ $color-text-muted: #94a3b8;
 
       &.spin {
         animation: spin 1.5s linear infinite;
-        color: $color-primary;
+        color: var(--talavera-blue);
       }
     }
 
@@ -56,11 +50,11 @@ $color-text-muted: #94a3b8;
       font-size: 28px;
       font-weight: 700;
       background: none;
-      color: $color-text-main;
+      color: var(--talavera-ink);
     }
 
     p {
-      color: $color-text-muted;
+      color: var(--talavera-muted);
       margin-bottom: 32px;
       font-size: 16px;
       line-height: 1.5;
@@ -95,7 +89,7 @@ $color-text-muted: #94a3b8;
     
     .state-loading {
       h2 {
-        background: linear-gradient(135deg, $color-primary 0%, #5c9aff 100%);
+        background: var(--talavera-blue);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         background-clip: text;

@@ -1,12 +1,11 @@
-$color-bg: #0f172a;
-$color-card: #1e293b;
-$color-border: rgba(255, 255, 255, 0.06);
-$color-text: #f1f5f9;
-$color-muted: #94a3b8;
-$color-primary: #448aff;
+$color-bg: var(--talavera-bg);
+$color-card: var(--talavera-surface);
+$color-border: var(--talavera-line);
+$color-text: var(--talavera-ink);
+$color-muted: var(--talavera-muted);
 $color-success: #22c55e;
 $color-danger: #ef4444;
-$color-premium-accent: #6366f1;
+$color-premium-accent: var(--talavera-blue);
 
 .plan-page {
   padding: 32px;
@@ -241,7 +240,7 @@ $color-premium-accent: #6366f1;
     font-size: 0.8rem;
     margin-bottom: 20px;
     padding: 10px 14px;
-    background: rgba(255, 255, 255, 0.03);
+    background: rgba(0, 0, 0, 0.02);
     border-radius: 8px;
 
     mat-icon {
@@ -266,7 +265,7 @@ $color-premium-accent: #6366f1;
   input {
     width: 100%;
     padding: 10px 14px;
-    background: rgba(255, 255, 255, 0.04);
+    background: rgba(0, 0, 0, 0.02);
     border: 1px solid $color-border;
     border-radius: 8px;
     color: $color-text;

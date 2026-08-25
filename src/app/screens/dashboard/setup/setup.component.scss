@@ -1,15 +1,9 @@
-$color-bg-main: #0f172a;
-$color-bg-card: #1e293b;
-$color-primary: #448aff;
-$color-text-main: #f1f5f9;
-$color-text-muted: #94a3b8;
-
 .setup-container {
   display: flex;
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  background-color: $color-bg-main;
+  background-color: var(--talavera-bg);
   padding: 24px;
   position: fixed;
   top: 0;
@@ -31,9 +25,9 @@ $color-text-muted: #94a3b8;
   }
 
   .setup-card {
-    background: $color-bg-card;
+    background: var(--talavera-surface);
     border-radius: 20px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid var(--talavera-line);
     box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
     max-width: 700px;
     width: 100%;
@@ -61,7 +55,7 @@ $color-text-muted: #94a3b8;
           font-size: 40px;
           height: 40px;
           width: 40px;
-          color: $color-primary;
+          color: var(--talavera-blue);
         }
       }
 
@@ -69,11 +63,11 @@ $color-text-muted: #94a3b8;
         margin: 0 0 12px 0;
         font-size: 32px;
         font-weight: 700;
-        color: $color-text-main;
+        color: var(--talavera-ink);
       }
 
       p {
-        color: $color-text-muted;
+        color: var(--talavera-muted);
         margin: 0;
         font-size: 16px;
         line-height: 1.6;
@@ -104,15 +98,15 @@ $color-text-muted: #94a3b8;
 
       ::ng-deep .mat-mdc-form-field {
         .mdc-text-field--outlined {
-          --mdc-outlined-text-field-container-color: rgba(255, 255, 255, 0.03);
-          --mdc-outlined-text-field-outline-color: rgba(255, 255, 255, 0.1);
+          --mdc-outlined-text-field-container-color: rgba(0, 0, 0, 0.02);
+          --mdc-outlined-text-field-outline-color: var(--talavera-line);
           --mdc-outlined-text-field-hover-outline-color: rgba(255, 255, 255, 0.3);
         }
         .mdc-text-field__input {
-          color: $color-text-main;
+          color: var(--talavera-ink);
         }
         .mat-mdc-form-field-icon-prefix {
-          color: $color-text-muted;
+          color: var(--talavera-muted);
         }
       }
 
@@ -122,7 +116,7 @@ $color-text-muted: #94a3b8;
         font-size: 18px;
         font-weight: 600;
         border-radius: 12px;
-        background: linear-gradient(135deg, $color-primary 0%, #2962ff 100%);
+        background: var(--talavera-blue);
         display: flex;
         align-items: center;
         justify-content: center;
@@ -131,7 +125,7 @@ $color-text-muted: #94a3b8;
 
         &:hover:not([disabled]) {
           transform: translateY(-2px);
-          box-shadow: 0 10px 20px rgba(68, 138, 255, 0.3);
+          box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
         }
 
         mat-icon {

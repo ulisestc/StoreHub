@@ -1,14 +1,9 @@
-$color-bg-footer: #1e293b;
-$color-text-main: #f1f5f9;
-$color-text-muted: #94a3b8;
-$color-primary: #448aff;
-
 .footer-container {
-  background-color: $color-bg-footer;
-  color: $color-text-main;
+  background-color: transparent;
+  color: var(--talavera-ink);
   padding: 24px 32px;
   margin-top: auto;
-  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  border-top: 1px solid var(--talavera-line);
 }
 
 .footer-content {
@@ -35,14 +30,14 @@ $color-primary: #448aff;
     font-family: 'Poppins', sans-serif;
     font-weight: 600;
     font-size: 1.25rem;
-    color: $color-primary;
+    color: var(--talavera-blue);
     letter-spacing: 0.5px;
     text-shadow: 0 0 10px rgba(68, 138, 255, 0.3);
   }
 
   .copyright {
     font-size: 0.85rem;
-    color: $color-text-muted;
+    color: var(--talavera-muted);
   }
 }
 
@@ -52,23 +47,23 @@ $color-primary: #448aff;
   gap: 8px;
 
   .footer-link {
-    color: $color-text-muted;
+    color: var(--talavera-muted);
     font-weight: 500;
     font-size: 0.9rem;
     
     &:hover {
-      color: $color-primary;
+      color: var(--talavera-blue);
       background-color: rgba(68, 138, 255, 0.1);
     }
   }
   
   mat-icon {
-    color: $color-text-muted;
+    color: var(--talavera-muted);
     transition: all 0.2s ease;
   }
 
   .mat-mdc-icon-button:hover mat-icon {
-    color: $color-primary;
+    color: var(--talavera-blue);
     transform: translateY(-2px);
     filter: drop-shadow(0 0 5px rgba(68, 138, 255, 0.5));
   }

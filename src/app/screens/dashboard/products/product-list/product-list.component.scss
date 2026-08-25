@@ -1,9 +1,5 @@
-$color-primary: #448aff;
-$color-text-main: #f1f5f9;
-$color-text-muted: #94a3b8;
-$color-bg-card: #1e293b;
 $color-bg-darker: #0f172a;
-$color-border: rgba(255, 255, 255, 0.05);
+$color-border: var(--talavera-surface);
 $color-success: #4ade80;
 $color-danger: #f87171;
 
@@ -27,18 +23,18 @@ $color-danger: #f87171;
       font-size: 2rem;
       font-weight: 700;
       margin: 0;
-      color: $color-text-main;
+      color: var(--talavera-ink);
     }
 
     p {
       margin: 4px 0 0 0;
-      color: $color-text-muted;
+      color: var(--talavera-muted);
       font-size: 1rem;
     }
   }
 
   .create-btn {
-    background-color: $color-primary !important;
+    background-color: var(--talavera-blue) !important;
     color: white !important;
     font-weight: 600;
     border-radius: 12px;
@@ -51,17 +47,17 @@ $color-danger: #f87171;
     }
 
     &:hover {
-      background-color: color-mix(in srgb, $color-primary, white 5%) !important;
+      background-color: color-mix(in srgb, var(--talavera-blue), white 5%) !important;
     }
   }
 }
 
 .table-container {
-  background-color: $color-bg-card;
+  background-color: var(--talavera-surface);
   border-radius: 16px;
   overflow: hidden;
   border: 1px solid $color-border;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.03);
   min-height: 300px;
   position: relative;
 
@@ -71,7 +67,7 @@ $color-danger: #f87171;
     align-items: center;
     justify-content: center;
     padding: 80px 20px;
-    color: $color-text-muted;
+    color: var(--talavera-muted);
 
     mat-spinner {
       margin-bottom: 20px;
@@ -90,8 +86,8 @@ $color-danger: #f87171;
     border-spacing: 0;
 
     th.mat-mdc-header-cell {
-      background-color: rgba(0, 0, 0, 0.2);
-      color: $color-text-muted;
+      background-color: rgba(0, 0, 0, 0.02);
+      color: var(--talavera-muted);
       font-weight: 600;
       font-size: 0.85rem;
       text-transform: uppercase;
@@ -103,7 +99,7 @@ $color-danger: #f87171;
     }
 
     td.mat-mdc-cell {
-      color: $color-text-main;
+      color: var(--talavera-ink);
       border-bottom: 1px solid $color-border;
       padding: 16px 24px;
       font-size: 0.95rem;
@@ -121,31 +117,31 @@ $color-danger: #f87171;
       .product-name {
         font-weight: 600;
         font-size: 1rem;
-        color: $color-text-main;
+        color: var(--talavera-ink);
         line-height: 1.4;
       }
 
       .product-category {
         font-size: 0.8rem;
-        color: $color-text-muted;
+        color: var(--talavera-muted);
       }
     }
 
     .sku-cell {
       .sku-badge {
         font-family: 'Roboto Mono', monospace;
-        background-color: rgba(255, 255, 255, 0.05);
+        background-color: var(--talavera-surface);
         padding: 6px 10px;
         border-radius: 6px;
         font-size: 0.85rem;
-        color: $color-text-muted;
+        color: var(--talavera-muted);
         display: inline-block;
       }
     }
 
     .price-cell {
       font-weight: 600;
-      color: $color-text-main;
+      color: var(--talavera-ink);
     }
 
     .stock-cell {
@@ -215,7 +211,7 @@ $color-danger: #f87171;
         }
 
         &:hover {
-          background-color: rgba(255, 255, 255, 0.1);
+          background-color: var(--talavera-line);
         }
       }
     }
@@ -224,7 +220,7 @@ $color-danger: #f87171;
       transition: background-color 0.2s ease;
 
       &:hover {
-        background-color: rgba(255, 255, 255, 0.03);
+        background-color: rgba(0, 0, 0, 0.02);
       }
     }
   }
@@ -236,7 +232,7 @@ $color-danger: #f87171;
   align-items: center;
   justify-content: center;
   padding: 60px;
-  color: $color-text-muted;
+  color: var(--talavera-muted);
   opacity: 0.6;
 
   mat-icon {

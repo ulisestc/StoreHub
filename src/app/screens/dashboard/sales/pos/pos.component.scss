@@ -1,9 +1,4 @@
-$color-primary: #448aff;
-$color-text-main: #f1f5f9;
-$color-text-muted: #94a3b8;
-$color-bg-card: #1e293b;
-$color-bg-darker: #0f172a;
-$color-border: rgba(255, 255, 255, 0.05);
+$color-border: var(--talavera-line);
 $color-success: #4ade80;
 
 .pos-container {
@@ -22,12 +17,12 @@ $color-success: #4ade80;
     font-size: 1.8rem;
     font-weight: 700;
     margin: 0;
-    color: $color-text-main;
+    color: var(--talavera-ink);
   }
 
   p {
     margin: 0;
-    color: $color-text-muted;
+    color: var(--talavera-muted);
     font-size: 0.9rem;
   }
 }
@@ -59,7 +54,7 @@ $color-success: #4ade80;
 }
 
 .pos-card {
-  background-color: $color-bg-card !important;
+  background-color: var(--talavera-surface) !important;
   border-radius: 16px !important;
   border: 1px solid $color-border !important;
   padding: 0 !important;
@@ -102,7 +97,7 @@ $color-success: #4ade80;
     margin-bottom: 16px;
 
     mat-icon {
-      color: $color-primary;
+      color: var(--talavera-blue);
     }
   }
 
@@ -119,8 +114,8 @@ $color-success: #4ade80;
     .new-client-btn {
       height: 56px;
       min-width: 130px;
-      border-color: rgba($color-primary, 0.5);
-      color: $color-primary;
+      border-color: rgba(var(--talavera-blue), 0.5);
+      color: var(--talavera-blue);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -138,10 +133,10 @@ $color-success: #4ade80;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background-color: rgba($color-bg-card, 0.5);
+  background-color: var(--talavera-surface);
   border: 2px dashed $color-border;
   border-radius: 16px;
-  color: $color-text-muted;
+  color: var(--talavera-muted);
   min-height: 200px;
 
   mat-icon {
@@ -165,7 +160,7 @@ $color-success: #4ade80;
   overflow: hidden;
 
   mat-card-header {
-    background-color: rgba(0, 0, 0, 0.2);
+    background-color: rgba(0, 0, 0, 0.02);
     padding: 20px 24px;
     border-bottom: 1px solid $color-border;
 
@@ -175,10 +170,10 @@ $color-success: #4ade80;
       gap: 10px;
       font-size: 1.1rem;
       font-weight: 600;
-      color: $color-text-main;
+      color: var(--talavera-ink);
 
       mat-icon {
-        color: $color-primary;
+        color: var(--talavera-blue);
       }
     }
   }
@@ -202,12 +197,12 @@ $color-success: #4ade80;
 
     mat-spinner {
       ::ng-deep circle {
-        stroke: $color-primary !important;
+        stroke: var(--talavera-blue) !important;
       }
     }
 
     p {
-      color: $color-text-muted;
+      color: var(--talavera-muted);
       font-size: 1rem;
       margin: 0;
     }
@@ -230,13 +225,13 @@ $color-success: #4ade80;
   }
 
   &::-webkit-scrollbar-thumb {
-    background-color: rgba(255, 255, 255, 0.1);
+    background-color: var(--talavera-line);
     border-radius: 10px;
   }
 }
 
 .product-card {
-  background-color: rgba(255, 255, 255, 0.05);
+  background-color: var(--talavera-surface);
   border: 1px solid $color-border;
   border-radius: 12px;
   padding: 16px;
@@ -248,10 +243,10 @@ $color-success: #4ade80;
   min-height: 140px;
 
   &:hover:not(.out-of-stock) {
-    background-color: rgba($color-primary, 0.1);
-    border-color: $color-primary;
+    background-color: rgba(var(--talavera-blue), 0.1);
+    border-color: var(--talavera-blue);
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(68, 138, 255, 0.2);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
   }
 
   &.out-of-stock {
@@ -264,7 +259,7 @@ $color-success: #4ade80;
       margin: 0 0 8px 0;
       font-size: 0.95rem;
       font-weight: 600;
-      color: $color-text-main;
+      color: var(--talavera-ink);
       line-height: 1.3;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -277,7 +272,7 @@ $color-success: #4ade80;
     .product-sku,
     .product-barcode {
       font-size: 0.75rem;
-      color: $color-text-muted;
+      color: var(--talavera-muted);
       margin: 4px 0;
     }
 
@@ -296,7 +291,7 @@ $color-success: #4ade80;
     margin-top: 12px;
     font-size: 1.1rem;
     font-weight: 700;
-    color: $color-primary;
+    color: var(--talavera-blue);
     text-align: right;
   }
 }
@@ -308,7 +303,7 @@ $color-success: #4ade80;
   align-items: center;
   justify-content: center;
   padding: 40px;
-  color: $color-text-muted;
+  color: var(--talavera-muted);
   opacity: 0.6;
 
   mat-icon {
@@ -330,7 +325,7 @@ $color-success: #4ade80;
   flex-direction: column;
 
   mat-card-header {
-    background-color: rgba(0, 0, 0, 0.2);
+    background-color: rgba(0, 0, 0, 0.02);
     padding: 20px 24px;
     border-bottom: 1px solid $color-border;
 
@@ -340,16 +335,16 @@ $color-success: #4ade80;
       gap: 10px;
       font-size: 1.2rem;
       font-weight: 600;
-      color: $color-text-main;
+      color: var(--talavera-ink);
 
       mat-icon {
-        color: $color-primary;
+        color: var(--talavera-blue);
       }
     }
 
     mat-card-subtitle {
       margin-top: 4px;
-      color: $color-text-muted;
+      color: var(--talavera-muted);
     }
   }
 
@@ -364,7 +359,7 @@ $color-success: #4ade80;
     }
 
     &::-webkit-scrollbar-thumb {
-      background-color: rgba(255, 255, 255, 0.1);
+      background-color: var(--talavera-line);
       border-radius: 10px;
     }
   }
@@ -376,7 +371,7 @@ $color-success: #4ade80;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  color: $color-text-muted;
+  color: var(--talavera-muted);
   opacity: 0.6;
   padding: 40px;
 
@@ -400,13 +395,13 @@ $color-success: #4ade80;
 
   .item-name {
     font-weight: 600;
-    color: $color-text-main;
+    color: var(--talavera-ink);
     font-size: 1rem;
   }
 
   .item-sku {
     font-size: 0.8rem;
-    color: $color-text-muted;
+    color: var(--talavera-muted);
   }
 
   .item-actions {
@@ -423,19 +418,19 @@ $color-success: #4ade80;
 
     .item-calc {
       font-size: 0.85rem;
-      color: $color-text-muted;
+      color: var(--talavera-muted);
     }
 
     .item-total {
       font-weight: 700;
-      color: $color-primary;
+      color: var(--talavera-blue);
       font-size: 1.1rem;
     }
   }
 }
 
 .ticket-footer {
-  background-color: rgba(0, 0, 0, 0.3);
+  background-color: var(--talavera-surface);
   padding: 24px;
   border-top: 1px solid $color-border;
 
@@ -447,13 +442,13 @@ $color-success: #4ade80;
 
     span:first-child {
       font-size: 1rem;
-      color: $color-text-muted;
+      color: var(--talavera-muted);
     }
 
     .total-amount {
       font-size: 1.1rem;
       font-weight: 500;
-      color: $color-text-main;
+      color: var(--talavera-ink);
       font-family: 'Poppins', sans-serif;
     }
 
@@ -463,7 +458,7 @@ $color-success: #4ade80;
 
       span:first-child {
         font-size: 1.2rem;
-        color: $color-text-muted;
+        color: var(--talavera-muted);
       }
 
       .total-amount {
@@ -480,7 +475,7 @@ $color-success: #4ade80;
     font-size: 1.1rem;
     font-weight: 700;
     border-radius: 12px;
-    background-color: $color-primary !important;
+    background-color: var(--talavera-blue) !important;
     color: white !important;
     box-shadow: 0 0 20px rgba(68, 138, 255, 0.3);
 
@@ -494,8 +489,8 @@ $color-success: #4ade80;
     }
 
     &:disabled {
-      background-color: rgba(255, 255, 255, 0.1) !important;
-      color: rgba(255, 255, 255, 0.3) !important;
+      background-color: var(--talavera-line) !important;
+      color: var(--talavera-muted) !important;
       box-shadow: none;
     }
   }

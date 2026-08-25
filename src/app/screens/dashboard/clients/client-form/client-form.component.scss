@@ -1,8 +1,4 @@
-$color-primary: #448aff;
-$color-text-main: #f1f5f9;
-$color-text-muted: #94a3b8;
-$color-bg-card: #1e293b;
-$color-border: rgba(255, 255, 255, 0.05);
+$color-border: var(--talavera-surface);
 
 .form-wrapper {
   max-width: 600px;
@@ -19,7 +15,7 @@ $color-border: rgba(255, 255, 255, 0.05);
   gap: 24px;
 
   p {
-    color: $color-text-muted;
+    color: var(--talavera-muted);
     font-size: 1rem;
     margin: 0;
   }
@@ -31,16 +27,16 @@ $color-border: rgba(255, 255, 255, 0.05);
   gap: 16px;
   margin-bottom: 24px;
   padding: 24px;
-  background: linear-gradient(135deg, rgba($color-primary, 0.1) 0%, rgba($color-primary, 0.05) 100%);
+  background: var(--talavera-surface);
   border-radius: 16px;
   border: 1px solid $color-border;
 
   button {
-    color: $color-primary;
+    color: var(--talavera-blue);
 
     &:hover {
-      background-color: rgba($color-primary, 0.1);
-      color: $color-primary;
+      background-color: rgba(var(--talavera-blue), 0.1);
+      color: var(--talavera-blue);
     }
   }
 
@@ -49,16 +45,16 @@ $color-border: rgba(255, 255, 255, 0.05);
     font-size: 1.5rem;
     font-weight: 700;
     margin: 0;
-    color: $color-text-main;
+    color: var(--talavera-ink);
   }
 }
 
 .form-card {
-  background-color: $color-bg-card !important;
+  background-color: var(--talavera-surface) !important;
   border-radius: 16px !important;
   border: 1px solid $color-border;
   padding: 32px;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.03);
 
   mat-card-content {
     padding: 0 !important;
@@ -85,38 +81,38 @@ $color-border: rgba(255, 255, 255, 0.05);
   border-top: 1px solid $color-border;
 
   button[mat-button] {
-    color: $color-text-muted;
+    color: var(--talavera-muted);
     font-weight: 500;
     padding: 0 20px;
 
     &:hover {
-      color: $color-text-main;
-      background-color: rgba(255, 255, 255, 0.05);
+      color: var(--talavera-ink);
+      background-color: var(--talavera-surface);
     }
   }
 
   button[mat-raised-button] {
-    background: linear-gradient(135deg, $color-primary 0%, #667eea 100%) !important;
+    background: var(--talavera-blue) !important;
     color: white !important;
     font-weight: 600;
     border-radius: 8px;
     padding: 0 24px;
     height: 44px;
     min-width: 160px;
-    box-shadow: 0 4px 15px rgba($color-primary, 0.3);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
 
     mat-icon {
       margin-right: 8px;
     }
 
     &:hover:not([disabled]) {
-      box-shadow: 0 6px 20px rgba($color-primary, 0.4);
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.06);
       transform: translateY(-2px);
       transition: all 0.3s ease;
     }
 
     &[disabled] {
-      background: rgba(255, 255, 255, 0.1) !important;
+      background: var(--talavera-line) !important;
       color: rgba(255, 255, 255, 0.3) !important;
       box-shadow: none;
       transform: none;
@@ -126,19 +122,19 @@ $color-border: rgba(255, 255, 255, 0.05);
 
 ::ng-deep .mat-mdc-form-field {
   .mat-mdc-text-field-wrapper {
-    background-color: rgba(0, 0, 0, 0.3);
+    background-color: rgba(0, 0, 0, 0.03);
   }
 
   .mat-mdc-form-field-icon-suffix {
-    color: $color-primary;
+    color: var(--talavera-blue);
   }
 
   .mat-mdc-input-element {
-    color: $color-text-main !important;
+    color: var(--talavera-ink) !important;
   }
 
   label.mat-mdc-floating-label {
-    color: $color-text-muted !important;
+    color: var(--talavera-muted) !important;
   }
 
   .mat-mdc-form-field-focus-overlay {

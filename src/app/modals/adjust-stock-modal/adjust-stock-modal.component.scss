@@ -1,12 +1,8 @@
-$color-bg-card: #1e293b;
-$color-primary: #448aff;
-$color-text-main: #f1f5f9;
-$color-text-muted: #94a3b8;
-$color-border: rgba(255, 255, 255, 0.05);
+$color-border: var(--talavera-surface);
 
 .modal-container {
-  background-color: $color-bg-card;
-  color: $color-text-main;
+  background-color: var(--talavera-surface);
+  color: var(--talavera-ink);
   border-radius: 16px;
   overflow: hidden;
   max-width: 550px;
@@ -17,14 +13,14 @@ $color-border: rgba(255, 255, 255, 0.05);
   display: flex;
   align-items: center;
   padding: 24px 24px 20px;
-  background: linear-gradient(135deg, rgba($color-primary, 0.1) 0%, rgba($color-primary, 0.05) 100%);
+  background: var(--talavera-surface);
 
   h1 {
     margin: 0;
     font-family: 'Poppins', sans-serif;
     font-size: 1.5rem;
     font-weight: 700;
-    color: $color-text-main;
+    color: var(--talavera-ink);
   }
 }
 
@@ -44,36 +40,36 @@ $color-border: rgba(255, 255, 255, 0.05);
   justify-content: flex-end;
   gap: 12px;
   padding: 20px 24px;
-  background-color: rgba(0, 0, 0, 0.2);
+  background-color: rgba(0, 0, 0, 0.02);
   border-top: 1px solid $color-border;
 
   .cancel-btn {
-    color: $color-text-muted;
+    color: var(--talavera-muted);
     padding: 0 20px;
 
     &:hover {
-      color: $color-text-main;
-      background-color: rgba(255, 255, 255, 0.05);
+      color: var(--talavera-ink);
+      background-color: var(--talavera-surface);
     }
   }
 
   button[color="primary"] {
-    background: linear-gradient(135deg, $color-primary 0%, #667eea 100%);
+    background: var(--talavera-blue);
     color: white !important;
     font-weight: 600;
     border-radius: 8px;
     padding: 0 24px;
     height: 44px;
     min-width: 160px;
-    box-shadow: 0 4px 15px rgba($color-primary, 0.3);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
 
     &:hover:not(:disabled) {
-      box-shadow: 0 6px 20px rgba($color-primary, 0.4);
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.06);
       transform: translateY(-2px);
     }
 
     &:disabled {
-      background: rgba(255, 255, 255, 0.1) !important;
+      background: var(--talavera-line) !important;
       color: rgba(255, 255, 255, 0.3) !important;
       box-shadow: none;
       transform: none;
@@ -82,33 +78,33 @@ $color-border: rgba(255, 255, 255, 0.05);
 }
 
 ::ng-deep .mat-mdc-dialog-container .mat-mdc-dialog-surface {
-  background-color: $color-bg-card !important;
+  background-color: var(--talavera-surface) !important;
   border-radius: 16px !important;
 }
 
 ::ng-deep .mat-mdc-form-field {
   .mat-mdc-text-field-wrapper {
-    background-color: rgba(0, 0, 0, 0.3);
+    background-color: rgba(0, 0, 0, 0.03);
   }
 
   .mat-mdc-form-field-icon-suffix {
-    color: $color-primary;
+    color: var(--talavera-blue);
   }
 
   .mat-mdc-select-value {
-    color: $color-text-main;
+    color: var(--talavera-ink);
   }
 
   .mat-mdc-select-arrow {
-    color: $color-text-muted;
+    color: var(--talavera-muted);
   }
 
   .mat-mdc-input-element {
-    color: $color-text-main !important;
+    color: var(--talavera-ink) !important;
   }
 
   label.mat-mdc-floating-label {
-    color: $color-text-muted !important;
+    color: var(--talavera-muted) !important;
   }
 
   .mat-mdc-form-field-focus-overlay {
@@ -117,20 +113,20 @@ $color-border: rgba(255, 255, 255, 0.05);
 }
 
 ::ng-deep .mat-mdc-option {
-  background-color: $color-bg-card !important;
-  color: $color-text-main !important;
+  background-color: var(--talavera-surface) !important;
+  color: var(--talavera-ink) !important;
 
   &:hover, &.mat-mdc-option-active {
-    background-color: rgba($color-primary, 0.15) !important;
+    background-color: rgba(var(--talavera-blue), 0.15) !important;
   }
 
   &.mat-mdc-option-selected:not(.mat-mdc-option-multiple) {
-    background-color: rgba($color-primary, 0.2) !important;
-    color: $color-primary !important;
+    background-color: rgba(var(--talavera-blue), 0.2) !important;
+    color: var(--talavera-blue) !important;
   }
 }
 
 ::ng-deep .mat-mdc-select-panel {
-  background-color: $color-bg-card !important;
+  background-color: var(--talavera-surface) !important;
   border: 1px solid $color-border;
 }

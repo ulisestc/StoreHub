@@ -1,9 +1,4 @@
-$color-bg-main: #0f172a;
-$color-bg-card: #1e293b;
-$color-primary: #448aff;
-$color-text-main: #f1f5f9;
-$color-text-muted: #94a3b8;
-$color-border: rgba(255, 255, 255, 0.05);
+$color-border: var(--talavera-surface);
 
 .reports-container {
   max-width: 1200px;
@@ -23,25 +18,25 @@ $color-border: rgba(255, 255, 255, 0.05);
     font-family: 'Poppins', sans-serif;
     font-size: 2rem;
     font-weight: 700;
-    color: $color-text-main;
+    color: var(--talavera-ink);
     margin: 0 0 4px 0;
     letter-spacing: -0.5px;
   }
 
   p {
-    color: $color-text-muted;
+    color: var(--talavera-muted);
     font-size: 1rem;
     margin: 0;
   }
 }
 
 .filter-card {
-  background-color: $color-bg-card;
+  background-color: var(--talavera-surface);
   border-radius: 16px;
   padding: 32px;
   margin-bottom: 32px;
   border: 1px solid $color-border;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.03);
 
   .filter-content {
     display: flex;
@@ -51,7 +46,7 @@ $color-border: rgba(255, 255, 255, 0.05);
 
   .filter-section {
     h3 {
-      color: $color-primary;
+      color: var(--talavera-blue);
       font-size: 1.1rem;
       font-weight: 600;
       margin: 0 0 20px 0;
@@ -76,7 +71,7 @@ $color-border: rgba(255, 255, 255, 0.05);
       width: 200px;
 
       ::ng-deep .mat-mdc-text-field-wrapper {
-        background-color: rgba(255, 255, 255, 0.03);
+        background-color: rgba(0, 0, 0, 0.02);
       }
 
       ::ng-deep .mat-mdc-form-field-subscript-wrapper {
@@ -84,11 +79,11 @@ $color-border: rgba(255, 255, 255, 0.05);
       }
 
       ::ng-deep label {
-        color: $color-text-muted !important;
+        color: var(--talavera-muted) !important;
       }
 
       ::ng-deep input {
-        color: $color-text-main !important;
+        color: var(--talavera-ink) !important;
       }
 
       ::ng-deep .mat-mdc-notch-piece {
@@ -106,7 +101,7 @@ $color-border: rgba(255, 255, 255, 0.05);
 
     button {
       height: 56px;
-      background-color: $color-primary !important;
+      background-color: var(--talavera-blue) !important;
       color: white !important;
       font-weight: 600;
       border-radius: 12px;
@@ -118,7 +113,7 @@ $color-border: rgba(255, 255, 255, 0.05);
       }
 
       &:hover {
-        background-color: color-mix(in srgb, $color-primary, white 5%) !important;
+        background-color: color-mix(in srgb, var(--talavera-blue), white 5%) !important;
       }
     }
   }
@@ -128,17 +123,17 @@ $color-border: rgba(255, 255, 255, 0.05);
   animation: slideUp 0.5s ease-out;
 
   mat-card {
-    background-color: $color-bg-card;
+    background-color: var(--talavera-surface);
     border: 1px solid $color-border;
     border-radius: 16px;
     padding: 32px;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.03);
     overflow-x: auto;
     min-height: 400px;
 
     .backend-html-content {
       font-family: 'Roboto', sans-serif;
-      color: $color-text-main;
+      color: var(--talavera-ink);
 
       ::ng-deep table {
         width: 100%;
@@ -151,27 +146,27 @@ $color-border: rgba(255, 255, 255, 0.05);
           padding: 12px 16px;
           border-bottom: 1px solid $color-border;
           text-align: left;
-          color: $color-text-main;
+          color: var(--talavera-ink);
         }
 
         th {
           background-color: rgba(68, 138, 255, 0.1);
           font-weight: 600;
-          color: $color-primary;
+          color: var(--talavera-blue);
           text-transform: uppercase;
           font-size: 0.85rem;
           letter-spacing: 0.5px;
         }
 
         tr:hover {
-          background-color: rgba(255, 255, 255, 0.03);
+          background-color: rgba(0, 0, 0, 0.02);
         }
       }
 
       ::ng-deep h1,
       ::ng-deep h2,
       ::ng-deep h3 {
-        color: $color-text-main;
+        color: var(--talavera-ink);
         margin-top: 0;
         margin-bottom: 16px;
       }
@@ -179,7 +174,7 @@ $color-border: rgba(255, 255, 255, 0.05);
       ::ng-deep h1 {
         font-size: 1.8rem;
         font-weight: 700;
-        color: $color-primary;
+        color: var(--talavera-blue);
       }
 
       ::ng-deep h2 {
@@ -188,7 +183,7 @@ $color-border: rgba(255, 255, 255, 0.05);
       }
 
       ::ng-deep p {
-        color: $color-text-muted;
+        color: var(--talavera-muted);
         line-height: 1.6;
       }
     }
@@ -201,24 +196,24 @@ $color-border: rgba(255, 255, 255, 0.05);
   align-items: center;
   justify-content: center;
   padding: 80px 20px;
-  color: $color-text-muted;
-  background-color: $color-bg-card;
+  color: var(--talavera-muted);
+  background-color: var(--talavera-surface);
   border-radius: 16px;
   border: 1px solid $color-border;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.03);
 
   mat-spinner {
     margin-bottom: 20px;
 
     ::ng-deep circle {
-      stroke: $color-primary !important;
+      stroke: var(--talavera-blue) !important;
     }
   }
 
   p {
     font-size: 1rem;
     margin: 0;
-    color: $color-text-muted;
+    color: var(--talavera-muted);
   }
 }
 
@@ -228,11 +223,11 @@ $color-border: rgba(255, 255, 255, 0.05);
   align-items: center;
   justify-content: center;
   padding: 80px 20px;
-  color: $color-text-muted;
-  background-color: $color-bg-card;
+  color: var(--talavera-muted);
+  background-color: var(--talavera-surface);
   border-radius: 16px;
   border: 1px solid $color-border;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.03);
   opacity: 0.6;
 
   mat-icon {
@@ -240,7 +235,7 @@ $color-border: rgba(255, 255, 255, 0.05);
     width: 64px;
     height: 64px;
     margin-bottom: 16px;
-    color: $color-primary;
+    color: var(--talavera-blue);
     opacity: 0.5;
   }
 

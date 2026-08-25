@@ -1,8 +1,4 @@
-$color-primary: #448aff;
-$color-text-main: #f1f5f9;
-$color-text-muted: #94a3b8;
-$color-bg-card: #1e293b;
-$color-border: rgba(255, 255, 255, 0.05);
+$color-border: var(--talavera-surface);
 
 $color-entrada: #4ade80;
 $color-salida: #fbbf24;
@@ -28,18 +24,18 @@ $color-merma: #f87171;
       font-size: 2rem;
       font-weight: 700;
       margin: 0;
-      color: $color-text-main;
+      color: var(--talavera-ink);
     }
 
     p {
       margin: 4px 0 0 0;
-      color: $color-text-muted;
+      color: var(--talavera-muted);
       font-size: 1rem;
     }
   }
 
   .create-btn {
-    background-color: $color-primary !important;
+    background-color: var(--talavera-blue) !important;
     color: white !important;
     font-weight: 600;
     border-radius: 12px;
@@ -52,7 +48,7 @@ $color-merma: #f87171;
     }
 
     &:hover {
-      background-color: color-mix(in srgb, $color-primary, white 5%) !important;
+      background-color: color-mix(in srgb, var(--talavera-blue), white 5%) !important;
     }
   }
 }
@@ -68,23 +64,23 @@ $color-merma: #f87171;
 
   mat-spinner {
     ::ng-deep circle {
-      stroke: $color-primary !important;
+      stroke: var(--talavera-blue) !important;
     }
   }
 
   p {
-    color: $color-text-muted;
+    color: var(--talavera-muted);
     font-size: 1rem;
     margin: 0;
   }
 }
 
 .table-container {
-  background-color: $color-bg-card;
+  background-color: var(--talavera-surface);
   border-radius: 16px;
   overflow: hidden;
   border: 1px solid $color-border;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.03);
 
   table {
     width: 100%;
@@ -93,8 +89,8 @@ $color-merma: #f87171;
     border-spacing: 0;
 
     th.mat-mdc-header-cell {
-      background-color: rgba(0, 0, 0, 0.2);
-      color: $color-text-muted;
+      background-color: rgba(0, 0, 0, 0.02);
+      color: var(--talavera-muted);
       font-weight: 600;
       font-size: 0.85rem;
       text-transform: uppercase;
@@ -106,7 +102,7 @@ $color-merma: #f87171;
     }
 
     td.mat-mdc-cell {
-      color: $color-text-main;
+      color: var(--talavera-ink);
       border-bottom: 1px solid $color-border;
       padding: 16px 24px;
       font-size: 0.95rem;
@@ -119,7 +115,7 @@ $color-merma: #f87171;
         display: flex;
         align-items: center;
         gap: 10px;
-        color: $color-text-muted;
+        color: var(--talavera-muted);
       }
       .mini-icon {
         font-size: 20px;
@@ -136,7 +132,7 @@ $color-merma: #f87171;
 
     .product-cell {
       font-weight: 600;
-      color: $color-text-main;
+      color: var(--talavera-ink);
     }
 
     .type-cell {
@@ -175,7 +171,7 @@ $color-merma: #f87171;
     }
 
     .reason-cell {
-      color: $color-text-muted;
+      color: var(--talavera-muted);
       font-style: italic;
     }
 
@@ -184,7 +180,7 @@ $color-merma: #f87171;
         display: flex;
         align-items: center;
         gap: 8px;
-        color: $color-text-muted;
+        color: var(--talavera-muted);
 
         mat-icon {
           font-size: 18px;
@@ -198,7 +194,7 @@ $color-merma: #f87171;
       transition: background-color 0.2s ease;
 
       &:hover {
-        background-color: rgba(255, 255, 255, 0.03);
+        background-color: rgba(0, 0, 0, 0.02);
       }
     }
   }
@@ -210,7 +206,7 @@ $color-merma: #f87171;
   align-items: center;
   justify-content: center;
   padding: 60px;
-  color: $color-text-muted;
+  color: var(--talavera-muted);
   opacity: 0.6;
 
   mat-icon {

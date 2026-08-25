@@ -1,14 +1,10 @@
-$color-primary: #448aff;
-$color-text-main: #f1f5f9;
-$color-text-muted: #94a3b8;
-$color-bg-card: #1e293b;
 $color-bg-darker: #0f172a;
-$color-border: rgba(255, 255, 255, 0.05);
+$color-border: var(--talavera-surface);
 $color-success: #4ade80;
 
 .modal-container {
-  background-color: $color-bg-card;
-  color: $color-text-main;
+  background-color: var(--talavera-surface);
+  color: var(--talavera-ink);
   border-radius: 16px;
   overflow: hidden;
   max-width: 450px;
@@ -20,7 +16,7 @@ $color-success: #4ade80;
   align-items: center;
   justify-content: space-between;
   padding: 24px 24px 20px;
-  background: linear-gradient(135deg, rgba($color-primary, 0.1) 0%, rgba($color-primary, 0.05) 100%);
+  background: var(--talavera-surface);
 
   .header-content {
     display: flex;
@@ -31,7 +27,7 @@ $color-success: #4ade80;
       font-size: 32px;
       width: 32px;
       height: 32px;
-      color: $color-primary;
+      color: var(--talavera-blue);
     }
 
     .header-text {
@@ -39,23 +35,23 @@ $color-success: #4ade80;
         margin: 0;
         font-size: 1.3rem;
         font-weight: 700;
-        color: $color-text-main;
+        color: var(--talavera-ink);
       }
 
       .subtitle {
         margin: 4px 0 0 0;
         font-size: 0.85rem;
-        color: $color-text-muted;
+        color: var(--talavera-muted);
       }
     }
   }
 
   .close-btn {
-    color: $color-text-muted;
+    color: var(--talavera-muted);
 
     &:hover {
-      color: $color-text-main;
-      background-color: rgba(255, 255, 255, 0.1);
+      color: var(--talavera-ink);
+      background-color: var(--talavera-line);
     }
   }
 }
@@ -64,7 +60,7 @@ $color-success: #4ade80;
   padding: 24px;
 
   .description {
-    color: $color-text-muted;
+    color: var(--talavera-muted);
     font-size: 0.95rem;
     margin-top: 0;
     margin-bottom: 24px;
@@ -76,13 +72,13 @@ $color-success: #4ade80;
   }
 
   ::ng-deep .mat-mdc-text-field-wrapper {
-    background-color: rgba(255, 255, 255, 0.03) !important;
+    background-color: rgba(0, 0, 0, 0.02) !important;
   }
   
   ::ng-deep .mdc-text-field--outlined:not(.mdc-text-field--disabled) .mdc-notched-outline__leading, 
   ::ng-deep .mdc-text-field--outlined:not(.mdc-text-field--disabled) .mdc-notched-outline__notch, 
   ::ng-deep .mdc-text-field--outlined:not(.mdc-text-field--disabled) .mdc-notched-outline__trailing {
-    border-color: rgba(255, 255, 255, 0.1) !important;
+    border-color: var(--talavera-line) !important;
   }
 }
 
@@ -91,11 +87,11 @@ $color-success: #4ade80;
   justify-content: flex-end;
   gap: 12px;
   padding: 16px 24px;
-  background-color: rgba(0, 0, 0, 0.2);
+  background-color: rgba(0, 0, 0, 0.02);
   border-top: 1px solid $color-border;
 
   .send-btn {
-    background: linear-gradient(135deg, $color-primary 0%, #667eea 100%);
+    background: var(--talavera-blue);
     color: white;
     display: flex;
     align-items: center;
@@ -108,12 +104,12 @@ $color-success: #4ade80;
     }
 
     &:hover:not(:disabled) {
-      box-shadow: 0 4px 15px rgba($color-primary, 0.4);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
       transform: translateY(-1px);
     }
 
     &:disabled {
-      background: rgba(255,255,255,0.1);
+      background: var(--talavera-line);
       color: rgba(255,255,255,0.3);
     }
   }

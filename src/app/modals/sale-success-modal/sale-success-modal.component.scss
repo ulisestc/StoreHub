@@ -1,12 +1,8 @@
-$color-primary: #448aff;
-$color-text-main: #f1f5f9;
-$color-text-muted: #94a3b8;
-$color-bg-card: #1e293b;
 $color-success: #4ade80;
 
 .success-modal-container {
-  background-color: $color-bg-card;
-  color: $color-text-main;
+  background-color: var(--talavera-surface);
+  color: var(--talavera-ink);
   border-radius: 20px;
   overflow: hidden;
   max-width: 450px;
@@ -40,13 +36,13 @@ $color-success: #4ade80;
     margin: 0;
     font-size: 1.8rem;
     font-weight: 700;
-    color: $color-text-main;
+    color: var(--talavera-ink);
   }
 
   .subtitle {
     margin: 8px 0 0 0;
     font-size: 1rem;
-    color: $color-text-muted;
+    color: var(--talavera-muted);
   }
 }
 
@@ -58,13 +54,13 @@ $color-success: #4ade80;
   }
 
   ::ng-deep .mat-mdc-text-field-wrapper {
-    background-color: rgba(255, 255, 255, 0.03) !important;
+    background-color: rgba(0, 0, 0, 0.02) !important;
   }
   
   ::ng-deep .mdc-text-field--outlined:not(.mdc-text-field--disabled) .mdc-notched-outline__leading, 
   ::ng-deep .mdc-text-field--outlined:not(.mdc-text-field--disabled) .mdc-notched-outline__notch, 
   ::ng-deep .mdc-text-field--outlined:not(.mdc-text-field--disabled) .mdc-notched-outline__trailing {
-    border-color: rgba(255, 255, 255, 0.1) !important;
+    border-color: var(--talavera-line) !important;
   }
 }
 
@@ -84,15 +80,15 @@ $color-success: #4ade80;
 
   .skip-btn {
     border-color: rgba(255, 255, 255, 0.2);
-    color: $color-text-main;
+    color: var(--talavera-ink);
 
     &:hover {
-      background-color: rgba(255, 255, 255, 0.05);
+      background-color: var(--talavera-surface);
     }
   }
 
   .send-btn {
-    background: linear-gradient(135deg, $color-primary 0%, #667eea 100%);
+    background: var(--talavera-blue);
     color: white;
     display: flex;
     align-items: center;
@@ -106,12 +102,12 @@ $color-success: #4ade80;
     }
 
     &:hover:not(:disabled) {
-      box-shadow: 0 4px 15px rgba($color-primary, 0.4);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
       transform: translateY(-2px);
     }
 
     &:disabled {
-      background: rgba(255,255,255,0.1);
+      background: var(--talavera-line);
       color: rgba(255,255,255,0.3);
     }
   }

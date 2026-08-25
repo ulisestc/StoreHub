@@ -1,13 +1,6 @@
-$color-bg-main: #0f172a;
-$color-bg-card: #1e293b;
-$color-primary: #448aff;
-$color-text-main: #f1f5f9;
-$color-text-muted: #94a3b8;
-$color-accent: #00e676;
-
 .landing-container {
   min-height: 100vh;
-  background: $color-bg-main;
+  background: var(--talavera-bg);
   overflow-x: hidden;
   position: relative;
 
@@ -33,10 +26,10 @@ $color-accent: #00e676;
   position: sticky;
   top: 0;
   z-index: 1000;
-  background: rgba(30, 41, 59, 0.8);
+  background: rgba(255, 255, 255, 0.8);
   backdrop-filter: blur(20px);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+  border-bottom: 1px solid var(--talavera-line);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.05);
   padding: 16px 0;
 
   .navbar-content {
@@ -54,7 +47,7 @@ $color-accent: #00e676;
     gap: 12px;
     font-size: 24px;
     font-weight: 700;
-    background: linear-gradient(135deg, $color-primary 0%, #5c9aff 100%);
+    background: var(--talavera-blue);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -63,8 +56,8 @@ $color-accent: #00e676;
       font-size: 32px;
       width: 32px;
       height: 32px;
-      color: $color-primary;
-      -webkit-text-fill-color: $color-primary;
+      color: var(--talavera-blue);
+      -webkit-text-fill-color: var(--talavera-blue);
     }
   }
 
@@ -75,7 +68,7 @@ $color-accent: #00e676;
   }
 
   .login-btn {
-    color: $color-text-main !important;
+    color: var(--talavera-ink) !important;
     font-weight: 500;
     transition: all 0.3s ease;
 
@@ -84,23 +77,23 @@ $color-accent: #00e676;
     }
 
     &:hover {
-      color: $color-primary !important;
+      color: var(--talavera-blue) !important;
       background: rgba(68, 138, 255, 0.1) !important;
     }
   }
 
   .register-btn {
-    background: linear-gradient(135deg, $color-primary 0%, #5c9aff 100%) !important;
+    background: var(--talavera-blue) !important;
     color: white !important;
     font-weight: 600;
-    box-shadow: 0 4px 15px rgba(68, 138, 255, 0.4);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
 
     mat-icon {
       margin-right: 4px;
     }
 
     &:hover {
-      box-shadow: 0 6px 25px rgba(68, 138, 255, 0.6);
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.06);
       transform: translateY(-2px);
       transition: all 0.3s ease;
     }
@@ -130,7 +123,7 @@ $color-accent: #00e676;
     backdrop-filter: blur(10px);
     padding: 8px 16px;
     border-radius: 50px;
-    color: $color-primary;
+    color: var(--talavera-blue);
     font-size: 14px;
     font-weight: 600;
     margin-bottom: 24px;
@@ -147,11 +140,11 @@ $color-accent: #00e676;
     font-size: 56px;
     font-weight: 800;
     line-height: 1.2;
-    color: $color-text-main;
+    color: var(--talavera-ink);
     margin: 0 0 24px 0;
 
     .highlight {
-      background: linear-gradient(135deg, $color-primary 0%, #5c9aff 100%);
+      background: var(--talavera-blue);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
@@ -161,7 +154,7 @@ $color-accent: #00e676;
   .hero-description {
     font-size: 18px;
     line-height: 1.7;
-    color: $color-text-muted;
+    color: var(--talavera-muted);
     margin: 0 0 32px 0;
     max-width: 500px;
   }
@@ -173,7 +166,7 @@ $color-accent: #00e676;
     margin-bottom: 48px;
 
     .cta-primary {
-      background: linear-gradient(135deg, $color-primary 0%, #5c9aff 100%) !important;
+      background: var(--talavera-blue) !important;
       color: white !important;
       font-weight: 600;
       font-size: 16px;
@@ -181,7 +174,7 @@ $color-accent: #00e676;
       height: auto !important;
       line-height: 1.5 !important;
       border-radius: 12px;
-      box-shadow: 0 8px 25px rgba(68, 138, 255, 0.4);
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.06);
 
       mat-icon {
         margin-right: 8px;
@@ -189,13 +182,13 @@ $color-accent: #00e676;
 
       &:hover {
         transform: translateY(-2px);
-        box-shadow: 0 12px 35px rgba(68, 138, 255, 0.5);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
       }
     }
 
     .cta-secondary {
       border: 2px solid rgba(68, 138, 255, 0.5) !important;
-      color: $color-primary !important;
+      color: var(--talavera-blue) !important;
       font-weight: 600;
       font-size: 16px;
       padding: 12px 32px !important;
@@ -209,7 +202,7 @@ $color-accent: #00e676;
 
       &:hover {
         background: rgba(68, 138, 255, 0.1) !important;
-        border-color: $color-primary !important;
+        border-color: var(--talavera-blue) !important;
       }
     }
   }
@@ -223,8 +216,8 @@ $color-accent: #00e676;
       display: flex;
       align-items: center;
       gap: 12px;
-      background: rgba(30, 41, 59, 0.6);
-      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: var(--talavera-surface);
+      border: 1px solid var(--talavera-line);
       backdrop-filter: blur(10px);
       padding: 16px 20px;
       border-radius: 12px;
@@ -233,7 +226,7 @@ $color-accent: #00e676;
         font-size: 32px;
         width: 32px;
         height: 32px;
-        color: $color-accent;
+        color: var(--talavera-blue-dark);
       }
 
       .stat-content {
@@ -243,13 +236,13 @@ $color-accent: #00e676;
         .stat-number {
           font-size: 24px;
           font-weight: 700;
-          color: $color-text-main;
+          color: var(--talavera-ink);
           line-height: 1;
         }
 
         .stat-label {
           font-size: 12px;
-          color: $color-text-muted;
+          color: var(--talavera-muted);
           margin-top: 4px;
         }
       }
@@ -266,21 +259,21 @@ $color-accent: #00e676;
 
   .visual-card {
     position: absolute;
-    background: $color-bg-card;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: var(--talavera-surface);
+    border: 1px solid var(--talavera-line);
     padding: 20px 24px;
     border-radius: 16px;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
     display: flex;
     align-items: center;
     gap: 12px;
     font-weight: 600;
-    color: $color-text-main;
+    color: var(--talavera-ink);
     animation: float 6s ease-in-out infinite;
     backdrop-filter: blur(10px);
 
     mat-icon {
-      color: $color-primary;
+      color: var(--talavera-blue);
       font-size: 28px;
       width: 28px;
       height: 28px;
@@ -316,7 +309,7 @@ $color-accent: #00e676;
 }
 
 .features-section {
-  background: rgba(15, 23, 42, 0.5);
+  background: rgba(0, 0, 0, 0.02);
   padding: 100px 24px;
   position: relative;
   z-index: 1;
@@ -330,13 +323,13 @@ $color-accent: #00e676;
       font-family: 'Poppins', sans-serif;
       font-size: 42px;
       font-weight: 700;
-      color: $color-text-main;
+      color: var(--talavera-ink);
       margin: 0 0 16px 0;
     }
 
     p {
       font-size: 18px;
-      color: $color-text-muted;
+      color: var(--talavera-muted);
       margin: 0;
     }
   }
@@ -350,15 +343,15 @@ $color-accent: #00e676;
   }
 
   .feature-card {
-    background: $color-bg-card;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: var(--talavera-surface);
+    border: 1px solid var(--talavera-line);
     padding: 32px;
     border-radius: 16px;
     transition: all 0.3s ease;
 
     &:hover {
       transform: translateY(-8px);
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
       border-color: rgba(68, 138, 255, 0.4);
     }
 
@@ -374,7 +367,7 @@ $color-accent: #00e676;
       border: 1px solid rgba(68, 138, 255, 0.3);
 
       mat-icon {
-        color: $color-primary;
+        color: var(--talavera-blue);
         font-size: 32px;
         width: 32px;
         height: 32px;
@@ -385,22 +378,22 @@ $color-accent: #00e676;
       font-family: 'Poppins', sans-serif;
       font-size: 20px;
       font-weight: 600;
-      color: $color-text-main;
+      color: var(--talavera-ink);
       margin: 0 0 12px 0;
     }
 
     p {
       font-size: 15px;
       line-height: 1.6;
-      color: $color-text-muted;
+      color: var(--talavera-muted);
       margin: 0;
     }
   }
 }
 
 .landing-footer {
-  background: rgba(15, 23, 42, 0.95);
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  background: var(--talavera-surface);
+  border-top: 1px solid var(--talavera-line);
   padding: 40px 24px;
   text-align: center;
   position: relative;
@@ -417,7 +410,7 @@ $color-accent: #00e676;
       gap: 12px;
       font-size: 24px;
       font-weight: 700;
-      background: linear-gradient(135deg, $color-primary 0%, #5c9aff 100%);
+      background: var(--talavera-blue);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
@@ -427,13 +420,13 @@ $color-accent: #00e676;
         font-size: 32px;
         width: 32px;
         height: 32px;
-        color: $color-primary;
-        -webkit-text-fill-color: $color-primary;
+        color: var(--talavera-blue);
+        -webkit-text-fill-color: var(--talavera-blue);
       }
     }
 
     p {
-      color: $color-text-muted;
+      color: var(--talavera-muted);
       margin: 0;
     }
   }

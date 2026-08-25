@@ -1,50 +1,51 @@
-$color-bg-main: #0f172a;
-$color-text-main: #f1f5f9;
-
 .dashboard-container {
   width: 100%;
   height: 100vh;
-  background-color: $color-bg-main !important;
+  background: var(--talavera-bg) !important;
+
+  background-image:
+    radial-gradient(rgba(23, 74, 156, 0.055) 1px,
+      transparent 1px) !important;
+
+  background-size: 22px 22px !important;
 }
 
 .sidebar {
-  width: 260px;
-  background-color: transparent !important;
-  border: none !important;
+  width: 274px;
+  background: transparent !important;
+  border: 0 !important;
 }
 
 .main-content {
-  background-color: $color-bg-main !important;
-  color: $color-text-main !important;
   display: flex;
   flex-direction: column;
   height: 100%;
+  color: var(--talavera-ink) !important;
+  background: transparent !important;
 }
 
 .content-wrapper {
   display: flex;
   flex-direction: column;
-  min-height: calc(100vh - 64px);
+  min-height: calc(100vh - 68px);
   overflow-x: hidden;
-  overflow-y: auto;
 }
 
 .page-content {
   flex: 1 1 auto;
-  padding: 20px;
-  background-color: $color-bg-main !important;
   max-width: 100%;
+  padding: 30px 34px;
+  background: transparent !important;
 }
 
-// === RESPONSIVE DESIGN ===
 @media (max-width: 968px) {
   .page-content {
-    padding: 16px;
+    padding: 22px 18px;
   }
 }
 
 @media (max-width: 640px) {
   .page-content {
-    padding: 12px;
+    padding: 16px 12px;
   }
 }

@@ -1,8 +1,4 @@
-$color-primary: #448aff;
-$color-text-main: #f1f5f9;
-$color-text-muted: #94a3b8;
-$color-bg-card: #1e293b;
-$color-border: rgba(255, 255, 255, 0.05);
+$color-border: var(--talavera-surface);
 
 .form-wrapper {
   max-width: 600px;
@@ -17,12 +13,12 @@ $color-border: rgba(255, 255, 255, 0.05);
   margin-bottom: 32px;
 
   button {
-    color: $color-text-muted;
-    background-color: rgba(255, 255, 255, 0.05);
+    color: var(--talavera-muted);
+    background-color: var(--talavera-surface);
 
     &:hover {
-      background-color: rgba(255, 255, 255, 0.1);
-      color: $color-text-main;
+      background-color: var(--talavera-line);
+      color: var(--talavera-ink);
     }
   }
 
@@ -31,12 +27,12 @@ $color-border: rgba(255, 255, 255, 0.05);
     font-size: 1.8rem;
     font-weight: 700;
     margin: 0;
-    color: $color-text-main;
+    color: var(--talavera-ink);
   }
 }
 
 .form-card {
-  background-color: $color-bg-card !important;
+  background-color: var(--talavera-surface) !important;
   border-radius: 16px !important;
   border: 1px solid $color-border;
   padding: 32px;
@@ -57,7 +53,7 @@ $color-border: rgba(255, 255, 255, 0.05);
   }
 
   p {
-    color: $color-text-muted;
+    color: var(--talavera-muted);
     font-size: 1rem;
     margin: 0;
   }
@@ -80,12 +76,12 @@ $color-border: rgba(255, 255, 255, 0.05);
   gap: 16px;
 
   button[mat-button] {
-    color: $color-text-muted;
+    color: var(--talavera-muted);
     font-weight: 500;
 
     &:hover {
-      color: $color-text-main;
-      background-color: rgba(255, 255, 255, 0.05);
+      color: var(--talavera-ink);
+      background-color: var(--talavera-surface);
     }
   }
 
@@ -100,6 +96,6 @@ $color-border: rgba(255, 255, 255, 0.05);
 
 ::ng-deep .mat-mdc-form-field {
   .mat-mdc-form-field-icon-suffix {
-    color: $color-text-muted;
+    color: var(--talavera-muted);
   }
 }
