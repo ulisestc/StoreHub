@@ -35,33 +35,40 @@ import { authGuard } from './shared/guards/auth.guard';
 import { roleGuard } from './shared/guards/role.guard';
 import { setupGuard } from './shared/guards/setup.guard';
 import { PremiumUpgradeComponent } from './screens/dashboard/premium/premium-upgrade/premium-upgrade.component';
+import { Title } from 'chart.js';
 
 export const routes: Routes = [
   // --- RUTAS PÚBLICAS ---
   {
     path: '',
-    component: LandingComponent
+    component: LandingComponent,
+    title: 'StoreHub | Sistema de Punto de Venta'
   },
   // Rutas de Autenticación
   {
     path: 'auth/login',
-    component: LoginComponent
+    component: LoginComponent,
+    title: 'Iniciar Sesión | StoreHub'
   },
   {
     path: 'auth/register',
-    component: RegisterComponent
+    component: RegisterComponent,
+    title: 'Registro de Usuario | StoreHub'
   },
   {
     path: 'activate/:uid/:token',
-    component: ActivateAccountComponent
+    component: ActivateAccountComponent,
+    title: 'Activar Cuenta | StoreHub'
   },
   {
     path: 'auth/forgot-password',
-    component: ForgotPasswordComponent
+    component: ForgotPasswordComponent,
+    title: 'Recuperar Contraseña | StoreHub'
   },
   {
     path: 'reset-password/:uid/:token',
-    component: ResetPasswordComponent
+    component: ResetPasswordComponent,
+    title: 'Restablecer Contraseña | StoreHub'
   },
 
   {
@@ -79,76 +86,87 @@ export const routes: Routes = [
       {
         path: '',
         component: HomeComponent,
-        canActivate: [setupGuard]
+        canActivate: [setupGuard],
+        title: 'Inicio | StoreHub'
       },
       // --- RUTA DE SETUP (Solo Admin) ---
       {
         path: 'setup',
         component: SetupComponent,
         canActivate: [roleGuard],
-        data: { expectedRoles: ['Admin'] }
+        data: { expectedRoles: ['Admin'] },
+        title: 'Configuración Inicial | StoreHub'
       },
       // --- RUTA DE PERFIL  ---
       {
         path: 'profile',
         component: ProfileEditComponent,
-        canActivate: [setupGuard]
+        canActivate: [setupGuard],
+        title: 'Editar Perfil | StoreHub'
       },
       // --- RUTA DE EMPLEADOS ---
       {
         path: 'employees',
         component: EmployeeManagementComponent,
         canActivate: [roleGuard, setupGuard],
-        data: { expectedRoles: ['Admin'] }
+        data: { expectedRoles: ['Admin'] },
+        title: 'Gestión de Empleados | StoreHub'
       },
       // --- RUTA DE CONFIGURACIÓN DE TIENDA ---
       {
         path: 'settings',
         component: StoreSettingsComponent,
         canActivate: [roleGuard, setupGuard],
-        data: { expectedRoles: ['Admin'] }
+        data: { expectedRoles: ['Admin'] },
+        title: 'Configuración de Tienda | StoreHub'
       },
       // --- RUTAS DE CAJERO Y ADMIN ---
-      { path: 'sales/pos', component: PosComponent, canActivate: [setupGuard] },
-      { path: 'sales/history', component: SaleHistoryComponent, canActivate: [setupGuard] },
+      { path: 'sales/pos', component: PosComponent, canActivate: [setupGuard] , title: 'Punto de Venta | StoreHub' },
+      { path: 'sales/history', component: SaleHistoryComponent, canActivate: [setupGuard], title: 'Historial de Ventas | StoreHub' },
 
       // --- RUTAS DE PRODUCTOS ---
       {
         path: 'products/new',
         component: ProductFormComponent,
         canActivate: [roleGuard, setupGuard],
-        data: { expectedRoles: ['Admin'] }
+        data: { expectedRoles: ['Admin'] },
+        title: 'Nuevo Producto | StoreHub'
       },
       {
         path: 'products/edit/:id',
         component: ProductFormComponent,
         canActivate: [roleGuard, setupGuard],
-        data: { expectedRoles: ['Admin'] }
+        data: { expectedRoles: ['Admin'] },
+        title: 'Editar Producto | StoreHub'
       },
       {
         path: 'products',
         component: ProductListComponent,
         canActivate: [roleGuard, setupGuard],
-        data: { expectedRoles: ['Admin'] }
+        data: { expectedRoles: ['Admin'] },
+        title: 'Lista de Productos | StoreHub'
       },
       // --- RUTAS DE CATEGORÍAS ---
       {
         path: 'categories/new',
         component: CategoryFormComponent,
         canActivate: [roleGuard, setupGuard],
-        data: { expectedRoles: ['Admin'] }
+        data: { expectedRoles: ['Admin'] },
+        title: 'Nueva Categoría | StoreHub'
       },
       {
         path: 'categories/edit/:id',
         component: CategoryFormComponent,
         canActivate: [roleGuard, setupGuard],
-        data: { expectedRoles: ['Admin'] }
+        data: { expectedRoles: ['Admin'] },
+        title: 'Editar Categoría | StoreHub'
       },
       {
         path: 'categories',
         component: CategoryListComponent,
         canActivate: [roleGuard, setupGuard],
-        data: { expectedRoles: ['Admin'] }
+        data: { expectedRoles: ['Admin'] },
+        title: 'Lista de Categorías | StoreHub'
       },
 
       // --- RUTAS DE CLIENTES (Solo Admin) ---
@@ -156,19 +174,22 @@ export const routes: Routes = [
         path: 'clients/new',
         component: ClientFormComponent,
         canActivate: [roleGuard, setupGuard],
-        data: { expectedRoles: ['Admin'] }
+        data: { expectedRoles: ['Admin'] },
+        title: 'Nuevo Cliente | StoreHub'
       },
       {
         path: 'clients/edit/:id',
         component: ClientFormComponent,
         canActivate: [roleGuard, setupGuard],
-        data: { expectedRoles: ['Admin'] }
+        data: { expectedRoles: ['Admin'] },
+        title: 'Editar Cliente | StoreHub'
       },
       {
         path: 'clients',
         component: ClientListComponent,
         canActivate: [roleGuard, setupGuard],
-        data: { expectedRoles: ['Admin'] }
+        data: { expectedRoles: ['Admin'] },
+        title: 'Lista de Clientes | StoreHub'
       },
 
       // --- RUTAS DE INVENTARIO Y REPORTES ---
@@ -176,25 +197,29 @@ export const routes: Routes = [
         path: 'inventory',
         component: InventoryAdjustComponent,
         canActivate: [roleGuard, setupGuard],
-        data: { expectedRoles: ['Admin'] }
+        data: { expectedRoles: ['Admin'] },
+        title: 'Ajustes de Inventario | StoreHub'
       },
       {
         path: 'analytics',
         component: AnalyticsDashboardComponent,
         canActivate: [roleGuard, setupGuard],
-        data: { expectedRoles: ['Admin'] }
+        data: { expectedRoles: ['Admin'] },
+        title: 'Análisis y Métricas | StoreHub'
       },
       {
         path: 'premium',
         component: PremiumUpgradeComponent,
         canActivate: [roleGuard, setupGuard],
-        data: { expectedRoles: ['Admin'] }
+        data: { expectedRoles: ['Admin'] },
+        title: 'Mejorar a Premium | StoreHub'
       },
       {
         path: 'reports',
         component: ReportListComponent,
         canActivate: [roleGuard, setupGuard],
-        data: { expectedRoles: ['Admin'] }
+        data: { expectedRoles: ['Admin'] },
+        title: 'Reportes | StoreHub'
       },
     ]
   },
