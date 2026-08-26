@@ -8,11 +8,11 @@
     
     h2 {
       margin: 0 0 8px 0;
-      color: #333;
+      color: var(--talavera-ink);
     }
 
     p {
-      color: #666;
+      color: var(--talavera-muted);
       margin: 0;
     }
   }
@@ -44,7 +44,7 @@
       }
 
       mat-icon {
-        color: #666;
+        color: var(--talavera-muted);
         margin-right: 8px;
       }
 

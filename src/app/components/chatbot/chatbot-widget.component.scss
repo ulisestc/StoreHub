@@ -6,15 +6,15 @@
 }
 
 .chatbot-fab {
-  background: var(--primary-bg) !important;
-  color: var(--primary-fg) !important;
-  box-shadow: var(--shadow-card) !important;
-  border: 1px solid var(--border-color) !important;
+  background: var(--talavera-blue) !important;
+  color: #ffffff !important;
+  box-shadow: 0 8px 32px rgba(11, 47, 107, 0.15) !important;
+  border: 1px solid var(--talavera-line) !important;
   transition: transform 0.2s ease-in-out;
   
   &:hover {
     transform: scale(1.05);
-    background: var(--primary-hover) !important;
+    background: var(--talavera-blue-dark) !important;
   }
 }
 
@@ -30,10 +30,10 @@
   max-width: 90vw;
   max-height: 80vh;
   resize: both;
-  background-color: var(--bg-card);
+  background-color: var(--talavera-surface);
   border-radius: 8px;
-  border: 1px solid var(--border-color);
-  box-shadow: var(--shadow-card);
+  border: 1px solid var(--talavera-line);
+  box-shadow: 0 8px 32px rgba(11, 47, 107, 0.15);
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -41,10 +41,10 @@
 
   &::-webkit-resizer {
     background-color: transparent;
-    border-top: 2px solid var(--text-muted);
-    border-left: 2px solid var(--text-muted);
+    border-top: 2px solid var(--talavera-muted);
+    border-left: 2px solid var(--talavera-muted);
     border-radius: 2px;
-    box-shadow: inset 2px 2px 0 var(--bg-card);
+    box-shadow: inset 2px 2px 0 var(--talavera-surface);
   }
 }
 
@@ -59,16 +59,16 @@
   justify-content: space-between;
   align-items: center;
   padding: 16px 20px;
-  background: var(--bg-card-solid);
-  color: var(--text-main);
-  border-bottom: 1px solid var(--border-color);
+  background: var(--talavera-surface);
+  color: var(--talavera-ink);
+  border-bottom: 1px solid var(--talavera-line);
 
   .header-info {
     display: flex;
     align-items: center;
     gap: 12px;
     font-weight: 600;
-    font-family: 'Inter', sans-serif;
+    font-family: var(--talavera-font-body);
     letter-spacing: -0.01em;
     
     mat-icon {
@@ -79,10 +79,10 @@
   }
 
   button {
-    color: var(--text-muted);
+    color: var(--talavera-muted);
     transition: transform 0.2s;
     &:hover {
-      color: var(--text-main);
+      color: var(--talavera-ink);
     }
   }
 }
@@ -92,30 +92,30 @@
   padding: 12px 16px;
   overflow-x: auto;
   white-space: nowrap;
-  background-color: var(--bg-card-solid);
-  border-bottom: 1px solid var(--border-color);
+  background-color: var(--talavera-surface);
+  border-bottom: 1px solid var(--talavera-line);
 
   &::-webkit-scrollbar {
     height: 4px;
   }
   &::-webkit-scrollbar-thumb {
-    background: var(--border-color);
+    background: var(--talavera-line);
     border-radius: 4px;
   }
 
   .chip-item {
     background-color: transparent !important;
-    color: var(--text-main) !important;
-    border: 1px solid var(--border-color);
+    color: var(--talavera-ink) !important;
+    border: 1px solid var(--talavera-line);
     cursor: pointer;
     font-size: 0.8rem;
-    font-family: 'Inter', sans-serif;
+    font-family: var(--talavera-font-body);
     font-weight: 500;
     transition: all 0.2s;
     border-radius: 6px;
     
     &:hover {
-      background-color: var(--border-color) !important;
+      background-color: var(--talavera-line) !important;
     }
   }
 }
@@ -134,7 +134,7 @@
     width: 6px;
   }
   &::-webkit-scrollbar-thumb {
-    background: var(--border-color);
+    background: var(--talavera-line);
     border-radius: 4px;
   }
 }
@@ -146,7 +146,7 @@
   font-size: 0.9rem;
   line-height: 1.5;
   position: relative;
-  font-family: 'Inter', sans-serif;
+  font-family: var(--talavera-font-body);
   
   .bubble-time {
     font-size: 0.7rem;
@@ -157,19 +157,19 @@
 
   &.user {
     align-self: flex-end;
-    background: var(--primary-bg);
-    color: var(--primary-fg);
+    background: var(--talavera-blue);
+    color: #ffffff;
   }
 
   &.assistant {
     align-self: flex-start;
-    background-color: var(--bg-main);
-    color: var(--text-main);
-    border: 1px solid var(--border-color);
+    background-color: var(--talavera-bg);
+    color: var(--talavera-ink);
+    border: 1px solid var(--talavera-line);
     
     /* Markdown Styles */
     ::ng-deep {
-      strong { color: var(--text-main); font-weight: 600; }
+      strong { color: var(--talavera-ink); font-weight: 600; }
       p { margin: 0 0 8px 0; }
       p:last-child { margin-bottom: 0; }
       ul { padding-left: 20px; margin: 8px 0; }
@@ -181,28 +181,28 @@
         font-size: 0.85rem;
       }
       th, td {
-        border: 1px solid var(--border-color);
+        border: 1px solid var(--talavera-line);
         padding: 6px;
         text-align: left;
       }
-      th { background-color: var(--border-color); color: var(--text-main); font-weight: 600;}
+      th { background-color: var(--talavera-line); color: var(--talavera-ink); font-weight: 600;}
     }
   }
 }
 
 .typing-indicator {
   align-self: flex-start;
-  background-color: var(--bg-main);
+  background-color: var(--talavera-bg);
   padding: 12px 16px;
   border-radius: 8px;
   display: flex;
   gap: 4px;
-  border: 1px solid var(--border-color);
+  border: 1px solid var(--talavera-line);
 
   span {
     width: 6px;
     height: 6px;
-    background-color: var(--text-muted);
+    background-color: var(--talavera-muted);
     border-radius: 50%;
     animation: bounce 1.4s infinite ease-in-out both;
 
@@ -221,26 +221,26 @@
   display: flex;
   align-items: center;
   padding: 12px 16px;
-  background-color: var(--bg-card-solid);
-  border-top: 1px solid var(--border-color);
+  background-color: var(--talavera-surface);
+  border-top: 1px solid var(--talavera-line);
 
   .chat-input {
     flex: 1;
     background: transparent;
     border: none;
-    color: var(--text-main);
-    font-family: 'Inter', sans-serif;
+    color: var(--talavera-ink);
+    font-family: var(--talavera-font-body);
     outline: none;
     padding: 8px;
     font-size: 0.95rem;
     
     &::placeholder {
-      color: var(--text-muted);
+      color: var(--talavera-muted);
     }
   }
 
   button {
-    color: var(--primary-bg);
+    color: var(--talavera-blue);
     background-color: transparent;
     border-radius: 6px;
     width: 36px;
@@ -251,13 +251,13 @@
     transition: all 0.2s;
     
     &:hover:not([disabled]) {
-      background-color: var(--border-color);
-      color: var(--text-main);
+      background-color: var(--talavera-line);
+      color: var(--talavera-ink);
     }
     
     &[disabled] {
       opacity: 0.5;
-      color: var(--text-muted);
+      color: var(--talavera-muted);
     }
   }
 }

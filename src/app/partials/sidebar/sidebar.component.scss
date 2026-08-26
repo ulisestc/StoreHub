@@ -5,35 +5,42 @@
   height: 100%;
   padding: 18px 14px;
 
-  background: var(--talavera-surface) !important;
-  color: var(--talavera-ink) !important;
+  /* Deep luxury blue background with a subtle geometric tile pattern */
+  background-color: var(--talavera-blue) !important;
+  background-image: 
+    linear-gradient(45deg, rgba(255,255,255,0.02) 25%, transparent 25%, transparent 75%, rgba(255,255,255,0.02) 75%, rgba(255,255,255,0.02)), 
+    linear-gradient(45deg, rgba(255,255,255,0.02) 25%, transparent 25%, transparent 75%, rgba(255,255,255,0.02) 75%, rgba(255,255,255,0.02)) !important;
+  background-size: 20px 20px !important;
+  background-position: 0 0, 10px 10px !important;
 
-  border-right: 1px solid var(--talavera-line) !important;
-
-  box-shadow: 8px 0 22px rgba(193, 188, 178, 0.28);
+  color: #ffffff !important;
+  border-right: none !important;
+  box-shadow: 8px 0 32px rgba(11, 47, 107, 0.2);
+  z-index: 10;
 }
 
 .sidebar-header {
   display: flex;
   align-items: center;
   gap: 12px;
-
   padding: 20px 16px 26px;
-  border-bottom: 1px solid var(--talavera-line);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .sidebar-logo {
-  color: var(--talavera-blue);
+  color: #ffffff;
   font-size: 32px;
   width: 32px;
   height: 32px;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
 }
 
 .sidebar-title {
-  color: var(--talavera-blue);
-  font-size: 1.4rem;
-  font-weight: 800;
-  letter-spacing: 0.3px;
+  color: #ffffff;
+  font-family: 'Playfair Display', serif;
+  font-size: 1.6rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
 }
 
 .sidebar-content {
@@ -45,61 +52,71 @@
 .sidebar-content ::ng-deep .mat-mdc-list-item {
   width: 100% !important;
   margin: 0 0 8px !important;
+  color: rgba(255, 255, 255, 0.75) !important; /* Base color for host */
+  border-radius: 12px !important;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
 
-  color: var(--talavera-muted) !important;
-  border-radius: 14px !important;
-
-  transition: all 0.2s ease;
+.sidebar-content ::ng-deep .mat-mdc-list-item .mdc-list-item__primary-text {
+  color: rgba(255, 255, 255, 0.75) !important;
+  transition: color 0.3s ease;
 }
 
 .sidebar-content ::ng-deep .mat-mdc-list-item:hover {
-  color: var(--talavera-blue) !important;
-  background: rgba(23, 74, 156, 0.06) !important;
-  transform: translateX(3px);
+  background: rgba(255, 255, 255, 0.08) !important;
+  transform: translateX(4px);
+}
+
+.sidebar-content ::ng-deep .mat-mdc-list-item:hover .mdc-list-item__primary-text {
+  color: #ffffff !important;
 }
 
 .sidebar-content ::ng-deep .mat-icon {
   margin-right: 14px;
-  color: var(--talavera-blue);
+  color: rgba(255, 255, 255, 0.7);
+  transition: color 0.3s ease;
 }
 
 .sidebar-content .active {
-  background: var(--talavera-white) !important;
-
-  box-shadow: inset 3px 3px 8px rgba(193, 188, 178, 0.35) !important;
+  background: #ffffff !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
 }
 
 .sidebar-content .active ::ng-deep .mat-mdc-list-item-title,
-.sidebar-content .active ::ng-deep .mat-icon {
-  color: var(--talavera-blue) !important;
+.sidebar-content .active ::ng-deep .mdc-list-item__primary-text {
+  color: var(--talavera-blue-dark) !important;
   font-weight: 700;
 }
 
+.sidebar-content .active ::ng-deep .mat-icon {
+  color: var(--talavera-accent) !important; /* Terracotta accent for active icon */
+}
+
 ::ng-deep .mat-mdc-subheader {
-  color: var(--talavera-blue) !important;
-  font-size: 0.72rem;
-  font-weight: 800;
-  letter-spacing: 1.1px;
+  color: rgba(255, 255, 255, 0.5) !important;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 1.5px;
   text-transform: uppercase;
   background: transparent !important;
+  padding-left: 16px !important;
 }
 
 .sidebar-footer {
   display: flex;
   align-items: center;
   gap: 10px;
-
   padding: 16px;
-
-  color: var(--talavera-muted);
-  font-size: 0.82rem;
-
-  border-top: 1px solid var(--talavera-line);
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 0.85rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.sidebar-footer mat-icon,
+.sidebar-footer mat-icon {
+  color: rgba(255, 255, 255, 0.8);
+}
 .sidebar-footer strong {
-  color: var(--talavera-blue);
+  color: #ffffff;
 }
 
 @media (max-width: 640px) {

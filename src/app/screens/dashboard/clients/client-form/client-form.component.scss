@@ -41,7 +41,7 @@ $color-border: var(--talavera-surface);
   }
 
   h1 {
-    font-family: 'Poppins', sans-serif;
+    
     font-size: 1.5rem;
     font-weight: 700;
     margin: 0;
@@ -54,7 +54,7 @@ $color-border: var(--talavera-surface);
   border-radius: 16px !important;
   border: 1px solid $color-border;
   padding: 32px;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.03);
+  box-shadow: 0 4px 6px -1px rgba(11, 47, 107, 0.05);
 
   mat-card-content {
     padding: 0 !important;
@@ -99,14 +99,14 @@ $color-border: var(--talavera-surface);
     padding: 0 24px;
     height: 44px;
     min-width: 160px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+    box-shadow: 0 4px 12px rgba(11, 47, 107, 0.05);
 
     mat-icon {
       margin-right: 8px;
     }
 
     &:hover:not([disabled]) {
-      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.06);
+      box-shadow: 0 6px 16px rgba(11, 47, 107, 0.05);
       transform: translateY(-2px);
       transition: all 0.3s ease;
     }
@@ -122,7 +122,7 @@ $color-border: var(--talavera-surface);
 
 ::ng-deep .mat-mdc-form-field {
   .mat-mdc-text-field-wrapper {
-    background-color: rgba(0, 0, 0, 0.03);
+    background-color: rgba(11, 47, 107, 0.05);
   }
 
   .mat-mdc-form-field-icon-suffix {

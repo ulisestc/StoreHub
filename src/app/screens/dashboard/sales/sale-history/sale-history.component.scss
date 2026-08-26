@@ -11,7 +11,7 @@ $color-border: var(--talavera-surface);
   margin-bottom: 32px;
 
   h1 {
-    font-family: 'Poppins', sans-serif;
+    
     font-size: 2rem;
     font-weight: 700;
     margin: 0;
@@ -30,7 +30,7 @@ $color-border: var(--talavera-surface);
   border-radius: 16px;
   overflow: hidden;
   border: 1px solid $color-border;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.03);
+  box-shadow: 0 4px 6px -1px rgba(11, 47, 107, 0.05);
   position: relative;
   min-height: 300px;
 
@@ -41,7 +41,7 @@ $color-border: var(--talavera-surface);
     border-spacing: 0;
 
     th.mat-mdc-header-cell {
-      background-color: rgba(0, 0, 0, 0.02);
+      background-color: rgba(11, 47, 107, 0.05);
       color: var(--talavera-muted);
       font-weight: 600;
       font-size: 0.85rem;
@@ -167,7 +167,7 @@ $color-border: var(--talavera-surface);
       transition: background-color 0.2s ease;
 
       &:hover {
-        background-color: rgba(0, 0, 0, 0.02);
+        background-color: rgba(11, 47, 107, 0.05);
       }
     }
   }

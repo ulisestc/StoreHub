@@ -16,7 +16,7 @@
     left: -50%;
     width: 200%;
     height: 200%;
-    background: radial-gradient(circle, rgba(68, 138, 255, 0.1) 0%, transparent 70%);
+    /* Removed neon background */
     animation: float 20s ease-in-out infinite;
   }
 }
@@ -43,7 +43,7 @@
     gap: 24px;
 
     ::ng-deep .mat-mdc-progress-spinner {
-      --mdc-circular-progress-active-indicator-color: #448aff;
+      --mdc-circular-progress-active-indicator-color: var(--talavera-blue);
     }
 
     p {
@@ -65,7 +65,7 @@
   background: var(--talavera-surface);
   border-radius: 16px;
   border: 1px solid var(--talavera-line);
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 10px 40px rgba(11, 47, 107, 0.05);
   padding: 48px;
   width: 100%;
   max-width: 450px;
@@ -147,7 +147,7 @@
     animation: pulse 2s ease-in-out infinite;
 
     ::ng-deep .mat-mdc-progress-spinner {
-      --mdc-circular-progress-active-indicator-color: #448aff;
+      --mdc-circular-progress-active-indicator-color: var(--talavera-blue);
     }
   }
 
@@ -255,7 +255,7 @@
 ::ng-deep .warning-snackbar {
   background: linear-gradient(135deg, #ff9800 0%, #f57c00 100%) !important;
   color: white !important;
-  box-shadow: 0 4px 20px rgba(255, 152, 0, 0.4) !important;
+  box-shadow: 0 4px 12px rgba(11, 47, 107, 0.15) !important;
 
   .mat-mdc-snack-bar-label {
     color: white !important;

@@ -18,7 +18,7 @@ $color-success: #4ade80;
   }
 
   span {
-    font-family: 'Poppins', sans-serif;
+    
     font-size: 1.5rem;
     font-weight: 700;
   }
@@ -35,7 +35,7 @@ $color-success: #4ade80;
     border: 1px solid var(--talavera-surface);
     position: relative;
     min-height: 400px;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.03);
+    box-shadow: 0 4px 6px -1px rgba(11, 47, 107, 0.05);
   }
 
   mat-card-content {
@@ -84,7 +84,7 @@ $color-success: #4ade80;
 
   ::ng-deep {
     .mat-mdc-text-field-wrapper {
-      background-color: rgba(0, 0, 0, 0.02) !important;
+      background-color: rgba(11, 47, 107, 0.05) !important;
     }
 
     .mat-mdc-form-field-error {
@@ -145,7 +145,7 @@ $color-success: #4ade80;
 
   ::ng-deep {
     .mat-mdc-text-field-wrapper {
-      background-color: rgba(0, 0, 0, 0.02) !important;
+      background-color: rgba(11, 47, 107, 0.05) !important;
     }
 
     .mat-mdc-form-field-error {
@@ -209,14 +209,14 @@ $color-success: #4ade80;
     padding: 0 24px;
     height: 44px;
     min-width: 160px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+    box-shadow: 0 4px 12px rgba(11, 47, 107, 0.05);
 
     mat-icon {
       margin-right: 8px;
     }
 
     &:hover:not([disabled]) {
-      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.06);
+      box-shadow: 0 6px 16px rgba(11, 47, 107, 0.05);
       transform: translateY(-2px);
       transition: all 0.3s ease;
     }

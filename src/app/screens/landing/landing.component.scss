@@ -29,7 +29,7 @@
   background: rgba(255, 255, 255, 0.8);
   backdrop-filter: blur(20px);
   border-bottom: 1px solid var(--talavera-line);
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 4px 30px rgba(11, 47, 107, 0.05);
   padding: 16px 0;
 
   .navbar-content {
@@ -86,14 +86,14 @@
     background: var(--talavera-blue) !important;
     color: white !important;
     font-weight: 600;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+    box-shadow: 0 4px 12px rgba(11, 47, 107, 0.05);
 
     mat-icon {
       margin-right: 4px;
     }
 
     &:hover {
-      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.06);
+      box-shadow: 0 6px 16px rgba(11, 47, 107, 0.05);
       transform: translateY(-2px);
       transition: all 0.3s ease;
     }
@@ -136,7 +136,7 @@
   }
 
   .hero-title {
-    font-family: 'Poppins', sans-serif;
+    
     font-size: 56px;
     font-weight: 800;
     line-height: 1.2;
@@ -174,7 +174,7 @@
       height: auto !important;
       line-height: 1.5 !important;
       border-radius: 12px;
-      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.06);
+      box-shadow: 0 6px 16px rgba(11, 47, 107, 0.05);
 
       mat-icon {
         margin-right: 8px;
@@ -182,7 +182,7 @@
 
       &:hover {
         transform: translateY(-2px);
-        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+        box-shadow: 0 8px 20px rgba(11, 47, 107, 0.05);
       }
     }
 
@@ -263,7 +263,7 @@
     border: 1px solid var(--talavera-line);
     padding: 20px 24px;
     border-radius: 16px;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 10px 40px rgba(11, 47, 107, 0.05);
     display: flex;
     align-items: center;
     gap: 12px;
@@ -309,7 +309,7 @@
 }
 
 .features-section {
-  background: rgba(0, 0, 0, 0.02);
+  background: rgba(11, 47, 107, 0.05);
   padding: 100px 24px;
   position: relative;
   z-index: 1;
@@ -320,7 +320,7 @@
     margin: 0 auto 60px;
 
     h2 {
-      font-family: 'Poppins', sans-serif;
+      
       font-size: 42px;
       font-weight: 700;
       color: var(--talavera-ink);
@@ -351,7 +351,7 @@
 
     &:hover {
       transform: translateY(-8px);
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+      box-shadow: 0 20px 40px rgba(11, 47, 107, 0.05);
       border-color: rgba(68, 138, 255, 0.4);
     }
 
@@ -375,7 +375,7 @@
     }
 
     h3 {
-      font-family: 'Poppins', sans-serif;
+      
       font-size: 20px;
       font-weight: 600;
       color: var(--talavera-ink);

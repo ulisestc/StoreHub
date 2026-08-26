@@ -13,7 +13,7 @@ $color-success: #4ade80;
   margin-bottom: 20px;
 
   h1 {
-    font-family: 'Poppins', sans-serif;
+    
     font-size: 1.8rem;
     font-weight: 700;
     margin: 0;
@@ -160,7 +160,7 @@ $color-success: #4ade80;
   overflow: hidden;
 
   mat-card-header {
-    background-color: rgba(0, 0, 0, 0.02);
+    background-color: rgba(11, 47, 107, 0.05);
     padding: 20px 24px;
     border-bottom: 1px solid $color-border;
 
@@ -246,7 +246,7 @@ $color-success: #4ade80;
     background-color: rgba(var(--talavera-blue), 0.1);
     border-color: var(--talavera-blue);
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+    box-shadow: 0 4px 12px rgba(11, 47, 107, 0.05);
   }
 
   &.out-of-stock {
@@ -325,7 +325,7 @@ $color-success: #4ade80;
   flex-direction: column;
 
   mat-card-header {
-    background-color: rgba(0, 0, 0, 0.02);
+    background-color: rgba(11, 47, 107, 0.05);
     padding: 20px 24px;
     border-bottom: 1px solid $color-border;
 
@@ -449,7 +449,7 @@ $color-success: #4ade80;
       font-size: 1.1rem;
       font-weight: 500;
       color: var(--talavera-ink);
-      font-family: 'Poppins', sans-serif;
+      
     }
 
     &.final-total {
@@ -477,7 +477,7 @@ $color-success: #4ade80;
     border-radius: 12px;
     background-color: var(--talavera-blue) !important;
     color: white !important;
-    box-shadow: 0 0 20px rgba(68, 138, 255, 0.3);
+    box-shadow: 0 4px 12px rgba(11, 47, 107, 0.05) ;
 
     mat-icon {
       margin-right: 8px;
@@ -485,7 +485,7 @@ $color-success: #4ade80;
 
     &:hover:not(:disabled) {
       background-color: #5a9aff !important;
-      box-shadow: 0 0 30px rgba(68, 138, 255, 0.5);
+      box-shadow: 0 4px 12px rgba(11, 47, 107, 0.05) ;
     }
 
     &:disabled {

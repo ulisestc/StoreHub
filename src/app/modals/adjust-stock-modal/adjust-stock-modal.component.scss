@@ -17,7 +17,7 @@ $color-border: var(--talavera-surface);
 
   h1 {
     margin: 0;
-    font-family: 'Poppins', sans-serif;
+    
     font-size: 1.5rem;
     font-weight: 700;
     color: var(--talavera-ink);
@@ -40,7 +40,7 @@ $color-border: var(--talavera-surface);
   justify-content: flex-end;
   gap: 12px;
   padding: 20px 24px;
-  background-color: rgba(0, 0, 0, 0.02);
+  background-color: rgba(11, 47, 107, 0.05);
   border-top: 1px solid $color-border;
 
   .cancel-btn {
@@ -61,10 +61,10 @@ $color-border: var(--talavera-surface);
     padding: 0 24px;
     height: 44px;
     min-width: 160px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+    box-shadow: 0 4px 12px rgba(11, 47, 107, 0.05);
 
     &:hover:not(:disabled) {
-      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.06);
+      box-shadow: 0 6px 16px rgba(11, 47, 107, 0.05);
       transform: translateY(-2px);
     }
 
@@ -84,7 +84,7 @@ $color-border: var(--talavera-surface);
 
 ::ng-deep .mat-mdc-form-field {
   .mat-mdc-text-field-wrapper {
-    background-color: rgba(0, 0, 0, 0.03);
+    background-color: rgba(11, 47, 107, 0.05);
   }
 
   .mat-mdc-form-field-icon-suffix {

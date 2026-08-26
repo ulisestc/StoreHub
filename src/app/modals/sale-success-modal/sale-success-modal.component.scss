@@ -54,7 +54,7 @@ $color-success: #4ade80;
   }
 
   ::ng-deep .mat-mdc-text-field-wrapper {
-    background-color: rgba(0, 0, 0, 0.02) !important;
+    background-color: rgba(11, 47, 107, 0.05) !important;
   }
   
   ::ng-deep .mdc-text-field--outlined:not(.mdc-text-field--disabled) .mdc-notched-outline__leading, 
@@ -102,7 +102,7 @@ $color-success: #4ade80;
     }
 
     &:hover:not(:disabled) {
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+      box-shadow: 0 4px 12px rgba(11, 47, 107, 0.05);
       transform: translateY(-2px);
     }
 

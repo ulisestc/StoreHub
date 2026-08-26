@@ -109,7 +109,7 @@ $color-success: #4ade80;
     align-items: center;
     gap: 12px;
     padding: 16px;
-    background-color: rgba(0, 0, 0, 0.02);
+    background-color: rgba(11, 47, 107, 0.05);
     border-radius: 12px;
     border: 1px solid $color-border;
 
@@ -166,7 +166,7 @@ $color-success: #4ade80;
     background-color: transparent;
 
     th {
-      background-color: rgba(0, 0, 0, 0.02);
+      background-color: rgba(11, 47, 107, 0.05);
       color: var(--talavera-muted);
       font-weight: 600;
       font-size: 0.8rem;
@@ -202,7 +202,7 @@ $color-success: #4ade80;
 
 .totals-section {
   padding: 20px 24px;
-  background-color: rgba(0, 0, 0, 0.02);
+  background-color: rgba(11, 47, 107, 0.05);
 
   .total-row {
     display: flex;
@@ -261,7 +261,7 @@ $color-success: #4ade80;
   justify-content: center;
   gap: 16px;
   padding: 20px 24px;
-  background-color: rgba(0, 0, 0, 0.02);
+  background-color: rgba(11, 47, 107, 0.05);
   border-top: 1px solid $color-border;
 
   button {
@@ -273,11 +273,11 @@ $color-success: #4ade80;
     &.btn-primary {
       background: var(--talavera-blue);
       color: white;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+      box-shadow: 0 4px 12px rgba(11, 47, 107, 0.05);
       border: none;
 
       &:hover {
-        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.06);
+        box-shadow: 0 6px 16px rgba(11, 47, 107, 0.05);
         transform: translateY(-2px);
       }
     }
