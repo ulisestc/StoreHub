@@ -11,6 +11,7 @@ import { ChartOptions, ChartData, ChartType } from 'chart.js';
 import { forkJoin, of } from 'rxjs';
 import { AnalyticsService, DashboardKPI, SalesOverTime, TopProduct, SalesByCategory, SalesByHour, TopSeller } from '../../../../services/analytics.service';
 import { AuthService } from '../../../../services/auth.service';
+import { ReportService } from '../../../../services/report.service';
 
 @Component({
   selector: 'app-analytics-dashboard',
@@ -31,9 +32,16 @@ import { AuthService } from '../../../../services/auth.service';
 })
 export class AnalyticsDashboardComponent implements OnInit {
   private analyticsService = inject(AnalyticsService);
+  private reportService = inject(ReportService);
   public authService = inject(AuthService);
 
   kpiData: DashboardKPI | null = null;
+  fintechKpis: {
+    atv: number;
+    upt: number;
+    loyaltyRate: number;
+    inventoryValue: number;
+  } | null = null;
   topSellers: TopSeller[] = [];
   displayedColumnsSellers: string[] = ['seller', 'ventas', 'monto'];
   isLoading = true;
@@ -112,6 +120,8 @@ export class AnalyticsDashboardComponent implements OnInit {
     this.isLoading = true;
     forkJoin({
       kpi: this.analyticsService.getDashboardKPI(),
+      salesReport: this.reportService.getSalesReport(),
+      inventoryValue: this.reportService.getInventoryValue(),
       salesOverTime: this.analyticsService.getSalesOverTime('day', 30),
       topProducts: this.analyticsService.getTopProducts(10),
       salesByCategory: this.analyticsService.getSalesByCategory(),
@@ -122,6 +132,12 @@ export class AnalyticsDashboardComponent implements OnInit {
     }).subscribe({
       next: (data: any) => {
         this.kpiData = data.kpi;
+        this.fintechKpis = {
+          atv: data.salesReport.atv || 0,
+          upt: data.salesReport.upt || 0,
+          loyaltyRate: data.salesReport.loyalty_rate || 0,
+          inventoryValue: data.inventoryValue.capital_inmovilizado || 0
+        };
         this.setupSalesLineChart(data.salesOverTime);
         this.setupTopProductsChart(data.topProducts);
         this.setupCategoryChart(data.salesByCategory);

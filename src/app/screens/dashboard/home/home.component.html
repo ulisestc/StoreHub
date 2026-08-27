@@ -74,6 +74,17 @@
       <span class="action-title">Ir al POS</span>
       <span class="action-desc">Realizar cobro</span>
     </mat-card>
+    
+    <mat-card class="action-card" (click)="openCashRegister()" style="cursor: pointer; position: relative;">
+      <div 
+        class="status-indicator" 
+        [ngClass]="isCashRegisterOpen ? 'status-open' : 'status-closed'">
+        {{ isCashRegisterOpen ? 'Abierta' : 'Cerrada' }}
+      </div>
+      <mat-icon class="action-icon">point_of_sale</mat-icon>
+      <span class="action-title">Corte de Caja</span>
+      <span class="action-desc">Apertura / Cierre</span>
+    </mat-card>
 
     <ng-container *ngIf="userRole === 'Admin'">
       <mat-card class="action-card" routerLink="/dashboard/products">

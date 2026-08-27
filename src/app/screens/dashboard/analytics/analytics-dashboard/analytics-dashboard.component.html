@@ -35,6 +35,40 @@
     </mat-card>
   </div>
 
+  <div class="header" style="margin-top: 24px;">
+    <h2>Métricas Fintech & Crédito</h2>
+  </div>
+  <div class="kpi-grid">
+    <mat-card class="kpi-card" style="border-left-color: #06b6d4;">
+      <div class="kpi-icon" style="color: #06b6d4;"><mat-icon>analytics</mat-icon></div>
+      <div class="kpi-content">
+        <div class="kpi-title">ATV (Ticket Promedio Real)</div>
+        <div class="kpi-value">${{ fintechKpis?.atv | number:'1.2-2' }}</div>
+      </div>
+    </mat-card>
+    <mat-card class="kpi-card" style="border-left-color: #f43f5e;">
+      <div class="kpi-icon" style="color: #f43f5e;"><mat-icon>shopping_bag</mat-icon></div>
+      <div class="kpi-content">
+        <div class="kpi-title">UPT (Unidades por Transacción)</div>
+        <div class="kpi-value">{{ fintechKpis?.upt | number:'1.2-2' }}</div>
+      </div>
+    </mat-card>
+    <mat-card class="kpi-card" style="border-left-color: #ec4899;">
+      <div class="kpi-icon" style="color: #ec4899;"><mat-icon>favorite</mat-icon></div>
+      <div class="kpi-content">
+        <div class="kpi-title">Tasa de Lealtad</div>
+        <div class="kpi-value">{{ fintechKpis?.loyaltyRate | number:'1.1-1' }}%</div>
+      </div>
+    </mat-card>
+    <mat-card class="kpi-card" style="border-left-color: #10b981;">
+      <div class="kpi-icon" style="color: #10b981;"><mat-icon>inventory_2</mat-icon></div>
+      <div class="kpi-content">
+        <div class="kpi-title">Capital Inmovilizado</div>
+        <div class="kpi-value">${{ fintechKpis?.inventoryValue | number:'1.2-2' }}</div>
+      </div>
+    </mat-card>
+  </div>
+
   <div class="charts-grid">
     <mat-card class="chart-card full-width glass-card">
       <mat-card-header>

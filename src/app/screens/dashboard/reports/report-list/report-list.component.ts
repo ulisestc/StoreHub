@@ -52,41 +52,67 @@ export class ReportListComponent {
 
   // 1. fecha
   loadSalesByDate() {
-    console.log(this.startDate, this.endDate);
     if (!this.startDate || !this.endDate) {
       alert('Por favor selecciona ambas fechas');
       return;
     }
-
-    // pasar a YYYY-MM-DD
-    console.log(this.startDate, this.endDate);
-    const startStr = this.formatDate(this.startDate);
-    const endStr = this.formatDate(this.endDate);
-    //lamar
-    this.fetchReport('sales-by-date', { start_date: startStr, end_date: endStr });
+    this.isLoading = true;
+    this.reportHtml = null;
+    this.reportService.getSalesReport(this.startDate, this.endDate).subscribe({
+      next: (data) => {
+        const html = `
+          <h2>Reporte de Ventas</h2>
+          <p><strong>Ventas Totales:</strong> $${data.total_ventas}</p>
+          <p><strong>Transacciones:</strong> ${data.num_transacciones}</p>
+          <p><strong>ATV (Ticket Promedio):</strong> $${data.atv}</p>
+          <p><strong>UPT (Unidades por Transacción):</strong> ${data.upt}</p>
+          <p><strong>Tasa de Lealtad:</strong> ${data.loyalty_rate}%</p>
+        `;
+        this.reportHtml = this.sanitizer.bypassSecurityTrustHtml(html);
+        this.isLoading = false;
+      },
+      error: (err) => {
+        console.error('Error cargando reporte:', err);
+        this.isLoading = false;
+        alert('Error al cargar el reporte. Revisa la consola.');
+      }
+    });
   }
 
   // 2. productos
   loadTopProducts() {
-    console.log(this.limit);
-    this.fetchReport('top-products', { limit: this.limit });
+    this.isLoading = true;
+    this.reportHtml = null;
+    this.reportService.getTopProducts(this.limit).subscribe({
+      next: (data) => {
+        let html = `<h2>Top ${this.limit} Productos</h2><ul>`;
+        data.forEach(p => {
+          html += `<li>${p.product__name}: ${p.total_qty} unidades</li>`;
+        });
+        html += `</ul>`;
+        this.reportHtml = this.sanitizer.bypassSecurityTrustHtml(html);
+        this.isLoading = false;
+      },
+      error: (err) => {
+        console.error('Error cargando reporte:', err);
+        this.isLoading = false;
+        alert('Error al cargar el reporte. Revisa la consola.');
+      }
+    });
   }
 
   // 3. stcock
   loadLowStock() {
-    console.log(this.threshold);
-    this.fetchReport('low-stock-products', { threshold: this.threshold });
-  }
-
-  // metodo para llamar al servicioy y q funcionen los tres en uno solo
-  private fetchReport(endpoint: string, params: any) {
     this.isLoading = true;
-    this.reportHtml = null; // Limpiar reporte anterior
-
-    this.reportService.getReportHtml(endpoint, params).subscribe({
-      next: (htmlContent) => {
-        // html sanitize
-        this.reportHtml = this.sanitizer.bypassSecurityTrustHtml(htmlContent);
+    this.reportHtml = null;
+    this.reportService.getInventoryReport(this.threshold).subscribe({
+      next: (data) => {
+        let html = `<h2>Stock Bajo (Menos de ${this.threshold})</h2><ul>`;
+        data.forEach(p => {
+          html += `<li>${p.name}: ${p.stock} en inventario</li>`;
+        });
+        html += `</ul>`;
+        this.reportHtml = this.sanitizer.bypassSecurityTrustHtml(html);
         this.isLoading = false;
       },
       error: (err) => {

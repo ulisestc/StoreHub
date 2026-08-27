@@ -1,0 +1,74 @@
+.history-container {
+  padding: 24px;
+  animation: fadeIn 0.4s ease-out;
+
+  .header {
+    margin-bottom: 32px;
+    
+    h1 {
+      font-size: 32px;
+      margin: 0 0 8px 0;
+      color: var(--talavera-blue);
+      font-weight: 700;
+    }
+    
+    .subtitle {
+      color: var(--talavera-muted);
+      font-size: 16px;
+      margin: 0;
+    }
+  }
+
+  .table-card {
+    padding: 0;
+    overflow: hidden;
+  }
+
+  .full-width-table {
+    width: 100%;
+  }
+
+  .loading-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 48px;
+    color: var(--talavera-muted);
+    
+    p {
+      margin-top: 16px;
+    }
+  }
+
+  .badge {
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 600;
+    
+    &.open-badge {
+      background: rgba(16, 185, 129, 0.1);
+      color: #10b981;
+      border: 1px solid rgba(16, 185, 129, 0.2);
+    }
+  }
+
+  .diff-shortage {
+    color: var(--storehub-warn, #ef4444);
+    font-weight: 600;
+  }
+  
+  .diff-overage {
+    color: #10b981;
+    font-weight: 600;
+  }
+  
+  .diff-perfect {
+    color: var(--talavera-muted);
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}

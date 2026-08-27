@@ -1,0 +1,71 @@
+<div class="cash-register-dialog">
+  <h2 mat-dialog-title>
+    <mat-icon>{{ isClosing ? 'lock' : 'lock_open' }}</mat-icon>
+    {{ isClosing ? 'Corte de Caja (Cierre)' : 'Apertura de Caja' }}
+  </h2>
+
+  <mat-dialog-content>
+    <div class="dialog-body">
+      <!-- Mensaje informativo -->
+      <p class="info-text">
+        {{ isClosing ? 'Ingresa el monto de efectivo real en caja para realizar el corte y cerrar el turno.' : 'Ingresa el monto inicial con el que inicias el turno.' }}
+      </p>
+
+      <!-- Si está cerrando, mostrar resumen -->
+      <div class="summary-box" *ngIf="isClosing && data.session">
+        <div class="summary-item">
+          <span>Fondo Inicial:</span>
+          <strong>${{ data.session.opening_balance | number:'1.2-2' }}</strong>
+        </div>
+        <div class="summary-item expected">
+          <span>Total Esperado en Caja (Calculado):</span>
+          <strong>${{ data.session.expected_closing_balance | number:'1.2-2' }}</strong>
+        </div>
+      </div>
+
+      <!-- Formulario para Abrir -->
+      <ng-container *ngIf="!isClosing">
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Saldo Inicial (Efectivo)</mat-label>
+          <mat-icon matPrefix>attach_money</mat-icon>
+          <input matInput type="number" [(ngModel)]="openingBalance" required>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Notas (Opcional)</mat-label>
+          <mat-icon matPrefix>notes</mat-icon>
+          <textarea matInput [(ngModel)]="openNotes" rows="2"></textarea>
+        </mat-form-field>
+      </ng-container>
+
+      <!-- Formulario para Cerrar -->
+      <ng-container *ngIf="isClosing">
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Efectivo Real en Caja</mat-label>
+          <mat-icon matPrefix>attach_money</mat-icon>
+          <input matInput type="number" [(ngModel)]="actualClosingBalance" required>
+          <mat-hint *ngIf="actualClosingBalance !== null">
+            <span [class.shortage]="(actualClosingBalance || 0) < (data.session?.expected_closing_balance || 0)"
+                  [class.overage]="(actualClosingBalance || 0) > (data.session?.expected_closing_balance || 0)">
+              Diferencia: ${{ ((actualClosingBalance || 0) - (data.session?.expected_closing_balance || 0)) | number:'1.2-2' }}
+            </span>
+          </mat-hint>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width" style="margin-top: 16px;">
+          <mat-label>Notas / Justificación de Diferencia</mat-label>
+          <mat-icon matPrefix>notes</mat-icon>
+          <textarea matInput [(ngModel)]="closeNotes" rows="2"></textarea>
+        </mat-form-field>
+      </ng-container>
+    </div>
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close [disabled]="loading">Cancelar</button>
+    <button mat-flat-button color="primary" (click)="onSubmit()" [disabled]="loading">
+      <mat-spinner diameter="20" *ngIf="loading"></mat-spinner>
+      <span *ngIf="!loading">{{ isClosing ? 'Cerrar Turno' : 'Iniciar Turno' }}</span>
+    </button>
+  </mat-dialog-actions>
+</div>

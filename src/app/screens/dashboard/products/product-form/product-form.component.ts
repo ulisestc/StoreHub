@@ -165,17 +165,17 @@ export class ProductFormComponent implements OnInit {
       sku: new FormControl('', [
         Validators.maxLength(50)
       ]),
-      price: new FormControl(0, [
+      price: new FormControl('', [
         Validators.required,
         Validators.min(0.01),
         Validators.max(999999)
       ]),
-      cost_price: new FormControl(0, [
+      cost_price: new FormControl('', [
         Validators.required,
         Validators.min(0),
         Validators.max(999999)
       ]),
-      stock: new FormControl(0, [
+      stock: new FormControl('', [
         Validators.required,
         Validators.min(0),
         Validators.max(999999),

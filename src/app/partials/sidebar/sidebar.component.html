@@ -34,6 +34,10 @@
         <mat-icon matListItemIcon>receipt_long</mat-icon>
         <span matListItemTitle>Historial de Ventas</span>
       </a>
+      <a mat-list-item (click)="openCashRegister()" style="cursor: pointer;">
+        <mat-icon matListItemIcon>point_of_sale</mat-icon>
+        <span matListItemTitle>Corte de Caja</span>
+      </a>
     </div>
 
     <div *ngIf="userRole === 'Admin'">
@@ -68,18 +72,22 @@
         <mat-icon matListItemIcon>rule</mat-icon>
         <span matListItemTitle>Ajuste de Inventario</span>
       </a>
-    </div>
+      <a mat-list-item routerLink="/dashboard/sales/cash-register-history" routerLinkActive="active">
+        <mat-icon matListItemIcon>history</mat-icon>
+        <span matListItemTitle>Cortes de Caja (Historial)</span>
+      </a>
 
-    <!-- Premium / Mi Plan Link -->
-    <a mat-list-item routerLink="/dashboard/premium" routerLinkActive="active" class="premium-link"
-       [ngStyle]="{'margin-top': '16px', 'background': isPremium ? 'rgba(99, 102, 241, 0.08)' : 'rgba(99, 102, 241, 0.08)', 'border-left': '3px solid #6366f1'}">
-      <mat-icon matListItemIcon style="color: #6366f1;">
-        {{ isPremium ? 'verified' : 'workspace_premium' }}
-      </mat-icon>
-      <span matListItemTitle style="color: #a5b4fc; font-weight: 500;">
-        {{ isPremium ? 'Mi plan' : 'Mejorar plan' }}
-      </span>
-    </a>
+      <!-- Premium / Mi Plan Link -->
+      <a mat-list-item routerLink="/dashboard/premium" routerLinkActive="active" class="premium-link"
+         [ngStyle]="{'margin-top': '16px', 'background': isPremium ? 'rgba(99, 102, 241, 0.08)' : 'rgba(99, 102, 241, 0.08)', 'border-left': '3px solid #6366f1'}">
+        <mat-icon matListItemIcon style="color: #6366f1;">
+          {{ isPremium ? 'verified' : 'workspace_premium' }}
+        </mat-icon>
+        <span matListItemTitle style="color: #a5b4fc; font-weight: 500;">
+          {{ isPremium ? 'Mi plan' : 'Mejorar plan' }}
+        </span>
+      </a>
+    </div>
 
   </mat-nav-list>
 

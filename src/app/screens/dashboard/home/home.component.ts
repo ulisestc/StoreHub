@@ -12,6 +12,11 @@ import { AuthService } from '../../../services/auth.service';
 import { ProductService } from '../../../services/product.service';
 import { ReportService } from '../../../services/report.service';
 
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { CashRegisterService } from '../../../services/cash-register.service';
+import { CashRegisterDialogComponent } from '../../../components/cash-register-dialog/cash-register-dialog.component';
+
 @Component({
   selector: 'app-home',
   standalone: true,
@@ -22,7 +27,9 @@ import { ReportService } from '../../../services/report.service';
     MatButtonModule,
     MatIconModule,
     MatToolbarModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    MatDialogModule,
+    MatSnackBarModule
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
@@ -38,10 +45,15 @@ export class HomeComponent implements OnInit {
 
   loadingSales: boolean = false;
   loadingProducts: boolean = false;
+  
+  isCashRegisterOpen: boolean = false;
 
   private authService = inject(AuthService);
   private productService = inject(ProductService);
   private reportService = inject(ReportService);
+  private dialog = inject(MatDialog);
+  private snackBar = inject(MatSnackBar);
+  private cashRegisterService = inject(CashRegisterService);
 
   ngOnInit(): void {
     this.userRole = this.authService.getUserRole();
@@ -53,9 +65,23 @@ export class HomeComponent implements OnInit {
     } else {
       this.userName = this.userRole === 'Admin' ? 'Administrador' : 'Cajero';
     }
+    
+    this.checkCashRegisterStatus();
+
     if (this.userRole === 'Admin') {
       this.loadDashboardMetrics();
     }
+  }
+
+  checkCashRegisterStatus(): void {
+    this.cashRegisterService.getCurrentSession().subscribe({
+      next: (session) => {
+        this.isCashRegisterOpen = !!session;
+      },
+      error: () => {
+        this.isCashRegisterOpen = false;
+      }
+    });
   }
 
   loadDashboardMetrics(): void {
@@ -79,13 +105,39 @@ export class HomeComponent implements OnInit {
 
     this.reportService.getSalesReport(todayStart, todayEnd).subscribe({
       next: (report) => {
-        this.salesToday = report.totalIngresos;
-        this.transactionsToday = report.totalTransacciones;
+        this.salesToday = report.total_ventas;
+        this.transactionsToday = report.num_transacciones;
         this.loadingSales = false;
       },
       error: (err) => {
         console.error('Error cargando reporte de ventas', err);
         this.loadingSales = false;
+      }
+    });
+  }
+
+  openCashRegister(): void {
+    this.cashRegisterService.getCurrentSession().subscribe({
+      next: (session) => {
+        const dialogRef = this.dialog.open(CashRegisterDialogComponent, {
+          width: '500px',
+          data: { session }
+        });
+
+        dialogRef.afterClosed().subscribe(result => {
+          if (result) {
+            const action = session ? 'cerrada' : 'abierta';
+            this.snackBar.open(`Caja ${action} exitosamente`, 'Cerrar', {
+              duration: 3000,
+              panelClass: 'success-snackbar'
+            });
+            this.checkCashRegisterStatus();
+          }
+        });
+      },
+      error: (err) => {
+        console.error('Error fetching current session', err);
+        this.snackBar.open('Error al verificar estado de la caja', 'Cerrar', { duration: 3000 });
       }
     });
   }

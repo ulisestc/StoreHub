@@ -123,6 +123,13 @@ export const routes: Routes = [
       // --- RUTAS DE CAJERO Y ADMIN ---
       { path: 'sales/pos', component: PosComponent, canActivate: [setupGuard] , title: 'Punto de Venta | StoreHub' },
       { path: 'sales/history', component: SaleHistoryComponent, canActivate: [setupGuard], title: 'Historial de Ventas | StoreHub' },
+      { 
+        path: 'sales/cash-register-history', 
+        loadComponent: () => import('./screens/dashboard/sales/cash-register-history/cash-register-history.component').then(m => m.CashRegisterHistoryComponent),
+        canActivate: [roleGuard, setupGuard],
+        data: { expectedRoles: ['Admin'] },
+        title: 'Historial de Caja | StoreHub' 
+      },
 
       // --- RUTAS DE PRODUCTOS ---
       {

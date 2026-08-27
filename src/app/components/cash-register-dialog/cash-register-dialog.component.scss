@@ -1,0 +1,75 @@
+.cash-register-dialog {
+  h2 {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0;
+    padding-bottom: 16px;
+    color: var(--talavera-ink);
+    
+    mat-icon {
+      color: var(--talavera-blue);
+    }
+  }
+
+  .info-text {
+    color: var(--talavera-muted);
+    margin-bottom: 24px;
+    font-size: 14px;
+  }
+
+  .summary-box {
+    background-color: var(--talavera-bg);
+    border: 1px solid var(--talavera-line);
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 24px;
+
+    .summary-item {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 8px;
+      color: var(--talavera-ink);
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+
+      &.expected {
+        font-size: 16px;
+        color: var(--talavera-blue);
+        padding-top: 8px;
+        border-top: 1px solid var(--talavera-line);
+        
+        strong {
+          color: #10b981;
+        }
+      }
+    }
+  }
+
+  .full-width {
+    width: 100%;
+  }
+
+  .shortage {
+    color: var(--storehub-warn, #ef4444);
+    font-weight: 500;
+  }
+
+  .overage {
+    color: #10b981;
+    font-weight: 500;
+  }
+
+  mat-dialog-actions {
+    padding-top: 16px;
+    border-top: 1px solid var(--talavera-line);
+
+    button {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+  }
+}
