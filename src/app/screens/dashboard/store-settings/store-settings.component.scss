@@ -6,14 +6,17 @@
   .header {
     margin-bottom: 24px;
     
-    h2 {
+    h1 {
       margin: 0 0 8px 0;
+      font-size: 2rem;
+      font-weight: 700;
       color: var(--talavera-ink);
     }
 
     p {
       color: var(--talavera-muted);
       margin: 0;
+      font-size: 1rem;
     }
   }
 
