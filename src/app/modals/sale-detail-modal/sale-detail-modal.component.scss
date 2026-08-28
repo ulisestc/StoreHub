@@ -271,13 +271,18 @@ $color-success: #4ade80;
     font-weight: 600;
 
     &.btn-primary {
-      background: var(--talavera-blue);
-      color: white;
+      background-color: var(--talavera-blue) !important;
+      color: #ffffff !important;
       box-shadow: 0 4px 12px rgba(11, 47, 107, 0.05);
       border: none;
 
+      ::ng-deep .mdc-button__label,
+      ::ng-deep mat-icon {
+        color: #ffffff !important;
+      }
+
       &:hover {
-        box-shadow: 0 6px 16px rgba(11, 47, 107, 0.05);
+        box-shadow: 0 6px 16px rgba(11, 47, 107, 0.1);
         transform: translateY(-2px);
       }
     }

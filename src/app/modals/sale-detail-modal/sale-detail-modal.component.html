@@ -96,11 +96,11 @@
   </div>
 
   <div class="modal-footer">
-    <button mat-button class="btn-primary" (click)="sendEmail()" [disabled]="isSendingEmail">
+    <button mat-flat-button class="btn-primary" (click)="sendEmail()" [disabled]="isSendingEmail">
       <mat-icon>mail</mat-icon>
       {{ isSendingEmail ? 'Enviando...' : 'Enviar Ticket' }}
     </button>
-    <button mat-button class="btn-secondary" (click)="onClose()">
+    <button mat-stroked-button class="btn-secondary" (click)="onClose()">
       Cerrar
     </button>
   </div>
