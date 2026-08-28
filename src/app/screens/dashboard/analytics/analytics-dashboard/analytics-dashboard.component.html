@@ -156,7 +156,7 @@
             <td mat-cell *matCellDef="let element"> ${{element.monto | number:'1.2-2'}} </td>
           </ng-container>
 
-          <tr mat-header-row *matHeaderRowDef="displayedColumnsSellers"></tr>
+          <tr mat-header-row *matHeaderRowDef="displayedColumnsSellers; sticky: true"></tr>
           <tr mat-row *matRowDef="let row; columns: displayedColumnsSellers;"></tr>
         </table>
       </mat-card-content>
@@ -165,45 +165,138 @@
 
   <!-- Premium Features Section -->
   <div class="premium-section" [class.locked]="!isPremium">
-    <div class="section-header">
-      <h2>Características Premium</h2>
+    <div class="section-header" style="margin-bottom: 16px;">
+      <h2 style="color: #f59e0b; display: flex; align-items: center; gap: 8px;">
+        <mat-icon>science</mat-icon> Inteligencia de Negocios Avanzada (Premium)
+      </h2>
     </div>
     
     <div class="charts-grid">
+      <!-- 1. Algoritmo Apriori -->
       <mat-card class="chart-card half-width glass-card" style="border: 1px solid rgba(245, 158, 11, 0.3);">
         <mat-card-header>
-          <mat-icon mat-card-avatar style="color: #f59e0b;">batch_prediction</mat-icon>
-          <mat-card-title>Predicción de Demanda IA</mat-card-title>
+          <mat-icon mat-card-avatar style="color: #f59e0b;">join_inner</mat-icon>
+          <mat-card-title>Análisis Cesta de Compra (Cross-Selling)</mat-card-title>
         </mat-card-header>
         <mat-card-content>
-          <div class="canvas-container" *ngIf="isPremium">
-            <canvas baseChart
-                    [data]="predictionsChartData"
-                    [options]="predictionsChartOptions"
-                    [type]="'bar'">
-            </canvas>
+          <div *ngIf="isPremium" class="market-basket-container" style="max-height: 300px; overflow-y: auto;">
+            <table mat-table [dataSource]="marketBasketRules" class="sellers-table" *ngIf="marketBasketRules.length > 0; else noRules">
+              <ng-container matColumnDef="pair">
+                <th mat-header-cell *matHeaderCellDef> Productos Comprados Juntos </th>
+                <td mat-cell *matCellDef="let rule"> 
+                  <strong>{{rule.product_a}}</strong> + <strong>{{rule.product_b}}</strong>
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="confidence">
+                <th mat-header-cell *matHeaderCellDef> Probabilidad </th>
+                <td mat-cell *matCellDef="let rule" style="color: #4ade80;"> 
+                  {{rule.confidence_a_to_b}}%
+                </td>
+              </ng-container>
+              <tr mat-header-row *matHeaderRowDef="['pair', 'confidence']; sticky: true"></tr>
+              <tr mat-row *matRowDef="let row; columns: ['pair', 'confidence'];"></tr>
+            </table>
+            <ng-template #noRules>
+              <p style="color: #94a3b8; text-align: center; padding: 20px;">No hay suficientes datos para encontrar patrones.</p>
+            </ng-template>
           </div>
           <div class="placeholder-content" *ngIf="!isPremium" style="height: 300px; display: flex; align-items: center; justify-content: center; color: #64748b; font-style: italic;">
-            <p>Análisis predictivo basado en histórico de ventas</p>
+            <p>Descubre qué productos se compran juntos matemáticamente</p>
           </div>
         </mat-card-content>
       </mat-card>
 
+      <!-- 2. Safety Stock Científico -->
       <mat-card class="chart-card half-width glass-card" style="border: 1px solid rgba(245, 158, 11, 0.3);">
         <mat-card-header>
-          <mat-icon mat-card-avatar style="color: #f59e0b;">price_check</mat-icon>
-          <mat-card-title>Rentabilidad por Producto</mat-card-title>
+          <mat-icon mat-card-avatar style="color: #f59e0b;">inventory</mat-icon>
+          <mat-card-title>Alertas de Inventario de Seguridad</mat-card-title>
         </mat-card-header>
         <mat-card-content>
-          <div class="canvas-container" *ngIf="isPremium">
-            <canvas baseChart
-                    [data]="profitabilityChartData"
-                    [options]="profitabilityChartOptions"
-                    [type]="'bar'">
-            </canvas>
+          <div *ngIf="isPremium" class="safety-stock-container" style="max-height: 300px; overflow-y: auto;">
+            <p style="font-size: 0.85rem; color: #64748b; margin-bottom: 12px; display: flex; align-items: center; gap: 4px;">
+              <mat-icon style="font-size: 16px; width: 16px; height: 16px;">info</mat-icon>
+              <span>El "Mínimo" (Punto de Reorden) se calcula matemáticamente considerando tu nivel de ventas diarias y la varianza estadística.</span>
+            </p>
+            <table mat-table [dataSource]="safetyStockAlerts" class="sellers-table" *ngIf="safetyStockAlerts.length > 0; else healthyStock">
+              <ng-container matColumnDef="product">
+                <th mat-header-cell *matHeaderCellDef> Producto </th>
+                <td mat-cell *matCellDef="let item"> 
+                  <div style="display: flex; flex-direction: column;">
+                    <strong>{{item.product_name}}</strong>
+                    <span style="font-size: 0.75rem; color: #64748b;">Ventas prom: {{item.mean_daily_sales | number:'1.0-1'}}/día</span>
+                  </div>
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="stock">
+                <th mat-header-cell *matHeaderCellDef> Stock Actual </th>
+                <td mat-cell *matCellDef="let item" [style.color]="item.status === 'CRITICAL' ? '#ef4444' : '#4ade80'"> 
+                  <div style="display: flex; flex-direction: column;">
+                    <span>{{item.current_stock}} <span style="color: #64748b; font-size: 0.8em; margin-left: 4px;">(Min: {{item.reorder_point}})</span></span>
+                    <span *ngIf="item.mean_daily_sales > 0" style="font-size: 0.75rem; color: #ef4444; margin-top: 2px;">
+                      Durará aprox. {{ (item.current_stock / item.mean_daily_sales) | number:'1.0-0' }} días
+                    </span>
+                  </div>
+                </td>
+              </ng-container>
+              <tr mat-header-row *matHeaderRowDef="['product', 'stock']; sticky: true"></tr>
+              <tr mat-row *matRowDef="let row; columns: ['product', 'stock'];"></tr>
+            </table>
+            <ng-template #healthyStock>
+              <div style="padding: 32px 16px; text-align: center; color: #10b981; display: flex; flex-direction: column; align-items: center; gap: 8px;">
+                <mat-icon style="font-size: 40px; width: 40px; height: 40px;">check_circle</mat-icon>
+                <strong>¡Inventario Sano!</strong>
+                <p style="font-size: 0.85rem; color: #64748b; margin: 0;">Ningún producto está por debajo del inventario de seguridad estadístico.</p>
+              </div>
+            </ng-template>
           </div>
           <div class="placeholder-content" *ngIf="!isPremium" style="height: 300px; display: flex; align-items: center; justify-content: center; color: #64748b; font-style: italic;">
-            <p>Márgenes de ganancia reales y sugerencias de precios</p>
+            <p>Cálculo estadístico de cuándo reabastecer</p>
+          </div>
+        </mat-card-content>
+      </mat-card>
+      
+      <!-- 3. ABC Analysis -->
+      <mat-card class="chart-card full-width glass-card" style="border: 1px solid rgba(245, 158, 11, 0.3);">
+        <mat-card-header>
+          <mat-icon mat-card-avatar style="color: #f59e0b;">pie_chart</mat-icon>
+          <mat-card-title>Análisis ABC de Inventarios (Pareto)</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="canvas-container" *ngIf="isPremium" style="max-height: 350px; display: flex; align-items: center; padding-bottom: 24px;">
+            <div style="flex: 1;">
+              <canvas baseChart
+                      [data]="abcChartData"
+                      [options]="abcChartOptions"
+                      [type]="'doughnut'">
+              </canvas>
+            </div>
+            <div class="abc-table-container" style="flex: 1; padding: 0 20px; max-height: 350px; overflow-y: auto;">
+              <table mat-table [dataSource]="abcItems" class="sellers-table" *ngIf="abcItems.length > 0">
+                <ng-container matColumnDef="category">
+                  <th mat-header-cell *matHeaderCellDef> Cat </th>
+                  <td mat-cell *matCellDef="let item">
+                    <span [style.background-color]="item.category === 'A' ? '#10b981' : (item.category === 'B' ? '#f59e0b' : '#64748b')"
+                          style="color: white; padding: 2px 8px; border-radius: 12px; font-weight: bold; font-size: 0.75rem;">
+                      {{item.category}}
+                    </span>
+                  </td>
+                </ng-container>
+                <ng-container matColumnDef="product">
+                  <th mat-header-cell *matHeaderCellDef> Producto </th>
+                  <td mat-cell *matCellDef="let item" style="font-weight: 500;"> {{item.product_name}} </td>
+                </ng-container>
+                <ng-container matColumnDef="revenue">
+                  <th mat-header-cell *matHeaderCellDef> Ingresos </th>
+                  <td mat-cell *matCellDef="let item" style="color: #64748b;"> ${{item.revenue | number:'1.2-2'}} </td>
+                </ng-container>
+                <tr mat-header-row *matHeaderRowDef="['category', 'product', 'revenue']; sticky: true"></tr>
+                <tr mat-row *matRowDef="let row; columns: ['category', 'product', 'revenue'];"></tr>
+              </table>
+            </div>
+          </div>
+          <div class="placeholder-content" *ngIf="!isPremium" style="height: 250px; display: flex; align-items: center; justify-content: center; color: #64748b; font-style: italic;">
+            <p>Clasifica tus productos según su contribución real a los ingresos</p>
           </div>
         </mat-card-content>
       </mat-card>
@@ -214,7 +307,7 @@
       <div class="lock-content">
         <mat-icon>lock</mat-icon>
         <h3>Desbloquea el poder de tus datos</h3>
-        <p>Obtén predicciones con IA, análisis de rentabilidad y un asistente virtual 24/7.</p>
+        <p>Obtén Análisis ABC de Inventarios, Cesta de Compra (Cross-Selling) y Alertas de Inventario de Seguridad estadístico.</p>
         <a mat-raised-button color="primary" routerLink="/dashboard/premium" class="upgrade-btn">
           Ver Planes Premium
         </a>

@@ -46,14 +46,14 @@ export class AnalyticsDashboardComponent implements OnInit {
   displayedColumnsSellers: string[] = ['seller', 'ventas', 'monto'];
   isLoading = true;
 
-  // Chart configuration defaults for dark theme
+  // Chart configuration defaults for light theme
   private defaultChartOptions: ChartOptions = {
     responsive: true,
     maintainAspectRatio: false,
-    color: '#94a3b8',
+    color: '#64748b',
     plugins: {
       legend: {
-        labels: { color: '#f1f5f9' }
+        labels: { color: '#334155' }
       },
       tooltip: {
         backgroundColor: 'rgba(30, 41, 59, 0.9)',
@@ -67,12 +67,12 @@ export class AnalyticsDashboardComponent implements OnInit {
     },
     scales: {
       x: {
-        grid: { color: 'rgba(255, 255, 255, 0.05)' },
-        ticks: { color: '#94a3b8' }
+        grid: { color: 'rgba(0, 0, 0, 0.05)' },
+        ticks: { color: '#64748b' }
       },
       y: {
-        grid: { color: 'rgba(255, 255, 255, 0.05)' },
-        ticks: { color: '#94a3b8' }
+        grid: { color: 'rgba(0, 0, 0, 0.05)' },
+        ticks: { color: '#64748b' }
       }
     }
   };
@@ -98,9 +98,9 @@ export class AnalyticsDashboardComponent implements OnInit {
   categoryChartOptions: ChartOptions<any> = {
     responsive: true,
     maintainAspectRatio: false,
-    color: '#94a3b8',
+    color: '#64748b',
     plugins: {
-      legend: { position: 'right', labels: { color: '#f1f5f9' } },
+      legend: { position: 'right', labels: { color: '#334155' } },
       tooltip: this.defaultChartOptions.plugins?.tooltip
     }
   };
@@ -108,6 +108,22 @@ export class AnalyticsDashboardComponent implements OnInit {
   // 4. Sales by Hour (Bar)
   salesByHourChartData: ChartData<'bar'> = { labels: [], datasets: [] };
   salesByHourChartOptions: ChartOptions<any> = { ...this.defaultChartOptions };
+
+  // Premium BI Data
+  marketBasketRules: any[] = [];
+  safetyStockAlerts: any[] = [];
+  abcItems: any[] = [];
+  
+  abcChartData: ChartData<'doughnut'> = { labels: [], datasets: [] };
+  abcChartOptions: ChartOptions<any> = {
+    responsive: true,
+    maintainAspectRatio: false,
+    color: '#64748b',
+    plugins: {
+      legend: { position: 'right', labels: { color: '#334155' } },
+      tooltip: this.defaultChartOptions.plugins?.tooltip
+    }
+  };
 
   isPremium = false;
 
@@ -127,8 +143,9 @@ export class AnalyticsDashboardComponent implements OnInit {
       salesByCategory: this.analyticsService.getSalesByCategory(),
       salesByHour: this.analyticsService.getSalesByHour(),
       topSellers: this.analyticsService.getTopSellers(),
-      profitability: this.isPremium ? this.analyticsService.getProfitability() : of(null),
-      predictions: this.isPremium ? this.analyticsService.getPredictions(30) : of(null)
+      marketBasket: this.isPremium ? this.analyticsService.getMarketBasket() : of(null),
+      safetyStock: this.isPremium ? this.analyticsService.getSafetyStock() : of(null),
+      abcAnalysis: this.isPremium ? this.analyticsService.getAbcAnalysis() : of(null)
     }).subscribe({
       next: (data: any) => {
         this.kpiData = data.kpi;
@@ -143,11 +160,16 @@ export class AnalyticsDashboardComponent implements OnInit {
         this.setupCategoryChart(data.salesByCategory);
         this.setupSalesByHourChart(data.salesByHour);
         this.topSellers = data.topSellers;
-        if (data.profitability) {
-          this.setupProfitabilityChart(data.profitability);
+        
+        if (data.marketBasket) {
+          this.marketBasketRules = data.marketBasket;
         }
-        if (data.predictions) {
-          this.setupPredictionsChart(data.predictions);
+        if (data.safetyStock) {
+          this.safetyStockAlerts = data.safetyStock.filter((s: any) => s.status === 'CRITICAL');
+        }
+        if (data.abcAnalysis) {
+          this.abcItems = data.abcAnalysis;
+          this.setupAbcChart(data.abcAnalysis);
         }
         this.isLoading = false;
       },
@@ -216,42 +238,39 @@ export class AnalyticsDashboardComponent implements OnInit {
     };
   }
 
-  // Premium Charts
-  profitabilityChartData: ChartData<'bar'> = { labels: [], datasets: [] };
-  profitabilityChartOptions: ChartOptions<any> = { ...this.defaultChartOptions, indexAxis: 'x' };
-  
-  predictionsChartData: ChartData<'bar'> = { labels: [], datasets: [] };
-  predictionsChartOptions: ChartOptions<any> = { ...this.defaultChartOptions };
+  abcProductsA: string[] = [];
+  abcProductsB: string[] = [];
+  abcProductsC: string[] = [];
 
-  private setupProfitabilityChart(data: any[]) {
-    this.profitabilityChartData = {
-      labels: data.map(d => d.product_name).slice(0, 5),
+  private setupAbcChart(data: any[]) {
+    let revA = 0, revB = 0, revC = 0;
+    this.abcProductsA = [];
+    this.abcProductsB = [];
+    this.abcProductsC = [];
+
+    data.forEach(item => {
+      if (item.category === 'A') {
+        revA += item.revenue;
+        this.abcProductsA.push(item.product_name);
+      }
+      else if (item.category === 'B') {
+        revB += item.revenue;
+        this.abcProductsB.push(item.product_name);
+      }
+      else {
+        revC += item.revenue;
+        this.abcProductsC.push(item.product_name);
+      }
+    });
+
+    this.abcChartData = {
+      labels: ['A (80% Ingresos)', 'B (15% Ingresos)', 'C (5% Ingresos)'],
       datasets: [
         {
-          data: data.map(d => d.margin).slice(0, 5),
-          label: 'Margen de Ganancia (%)',
-          backgroundColor: '#f59e0b',
-          borderRadius: 4
-        }
-      ]
-    };
-  }
-
-  private setupPredictionsChart(data: any) {
-    if (!data || !data.predictions) return;
-    
-    this.predictionsChartData = {
-      labels: data.predictions.map((p: any) => {
-        // Formato de fecha corto (ej. "Aug 25")
-        const d = new Date(p.date + 'T00:00:00');
-        return d.toLocaleDateString('es-ES', { month: 'short', day: 'numeric' });
-      }),
-      datasets: [
-        {
-          data: data.predictions.map((p: any) => p.predicted_total),
-          label: 'Ingresos Proyectados',
-          backgroundColor: data.historical_trend === 'negative' ? '#ef4444' : '#448aff',
-          borderRadius: 4
+          data: [revA, revB, revC],
+          backgroundColor: ['#10b981', '#f59e0b', '#64748b'],
+          borderWidth: 0,
+          hoverOffset: 4
         }
       ]
     };

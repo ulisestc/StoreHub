@@ -131,14 +131,21 @@ $color-purple: #a855f7;
   width: 100%;
   background: transparent;
   
-  th.mat-header-cell {
+  ::ng-deep th.mat-header-cell,
+  ::ng-deep th.mat-mdc-header-cell {
+    position: sticky;
+    top: 0;
     color: var(--talavera-muted);
-    border-bottom-color: var(--talavera-surface);
-    font-weight: 500;
+    border-bottom: 1px solid var(--talavera-line) !important;
+    font-weight: 600;
+    background-color: #ffffff !important;
+    z-index: 100 !important;
+    box-shadow: 0 1px 0 0 var(--talavera-line);
   }
-  td.mat-cell {
+  ::ng-deep td.mat-cell,
+  ::ng-deep td.mat-mdc-cell {
     color: var(--talavera-ink);
-    border-bottom-color: var(--talavera-surface);
+    border-bottom: 1px solid var(--talavera-line) !important;
   }
 }
 

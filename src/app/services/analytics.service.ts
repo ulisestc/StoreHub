@@ -57,6 +57,31 @@ export interface PredictionData {
   predictions: { date: string; predicted_total: number }[];
 }
 
+export interface MarketBasketRule {
+  product_a: string;
+  product_b: string;
+  times_bought_together: number;
+  support_percent: number;
+  confidence_a_to_b: number;
+  confidence_b_to_a: number;
+}
+
+export interface SafetyStockAlert {
+  product_name: string;
+  current_stock: number;
+  mean_daily_sales: number;
+  safety_stock_recommended: number;
+  reorder_point: number;
+  status: 'HEALTHY' | 'CRITICAL';
+}
+
+export interface ABCAnalysisItem {
+  product_name: string;
+  revenue: number;
+  category: 'A' | 'B' | 'C';
+  cumulative_percent: number;
+}
+
 export interface PeriodComparison {
   current: { total: number; count: number };
   previous: { total: number; count: number };
@@ -104,13 +129,16 @@ export class AnalyticsService {
     return this.http.get<TopSeller[]>(`${this.apiUrl}/analytics/top-sellers/`, { headers: this.getHeaders() });
   }
 
-  getProfitability(): Observable<ProfitabilityItem[]> {
-    return this.http.get<ProfitabilityItem[]>(`${this.apiUrl}/analytics/profitability/`, { headers: this.getHeaders() });
+  getMarketBasket(): Observable<MarketBasketRule[]> {
+    return this.http.get<MarketBasketRule[]>(`${this.apiUrl}/analytics/market-basket/`, { headers: this.getHeaders() });
   }
 
-  getPredictions(days: number = 30): Observable<PredictionData> {
-    const params = new HttpParams().set('days', days.toString());
-    return this.http.get<PredictionData>(`${this.apiUrl}/analytics/predictions/`, { headers: this.getHeaders(), params });
+  getSafetyStock(): Observable<SafetyStockAlert[]> {
+    return this.http.get<SafetyStockAlert[]>(`${this.apiUrl}/analytics/safety-stock/`, { headers: this.getHeaders() });
+  }
+
+  getAbcAnalysis(): Observable<ABCAnalysisItem[]> {
+    return this.http.get<ABCAnalysisItem[]>(`${this.apiUrl}/analytics/abc-analysis/`, { headers: this.getHeaders() });
   }
 
   getComparisons(currentStart: string, currentEnd: string, previousStart: string, previousEnd: string): Observable<PeriodComparison> {
