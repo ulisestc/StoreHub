@@ -176,6 +176,15 @@
           </mat-list>
         </mat-card-content>
 
+        <div *ngIf="currentSuggestion" class="cross-selling-banner">
+          <mat-icon color="accent">lightbulb</mat-icon>
+          <div class="banner-content">
+            <span class="banner-title">Guion de Venta Sugerido:</span>
+            <span class="banner-text">"¿Gusta agregar <strong>{{ currentSuggestion.productName }}</strong> por <strong>{{ currentSuggestion.price !== undefined ? (currentSuggestion.price | currency) : '...' }}</strong> extra?"</span>
+          </div>
+          <button mat-stroked-button color="primary" (click)="addSuggestedProduct()">Agregar</button>
+        </div>
+
         <div class="ticket-footer">
           <div class="total-row subtotal">
             <span>Subtotal</span>

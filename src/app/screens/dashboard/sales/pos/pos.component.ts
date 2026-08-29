@@ -26,6 +26,8 @@ import { SalesService } from '../../../../services/sales.service';
 import { ClientService } from '../../../../services/client.service';
 import { Client } from '../../../../shared/interfaces/client';
 import { OfflineSyncService } from '../../../../services/offline-sync.service';
+import { AnalyticsService, MarketBasketRule } from '../../../../services/analytics.service';
+import { AuthService } from '../../../../services/auth.service';
 import { ZXingScannerModule } from '@zxing/ngx-scanner';
 import { BarcodeFormat } from '@zxing/library';
 
@@ -71,6 +73,10 @@ export class PosComponent implements OnInit {
   currentPage = 0;
   totalProducts = 0;
 
+  marketBasketRules: MarketBasketRule[] = [];
+  currentSuggestion: { productName: string, confidence: number, price?: number } | null = null;
+  isPremium: boolean = false;
+
   allowedFormats = [ BarcodeFormat.QR_CODE, BarcodeFormat.EAN_13, BarcodeFormat.CODE_128, BarcodeFormat.UPC_A ];
   scannerEnabled = true;
   hasDevices = false;
@@ -85,6 +91,8 @@ export class PosComponent implements OnInit {
   private salesService = inject(SalesService);
   private clientService = inject(ClientService);
   private offlineSyncService = inject(OfflineSyncService);
+  private analyticsService = inject(AnalyticsService);
+  private authService = inject(AuthService);
   private dialog = inject(MatDialog);
   private LOW_STOCK_THRESHOLD = 5;
 
@@ -96,8 +104,19 @@ export class PosComponent implements OnInit {
     this.loadAllProducts();
     this.loadClients();
     this.loadCategories();
+    this.isPremium = this.authService.isPremium();
     this.offlineSyncService.isOnline.subscribe(online => {
       this.isOnline = online;
+      if (this.isOnline && this.isPremium) {
+        this.loadMarketBasketRules();
+      }
+    });
+  }
+
+  loadMarketBasketRules(): void {
+    this.analyticsService.getMarketBasket().subscribe({
+      next: (rules) => this.marketBasketRules = rules || [],
+      error: (err) => console.log('Could not load market basket rules', err)
     });
   }
 
@@ -211,6 +230,7 @@ export class PosComponent implements OnInit {
     }
 
     this.calculateTotal();
+    this.updateSuggestion();
     this.showSuccess(`${product.name} agregado al ticket`);
     console.log (this.ticketItems);
   }
@@ -251,6 +271,7 @@ export class PosComponent implements OnInit {
       }
 
       this.calculateTotal();
+      this.updateSuggestion();
       this.searchForm.reset();
 
     } else {
@@ -270,6 +291,57 @@ export class PosComponent implements OnInit {
   removeItem(index: number): void {
     this.ticketItems.splice(index, 1);
     this.calculateTotal();
+    this.updateSuggestion();
+  }
+
+  updateSuggestion(): void {
+    this.currentSuggestion = null;
+    if (!this.isPremium || this.ticketItems.length === 0 || this.marketBasketRules.length === 0) return;
+    
+    // Look at the last item added
+    const lastItem = this.ticketItems[this.ticketItems.length - 1];
+    
+    // Find rules where product_a is the last item
+    const matchingRules = this.marketBasketRules.filter(r => r.product_a === lastItem.nombre);
+    
+    for (const rule of matchingRules) {
+      // Make sure product_b is NOT already in the ticket
+      const alreadyInTicket = this.ticketItems.some(item => item.nombre === rule.product_b);
+      if (!alreadyInTicket) {
+        this.currentSuggestion = {
+          productName: rule.product_b,
+          confidence: rule.confidence_a_to_b
+        };
+        
+        // Buscar el precio del producto sugerido
+        this.productService.getProducts(rule.product_b, undefined, 1, 1).subscribe({
+          next: (res) => {
+            const found = res.results.find((p: Product) => p.name === rule.product_b);
+            if (found && this.currentSuggestion && this.currentSuggestion.productName === rule.product_b) {
+              this.currentSuggestion.price = found.price;
+            }
+          }
+        });
+        
+        break;
+      }
+    }
+  }
+
+  addSuggestedProduct(): void {
+    if (!this.currentSuggestion) return;
+    
+    const nameToSearch = this.currentSuggestion.productName;
+    this.productService.getProducts(nameToSearch, undefined, 1, 1).subscribe({
+      next: (res) => {
+        const found = res.results.find((p: Product) => p.name === nameToSearch);
+        if (found) {
+          this.addProductToTicket(found);
+        } else {
+          this.showError('No se pudo encontrar el producto sugerido.');
+        }
+      }
+    });
   }
 
   private showError(message: string): void {
