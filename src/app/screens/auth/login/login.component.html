@@ -1,71 +1,104 @@
-<div class="form-container">
-  <!-- Overlay de carga que cubre toda la pantalla -->
-  <div *ngIf="isLoading" class="loading-overlay">
-    <div class="spinner-container">
-      <mat-spinner diameter="60"></mat-spinner>
-      <p>Iniciando sesión...</p>
+<div class="auth-page">
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="navbar-content">
+      <a routerLink="/" class="logo">
+        <mat-icon>storefront</mat-icon>
+        <span class="logo-text">StoreHub</span>
+      </a>
+
+      <div class="nav-actions">
+        <a mat-button routerLink="/planes" class="nav-link">
+          <mat-icon>workspace_premium</mat-icon>
+          <span class="btn-text">Planes</span>
+        </a>
+        <a mat-raised-button routerLink="/auth/register" class="register-btn">
+          <mat-icon>person_add</mat-icon>
+          <span class="btn-text">Registrarse</span>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Form Content -->
+  <div class="form-container">
+    <!-- Overlay de carga que cubre toda la pantalla -->
+    <div *ngIf="isLoading" class="loading-overlay">
+      <div class="spinner-container">
+        <mat-spinner diameter="60"></mat-spinner>
+        <p>Iniciando sesión...</p>
+      </div>
+    </div>
+
+    <div class="login-card" [class.hidden]="isLoading">
+      <h2>Iniciar Sesión</h2>
+      <p class="subtitle">Ingresa tus credenciales para continuar</p>
+
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Correo Electrónico</mat-label>
+          <input matInput type="email" id="email" formControlName="email" placeholder="ejemplo@correo.com">
+          <mat-icon matPrefix>email</mat-icon>
+          <mat-error *ngIf="loginForm.get('email')?.hasError('required')">
+            El correo electrónico es requerido
+          </mat-error>
+          <mat-error *ngIf="loginForm.get('email')?.hasError('email')">
+            Ingresa un correo electrónico válido
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Contraseña</mat-label>
+          <input matInput [type]="hidePassword ? 'password' : 'text'" id="password" formControlName="password">
+          <mat-icon matPrefix>lock</mat-icon>
+          <button mat-icon-button matSuffix type="button" (click)="hidePassword = !hidePassword">
+            <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+          </button>
+          <mat-error *ngIf="loginForm.get('password')?.hasError('required')">
+            La contraseña es requerida
+          </mat-error>
+          <mat-error *ngIf="loginForm.get('password')?.hasError('minlength')">
+            La contraseña debe tener al menos 6 caracteres
+          </mat-error>
+        </mat-form-field>
+
+        <div *ngIf="loginError" class="alert-danger">
+          <mat-icon>error</mat-icon>
+          <span>Correo o contraseña incorrectos. Por favor, verifica tus credenciales.</span>
+        </div>
+
+        <button
+          mat-raised-button
+          color="primary"
+          type="submit"
+          class="submit-btn"
+          [disabled]="loginForm.invalid || isLoading">
+          <mat-icon *ngIf="!isLoading">login</mat-icon>
+          {{ isLoading ? 'Autenticando...' : 'Iniciar Sesión' }}
+        </button>
+
+        <div class="form-footer">
+          <div class="links">
+            <a routerLink="/auth/forgot-password" class="forgot-link">¿Olvidaste tu contraseña?</a>
+            <a routerLink="/auth/register">¿No tienes cuenta? Regístrate aquí</a>
+          </div>
+        </div>
+
+      </form>
     </div>
   </div>
 
-  <div class="login-card" [class.hidden]="isLoading">
-    <a routerLink="/" class="back-link">
-      <mat-icon>arrow_back</mat-icon>
-      <span>Volver al inicio</span>
-    </a>
-    <h2>Iniciar Sesión</h2>
-    <p class="subtitle">Ingresa tus credenciales para continuar</p>
-
-    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
-
-      <mat-form-field appearance="outline" class="full-width">
-        <mat-label>Correo Electrónico</mat-label>
-        <input matInput type="email" id="email" formControlName="email" placeholder="ejemplo@correo.com">
-        <mat-icon matPrefix>email</mat-icon>
-        <mat-error *ngIf="loginForm.get('email')?.hasError('required')">
-          El correo electrónico es requerido
-        </mat-error>
-        <mat-error *ngIf="loginForm.get('email')?.hasError('email')">
-          Ingresa un correo electrónico válido
-        </mat-error>
-      </mat-form-field>
-
-      <mat-form-field appearance="outline" class="full-width">
-        <mat-label>Contraseña</mat-label>
-        <input matInput [type]="hidePassword ? 'password' : 'text'" id="password" formControlName="password">
-        <mat-icon matPrefix>lock</mat-icon>
-        <button mat-icon-button matSuffix type="button" (click)="hidePassword = !hidePassword">
-          <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
-        </button>
-        <mat-error *ngIf="loginForm.get('password')?.hasError('required')">
-          La contraseña es requerida
-        </mat-error>
-        <mat-error *ngIf="loginForm.get('password')?.hasError('minlength')">
-          La contraseña debe tener al menos 6 caracteres
-        </mat-error>
-      </mat-form-field>
-
-      <div *ngIf="loginError" class="alert-danger">
-        <mat-icon>error</mat-icon>
-        <span>Correo o contraseña incorrectos. Por favor, verifica tus credenciales.</span>
+  <!-- Footer -->
+  <footer class="auth-footer">
+    <div class="footer-content">
+      <div class="footer-brand">
+        <mat-icon>storefront</mat-icon>
+        <span>StoreHub</span>
       </div>
+      <p>&copy; 2025 StoreHub. Todos los derechos reservados.</p>
+    </div>
+  </footer>
 
-      <button
-        mat-raised-button
-        color="primary"
-        type="submit"
-        class="submit-btn"
-        [disabled]="loginForm.invalid || isLoading">
-        <mat-icon *ngIf="!isLoading">login</mat-icon>
-        {{ isLoading ? 'Autenticando...' : 'Iniciar Sesión' }}
-      </button>
-
-      <div class="form-footer">
-        <div class="links">
-          <a routerLink="/auth/forgot-password" class="forgot-link">¿Olvidaste tu contraseña?</a>
-          <a routerLink="/auth/register">¿No tienes cuenta? Regístrate aquí</a>
-        </div>
-      </div>
-
-    </form>
-  </div>
 </div>
