@@ -1,0 +1,354 @@
+$color-success: #22c55e;
+
+.pricing-container {
+  min-height: 100vh;
+  background: var(--talavera-bg);
+  display: flex;
+  flex-direction: column;
+}
+
+// ── Navbar (same as landing) ──
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--talavera-line);
+  box-shadow: 0 4px 30px rgba(11, 47, 107, 0.05);
+  padding: 16px 0;
+
+  .navbar-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 24px;
+    font-weight: 700;
+    text-decoration: none;
+    color: var(--talavera-blue);
+
+    mat-icon {
+      font-size: 32px;
+      width: 32px;
+      height: 32px;
+      color: var(--talavera-blue);
+    }
+  }
+
+  .nav-actions {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+  }
+
+  .login-btn {
+    color: var(--talavera-ink) !important;
+    font-weight: 500;
+    transition: all 0.3s ease;
+
+    mat-icon {
+      margin-right: 4px;
+    }
+
+    &:hover {
+      color: var(--talavera-blue) !important;
+      background: rgba(68, 138, 255, 0.1) !important;
+    }
+  }
+
+  .register-btn {
+    background: var(--talavera-blue) !important;
+    color: white !important;
+    font-weight: 600;
+    box-shadow: 0 4px 12px rgba(11, 47, 107, 0.05);
+
+    mat-icon {
+      margin-right: 4px;
+    }
+
+    &:hover {
+      box-shadow: 0 6px 16px rgba(11, 47, 107, 0.05);
+      transform: translateY(-2px);
+      transition: all 0.3s ease;
+    }
+  }
+}
+
+// ── Pricing Section ──
+.pricing-section {
+  flex: 1;
+  padding: 60px 24px 100px;
+  max-width: 960px;
+  margin: 0 auto;
+  width: 100%;
+
+  .section-header {
+    margin-bottom: 48px;
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--talavera-muted);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+      margin-bottom: 24px;
+      transition: all 0.2s ease;
+
+      mat-icon {
+        font-size: 20px;
+        width: 20px;
+        height: 20px;
+      }
+
+      &:hover {
+        color: var(--talavera-blue);
+      }
+    }
+
+    h1 {
+      font-size: 42px;
+      font-weight: 700;
+      color: var(--talavera-ink);
+      margin: 0 0 12px 0;
+    }
+
+    p {
+      font-size: 18px;
+      color: var(--talavera-muted);
+      margin: 0;
+    }
+  }
+}
+
+// ── Plans Grid ──
+.pricing-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 28px;
+}
+
+.plan-card {
+  background: var(--talavera-surface);
+  border: 1px solid var(--talavera-line);
+  border-radius: 16px;
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.3s ease;
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 16px 40px rgba(11, 47, 107, 0.08);
+  }
+
+  &.featured {
+    border-color: var(--talavera-blue);
+    box-shadow: 0 0 0 1px var(--talavera-blue);
+
+    &:hover {
+      border-color: var(--talavera-blue);
+      box-shadow: 0 0 0 1px var(--talavera-blue), 0 16px 40px rgba(11, 47, 107, 0.12);
+    }
+  }
+}
+
+.plan-card-header {
+  margin-bottom: 20px;
+}
+
+.plan-badge {
+  display: inline-block;
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 4px 12px;
+  border-radius: 6px;
+  margin-bottom: 14px;
+
+  &.free-badge {
+    background: rgba(148, 163, 184, 0.15);
+    color: var(--talavera-muted);
+  }
+
+  &.premium-badge {
+    background: rgba(11, 47, 107, 0.1);
+    color: var(--talavera-blue);
+  }
+}
+
+.plan-name {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 0 0 6px;
+  color: var(--talavera-ink);
+}
+
+.plan-description {
+  color: var(--talavera-muted);
+  font-size: 0.9rem;
+  margin: 0 0 16px;
+}
+
+.plan-price {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+
+  .price-amount {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--talavera-ink);
+  }
+
+  .price-period {
+    color: var(--talavera-muted);
+    font-size: 0.9rem;
+  }
+}
+
+.plan-features {
+  list-style: none;
+  padding: 0;
+  margin: 24px 0;
+  flex: 1;
+
+  li {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 7px 0;
+    font-size: 0.9rem;
+    color: var(--talavera-ink);
+
+    &.feat-disabled {
+      color: rgba(148, 163, 184, 0.5);
+    }
+  }
+
+  .feat-check {
+    color: $color-success;
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+  }
+
+  .feat-x {
+    color: rgba(148, 163, 184, 0.3);
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+  }
+}
+
+.plan-card-footer {
+  margin-top: auto;
+
+  .plan-btn {
+    width: 100%;
+    padding: 14px 0;
+    font-size: 0.95rem;
+    border-radius: 10px;
+    text-align: center;
+    text-decoration: none;
+    font-weight: 600;
+  }
+
+  .primary-btn {
+    background: var(--talavera-blue) !important;
+    color: white !important;
+
+    &:hover {
+      background: var(--talavera-blue-dark) !important;
+    }
+  }
+}
+
+// ── Footer ──
+.pricing-footer {
+  background: var(--talavera-surface);
+  border-top: 1px solid var(--talavera-line);
+  padding: 40px 24px;
+  text-align: center;
+
+  .footer-content {
+    max-width: 1200px;
+    margin: 0 auto;
+
+    .footer-brand {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--talavera-blue);
+      margin-bottom: 16px;
+
+      mat-icon {
+        font-size: 32px;
+        width: 32px;
+        height: 32px;
+        color: var(--talavera-blue);
+      }
+    }
+
+    p {
+      color: var(--talavera-muted);
+      margin: 0;
+    }
+  }
+}
+
+// ── Responsive ──
+@media (max-width: 768px) {
+  .pricing-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .pricing-section .section-header h1 {
+    font-size: 32px;
+  }
+}
+
+@media (max-width: 640px) {
+  .navbar .navbar-content {
+    padding: 0 16px;
+  }
+
+  .navbar .logo {
+    font-size: 20px;
+
+    .logo-text {
+      display: none;
+    }
+  }
+
+  .navbar .nav-actions {
+    gap: 8px;
+
+    .btn-text {
+      display: none;
+    }
+
+    .login-btn, .register-btn {
+      min-width: auto !important;
+      padding: 0 12px !important;
+    }
+  }
+
+  .pricing-section {
+    padding: 40px 16px 80px;
+  }
+}

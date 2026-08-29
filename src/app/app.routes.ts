@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 
 import { LandingComponent } from './screens/landing/landing.component';
+import { PricingComponent } from './screens/pricing/pricing.component';
 import { LoginComponent } from './screens/auth/login/login.component';
 import { RegisterComponent } from './screens/auth/register/register.component';
 import { DashboardComponent } from './screens/dashboard/dashboard.component';
@@ -43,6 +44,11 @@ export const routes: Routes = [
     path: '',
     component: LandingComponent,
     title: 'StoreHub | Sistema de Punto de Venta'
+  },
+  {
+    path: 'planes',
+    component: PricingComponent,
+    title: 'Planes y Precios | StoreHub'
   },
   // Rutas de Autenticación
   {

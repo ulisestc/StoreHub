@@ -1,0 +1,107 @@
+<div class="pricing-container">
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="navbar-content">
+      <a routerLink="/" class="logo">
+        <mat-icon>storefront</mat-icon>
+        <span class="logo-text">StoreHub</span>
+      </a>
+
+      <div class="nav-actions">
+        <a mat-button routerLink="/auth/login" class="login-btn">
+          <mat-icon>login</mat-icon>
+          <span class="btn-text">Iniciar Sesión</span>
+        </a>
+        <a mat-raised-button routerLink="/auth/register" class="register-btn">
+          <mat-icon>person_add</mat-icon>
+          <span class="btn-text">Registrarse</span>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Pricing Section -->
+  <section class="pricing-section">
+    <div class="section-header">
+      <a routerLink="/" class="back-link">
+        <mat-icon>arrow_back</mat-icon>
+        <span>Volver al inicio</span>
+      </a>
+      <h1>Planes y precios</h1>
+      <p>Elige el plan que mejor se adapte a tu negocio</p>
+    </div>
+
+    <div class="pricing-grid">
+      <!-- Free Plan -->
+      <div class="plan-card">
+        <div class="plan-card-header">
+          <span class="plan-badge free-badge">Gratis</span>
+          <h2 class="plan-name">Starter</h2>
+          <p class="plan-description">Para negocios que inician.</p>
+          <div class="plan-price">
+            <span class="price-amount">$0</span>
+            <span class="price-period">MXN / mes</span>
+          </div>
+        </div>
+        <mat-divider></mat-divider>
+        <ul class="plan-features">
+          <li><mat-icon class="feat-check">check</mat-icon> Punto de Venta (POS)</li>
+          <li><mat-icon class="feat-check">check</mat-icon> Inventario básico</li>
+          <li><mat-icon class="feat-check">check</mat-icon> Historial de ventas</li>
+          <li><mat-icon class="feat-check">check</mat-icon> Gestión de empleados</li>
+          <li class="feat-disabled"><mat-icon class="feat-x">close</mat-icon> Analíticas avanzadas</li>
+          <li class="feat-disabled"><mat-icon class="feat-x">close</mat-icon> Asistente IA</li>
+          <li class="feat-disabled"><mat-icon class="feat-x">close</mat-icon> Predicción de demanda</li>
+          <li class="feat-disabled"><mat-icon class="feat-x">close</mat-icon> Soporte prioritario</li>
+        </ul>
+        <div class="plan-card-footer">
+          <a mat-stroked-button routerLink="/auth/register" class="plan-btn">
+            Comenzar gratis
+          </a>
+        </div>
+      </div>
+
+      <!-- Premium Plan -->
+      <div class="plan-card featured">
+        <div class="plan-card-header">
+          <span class="plan-badge premium-badge">Recomendado</span>
+          <h2 class="plan-name">Premium</h2>
+          <p class="plan-description">Para negocios que quieren crecer.</p>
+          <div class="plan-price">
+            <span class="price-amount">$299</span>
+            <span class="price-period">MXN / mes</span>
+          </div>
+        </div>
+        <mat-divider></mat-divider>
+        <ul class="plan-features">
+          <li><mat-icon class="feat-check">check</mat-icon> Todo lo del plan Starter</li>
+          <li><mat-icon class="feat-check">check</mat-icon> Rentabilidad por producto</li>
+          <li><mat-icon class="feat-check">check</mat-icon> Analíticas avanzadas (BI)</li>
+          <li><mat-icon class="feat-check">check</mat-icon> Asistente inteligente (IA)</li>
+          <li><mat-icon class="feat-check">check</mat-icon> Predicción de demanda</li>
+          <li><mat-icon class="feat-check">check</mat-icon> Comparación de periodos</li>
+          <li><mat-icon class="feat-check">check</mat-icon> Soporte prioritario 24/7</li>
+          <li><mat-icon class="feat-check">check</mat-icon> Actualizaciones anticipadas</li>
+        </ul>
+        <div class="plan-card-footer">
+          <a mat-flat-button routerLink="/auth/register" class="plan-btn primary-btn">
+            Elegir Premium
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="pricing-footer">
+    <div class="footer-content">
+      <div class="footer-brand">
+        <mat-icon>storefront</mat-icon>
+        <span>StoreHub</span>
+      </div>
+      <p>&copy; 2025 StoreHub. Todos los derechos reservados.</p>
+    </div>
+  </footer>
+
+</div>
