@@ -20,9 +20,14 @@
 }
 
 .menu-btn mat-icon,
-.brand-icon,
 .user-btn mat-icon {
   color: var(--talavera-blue) !important;
+}
+
+img.brand-icon {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
 }
 
 .navbar-brand {

@@ -35,11 +35,10 @@
     text-decoration: none;
     color: var(--talavera-blue);
 
-    mat-icon {
-      font-size: 32px;
+    img.brand-icon {
       width: 32px;
       height: 32px;
-      color: var(--talavera-blue);
+      object-fit: contain;
     }
   }
 
