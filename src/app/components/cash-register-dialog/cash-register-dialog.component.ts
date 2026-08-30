@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatDialogRef, MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
@@ -42,11 +42,9 @@ export class CashRegisterDialogComponent implements OnInit {
 
   loading: boolean = false;
 
-  constructor(
-    public dialogRef: MatDialogRef<CashRegisterDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: CashRegisterDialogData,
-    private cashRegisterService: CashRegisterService
-  ) {}
+  dialogRef = inject(MatDialogRef<CashRegisterDialogComponent>);
+  data: CashRegisterDialogData = inject(MAT_DIALOG_DATA);
+  private cashRegisterService = inject(CashRegisterService);
 
   ngOnInit() {
     if (this.data.session) {

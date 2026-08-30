@@ -66,63 +66,40 @@
     </mat-card>
   </div>
 
-  <h3 class="section-title">Accesos Rápidos</h3>
+  <div class="section-header-flex">
+    <h3 class="section-title">Accesos Rápidos</h3>
+    <button mat-stroked-button color="primary" (click)="openWidgetConfig()" class="customize-btn">
+      <mat-icon>tune</mat-icon>
+      Personalizar widgets
+    </button>
+  </div>
 
   <div class="actions-grid">
-    <mat-card class="action-card" routerLink="/dashboard/sales/pos">
-      <mat-icon class="action-icon">point_of_sale</mat-icon>
-      <span class="action-title">Ir al POS</span>
-      <span class="action-desc">Realizar cobro</span>
-    </mat-card>
-    
-    <mat-card class="action-card" (click)="openCashRegister()" style="cursor: pointer; position: relative;">
-      <div 
-        class="status-indicator" 
-        [ngClass]="isCashRegisterOpen ? 'status-open' : 'status-closed'">
-        {{ isCashRegisterOpen ? 'Abierta' : 'Cerrada' }}
-      </div>
-      <mat-icon class="action-icon">point_of_sale</mat-icon>
-      <span class="action-title">Corte de Caja</span>
-      <span class="action-desc">Apertura / Cierre</span>
-    </mat-card>
-
-    <ng-container *ngIf="userRole === 'Admin'">
-      <mat-card class="action-card" routerLink="/dashboard/products">
-        <mat-icon class="action-icon">inventory_2</mat-icon>
-        <span class="action-title">Productos</span>
-        <span class="action-desc">Gestionar catálogo</span>
+    <ng-container *ngFor="let w of activeWidgets">
+      
+      <!-- Special widget: Cash Register -->
+      <mat-card *ngIf="w.action === 'cash-register'" class="action-card" (click)="openCashRegister()" style="cursor: pointer; position: relative;">
+        <div class="status-indicator" [ngClass]="isCashRegisterOpen ? 'status-open' : 'status-closed'">
+          {{ isCashRegisterOpen ? 'Abierta' : 'Cerrada' }}
+        </div>
+        <mat-icon class="action-icon">{{ w.icon }}</mat-icon>
+        <span class="action-title">{{ w.title }}</span>
+        <span class="action-desc">{{ w.desc }}</span>
       </mat-card>
 
-      <mat-card class="action-card" routerLink="/dashboard/clients">
-        <mat-icon class="action-icon">people</mat-icon>
-        <span class="action-title">Clientes</span>
-        <span class="action-desc">Base de datos</span>
+      <!-- Normal route widget -->
+      <mat-card *ngIf="!w.action" class="action-card" [routerLink]="w.route" style="cursor: pointer;">
+        <mat-icon class="action-icon">{{ w.icon }}</mat-icon>
+        <span class="action-title">{{ w.title }}</span>
+        <span class="action-desc">{{ w.desc }}</span>
       </mat-card>
 
-      <mat-card class="action-card" routerLink="/dashboard/reports">
-        <mat-icon class="action-icon">assessment</mat-icon>
-        <span class="action-title">Reportes</span>
-        <span class="action-desc">Ver estadísticas</span>
-      </mat-card>
-
-      <mat-card class="action-card" routerLink="/dashboard/inventory">
-        <mat-icon class="action-icon">rule</mat-icon>
-        <span class="action-title">Inventario</span>
-        <span class="action-desc">Ajustes manuales</span>
-      </mat-card>
-
-      <mat-card class="action-card" routerLink="/dashboard/employees">
-        <mat-icon class="action-icon">manage_accounts</mat-icon>
-        <span class="action-title">Empleados</span>
-        <span class="action-desc">Administrar cajeros</span>
-      </mat-card>
-
-      <mat-card class="action-card" routerLink="/dashboard/settings">
-        <mat-icon class="action-icon">settings</mat-icon>
-        <span class="action-title">Configuración</span>
-        <span class="action-desc">Ajustes del sistema</span>
-      </mat-card>
     </ng-container>
+
+    <div *ngIf="activeWidgets.length === 0" class="empty-widgets">
+      <mat-icon>dashboard_customize</mat-icon>
+      <p>No tienes widgets activos. Haz clic en "Personalizar widgets" para agregar algunos.</p>
+    </div>
   </div>
 
 </div>
