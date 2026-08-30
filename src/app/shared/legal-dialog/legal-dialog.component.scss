@@ -1,0 +1,69 @@
+.dialog-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24px 24px 16px;
+
+  h2 {
+    margin: 0;
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--talavera-blue);
+  }
+
+  button {
+    color: var(--talavera-muted);
+  }
+}
+
+mat-dialog-content {
+  padding: 0 24px !important;
+}
+
+.legal-content {
+  color: var(--talavera-ink);
+  line-height: 1.7;
+
+  .last-update {
+    color: var(--talavera-muted);
+    font-size: 0.8rem;
+    font-style: italic;
+    margin-bottom: 24px;
+  }
+
+  section {
+    margin-bottom: 24px;
+
+    h3 {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--talavera-blue);
+      margin: 0 0 8px;
+    }
+
+    p {
+      font-size: 0.9rem;
+      color: var(--talavera-ink);
+      margin: 0 0 12px;
+    }
+
+    ul {
+      padding-left: 20px;
+      margin: 8px 0 0;
+
+      li {
+        font-size: 0.9rem;
+        margin-bottom: 6px;
+        color: var(--talavera-ink);
+
+        strong {
+          color: var(--talavera-blue);
+        }
+      }
+    }
+  }
+}
+
+mat-dialog-actions {
+  padding: 16px 24px 24px !important;
+}

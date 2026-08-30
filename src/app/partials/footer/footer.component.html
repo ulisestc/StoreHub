@@ -7,8 +7,8 @@
     </div>
 
     <div class="links-section">
-      <a mat-button class="footer-link">Términos</a>
-      <a mat-button class="footer-link">Privacidad</a>
+      <a mat-button class="footer-link" (click)="openLegal('terms')">Términos y condiciones</a>
+      <a mat-button class="footer-link" (click)="openLegal('privacy')">Política de privacidad</a>
 
       <a mat-icon-button aria-label="Facebook">
         <mat-icon>public</mat-icon> </a>

@@ -1,0 +1,133 @@
+<div class="dialog-header" mat-dialog-title>
+  <h2 *ngIf="data.type === 'terms'">Términos y Condiciones</h2>
+  <h2 *ngIf="data.type === 'privacy'">Política de Privacidad</h2>
+  <button mat-icon-button (click)="close()">
+    <mat-icon>close</mat-icon>
+  </button>
+</div>
+
+<mat-dialog-content>
+
+  <!-- ═══ TÉRMINOS Y CONDICIONES ═══ -->
+  <div *ngIf="data.type === 'terms'" class="legal-content">
+    <p class="last-update">Última actualización: Agosto 2026</p>
+
+    <section>
+      <h3>1. Aceptación de los Términos</h3>
+      <p>Al acceder y utilizar StoreHub, aceptas cumplir con estos Términos y Condiciones. Si no estás de acuerdo con alguna parte de estos términos, no deberás utilizar nuestro servicio.</p>
+    </section>
+
+    <section>
+      <h3>2. Descripción del Servicio</h3>
+      <p>StoreHub es un sistema de punto de venta (POS) y gestión de inventario diseñado para pequeños y medianos negocios. El servicio incluye:</p>
+      <ul>
+        <li>Punto de venta con registro de transacciones</li>
+        <li>Gestión de inventario y productos</li>
+        <li>Administración de clientes y empleados</li>
+        <li>Reportes y analíticas de negocio</li>
+        <li>Funciones premium con inteligencia artificial (plan de pago)</li>
+      </ul>
+    </section>
+
+    <section>
+      <h3>3. Registro y Cuenta</h3>
+      <p>Para utilizar StoreHub debes crear una cuenta proporcionando información veraz y actualizada. Eres responsable de mantener la confidencialidad de tu contraseña y de todas las actividades que ocurran bajo tu cuenta.</p>
+    </section>
+
+    <section>
+      <h3>4. Planes y Pagos</h3>
+      <p>StoreHub ofrece un plan gratuito (Starter) y un plan de pago (Premium). Los pagos del plan Premium se realizan de forma mensual y se renuevan automáticamente. Puedes cancelar tu suscripción en cualquier momento desde la configuración de tu cuenta.</p>
+    </section>
+
+    <section>
+      <h3>5. Uso Aceptable</h3>
+      <p>Te comprometes a utilizar StoreHub únicamente para fines legales y de acuerdo con estos términos. Queda prohibido:</p>
+      <ul>
+        <li>Intentar acceder sin autorización a otros sistemas o cuentas</li>
+        <li>Utilizar el servicio para actividades ilegales o fraudulentas</li>
+        <li>Interferir con el funcionamiento normal del servicio</li>
+        <li>Revender o redistribuir el servicio sin autorización</li>
+      </ul>
+    </section>
+
+    <section>
+      <h3>6. Propiedad Intelectual</h3>
+      <p>Todo el contenido, diseño, código y funcionalidades de StoreHub son propiedad exclusiva de StoreHub y están protegidos por las leyes de propiedad intelectual aplicables.</p>
+    </section>
+
+    <section>
+      <h3>7. Limitación de Responsabilidad</h3>
+      <p>StoreHub se proporciona "tal cual" y "según disponibilidad". No garantizamos que el servicio será ininterrumpido, seguro o libre de errores. En ningún caso seremos responsables por daños indirectos, incidentales o consecuentes.</p>
+    </section>
+
+    <section>
+      <h3>8. Contacto</h3>
+      <p>Si tienes preguntas sobre estos términos, puedes contactarnos a través de nuestro correo electrónico de soporte.</p>
+    </section>
+  </div>
+
+  <!-- ═══ POLÍTICA DE PRIVACIDAD ═══ -->
+  <div *ngIf="data.type === 'privacy'" class="legal-content">
+    <p class="last-update">Última actualización: Agosto 2026</p>
+
+    <section>
+      <h3>1. Información que Recopilamos</h3>
+      <p>Recopilamos la información que nos proporcionas directamente al crear una cuenta y utilizar nuestro servicio:</p>
+      <ul>
+        <li><strong>Datos personales:</strong> nombre, apellidos, correo electrónico</li>
+        <li><strong>Datos del negocio:</strong> nombre de la tienda, dirección, configuración</li>
+        <li><strong>Datos transaccionales:</strong> ventas, inventario, clientes registrados</li>
+        <li><strong>Datos de uso:</strong> interacciones con el servicio, preferencias</li>
+      </ul>
+    </section>
+
+    <section>
+      <h3>2. Uso de la Información</h3>
+      <p>Utilizamos tu información para:</p>
+      <ul>
+        <li>Proporcionar y mantener el servicio de StoreHub</li>
+        <li>Procesar transacciones y gestionar tu cuenta</li>
+        <li>Generar reportes y analíticas para tu negocio</li>
+        <li>Mejorar nuestro servicio y experiencia de usuario</li>
+        <li>Enviarte comunicaciones relevantes sobre el servicio</li>
+      </ul>
+    </section>
+
+    <section>
+      <h3>3. Protección de Datos</h3>
+      <p>Implementamos medidas de seguridad técnicas y organizativas para proteger tu información personal contra acceso no autorizado, alteración, divulgación o destrucción. Esto incluye cifrado de datos, autenticación segura y monitoreo continuo.</p>
+    </section>
+
+    <section>
+      <h3>4. Compartir Información</h3>
+      <p>No vendemos, comercializamos ni transferimos tu información personal a terceros. Solo compartimos información cuando es necesario para proveer el servicio (como procesadores de pago) o cuando la ley lo requiera.</p>
+    </section>
+
+    <section>
+      <h3>5. Tus Derechos</h3>
+      <p>Tienes derecho a:</p>
+      <ul>
+        <li>Acceder a tu información personal</li>
+        <li>Rectificar datos incorrectos</li>
+        <li>Solicitar la eliminación de tu cuenta y datos</li>
+        <li>Exportar tus datos en un formato portable</li>
+        <li>Oponerte al procesamiento de tus datos</li>
+      </ul>
+    </section>
+
+    <section>
+      <h3>6. Cookies</h3>
+      <p>Utilizamos cookies y tecnologías similares para mantener tu sesión activa, recordar tus preferencias y mejorar tu experiencia de uso. Puedes configurar tu navegador para rechazar cookies, aunque esto puede afectar la funcionalidad del servicio.</p>
+    </section>
+
+    <section>
+      <h3>7. Contacto</h3>
+      <p>Para cualquier consulta relacionada con tu privacidad o estos términos, puedes contactarnos a través de nuestro correo electrónico de soporte.</p>
+    </section>
+  </div>
+
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-flat-button color="primary" (click)="close()">Entendido</button>
+</mat-dialog-actions>
