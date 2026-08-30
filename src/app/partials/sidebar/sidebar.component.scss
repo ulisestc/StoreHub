@@ -127,13 +127,16 @@
 }
 
 ::ng-deep .mat-mdc-subheader {
-  color: rgba(255, 255, 255, 0.5) !important;
-  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.85) !important;
+  font-size: 0.72rem;
   font-weight: 700;
-  letter-spacing: 1.5px;
+  letter-spacing: 1.8px;
   text-transform: uppercase;
   background: transparent !important;
   padding-left: 16px !important;
+  margin-top: 12px !important;
+  margin-bottom: 4px !important;
+  border-left: 3px solid rgba(255, 255, 255, 0.3);
 }
 
 .sidebar-footer {
