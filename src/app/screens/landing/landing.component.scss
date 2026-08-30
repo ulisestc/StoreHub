@@ -282,21 +282,27 @@
     }
 
     &.card-1 {
-      top: 50px;
-      left: 50px;
+      top: 40px;
+      left: 20px;
       animation-delay: 0s;
     }
 
     &.card-2 {
-      top: 200px;
-      right: 50px;
+      top: 160px;
+      right: 20px;
       animation-delay: 2s;
     }
 
     &.card-3 {
-      bottom: 80px;
-      left: 100px;
+      top: 280px;
+      left: 60px;
       animation-delay: 4s;
+    }
+
+    &.card-4 {
+      top: 400px;
+      right: 60px;
+      animation-delay: 1.5s;
     }
   }
 }
