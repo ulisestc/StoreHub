@@ -6,36 +6,35 @@ $storehub-primary: mat.m2-define-palette(mat.$m2-indigo-palette, 800);
 $storehub-accent: mat.m2-define-palette(mat.$m2-blue-palette, 700);
 $storehub-warn: mat.m2-define-palette(mat.$m2-orange-palette);
 
-$storehub-typography: mat.m2-define-typography-config(
-  $font-family: '"DM Sans", sans-serif',
-  $headline-1: mat.m2-define-typography-level(112px, 112px, 300, $font-family: '"Playfair Display", serif'),
-  $headline-2: mat.m2-define-typography-level(56px, 56px, 400, $font-family: '"Playfair Display", serif'),
-  $headline-3: mat.m2-define-typography-level(45px, 48px, 400, $font-family: '"Playfair Display", serif'),
-  $headline-4: mat.m2-define-typography-level(34px, 40px, 400, $font-family: '"Playfair Display", serif'),
-  $headline-5: mat.m2-define-typography-level(24px, 32px, 400, $font-family: '"Playfair Display", serif'),
-  $headline-6: mat.m2-define-typography-level(20px, 32px, 600, $font-family: '"Playfair Display", serif')
-);
+$storehub-typography: mat.m2-define-typography-config($font-family: '"DM Sans", sans-serif',
+    $headline-1: mat.m2-define-typography-level(112px, 112px, 300, $font-family: '"Playfair Display", serif'),
+    $headline-2: mat.m2-define-typography-level(56px, 56px, 400, $font-family: '"Playfair Display", serif'),
+    $headline-3: mat.m2-define-typography-level(45px, 48px, 400, $font-family: '"Playfair Display", serif'),
+    $headline-4: mat.m2-define-typography-level(34px, 40px, 400, $font-family: '"Playfair Display", serif'),
+    $headline-5: mat.m2-define-typography-level(24px, 32px, 400, $font-family: '"Playfair Display", serif'),
+    $headline-6: mat.m2-define-typography-level(20px, 32px, 600, $font-family: '"Playfair Display", serif'));
 
-$storehub-theme: mat.m2-define-light-theme((
-  color: (
-    primary: $storehub-primary,
-    accent: $storehub-accent,
-    warn: $storehub-warn 
-  ),
-  typography: $storehub-typography
-));
+$storehub-theme: mat.m2-define-light-theme((color: (primary: $storehub-primary,
+        accent: $storehub-accent,
+        warn: $storehub-warn ),
+      typography: $storehub-typography));
 
 @include mat.all-component-themes($storehub-theme);
 
 :root {
-  --talavera-bg: #f9f8f5;          /* Very light ivory */
-  --talavera-surface: #ffffff;     /* Pure porcelain white */
+  --talavera-bg: #f9f8f5;
+  /* Very light ivory */
+  --talavera-surface: #ffffff;
+  /* Pure porcelain white */
   --talavera-white: #ffffff;
-  
-  --talavera-blue: #0b2f6b;        /* Deep luxury cobalt blue */
-  --talavera-blue-dark: #071e47;   /* Deeper shade for hovers */
-  
-  --talavera-accent: #d46a4e;      /* Terracotta accent */
+
+  --talavera-blue: #0b2f6b;
+  /* Deep luxury cobalt blue */
+  --talavera-blue-dark: #071e47;
+  /* Deeper shade for hovers */
+
+  --talavera-accent: #d46a4e;
+  /* Terracotta accent */
 
   --talavera-ink: #1e293b;
   --talavera-muted: #64748b;
@@ -51,6 +50,21 @@ body {
   height: 100%;
 }
 
+app-root {
+  display: block;
+  height: 100%;
+}
+
+@media screen and (max-width: 1440px) {
+  html { zoom: 0.8; }
+}
+@media screen and (max-width: 1280px) {
+  html { zoom: 0.7; }
+}
+@media screen and (max-width: 768px) {
+  html { zoom: 1; }
+}
+
 body {
   margin: 0;
   background-color: var(--talavera-bg) !important;
@@ -62,22 +76,32 @@ body {
   &::before {
     content: "";
     position: fixed;
-    top: 0; left: 0; right: 0; bottom: 0;
-    
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+
     background-image: url('/fondo3.svg');
     background-repeat: repeat;
     /* Un tamaño grande para que el patrón se vea extendido como mural */
     background-size: 700px;
-    
+
     /* Muy bajita opacidad, similar a una filigrana/marca de agua */
     opacity: 0.05;
-    
+
     pointer-events: none;
     z-index: -1;
   }
 }
 
-h1, h2, h3, h4, h5, h6, .mat-mdc-dialog-title, .section-title {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.mat-mdc-dialog-title,
+.section-title {
   font-family: 'Playfair Display', serif !important;
 }
 

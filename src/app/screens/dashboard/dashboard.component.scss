@@ -1,6 +1,6 @@
 .dashboard-container {
   width: 100%;
-  height: 100vh;
+  height: 100%;
   background: transparent !important;
 }
 
@@ -21,7 +21,7 @@
 .content-wrapper {
   display: flex;
   flex-direction: column;
-  min-height: calc(100vh - 68px);
+  flex: 1;
   overflow-x: hidden;
 }
 
