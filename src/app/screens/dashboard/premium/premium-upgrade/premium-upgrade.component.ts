@@ -52,6 +52,8 @@ export class PremiumUpgradeComponent implements OnInit {
 
   ngOnInit() {
     this.isPremium = this.authService.isPremium();
+    this.viewState = this.isPremium ? 'manage' : 'plans'; // Set immediately to prevent flashing
+
     this.authService.getUserProfile().subscribe({
       next: (profile) => {
         if (profile.store) {
