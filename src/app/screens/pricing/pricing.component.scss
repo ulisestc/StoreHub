@@ -275,43 +275,7 @@ $color-success: #22c55e;
   }
 }
 
-// ── Footer ──
-.pricing-footer {
-  background: var(--talavera-surface);
-  border-top: 1px solid var(--talavera-line);
-  padding: 40px 24px;
-  text-align: center;
-
-  .footer-content {
-    max-width: 1200px;
-    margin: 0 auto;
-
-    .footer-brand {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 12px;
-      font-size: 24px;
-      font-weight: 700;
-      color: var(--talavera-blue);
-      margin-bottom: 16px;
-
-      mat-icon {
-        font-size: 32px;
-        width: 32px;
-        height: 32px;
-        color: var(--talavera-blue);
-      }
-    }
-
-    p {
-      color: var(--talavera-muted);
-      margin: 0;
-    }
-  }
-}
-
-// ── Responsive ──
+}// ── Responsive ──
 @media (max-width: 768px) {
   .pricing-grid {
     grid-template-columns: 1fr;

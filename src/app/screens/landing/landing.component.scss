@@ -391,47 +391,6 @@
   }
 }
 
-.landing-footer {
-  background: var(--talavera-surface);
-  border-top: 1px solid var(--talavera-line);
-  padding: 40px 24px;
-  text-align: center;
-  position: relative;
-  z-index: 1;
-
-  .footer-content {
-    max-width: 1200px;
-    margin: 0 auto;
-
-    .footer-brand {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 12px;
-      font-size: 24px;
-      font-weight: 700;
-      background: var(--talavera-blue);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      margin-bottom: 16px;
-
-      mat-icon {
-        font-size: 32px;
-        width: 32px;
-        height: 32px;
-        color: var(--talavera-blue);
-        -webkit-text-fill-color: var(--talavera-blue);
-      }
-    }
-
-    p {
-      color: var(--talavera-muted);
-      margin: 0;
-    }
-  }
-}
-
 @media (max-width: 968px) {
   .hero-section {
     grid-template-columns: 1fr;
