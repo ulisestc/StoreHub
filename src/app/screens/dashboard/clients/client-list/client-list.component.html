@@ -50,12 +50,12 @@
           <div class="actions-wrapper">
             <button mat-icon-button color="primary"
                     [routerLink]="['/dashboard/clients/edit', client.id]"
-                    matTooltip="Editar cliente">
+                    title="Editar cliente">
               <mat-icon>edit</mat-icon>
             </button>
             <button mat-icon-button color="warn"
                     (click)="openDeleteDialog(client.id)"
-                    matTooltip="Eliminar cliente">
+                    title="Eliminar cliente">
               <mat-icon>delete_outline</mat-icon>
             </button>
           </div>

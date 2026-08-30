@@ -19,15 +19,16 @@
       <form [formGroup]="categoryForm" (ngSubmit)="onSubmit()" *ngIf="!isLoading">
 
         <div class="form-section">
-          <mat-form-field appearance="outline" class="full-width" subscriptSizing="dynamic">
+          <mat-form-field appearance="outline" class="full-width">
             <mat-label>Nombre de la Categoría</mat-label>
             <input matInput formControlName="name" required placeholder="Ej. Electrónica">
-            <mat-icon matSuffix>label</mat-icon>
+            <mat-icon matPrefix>label</mat-icon>
           </mat-form-field>
 
-          <mat-form-field appearance="outline" class="full-width" subscriptSizing="dynamic">
+          <mat-form-field appearance="outline" class="full-width">
             <mat-label>Descripción (Opcional)</mat-label>
             <textarea matInput formControlName="description" rows="4" placeholder="Detalles de la categoría..."></textarea>
+            <mat-icon matPrefix>description</mat-icon>
           </mat-form-field>
         </div>
 

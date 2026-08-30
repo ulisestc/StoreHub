@@ -17,22 +17,22 @@
       <form [formGroup]="clientForm" (ngSubmit)="onSubmit()" *ngIf="!isLoading">
 
         <div class="form-section">
-          <mat-form-field appearance="outline" class="full-width" subscriptSizing="dynamic">
+          <mat-form-field appearance="outline" class="full-width">
             <mat-label>Nombre Completo</mat-label>
             <input matInput formControlName="name" required placeholder="Ej. Juan Pérez">
-            <mat-icon matSuffix>person</mat-icon>
+            <mat-icon matPrefix>person</mat-icon>
           </mat-form-field>
 
-          <mat-form-field appearance="outline" class="full-width" subscriptSizing="dynamic">
+          <mat-form-field appearance="outline" class="full-width">
             <mat-label>Correo Electrónico</mat-label>
             <input matInput type="email" formControlName="email" required placeholder="ejemplo@correo.com">
-            <mat-icon matSuffix>email</mat-icon>
+            <mat-icon matPrefix>email</mat-icon>
           </mat-form-field>
 
-          <mat-form-field appearance="outline" class="full-width" subscriptSizing="dynamic">
+          <mat-form-field appearance="outline" class="full-width">
             <mat-label>Teléfono</mat-label>
             <input matInput type="tel" formControlName="phone" required placeholder="555-1234">
-            <mat-icon matSuffix>phone</mat-icon>
+            <mat-icon matPrefix>phone</mat-icon>
           </mat-form-field>
         </div>
 

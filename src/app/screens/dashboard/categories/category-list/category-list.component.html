@@ -40,12 +40,12 @@
           <div class="actions-wrapper">
             <button mat-icon-button color="primary"
                     [routerLink]="['/dashboard/categories/edit', cat.id]"
-                    matTooltip="Editar categoría">
+                    title="Editar categoría">
               <mat-icon>edit</mat-icon>
             </button>
             <button mat-icon-button color="warn"
                     (click)="openDeleteDialog(cat.id)"
-                    matTooltip="Eliminar categoría">
+                    title="Eliminar categoría">
               <mat-icon>delete_outline</mat-icon>
             </button>
           </div>

@@ -68,12 +68,12 @@
           <div class="actions-wrapper">
             <button mat-icon-button color="primary"
                     [routerLink]="['/dashboard/products/edit', prod.id]"
-                    matTooltip="Editar producto">
+                    title="Editar producto">
               <mat-icon>edit</mat-icon>
             </button>
             <button mat-icon-button color="warn"
                     (click)="openDeleteDialog(prod.id)"
-                    matTooltip="Eliminar producto">
+                    title="Eliminar producto">
               <mat-icon>delete_outline</mat-icon>
             </button>
           </div>

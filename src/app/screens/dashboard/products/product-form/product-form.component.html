@@ -18,19 +18,20 @@
       <form [formGroup]="productForm" (ngSubmit)="onSubmit()" *ngIf="!isLoading">
 
         <div class="form-row">
-          <mat-form-field appearance="outline" class="form-field" subscriptSizing="dynamic">
+          <mat-form-field appearance="outline" class="form-field">
             <mat-label>Nombre del Producto</mat-label>
             <input matInput formControlName="name" required>
-            <mat-icon matSuffix>inventory_2</mat-icon>
+            <mat-icon matPrefix>inventory_2</mat-icon>
             <mat-error *ngIf="hasError('name')">
               {{ getErrorMessage('name') }}
             </mat-error>
           </mat-form-field>
 
-          <mat-form-field appearance="outline" class="form-field" subscriptSizing="dynamic">
+          <mat-form-field appearance="outline" class="form-field">
             <mat-label>Código de Barras (SKU)</mat-label>
             <input matInput formControlName="sku">
-            <button mat-icon-button matSuffix type="button" (click)="toggleScanner()" matTooltip="Escanear código">
+            <mat-icon matPrefix>qr_code</mat-icon>
+            <button mat-icon-button matSuffix type="button" (click)="toggleScanner()" title="Escanear código">
               <mat-icon>qr_code_scanner</mat-icon>
             </button>
             <mat-error *ngIf="hasError('sku')">
@@ -56,10 +57,10 @@
         </div>
 
         <div class="form-row">
-          <mat-form-field appearance="outline" class="form-field-full" subscriptSizing="dynamic">
+          <mat-form-field appearance="outline" class="form-field-full">
             <mat-label>Descripción (Opcional)</mat-label>
             <textarea matInput formControlName="description" rows="3"></textarea>
-            <mat-icon matSuffix>description</mat-icon>
+            <mat-icon matPrefix>description</mat-icon>
             <mat-hint>Máximo 500 caracteres</mat-hint>
             <mat-error *ngIf="hasError('description')">
               {{ getErrorMessage('description') }}
@@ -68,11 +69,11 @@
         </div>
 
         <div class="form-row">
-          <mat-form-field appearance="outline" class="form-field" subscriptSizing="dynamic">
+          <mat-form-field appearance="outline" class="form-field">
             <mat-label>Precio de Venta</mat-label>
             <input matInput type="number" formControlName="price" required min="0" step="0.01">
             <span matTextPrefix>$&nbsp;</span>
-            <mat-icon matSuffix>attach_money</mat-icon>
+            <mat-icon matPrefix>attach_money</mat-icon>
             <mat-error *ngIf="hasError('price')">
               {{ getErrorMessage('price') }}
             </mat-error>
@@ -81,11 +82,11 @@
             </mat-hint>
           </mat-form-field>
 
-          <mat-form-field appearance="outline" class="form-field" subscriptSizing="dynamic">
+          <mat-form-field appearance="outline" class="form-field">
             <mat-label>Costo de Adquisición</mat-label>
             <input matInput type="number" formControlName="cost_price" required min="0" step="0.01">
             <span matTextPrefix>$&nbsp;</span>
-            <mat-icon matSuffix>shopping_cart</mat-icon>
+            <mat-icon matPrefix>shopping_cart</mat-icon>
             <mat-error *ngIf="hasError('cost_price')">
               {{ getErrorMessage('cost_price') }}
             </mat-error>
@@ -93,36 +94,36 @@
         </div>
 
         <div class="form-row">
-          <mat-form-field appearance="outline" class="form-field" subscriptSizing="dynamic">
+          <mat-form-field appearance="outline" class="form-field">
             <mat-label>Cantidad en Stock</mat-label>
             <input matInput type="number" formControlName="stock" required min="0">
-            <mat-icon matSuffix>inventory</mat-icon>
+            <mat-icon matPrefix>inventory</mat-icon>
             <mat-error *ngIf="hasError('stock')">
               {{ getErrorMessage('stock') }}
             </mat-error>
           </mat-form-field>
 
-          <mat-form-field appearance="outline" class="form-field" subscriptSizing="dynamic">
+          <mat-form-field appearance="outline" class="form-field">
             <mat-label>Categoría</mat-label>
             <mat-select formControlName="category" required>
               <mat-option *ngFor="let cat of categories" [value]="cat.id">
                 {{cat.name}}
               </mat-option>
             </mat-select>
-            <mat-icon matSuffix>category</mat-icon>
+            <mat-icon matPrefix>category</mat-icon>
             <mat-error *ngIf="hasError('category')">
               {{ getErrorMessage('category') }}
             </mat-error>
           </mat-form-field>
 
-          <mat-form-field appearance="outline" class="form-field" subscriptSizing="dynamic">
+          <mat-form-field appearance="outline" class="form-field">
             <mat-label>Estado</mat-label>
             <mat-select formControlName="is_active" required>
               <mat-option *ngFor="let estado of estadosSimulados" [value]="estado.value">
                 {{estado.viewValue}}
               </mat-option>
             </mat-select>
-            <mat-icon matSuffix>toggle_on</mat-icon>
+            <mat-icon matPrefix>toggle_on</mat-icon>
             <mat-error *ngIf="hasError('is_active')">
               {{ getErrorMessage('is_active') }}
             </mat-error>

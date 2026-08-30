@@ -41,11 +41,24 @@
 
   &::-webkit-resizer {
     background-color: transparent;
-    border-top: 2px solid var(--talavera-muted);
-    border-left: 2px solid var(--talavera-muted);
-    border-radius: 2px;
-    box-shadow: inset 2px 2px 0 var(--talavera-surface);
   }
+}
+
+.resize-indicator {
+  position: absolute;
+  bottom: 2px;
+  left: 2px;
+  z-index: 10;
+  color: var(--talavera-muted);
+  font-size: 18px;
+  width: 18px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none; /* Permite hacer clic a través de él para redimensionar */
+  transform: rotate(45deg);
+  opacity: 0.6;
 }
 
 @keyframes slideUp {
@@ -242,12 +255,7 @@
   button {
     color: var(--talavera-blue);
     background-color: transparent;
-    border-radius: 6px;
-    width: 36px;
-    height: 36px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    border-radius: 50%;
     transition: all 0.2s;
     
     &:hover:not([disabled]) {
