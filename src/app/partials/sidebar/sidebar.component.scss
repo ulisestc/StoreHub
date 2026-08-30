@@ -45,13 +45,32 @@
 
 .sidebar-content {
   flex: 1;
-  padding: 20px 0;
+  padding: 20px 6px;
   overflow-y: auto;
+
+  /* Scrollbar que se camufla con el fondo azul */
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 10px;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.3);
+  }
 }
 
 .sidebar-content ::ng-deep .mat-mdc-list-item {
   width: 100% !important;
   margin: 0 0 8px !important;
+  padding: 0 10px !important;
   color: rgba(255, 255, 255, 0.75) !important; /* Base color for host */
   border-radius: 12px !important;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
