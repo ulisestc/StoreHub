@@ -1,13 +1,7 @@
 .dashboard-container {
   width: 100%;
   height: 100vh;
-  background: var(--talavera-bg) !important;
-
-  background-image:
-    radial-gradient(rgba(23, 74, 156, 0.055) 1px,
-      transparent 1px) !important;
-
-  background-size: 22px 22px !important;
+  background: transparent !important;
 }
 
 .sidebar {

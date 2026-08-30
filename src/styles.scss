@@ -53,9 +53,28 @@ body {
 
 body {
   margin: 0;
-  background: var(--talavera-bg) !important;
+  background-color: var(--talavera-bg) !important;
   color: var(--talavera-ink);
   font-family: 'DM Sans', sans-serif;
+  position: relative;
+  z-index: 0;
+
+  &::before {
+    content: "";
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    
+    background-image: url('/fondo3.svg');
+    background-repeat: repeat;
+    /* Un tamaño grande para que el patrón se vea extendido como mural */
+    background-size: 700px;
+    
+    /* Muy bajita opacidad, similar a una filigrana/marca de agua */
+    opacity: 0.05;
+    
+    pointer-events: none;
+    z-index: -1;
+  }
 }
 
 h1, h2, h3, h4, h5, h6, .mat-mdc-dialog-title, .section-title {

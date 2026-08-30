@@ -1,9 +1,11 @@
 .footer-container {
-  background-color: transparent;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(20px);
+  border-top: 1px solid var(--talavera-line);
+  box-shadow: 0 -4px 30px rgba(11, 47, 107, 0.05);
   color: var(--talavera-ink);
   padding: 24px 32px;
   margin-top: auto;
-  border-top: 1px solid var(--talavera-line);
 }
 
 .footer-content {
