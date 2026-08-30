@@ -2,25 +2,25 @@ $color-error: #ef4444;
 $color-success: #4ade80;
 
 .page-header {
-  margin-bottom: 20px;
-  background: var(--talavera-surface);
-  color: var(--talavera-ink) !important;
-  border-bottom: 1px solid var(--talavera-surface);
-  padding: 16px;
-  border-radius: 16px 16px 0 0;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 24px;
+  background: transparent;
 
   a[mat-icon-button] {
-    color: var(--talavera-blue);
+    color: var(--talavera-ink);
 
     &:hover {
-      background-color: rgba(var(--talavera-blue), 0.1);
+      background-color: rgba(0, 0, 0, 0.05);
     }
   }
 
-  span {
-    
-    font-size: 1.5rem;
+  h1 {
+    font-size: 2rem;
     font-weight: 700;
+    margin: 0;
+    color: var(--talavera-ink);
   }
 }
 
@@ -187,47 +187,9 @@ $color-success: #4ade80;
   margin-top: 8px;
   border-top: 1px solid var(--talavera-surface);
 
-  .cancel-btn {
-    color: var(--talavera-muted) !important;
-    padding: 0 20px;
-
-    mat-icon {
-      margin-right: 4px;
-    }
-
-    &:hover {
-      color: var(--talavera-ink) !important;
-      background-color: var(--talavera-surface) !important;
-    }
-  }
-
   .submit-btn {
-    background: var(--talavera-blue) !important;
-    color: white !important;
-    font-weight: 600;
-    border-radius: 8px;
-    padding: 0 24px;
-    height: 44px;
-    min-width: 160px;
-    box-shadow: 0 4px 12px rgba(11, 47, 107, 0.05);
-
     mat-icon {
       margin-right: 8px;
-    }
-
-    &:hover:not([disabled]) {
-      box-shadow: 0 6px 16px rgba(11, 47, 107, 0.05);
-      transform: translateY(-2px);
-      transition: all 0.3s ease;
-    }
-
-    &[disabled] {
-      background: var(--talavera-line) !important;
-      color: rgba(255, 255, 255, 0.3) !important;
-      box-shadow: none;
-      transform: none;
-      opacity: 1;
-      cursor: not-allowed;
     }
   }
 }

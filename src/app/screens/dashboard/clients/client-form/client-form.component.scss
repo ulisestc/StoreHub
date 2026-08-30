@@ -26,17 +26,14 @@ $color-border: var(--talavera-surface);
   align-items: center;
   gap: 16px;
   margin-bottom: 24px;
-  padding: 24px;
-  background: var(--talavera-surface);
-  border-radius: 16px;
-  border: 1px solid $color-border;
+  background: transparent;
 
   button {
-    color: var(--talavera-blue);
+    color: var(--talavera-ink);
 
     &:hover {
-      background-color: rgba(var(--talavera-blue), 0.1);
-      color: var(--talavera-blue);
+      background-color: rgba(0, 0, 0, 0.05);
+      color: var(--talavera-ink);
     }
   }
 
@@ -74,47 +71,15 @@ $color-border: var(--talavera-surface);
 .form-actions {
   display: flex;
   justify-content: flex-end;
+  align-items: center;
   gap: 12px;
   padding-top: 20px;
   margin-top: 16px;
   border-top: 1px solid $color-border;
 
-  button[mat-button] {
-    color: var(--talavera-muted);
-    font-weight: 500;
-    padding: 0 20px;
-
-    &:hover {
-      color: var(--talavera-ink);
-      background-color: var(--talavera-surface);
-    }
-  }
-
   button[mat-raised-button] {
-    background: var(--talavera-blue) !important;
-    color: white !important;
-    font-weight: 600;
-    border-radius: 8px;
-    padding: 0 24px;
-    height: 44px;
-    min-width: 160px;
-    box-shadow: 0 4px 12px rgba(11, 47, 107, 0.05);
-
     mat-icon {
       margin-right: 8px;
-    }
-
-    &:hover:not([disabled]) {
-      box-shadow: 0 6px 16px rgba(11, 47, 107, 0.05);
-      transform: translateY(-2px);
-      transition: all 0.3s ease;
-    }
-
-    &[disabled] {
-      background: var(--talavera-line) !important;
-      color: rgba(255, 255, 255, 0.3) !important;
-      box-shadow: none;
-      transform: none;
     }
   }
 }

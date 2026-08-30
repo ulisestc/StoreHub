@@ -8,14 +8,16 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTableModule } from '@angular/material/table';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { Employee, EmployeeService } from '../../../../services/employee.service';
+import { ConfirmDeleteModalComponent } from '../../../../modals/confirm-delete-modal/confirm-delete-modal.component';
 
 @Component({
   selector: 'app-employee-management',
   standalone: true,
   imports: [
     CommonModule, ReactiveFormsModule, MatCardModule, MatFormFieldModule,
-    MatInputModule, MatButtonModule, MatIconModule, MatTableModule, MatSnackBarModule
+    MatInputModule, MatButtonModule, MatIconModule, MatTableModule, MatSnackBarModule, MatDialogModule
   ],
   templateUrl: './employee-management.component.html',
   styleUrls: ['./employee-management.component.scss']
@@ -29,7 +31,8 @@ export class EmployeeManagementComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private employeeService: EmployeeService,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private dialog: MatDialog
   ) {
     this.inviteForm = this.fb.group({
       first_name: ['', Validators.required],
@@ -76,16 +79,26 @@ export class EmployeeManagementComponent implements OnInit {
   }
 
   deleteEmployee(employee: Employee): void {
-    if (confirm(`¿Estás seguro de ELIMINAR a ${employee.first_name}? Esta acción liberará espacio de tu plan.`)) {
-      this.employeeService.deactivateEmployee(employee.id).subscribe({
-        next: () => {
-          this.snackBar.open('Empleado eliminado correctamente', 'Cerrar', { duration: 3000 });
-          this.loadEmployees();
-        },
-        error: () => {
-          this.snackBar.open('Error al eliminar', 'Cerrar', { duration: 3000 });
-        }
-      });
-    }
+    const dialogRef = this.dialog.open(ConfirmDeleteModalComponent, {
+      width: '400px',
+      data: {
+        title: 'Eliminar Cajero',
+        message: `¿Estás seguro de ELIMINAR a ${employee.first_name}? Esta acción liberará espacio de tu plan.`
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.employeeService.deactivateEmployee(employee.id).subscribe({
+          next: () => {
+            this.snackBar.open('Empleado eliminado correctamente', 'Cerrar', { duration: 3000 });
+            this.loadEmployees();
+          },
+          error: () => {
+            this.snackBar.open('Error al eliminar', 'Cerrar', { duration: 3000 });
+          }
+        });
+      }
+    });
   }
 }

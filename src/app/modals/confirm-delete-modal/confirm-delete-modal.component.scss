@@ -37,29 +37,4 @@ $color-danger: #ef4444;$color-border: var(--talavera-surface);
   border-top: 1px solid $color-border;
   margin: 0;
 
-  button[mat-button]:not([color="warn"]) {
-    color: var(--talavera-muted);
-    padding: 0 20px;
-
-    &:hover {
-      color: var(--talavera-ink);
-      background-color: var(--talavera-surface);
-    }
-  }
-
-  button[color="warn"] {
-    background: var(--talavera-blue);
-    color: white !important;
-    font-weight: 600;
-    border-radius: 8px;
-    padding: 0 24px;
-    height: 44px;
-    min-width: 140px;
-    box-shadow: 0 4px 12px rgba(11, 47, 107, 0.05);
-
-    &:hover {
-      box-shadow: 0 6px 16px rgba(11, 47, 107, 0.05);
-      transform: translateY(-2px);
-    }
-  }
 }

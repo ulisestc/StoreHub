@@ -331,7 +331,7 @@ export class HomeComponent implements OnInit {
     this.cashRegisterService.getCurrentSession().subscribe({
       next: (session) => {
         const dialogRef = this.dialog.open(CashRegisterDialogComponent, {
-          width: '500px',
+          width: '600px',
           data: { session }
         });
 

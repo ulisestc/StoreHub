@@ -1,12 +1,12 @@
-<mat-toolbar class="page-header">
-  <a mat-icon-button routerLink="/dashboard/products" aria-label="Volver a la lista">
-    <mat-icon>arrow_back</mat-icon>
-  </a>
-  <span>{{ pageTitle }}</span>
-</mat-toolbar>
-
 <div class="form-container">
-  <mat-card>
+  <header class="page-header">
+    <a mat-icon-button routerLink="/dashboard/products" aria-label="Volver a la lista">
+      <mat-icon>arrow_back</mat-icon>
+    </a>
+    <h1>{{ pageTitle }}</h1>
+  </header>
+
+  <mat-card class="form-card">
     <mat-card-content>
 
       <!-- Spinner mientras se cargan los datos -->
@@ -131,7 +131,6 @@
 
         <mat-card-actions align="end" class="form-actions">
           <a mat-button routerLink="/dashboard/products" class="cancel-btn">
-            <mat-icon>cancel</mat-icon>
             Cancelar
           </a>
           <button

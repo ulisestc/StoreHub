@@ -35,20 +35,11 @@ $color-merma: #f87171;
   }
 
   .create-btn {
-    background-color: var(--talavera-blue) !important;
-    color: white !important;
     font-weight: 600;
-    border-radius: 12px;
-    height: 48px;
-    padding: 0 24px;
-    box-shadow: 0 4px 12px rgba(11, 47, 107, 0.05) ;
+    padding: 8px 24px;
 
     mat-icon {
       margin-right: 8px;
-    }
-
-    &:hover {
-      background-color: color-mix(in srgb, var(--talavera-blue), white 5%) !important;
     }
   }
 }

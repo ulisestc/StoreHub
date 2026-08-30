@@ -258,45 +258,12 @@ $color-success: #4ade80;
 
 .modal-footer {
   display: flex;
-  justify-content: center;
+  justify-content: flex-end;
+  align-items: center;
   gap: 16px;
   padding: 20px 24px;
   background-color: rgba(11, 47, 107, 0.05);
   border-top: 1px solid $color-border;
-
-  button {
-    min-width: 200px;
-    height: 48px;
-    border-radius: 12px;
-    font-weight: 600;
-
-    &.btn-primary {
-      background-color: var(--talavera-blue) !important;
-      color: #ffffff !important;
-      box-shadow: 0 4px 12px rgba(11, 47, 107, 0.05);
-      border: none;
-
-      ::ng-deep .mdc-button__label,
-      ::ng-deep mat-icon {
-        color: #ffffff !important;
-      }
-
-      &:hover {
-        box-shadow: 0 6px 16px rgba(11, 47, 107, 0.1);
-        transform: translateY(-2px);
-      }
-    }
-
-    &.btn-secondary {
-      background: var(--talavera-surface);
-      color: var(--talavera-ink);
-      border: 1px solid var(--talavera-line);
-
-      &:hover {
-        background: var(--talavera-line);
-      }
-    }
-  }
 }
 
 mat-divider {

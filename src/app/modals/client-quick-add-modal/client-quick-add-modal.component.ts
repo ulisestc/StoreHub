@@ -7,6 +7,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 
+import { MatIconModule } from '@angular/material/icon';
 import { ClientService } from '../../services/client.service';
 
 @Component({
@@ -18,7 +19,8 @@ import { ClientService } from '../../services/client.service';
     MatDialogModule,
     MatFormFieldModule,
     MatInputModule,
-    MatButtonModule
+    MatButtonModule,
+    MatIconModule
   ],
   templateUrl: './client-quick-add-modal.component.html',
   styleUrl: './client-quick-add-modal.component.scss'
@@ -35,8 +37,8 @@ export class ClientQuickAddModalComponent implements OnInit {
   ngOnInit(): void {
     this.clientForm = new FormGroup({
       name: new FormControl('', [Validators.required]),
-      email: new FormControl('', [Validators.email]),
-      phone: new FormControl(''),
+      email: new FormControl('', [Validators.required, Validators.email]),
+      phone: new FormControl('', [Validators.required]),
     });
   }
 

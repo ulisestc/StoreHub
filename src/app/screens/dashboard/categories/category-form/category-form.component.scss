@@ -13,11 +13,10 @@ $color-border: var(--talavera-surface);
   margin-bottom: 32px;
 
   button {
-    color: var(--talavera-muted);
-    background-color: var(--talavera-surface);
+    color: var(--talavera-ink);
 
     &:hover {
-      background-color: var(--talavera-line);
+      background-color: rgba(0, 0, 0, 0.05);
       color: var(--talavera-ink);
     }
   }
@@ -72,17 +71,8 @@ $color-border: var(--talavera-surface);
 .form-actions {
   display: flex;
   justify-content: flex-end;
+  align-items: center;
   gap: 16px;
-
-  button[mat-button] {
-    color: var(--talavera-muted);
-    font-weight: 500;
-
-    &:hover {
-      color: var(--talavera-ink);
-      background-color: var(--talavera-surface);
-    }
-  }
 
   button[mat-raised-button] {
     min-width: 180px;
