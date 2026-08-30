@@ -5,13 +5,8 @@
   height: 100%;
   padding: 18px 14px;
 
-  /* Deep luxury blue background with a subtle geometric tile pattern */
-  background-color: var(--talavera-blue) !important;
-  background-image: 
-    linear-gradient(45deg, rgba(255,255,255,0.02) 25%, transparent 25%, transparent 75%, rgba(255,255,255,0.02) 75%, rgba(255,255,255,0.02)), 
-    linear-gradient(45deg, rgba(255,255,255,0.02) 25%, transparent 25%, transparent 75%, rgba(255,255,255,0.02) 75%, rgba(255,255,255,0.02)) !important;
-  background-size: 20px 20px !important;
-  background-position: 0 0, 10px 10px !important;
+  /* Smooth solid gradient based on Classic Blue palette */
+  background: linear-gradient(165deg, #071e47 0%, #0b2f6b 45%, #2a5c9a 100%) !important;
 
   color: #ffffff !important;
   border-right: none !important;
