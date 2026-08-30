@@ -38,15 +38,15 @@
       </ng-container>
 
       <ng-container matColumnDef="price">
-        <th mat-header-cell *matHeaderCellDef> Precio </th>
-        <td mat-cell *matCellDef="let prod" class="price-cell">
+        <th mat-header-cell *matHeaderCellDef class="text-right"> Precio </th>
+        <td mat-cell *matCellDef="let prod" class="price-cell text-right">
           {{prod.price | currency}}
         </td>
       </ng-container>
 
       <ng-container matColumnDef="stock">
-        <th mat-header-cell *matHeaderCellDef> Stock </th>
-        <td mat-cell *matCellDef="let prod" class="stock-cell">
+        <th mat-header-cell *matHeaderCellDef class="text-right"> Stock </th>
+        <td mat-cell *matCellDef="let prod" class="stock-cell text-right">
           <span [class.low-stock]="prod.stock <= 5">
             {{prod.stock}} u.
           </span>
@@ -54,8 +54,8 @@
       </ng-container>
 
       <ng-container matColumnDef="estado">
-        <th mat-header-cell *matHeaderCellDef> Estado </th>
-        <td mat-cell *matCellDef="let prod" class="status-cell">
+        <th mat-header-cell *matHeaderCellDef class="text-center"> Estado </th>
+        <td mat-cell *matCellDef="let prod" class="status-cell text-center">
           <span class="status-badge" [class.active]="prod.is_active" [class.inactive]="!prod.is_active">
             {{prod.is_active ? 'Activo' : 'Inactivo'}}
           </span>

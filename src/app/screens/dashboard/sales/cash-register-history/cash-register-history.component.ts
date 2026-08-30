@@ -4,6 +4,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatPaginatorModule } from '@angular/material/paginator';
 import { CashRegisterService, CashRegisterSession } from '../../../../services/cash-register.service';
 import { DatePipe, CurrencyPipe } from '@angular/common';
 
@@ -16,6 +17,7 @@ import { DatePipe, CurrencyPipe } from '@angular/common';
     MatCardModule,
     MatIconModule,
     MatProgressSpinnerModule,
+    MatPaginatorModule,
     DatePipe,
     CurrencyPipe
   ],
@@ -30,19 +32,28 @@ export class CashRegisterHistoryComponent implements OnInit {
   isLoading = true;
   displayedColumns: string[] = ['opened_at', 'closed_at', 'status', 'opening_balance', 'expected_balance', 'actual_balance', 'difference'];
 
+  // Paginación
+  totalSessions = 0;
+  pageSize = 10;
+  currentPage = 0;
+
   ngOnInit(): void {
     this.loadHistory();
   }
 
-  loadHistory(): void {
+  loadHistory(pageIndex: number = 0): void {
     this.isLoading = true;
-    this.cashRegisterService.getSessionsHistory().subscribe({
+    const backendPage = pageIndex + 1;
+
+    this.cashRegisterService.getSessionsHistory(backendPage, this.pageSize).subscribe({
       next: (data) => {
-        // We receive the list directly, but let's handle if it's paginated just in case
         if (data && 'results' in data) {
-          this.sessions = (data as any).results;
+          this.sessions = data.results;
+          this.totalSessions = data.count;
+          this.currentPage = pageIndex;
         } else {
           this.sessions = data;
+          this.totalSessions = data.length;
         }
         this.isLoading = false;
       },
@@ -51,5 +62,10 @@ export class CashRegisterHistoryComponent implements OnInit {
         this.isLoading = false;
       }
     });
+  }
+
+  onPageChange(event: any): void {
+    this.pageSize = event.pageSize;
+    this.loadHistory(event.pageIndex);
   }
 }

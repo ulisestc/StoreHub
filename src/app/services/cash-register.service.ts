@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
@@ -39,7 +39,10 @@ export class CashRegisterService {
     return this.http.post<CashRegisterSession>(`${this.apiUrl}/${id}/close/`, { actual_closing_balance, notes });
   }
 
-  getSessionsHistory(): Observable<CashRegisterSession[]> {
-    return this.http.get<CashRegisterSession[]>(`${this.apiUrl}/`);
+  getSessionsHistory(page: number = 1, pageSize: number = 10): Observable<any> {
+    let params = new HttpParams()
+      .set('page', page.toString())
+      .set('page_size', pageSize.toString());
+    return this.http.get<any>(`${this.apiUrl}/`, { params });
   }
 }

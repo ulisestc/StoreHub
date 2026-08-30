@@ -4,7 +4,7 @@
     <p class="subtitle">Auditoría de sesiones y turnos</p>
   </div>
 
-  <mat-card class="table-card glass-card">
+  <div class="table-container">
     <div class="loading-state" *ngIf="isLoading">
       <mat-spinner diameter="40"></mat-spinner>
       <p>Cargando historial...</p>
@@ -26,35 +26,35 @@
       </ng-container>
 
       <ng-container matColumnDef="status">
-        <th mat-header-cell *matHeaderCellDef> Estatus </th>
-        <td mat-cell *matCellDef="let element"> 
+        <th mat-header-cell *matHeaderCellDef class="text-center"> Estatus </th>
+        <td mat-cell *matCellDef="let element" class="text-center"> 
           {{ element.closed_at ? 'Cerrada' : 'Abierta' }}
         </td>
       </ng-container>
 
       <ng-container matColumnDef="opening_balance">
-        <th mat-header-cell *matHeaderCellDef> Fondo Inicial </th>
-        <td mat-cell *matCellDef="let element"> {{element.opening_balance | currency}} </td>
+        <th mat-header-cell *matHeaderCellDef class="text-right"> Fondo Inicial </th>
+        <td mat-cell *matCellDef="let element" class="text-right"> {{element.opening_balance | currency}} </td>
       </ng-container>
 
       <ng-container matColumnDef="expected_balance">
-        <th mat-header-cell *matHeaderCellDef> Esperado </th>
-        <td mat-cell *matCellDef="let element"> 
+        <th mat-header-cell *matHeaderCellDef class="text-right"> Esperado </th>
+        <td mat-cell *matCellDef="let element" class="text-right"> 
           {{ (element.expected_closing_balance || element.opening_balance) | currency }}
         </td>
       </ng-container>
 
       <ng-container matColumnDef="actual_balance">
-        <th mat-header-cell *matHeaderCellDef> Real Declarado </th>
-        <td mat-cell *matCellDef="let element"> 
+        <th mat-header-cell *matHeaderCellDef class="text-right"> Real Declarado </th>
+        <td mat-cell *matCellDef="let element" class="text-right"> 
           <span *ngIf="element.actual_closing_balance !== null">{{element.actual_closing_balance | currency}}</span>
           <span *ngIf="element.actual_closing_balance === null">-</span>
         </td>
       </ng-container>
 
       <ng-container matColumnDef="difference">
-        <th mat-header-cell *matHeaderCellDef> Diferencia </th>
-        <td mat-cell *matCellDef="let element"> 
+        <th mat-header-cell *matHeaderCellDef class="text-right"> Diferencia </th>
+        <td mat-cell *matCellDef="let element" class="text-right"> 
           <ng-container *ngIf="element.closed_at">
             <span [ngClass]="{
               'diff-shortage': element.actual_closing_balance < element.expected_closing_balance,
@@ -75,5 +75,15 @@
         <td class="mat-cell" colspan="7" style="text-align: center; padding: 2rem;">No hay registros de cortes de caja.</td>
       </tr>
     </table>
-  </mat-card>
+
+    <mat-paginator
+      *ngIf="!isLoading && sessions.length > 0"
+      [length]="totalSessions"
+      [pageSize]="pageSize"
+      [pageIndex]="currentPage"
+      [hidePageSize]="true"
+      (page)="onPageChange($event)"
+      showFirstLastButtons>
+    </mat-paginator>
+  </div>
 </div>

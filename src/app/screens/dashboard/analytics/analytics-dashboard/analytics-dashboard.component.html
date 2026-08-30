@@ -147,13 +147,13 @@
           </ng-container>
 
           <ng-container matColumnDef="ventas">
-            <th mat-header-cell *matHeaderCellDef> Ventas </th>
-            <td mat-cell *matCellDef="let element"> {{element.ventas}} </td>
+            <th mat-header-cell *matHeaderCellDef class="text-right"> Ventas </th>
+            <td mat-cell *matCellDef="let element" class="text-right"> {{element.ventas}} </td>
           </ng-container>
 
           <ng-container matColumnDef="monto">
-            <th mat-header-cell *matHeaderCellDef> Monto </th>
-            <td mat-cell *matCellDef="let element"> ${{element.monto | number:'1.2-2'}} </td>
+            <th mat-header-cell *matHeaderCellDef class="text-right"> Monto </th>
+            <td mat-cell *matCellDef="let element" class="text-right"> ${{element.monto | number:'1.2-2'}} </td>
           </ng-container>
 
           <tr mat-header-row *matHeaderRowDef="displayedColumnsSellers; sticky: true"></tr>
@@ -188,8 +188,8 @@
                 </td>
               </ng-container>
               <ng-container matColumnDef="confidence">
-                <th mat-header-cell *matHeaderCellDef> Probabilidad </th>
-                <td mat-cell *matCellDef="let rule" style="color: #4ade80;"> 
+                <th mat-header-cell *matHeaderCellDef class="text-right"> Probabilidad </th>
+                <td mat-cell *matCellDef="let rule" style="color: #4ade80;" class="text-right"> 
                   {{rule.confidence_a_to_b}}%
                 </td>
               </ng-container>
@@ -229,9 +229,9 @@
                 </td>
               </ng-container>
               <ng-container matColumnDef="stock">
-                <th mat-header-cell *matHeaderCellDef> Stock Actual </th>
-                <td mat-cell *matCellDef="let item" [style.color]="item.status === 'CRITICAL' ? '#ef4444' : '#4ade80'"> 
-                  <div style="display: flex; flex-direction: column;">
+                <th mat-header-cell *matHeaderCellDef class="text-right"> Stock Actual </th>
+                <td mat-cell *matCellDef="let item" [style.color]="item.status === 'CRITICAL' ? '#ef4444' : '#4ade80'" class="text-right"> 
+                  <div style="display: flex; flex-direction: column; align-items: flex-end;">
                     <span>{{item.current_stock}} <span style="color: #64748b; font-size: 0.8em; margin-left: 4px;">(Min: {{item.reorder_point}})</span></span>
                     <span *ngIf="item.mean_daily_sales > 0" style="font-size: 0.75rem; color: #ef4444; margin-top: 2px;">
                       Durará aprox. {{ (item.current_stock / item.mean_daily_sales) | number:'1.0-0' }} días

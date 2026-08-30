@@ -72,17 +72,21 @@
     }
   }
 
-  .list-card {
-    .employees-table {
-      width: 100%;
-      
+  .table-title {
+    font-family: var(--talavera-font-header);
+    color: var(--talavera-ink);
+    margin-bottom: 16px;
+    font-size: 1.5rem;
+    font-weight: 600;
+  }
 
-    }
-    
-    .empty-state {
-      padding: 48px;
-      text-align: center;
-      color: var(--talavera-muted);
-    }
+  .employees-table {
+    width: 100%;
+  }
+  
+  .empty-state {
+    padding: 48px;
+    text-align: center;
+    color: var(--talavera-muted);
   }
 }

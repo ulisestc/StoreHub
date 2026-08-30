@@ -56,13 +56,21 @@ app-root {
 }
 
 @media screen and (max-width: 1440px) {
-  html { zoom: 0.8; }
+  html {
+    zoom: 0.8;
+  }
 }
+
 @media screen and (max-width: 1280px) {
-  html { zoom: 0.7; }
+  html {
+    zoom: 0.7;
+  }
 }
+
 @media screen and (max-width: 768px) {
-  html { zoom: 1; }
+  html {
+    zoom: 1;
+  }
 }
 
 body {
@@ -137,21 +145,57 @@ h6,
   border: 1px solid var(--talavera-line) !important;
 }
 
+/* Hacer transparente el contenedor de las tablas */
+.table-container {
+  background-color: transparent !important;
+  box-shadow: none !important;
+  border: none !important;
+}
+
 .mat-mdc-table {
   overflow: hidden;
+  margin-bottom: 16px !important;
+  /* Espacio entre tabla y paginador */
+}
+
+.mat-mdc-row {
+  transition: background-color 0.2s ease;
+  &:hover {
+    background-color: rgba(11, 47, 107, 0.05) !important;
+  }
 }
 
 .mat-mdc-header-cell {
-  color: var(--talavera-blue) !important;
-  font-weight: 700 !important;
+  background-color: rgba(11, 47, 107, 0.05) !important;
+  color: var(--talavera-muted) !important;
+  font-weight: 600 !important;
+  font-size: 0.85rem !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.5px !important;
+  border-bottom: 1px solid var(--talavera-surface) !important;
+  padding: 20px 24px !important;
+  vertical-align: middle !important;
+  height: 56px !important;
 }
 
 .mat-mdc-cell {
   color: var(--talavera-ink) !important;
+  border-bottom: 1px solid var(--talavera-surface) !important;
+  padding: 16px 24px !important;
+  font-size: 0.95rem !important;
+  vertical-align: middle !important;
+  height: 80px !important;
 }
+
+/* Alignment utilities for tables */
+.text-left { text-align: left !important; }
+.text-center { text-align: center !important; }
+.text-right { text-align: right !important; }
 
 .mat-mdc-paginator {
   color: var(--talavera-muted) !important;
+  width: fit-content !important;
+  margin-left: auto !important;
 }
 
 /* Botones principales */
@@ -278,13 +322,15 @@ h6,
   display: inline-block !important;
 
   &.active {
-    background-color: rgba(74, 222, 128, 0.15) !important; /* #4ade80 */
+    background-color: rgba(74, 222, 128, 0.15) !important;
+    /* #4ade80 */
     color: #4ade80 !important;
     border: 1px solid rgba(74, 222, 128, 0.3) !important;
   }
 
   &.inactive {
-    background-color: rgba(248, 113, 113, 0.15) !important; /* #f87171 */
+    background-color: rgba(248, 113, 113, 0.15) !important;
+    /* #f87171 */
     color: #f87171 !important;
     border: 1px solid rgba(248, 113, 113, 0.3) !important;
   }
