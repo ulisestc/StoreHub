@@ -40,12 +40,20 @@
             <mat-icon>qr_code_scanner</mat-icon>
             Escáner de Productos
           </mat-card-title>
-          <button mat-icon-button (click)="toggleScanner()" [matTooltip]="scannerEnabled ? 'Apagar cámara' : 'Encender cámara'">
-            <mat-icon>{{ scannerEnabled ? 'videocam_off' : 'videocam' }}</mat-icon>
+          <button mat-icon-button (click)="toggleCamera()" [matTooltip]="cameraEnabled ? 'Apagar cámara' : 'Encender cámara'">
+            <mat-icon>{{ cameraEnabled ? 'videocam_off' : 'videocam' }}</mat-icon>
           </button>
         </mat-card-header>
-        <mat-card-content *ngIf="scannerEnabled" style="display: flex; justify-content: center; padding-top: 10px;">
-          <div class="scanner-wrapper">
+        <mat-card-content *ngIf="cameraEnabled" style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding-top: 10px;">
+          <div class="scanner-wrapper" style="width: 100%; max-width: 400px; margin-bottom: 16px;">
+            <div *ngIf="isCheckingCamera" style="position: absolute; z-index: 1; color: #fff; text-align: center; width: 100%;">
+              <mat-spinner diameter="30" style="margin: 0 auto 10px auto;"></mat-spinner>
+              <p style="margin: 0; font-size: 0.9rem;">Cargando cámara...</p>
+            </div>
+            <div *ngIf="!isCheckingCamera && !hasDevices" style="position: absolute; z-index: 1; color: #fff; text-align: center; width: 100%;">
+              <mat-icon style="font-size: 32px; height: 32px; width: 32px; color: #f87171;">error_outline</mat-icon>
+              <p style="margin: 5px 0 0 0; font-size: 0.9rem;">Cámara no disponible</p>
+            </div>
             <zxing-scanner
               [device]="currentDevice"
               [formats]="allowedFormats"
@@ -55,13 +63,22 @@
               [delayBetweenScanSuccess]="100"
               (scanSuccess)="scanSuccess($event)"
               (camerasFound)="camerasFound($event)"
-              (camerasNotFound)="camerasNotFound()">
+              (camerasNotFound)="camerasNotFound()"
+              style="position: relative; z-index: 2;">
             </zxing-scanner>
           </div>
+          <button mat-button color="warn" (click)="toggleCamera()">
+            <mat-icon>videocam_off</mat-icon> Apagar cámara
+          </button>
         </mat-card-content>
-        <mat-card-content *ngIf="!scannerEnabled" style="text-align: center; padding: 20px;">
-          <mat-icon style="font-size: 40px; height: 40px; width: 40px; color: #888;">videocam_off</mat-icon>
-          <p style="color: #888; margin-top: 8px;">Cámara apagada</p>
+        <mat-card-content *ngIf="!cameraEnabled" style="text-align: center; padding: 32px 20px;">
+          <mat-icon style="font-size: 64px; height: 64px; width: 64px; color: var(--talavera-blue); margin-bottom: 16px;">barcode_reader</mat-icon>
+          <h3 style="color: var(--talavera-ink); margin: 0 0 8px 0; font-size: 1.25rem;">Esperando código de barras...</h3>
+          <p style="color: var(--talavera-muted); margin: 0 0 24px 0;">Pasa tu escáner físico. El sistema leerá el código como si lo escribieras en el teclado.</p>
+          <button mat-stroked-button color="primary" (click)="toggleCamera()">
+            <mat-icon>videocam</mat-icon>
+            ¿No cuentas con escáner? Activa tu cámara
+          </button>
         </mat-card-content>
       </mat-card>
 
@@ -79,11 +96,11 @@
 
             <mat-form-field appearance="outline" class="search-products" subscriptSizing="dynamic" style="flex: 1;">
               <mat-label>Buscar producto...</mat-label>
-              <input matInput [(ngModel)]="searchQuery" (ngModelChange)="onSearchChange()"
+              <input matInput [(ngModel)]="searchQuery" (ngModelChange)="onSearchChange($event)"
                 placeholder="Nombre o código">
               <mat-icon matPrefix>search</mat-icon>
               <button *ngIf="searchQuery" matSuffix mat-icon-button aria-label="Limpiar"
-                (click)="searchQuery=''; onSearchChange()">
+                (click)="searchQuery=''; onSearchChange('')">
                 <mat-icon>close</mat-icon>
               </button>
             </mat-form-field>
@@ -99,31 +116,33 @@
             </mat-form-field>
           </div>
 
-          <div *ngIf="isLoading" class="loading-spinner">
-            <mat-spinner diameter="50"></mat-spinner>
-            <p>Cargando productos...</p>
+          <!-- Loader (if loading and no products yet) -->
+          <div *ngIf="isLoading && filteredProducts.length === 0" class="loader-container" style="display: flex; justify-content: center; padding: 2rem;">
+            <mat-spinner diameter="40"></mat-spinner>
           </div>
 
-          <div *ngIf="!isLoading" class="products-grid">
-            <div *ngFor="let product of filteredProducts" class="product-card" (click)="addProductToTicket(product)"
-              [class.out-of-stock]="product.stock === 0">
+          <!-- Product Grid -->
+          <div *ngIf="filteredProducts.length > 0" class="products-grid" [style.opacity]="isLoading ? 0.5 : 1" [style.pointer-events]="isLoading ? 'none' : 'auto'">
+            <div *ngFor="let p of filteredProducts" class="product-card" (click)="addProductToTicket(p)"
+              [class.out-of-stock]="p.stock === 0">
               <div class="product-info">
-                <h4>{{ product.name }}</h4>
-                <p class="product-sku">SKU: {{ product.sku }}</p>
-                <p class="product-stock" [class.low-stock]="product.stock <= 5">
-                  Stock: {{ product.stock }}
+                <h4>{{ p.name }}</h4>
+                <p class="product-sku">SKU: {{ p.sku }}</p>
+                <p class="product-stock" [class.low-stock]="p.stock <= LOW_STOCK_THRESHOLD">
+                  Stock: {{ p.stock }}
                 </p>
               </div>
               <div class="product-price">
-                {{ product.price | currency }}
+                {{ p.price | currency }}
               </div>
             </div>
+          </div>
 
-            <div *ngIf="filteredProducts.length === 0" class="no-products">
-              <mat-icon>search_off</mat-icon>
-              <p>No se encontraron productos</p>
-              <button mat-button color="primary" (click)="clearFilters()">Limpiar filtros</button>
-            </div>
+          <!-- Empty State -->
+          <div *ngIf="!isLoading && filteredProducts.length === 0" class="empty-state" style="text-align: center; padding: 3rem 1rem;">
+            <mat-icon style="font-size: 48px; width: 48px; height: 48px; color: #ccc;">inventory_2</mat-icon>
+            <h3 style="margin-top: 16px; color: #666;">No se encontraron productos</h3>
+            <p style="color: #999;">Intenta con otro término de búsqueda.</p>
           </div>
 
           <!-- Paginador -->

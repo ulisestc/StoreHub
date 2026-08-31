@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormGroup, FormControl, Validators, FormsModule } from '@angular/forms';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -30,6 +30,8 @@ import { AnalyticsService, MarketBasketRule } from '../../../../services/analyti
 import { AuthService } from '../../../../services/auth.service';
 import { ZXingScannerModule } from '@zxing/ngx-scanner';
 import { BarcodeFormat } from '@zxing/library';
+import { Subject } from 'rxjs';
+import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 
 @Component({
   selector: 'app-pos',
@@ -78,7 +80,13 @@ export class PosComponent implements OnInit {
   isPremium: boolean = false;
 
   allowedFormats = [ BarcodeFormat.QR_CODE, BarcodeFormat.EAN_13, BarcodeFormat.CODE_128, BarcodeFormat.UPC_A ];
-  scannerEnabled = true;
+  cameraEnabled = false;
+  isCheckingCamera = false;
+  
+  // Physical Scanner Buffer
+  private barcodeBuffer = '';
+  private lastKeyTime = 0;
+
   hasDevices = false;
   availableDevices: MediaDeviceInfo[] = [];
   currentDevice: MediaDeviceInfo | undefined = undefined;
@@ -94,7 +102,8 @@ export class PosComponent implements OnInit {
   private analyticsService = inject(AnalyticsService);
   private authService = inject(AuthService);
   private dialog = inject(MatDialog);
-  private LOW_STOCK_THRESHOLD = 5;
+  LOW_STOCK_THRESHOLD = 5;
+  private searchSubject = new Subject<string>();
 
   searchForm = new FormGroup({
     sku: new FormControl('', [Validators.required])
@@ -110,6 +119,15 @@ export class PosComponent implements OnInit {
       if (this.isOnline && this.isPremium) {
         this.loadMarketBasketRules();
       }
+    });
+
+    this.searchSubject.pipe(
+      debounceTime(400),
+      distinctUntilChanged()
+    ).subscribe(searchTerm => {
+      this.searchQuery = searchTerm;
+      this.currentPage = 0;
+      this.loadAllProducts(0);
     });
   }
 
@@ -181,9 +199,8 @@ export class PosComponent implements OnInit {
     });
   }
 
-  onSearchChange(): void {
-    this.currentPage = 0;
-    this.loadAllProducts(0);
+  onSearchChange(searchTerm: string): void {
+    this.searchSubject.next(searchTerm);
   }
 
   onCategoryChange(): void {
@@ -446,11 +463,46 @@ export class PosComponent implements OnInit {
     }
   }
 
-  toggleScanner() {
-    this.scannerEnabled = !this.scannerEnabled;
+  toggleCamera() {
+    this.cameraEnabled = !this.cameraEnabled;
+    if (this.cameraEnabled) {
+      this.isCheckingCamera = true;
+    }
+  }
+
+  @HostListener('window:keydown', ['$event'])
+  handleKeyboardEvent(event: KeyboardEvent) {
+    // Ignore keystrokes if the user is typing in an input or textarea
+    const target = event.target as HTMLElement;
+    if (target && (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.isContentEditable)) {
+      return;
+    }
+
+    const now = Date.now();
+    // If the last key was pressed more than 50ms ago, reset the buffer
+    // Physical scanners type very fast (usually ~10-20ms per character)
+    if (now - this.lastScanTime > 50) {
+      this.barcodeBuffer = '';
+    }
+    
+    this.lastScanTime = now;
+
+    if (event.key === 'Enter') {
+      if (this.barcodeBuffer.length > 2) { // Minimal length for a barcode
+        this.scanSuccess(this.barcodeBuffer);
+        this.barcodeBuffer = '';
+      }
+      return;
+    }
+
+    // Ignore special keys like Shift, Control, etc.
+    if (event.key.length === 1) {
+      this.barcodeBuffer += event.key;
+    }
   }
 
   camerasFound(devices: MediaDeviceInfo[]) {
+    this.isCheckingCamera = false;
     this.hasDevices = devices && devices.length > 0;
     this.availableDevices = devices;
     
@@ -462,10 +514,11 @@ export class PosComponent implements OnInit {
   }
 
   camerasNotFound() {
+    this.isCheckingCamera = false;
     this.hasDevices = false;
     this.availableDevices = [];
     this.currentDevice = undefined;
-    this.snackBar.open('No se encontraron cámaras disponibles.', 'Cerrar', { duration: 3000, panelClass: ['snackbar-error'] });
+    this.snackBar.open('No se encontraron cámaras o no se dio permiso.', 'Cerrar', { duration: 3000, panelClass: ['snackbar-error'] });
   }
 
   scanSuccess(resultString: string) {
@@ -478,7 +531,7 @@ export class PosComponent implements OnInit {
     }
     
     this.lastScannedCode = resultString;
-    this.lastScanTime = now;
+    // Don't update lastScanTime here because it interferes with the physical scanner's 50ms buffer tracking
     
     this.playScanSound();
 
