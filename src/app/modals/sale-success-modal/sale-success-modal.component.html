@@ -1,4 +1,7 @@
-<div class="success-modal-container">
+<div class="success-modal-container" style="position: relative;">
+  <button mat-icon-button (click)="onSkip()" tabindex="-1" class="close-btn" style="position: absolute; top: 8px; right: 8px; color: var(--talavera-muted);">
+    <mat-icon>close</mat-icon>
+  </button>
   <div class="modal-header">
     <div class="success-icon-wrapper">
       <mat-icon class="success-icon">check_circle</mat-icon>

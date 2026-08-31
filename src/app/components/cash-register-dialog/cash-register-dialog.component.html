@@ -1,8 +1,13 @@
 <div class="cash-register-dialog">
-  <h2 mat-dialog-title>
-    <mat-icon>{{ isClosing ? 'lock' : 'lock_open' }}</mat-icon>
-    {{ isClosing ? 'Corte de Caja (Cierre)' : 'Apertura de Caja' }}
-  </h2>
+  <div style="display: flex; justify-content: space-between; align-items: center; padding: 24px 24px 0 24px;">
+    <div style="display: flex; align-items: center; gap: 8px;">
+      <mat-icon color="primary" style="margin: 0; padding: 0;">{{ isClosing ? 'lock' : 'lock_open' }}</mat-icon>
+      <h1 style="margin: 0; padding: 0; font-size: 1.5rem; font-weight: 700; color: var(--talavera-ink); line-height: 1; display: flex; align-items: center;">{{ isClosing ? 'Corte de Caja (Cierre)' : 'Apertura de Caja' }}</h1>
+    </div>
+    <button mat-icon-button mat-dialog-close tabindex="-1" style="color: var(--talavera-muted); margin-right: -8px;">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
 
   <mat-dialog-content>
     <div class="dialog-body">

@@ -58,7 +58,7 @@
           <li><mat-icon class="feat-check">check</mat-icon> Actualizaciones anticipadas</li>
         </ul>
         <div class="plan-card-footer">
-          <button mat-flat-button class="plan-btn primary-btn" (click)="openCheckout()">
+          <button mat-raised-button color="primary" class="plan-btn primary-btn" (click)="openCheckout()">
             Contratar Premium
           </button>
         </div>
@@ -103,38 +103,43 @@
           <span class="brand-label">Visa, Mastercard, AMEX</span>
         </div>
 
-        <div class="form-group">
-          <label for="cardNumber">Numero de tarjeta</label>
-          <input id="cardNumber" type="text" [(ngModel)]="cardNumber"
+        <mat-form-field appearance="outline" class="form-field-full">
+          <mat-label>Número de tarjeta</mat-label>
+          <input matInput id="cardNumber" type="text" [(ngModel)]="cardNumber"
                  (input)="formatCardNumber()" placeholder="1234 5678 9012 3456"
                  maxlength="19" autocomplete="cc-number" />
-        </div>
+          <mat-icon matPrefix>credit_card</mat-icon>
+        </mat-form-field>
 
-        <div class="form-group">
-          <label for="cardName">Nombre del titular</label>
-          <input id="cardName" type="text" [(ngModel)]="cardName"
+        <mat-form-field appearance="outline" class="form-field-full">
+          <mat-label>Nombre del titular</mat-label>
+          <input matInput id="cardName" type="text" [(ngModel)]="cardName"
                  placeholder="Como aparece en la tarjeta" autocomplete="cc-name" />
-        </div>
+          <mat-icon matPrefix>person</mat-icon>
+        </mat-form-field>
 
         <div class="form-row">
-          <div class="form-group half">
-            <label for="cardExpiry">Vencimiento</label>
-            <input id="cardExpiry" type="text" [(ngModel)]="cardExpiry"
+          <mat-form-field appearance="outline" class="form-field-half">
+            <mat-label>Vencimiento</mat-label>
+            <input matInput id="cardExpiry" type="text" [(ngModel)]="cardExpiry"
                    (input)="formatExpiry()" placeholder="MM/AA"
                    maxlength="5" autocomplete="cc-exp" />
-          </div>
-          <div class="form-group half">
-            <label for="cardCvc">CVC</label>
-            <input id="cardCvc" type="text" [(ngModel)]="cardCvc"
+            <mat-icon matPrefix>calendar_today</mat-icon>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="form-field-half">
+            <mat-label>CVC</mat-label>
+            <input matInput id="cardCvc" type="text" [(ngModel)]="cardCvc"
                    placeholder="123" maxlength="4" autocomplete="cc-csc" />
-          </div>
+            <mat-icon matPrefix>lock</mat-icon>
+          </mat-form-field>
         </div>
 
         <p class="form-error" *ngIf="cardError">{{ cardError }}</p>
 
         <div class="form-actions">
           <button mat-stroked-button class="btn-back" (click)="goBackToPlans()">Volver</button>
-          <button mat-flat-button class="btn-pay" [disabled]="!isFormValid()" (click)="processPayment()">
+          <button mat-raised-button color="primary" class="btn-pay" [disabled]="!isFormValid()" (click)="processPayment()">
             Pagar $346.84 MXN
           </button>
         </div>
@@ -231,8 +236,8 @@
           </p>
           <div class="cancel-actions">
             <button mat-stroked-button (click)="toggleCancelConfirm()">Conservar plan</button>
-            <button mat-flat-button class="btn-cancel-confirm" (click)="cancelPremium()" [disabled]="isLoading">
-              <span *ngIf="!isLoading">Confirmar cancelacion</span>
+            <button mat-raised-button color="warn" class="btn-cancel-confirm" (click)="cancelPremium()" [disabled]="isLoading">
+              <span *ngIf="!isLoading">Confirmar cancelación</span>
               <mat-spinner diameter="20" *ngIf="isLoading"></mat-spinner>
             </button>
           </div>

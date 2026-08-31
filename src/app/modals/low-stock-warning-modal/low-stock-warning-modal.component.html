@@ -1,6 +1,11 @@
-<div class="warning-header">
-  <mat-icon color="warn">warning</mat-icon>
-  <h1 mat-dialog-title>Advertencia de Stock Bajo</h1>
+<div class="warning-header" style="display: flex; justify-content: space-between; align-items: center;">
+  <div style="display: flex; align-items: center; gap: 8px;">
+    <mat-icon color="warn">warning</mat-icon>
+    <h1 mat-dialog-title style="margin: 0; padding: 0;">Advertencia de Stock Bajo</h1>
+  </div>
+  <button mat-icon-button (click)="onOkClick()" tabindex="-1" class="close-btn" style="color: var(--talavera-muted);">
+    <mat-icon>close</mat-icon>
+  </button>
 </div>
 
 <div mat-dialog-content>

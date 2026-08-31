@@ -20,15 +20,15 @@ $color-premium-accent: var(--talavera-blue);
   text-align: center;
 
   h1 {
-    font-size: 1.75rem;
-    font-weight: 600;
-    margin: 0 0 6px;
+    font-size: 2rem;
+    font-weight: 700;
+    margin: 0 0 4px;
     color: $color-text;
   }
 
   .page-subtitle {
     color: $color-muted;
-    font-size: 0.95rem;
+    font-size: 1rem;
     margin: 0;
   }
 }
@@ -159,19 +159,6 @@ $color-premium-accent: var(--talavera-blue);
 
   .plan-btn {
     width: 100%;
-    padding: 12px 0;
-    font-size: 0.9rem;
-    border-radius: 8px;
-  }
-
-  .primary-btn {
-    background: $color-premium-accent;
-    color: white;
-    font-weight: 600;
-
-    &:hover {
-      background: color-mix(in srgb, #6366f1, black 6%);
-    }
   }
 }
 
@@ -252,44 +239,11 @@ $color-premium-accent: var(--talavera-blue);
   }
 }
 
-.form-group {
-  margin-bottom: 16px;
-
-  label {
-    display: block;
-    font-size: 0.8rem;
-    color: $color-muted;
-    margin-bottom: 6px;
-    font-weight: 500;
-  }
-
-  input {
-    width: 100%;
-    padding: 10px 14px;
-    background: rgba(11, 47, 107, 0.05);
-    border: 1px solid $color-border;
-    border-radius: 8px;
-    color: $color-text;
-    font-size: 0.9rem;
-    outline: none;
-    transition: border-color 0.2s;
-    box-sizing: border-box;
-
-    &:focus {
-      border-color: $color-premium-accent;
-    }
-
-    &::placeholder {
-      color: rgba(148, 163, 184, 0.4);
-    }
-  }
-}
-
 .form-row {
   display: flex;
   gap: 16px;
 
-  .half {
+  .form-field-half {
     flex: 1;
   }
 }
@@ -307,21 +261,6 @@ $color-premium-accent: var(--talavera-blue);
 
   .btn-back {
     flex: 0 0 auto;
-    border-radius: 8px;
-  }
-
-  .btn-pay {
-    flex: 1;
-    padding: 12px 0;
-    background: $color-premium-accent;
-    color: white;
-    font-weight: 600;
-    border-radius: 8px;
-    font-size: 0.9rem;
-
-    &:disabled {
-      opacity: 0.4;
-    }
   }
 }
 
@@ -487,12 +426,7 @@ $color-premium-accent: var(--talavera-blue);
   padding: 20px 24px;
 }
 
-.btn-cancel-trigger {
-  color: $color-muted;
-  border-color: $color-border;
-  font-size: 0.85rem;
-  border-radius: 8px;
-}
+
 
 .cancel-confirm {
   .cancel-warning {
@@ -506,26 +440,10 @@ $color-premium-accent: var(--talavera-blue);
     border-left: 3px solid $color-danger;
   }
 }
-
 .cancel-actions {
   display: flex;
   gap: 12px;
-
-  button {
-    border-radius: 8px;
-  }
-
-  .btn-cancel-confirm {
-    background: $color-danger;
-    color: white;
-    font-weight: 600;
-
-    &:disabled {
-      opacity: 0.5;
-    }
-  }
 }
-
 .processing-view {
   display: flex;
   justify-content: center;

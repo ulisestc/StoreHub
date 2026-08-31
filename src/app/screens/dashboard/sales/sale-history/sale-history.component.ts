@@ -76,7 +76,8 @@ export class SaleHistoryComponent implements OnInit {
       width: '700px',
       maxWidth: '95vw',
       data: sale,
-      panelClass: 'sale-detail-dialog'
+      panelClass: 'sale-detail-dialog',
+      autoFocus: false
     });
   }
 

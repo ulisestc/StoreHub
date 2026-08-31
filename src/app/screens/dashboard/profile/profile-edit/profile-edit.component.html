@@ -92,7 +92,9 @@
             <mat-form-field appearance="outline" class="full-width">
               <mat-label>Confirmar Nueva Contraseña</mat-label>
               <input matInput [type]="hideConfirm ? 'password' : 'text'" formControlName="confirmPassword" required>
-
+              <button mat-icon-button matSuffix (click)="hideConfirm = !hideConfirm" type="button">
+                <mat-icon>{{hideConfirm ? 'visibility_off' : 'visibility'}}</mat-icon>
+              </button>
               <mat-error *ngIf="passwordForm.get('confirmPassword')?.hasError('passwordsNotMatching')">
                 Las contraseñas no coinciden.
               </mat-error>
@@ -100,7 +102,7 @@
           </div>
 
           <div class="form-actions">
-            <button mat-stroked-button color="warn" type="submit" [disabled]="passwordForm.invalid">
+            <button mat-raised-button color="primary" type="submit" [disabled]="passwordForm.invalid">
               Actualizar Contraseña
             </button>
           </div>

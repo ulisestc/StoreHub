@@ -7,7 +7,7 @@ $color-success: #4ade80;$color-border: var(--talavera-surface);
   padding: 24px 24px 20px;
   background: var(--talavera-surface);
 
-  mat-icon {
+  .header-icon {
     font-size: 40px;
     width: 40px;
     height: 40px;
@@ -32,11 +32,11 @@ $color-success: #4ade80;$color-border: var(--talavera-surface);
 }
 
 .total-amount {
+  font-family: 'DM Sans', sans-serif;
   font-size: 2.5rem;
   font-weight: 700;
-  margin: 0 0 16px 0;
+  margin: 8px 0 16px 0;
   color: $color-success;
-  text-shadow: 0 0 20px rgba($color-success, 0.3);
 }
 
 ::ng-deep .mat-mdc-dialog-container .mat-mdc-dialog-surface {

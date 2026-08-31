@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 
 import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-confirm-delete-modal',
@@ -10,7 +11,8 @@ import { MatButtonModule } from '@angular/material/button';
   imports: [
     CommonModule,
     MatDialogModule,
-    MatButtonModule
+    MatButtonModule,
+    MatIconModule
   ],
   templateUrl: './confirm-delete-modal.component.html',
   styleUrl: './confirm-delete-modal.component.scss'

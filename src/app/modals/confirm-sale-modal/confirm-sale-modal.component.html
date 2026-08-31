@@ -1,11 +1,16 @@
-<div class="confirm-sale-header">
-  <mat-icon color="primary">payment</mat-icon>
-  <h1 mat-dialog-title>Confirmar Venta</h1>
+<div class="confirm-sale-header" style="display: flex; justify-content: space-between; align-items: center;">
+  <div style="display: flex; align-items: center; gap: 8px;">
+    <mat-icon color="primary" class="header-icon">payment</mat-icon>
+    <h1 style="margin: 0; padding: 0; line-height: 1; display: flex; align-items: center;">Confirmar Venta</h1>
+  </div>
+  <button mat-icon-button (click)="onCancel()" tabindex="-1" class="close-btn" style="color: var(--talavera-muted); margin-right: -8px;">
+    <mat-icon>close</mat-icon>
+  </button>
 </div>
 
 <div mat-dialog-content>
   <p class="total-display">Total a Pagar:</p>
-  <h2 class="total-amount">{{ data.total | currency:'USD':'symbol':'1.2-2' }}</h2>
+  <div class="total-amount">{{ data.total | currency:'USD':'symbol':'1.2-2' }}</div>
   <p>¿Deseas registrar esta venta?</p>
 </div>
 

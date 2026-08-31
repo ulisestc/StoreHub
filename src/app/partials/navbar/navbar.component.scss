@@ -49,9 +49,7 @@ img.brand-icon {
 }
 
 .user-btn mat-icon {
-  width: 30px;
-  height: 30px;
-  font-size: 30px;
+  transform: scale(1.25); /* Scales from 24px to 30px without breaking hover ripple alignment */
 }
 
 ::ng-deep .user-menu .mat-mdc-menu-content {

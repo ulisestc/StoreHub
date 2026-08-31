@@ -1,6 +1,9 @@
 <div class="modal-container">
-  <div class="modal-header">
-    <h1 mat-dialog-title>Registrar Ajuste</h1>
+  <div style="display: flex; justify-content: space-between; align-items: center; padding: 24px 24px 0 24px;">
+    <h1 style="margin: 0; padding: 0; font-size: 1.5rem; font-weight: 700; color: var(--talavera-ink); line-height: 1; display: flex; align-items: center;">Registrar Ajuste</h1>
+    <button mat-icon-button (click)="onCancel()" tabindex="-1" style="color: var(--talavera-muted); margin-right: -8px;">
+      <mat-icon>close</mat-icon>
+    </button>
   </div>
 
   <div mat-dialog-content>
@@ -8,6 +11,7 @@
 
       <mat-form-field appearance="outline" class="form-field-full">
         <mat-label>Producto</mat-label>
+        <mat-icon matPrefix>inventory_2</mat-icon>
         <mat-select formControlName="producto" required>
           <mat-option>
             <ngx-mat-select-search [formControl]="searchControl" placeholderLabel="Buscar por nombre o SKU..." noEntriesFoundLabel="No se encontraron productos"></ngx-mat-select-search>
@@ -16,23 +20,22 @@
             {{ prod.name }} (Stock: {{ prod.stock }})
           </mat-option>
         </mat-select>
-        <mat-icon matPrefix>inventory_2</mat-icon>
       </mat-form-field>
 
       <mat-form-field appearance="outline" class="form-field-full">
         <mat-label>Tipo de Movimiento</mat-label>
+        <mat-icon matPrefix>swap_vert</mat-icon>
         <mat-select formControlName="tipo_movimiento" required>
           <mat-option *ngFor="let tipo of tiposMovimiento" [value]="tipo.value">
             {{ tipo.label }}
           </mat-option>
         </mat-select>
-        <mat-icon matPrefix>swap_vert</mat-icon>
       </mat-form-field>
 
       <mat-form-field appearance="outline" class="form-field-full">
         <mat-label>Cantidad</mat-label>
-        <input matInput type="number" formControlName="cantidad" required min="1">
         <mat-icon matPrefix>numbers</mat-icon>
+        <input matInput type="number" formControlName="cantidad" required min="1">
       </mat-form-field>
 
     </form>

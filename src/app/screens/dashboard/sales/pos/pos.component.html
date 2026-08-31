@@ -200,7 +200,7 @@
             <span class="total-amount">{{ totalVenta | currency }}</span>
           </div>
 
-          <button mat-raised-button class="pay-btn" [disabled]="ticketItems.length === 0" (click)="onConfirmSale()">
+          <button mat-raised-button color="primary" class="pay-btn" [disabled]="ticketItems.length === 0" (click)="onConfirmSale()">
             <mat-icon>payments</mat-icon>
             COBRAR
           </button>

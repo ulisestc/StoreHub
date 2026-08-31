@@ -248,12 +248,19 @@ h6,
 .mat-mdc-outlined-button {
   border-color: var(--talavera-blue) !important;
   color: var(--talavera-blue) !important;
-  border-radius: 14px !important;
+  border-radius: 8px !important;
+  font-family: 'DM Sans', sans-serif !important;
+  font-weight: 600 !important;
+  height: 48px !important;
+  transition: all 0.3s ease !important;
 }
 
 .mat-mdc-button {
   color: var(--talavera-blue) !important;
-  border-radius: 12px !important;
+  border-radius: 8px !important;
+  font-family: 'DM Sans', sans-serif !important;
+  font-weight: 600 !important;
+  height: 48px !important;
 }
 
 .mat-mdc-icon-button {
@@ -304,10 +311,34 @@ h6,
   background: rgba(23, 74, 156, 0.07) !important;
 }
 
-/* Snackbar */
-
+/* Snackbar (Toast Notifications) */
 .mat-mdc-snack-bar-container {
-  background: var(--talavera-blue-dark) !important;
+  & .mdc-snackbar__surface {
+    background-color: var(--talavera-surface) !important;
+    border: 1px solid var(--talavera-line) !important;
+    border-radius: 16px !important;
+    box-shadow: 0 10px 40px rgba(11, 47, 107, 0.12) !important;
+    padding: 4px 8px !important;
+  }
+
+  & .mdc-snackbar__label {
+    color: var(--talavera-ink) !important;
+    font-family: 'DM Sans', sans-serif !important;
+    font-size: 15px !important;
+    font-weight: 500 !important;
+    letter-spacing: 0.2px !important;
+  }
+
+  & .mat-mdc-button.mat-mdc-snack-bar-action {
+    color: var(--talavera-accent) !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.5px !important;
+    border-radius: 8px !important;
+    
+    &:hover {
+      background-color: rgba(212, 106, 78, 0.08) !important; /* talavera-accent with opacity */
+    }
+  }
 }
 
 /* Badges */

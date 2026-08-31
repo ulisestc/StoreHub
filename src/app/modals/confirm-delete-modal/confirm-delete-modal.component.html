@@ -1,4 +1,9 @@
-<h1 mat-dialog-title>{{ data.title }}</h1>
+<div style="display: flex; justify-content: space-between; align-items: center; padding: 24px 24px 0 24px;">
+  <h1 style="margin: 0; padding: 0; font-size: 1.5rem; font-weight: 700; color: var(--talavera-ink); line-height: 1; display: flex; align-items: center;">{{ data.title }}</h1>
+  <button mat-icon-button (click)="onNoClick()" tabindex="-1" style="color: var(--talavera-muted); margin-right: -8px;">
+    <mat-icon>close</mat-icon>
+  </button>
+</div>
 
 <div mat-dialog-content>
   <p>{{ data.message }}</p>
