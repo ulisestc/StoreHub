@@ -79,11 +79,11 @@
 
       <!-- Premium / Mi Plan Link -->
       <a mat-list-item routerLink="/dashboard/premium" routerLinkActive="active" class="premium-link"
-        [ngStyle]="{'margin-top': '16px', 'background': isPremium ? 'rgba(99, 102, 241, 0.08)' : 'rgba(99, 102, 241, 0.08)', 'border-left': '3px solid #6366f1'}">
-        <mat-icon matListItemIcon style="color: #6366f1;">
+        [ngStyle]="{'margin-top': '16px', 'background': 'rgba(212, 106, 78, 0.1)', 'border-left': '3px solid var(--talavera-accent)'}">
+        <mat-icon matListItemIcon style="color: var(--talavera-accent);">
           {{ isPremium ? 'verified' : 'workspace_premium' }}
         </mat-icon>
-        <span matListItemTitle style="color: #a5b4fc; font-weight: 500;">
+        <span matListItemTitle style="color: #ffffff; font-weight: 600;">
           {{ isPremium ? 'Mi Plan' : 'Mejorar Plan' }}
         </span>
       </a>
