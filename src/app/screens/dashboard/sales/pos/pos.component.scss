@@ -1,5 +1,5 @@
 $color-border: var(--talavera-line);
-$color-success: #4ade80;
+$color-success: #d46a4e;
 
 .pos-container {
   min-height: calc(100vh - 100px);
@@ -283,7 +283,7 @@ $color-success: #4ade80;
 
     .product-stock {
       font-size: 0.8rem;
-      color: #4ade80;
+      color: #d46a4e;
       font-weight: 500;
 
       &.low-stock {
