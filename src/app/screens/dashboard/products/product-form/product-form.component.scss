@@ -130,3 +130,53 @@ $color-success: #d46a4e;
     }
   }
 }
+
+.scanner-wrapper {
+  width: 100%;
+  max-width: 400px;
+  background: #000 !important;
+  border-radius: 8px;
+  overflow: hidden;
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 8px auto 24px auto;
+  min-height: 250px;
+
+  .close-scanner-btn {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    z-index: 10;
+    color: white;
+    background: rgba(0, 0, 0, 0.5);
+
+    &:hover {
+      background: rgba(0, 0, 0, 0.8);
+    }
+  }
+
+  ::ng-deep {
+    zxing-scanner {
+      display: block;
+      width: 100%;
+      background: #000 !important;
+    }
+
+    video {
+      width: 100% !important;
+      height: auto !important;
+      display: block !important;
+      background: #000 !important;
+      position: relative;
+      z-index: 2;
+      transform: translateZ(0);
+    }
+
+    canvas {
+      display: none !important;
+    }
+  }
+}

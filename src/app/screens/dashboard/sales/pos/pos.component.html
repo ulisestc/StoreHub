@@ -35,17 +35,23 @@
 
       <!-- Escáner Card -->
       <mat-card class="pos-card scanner-card">
-        <mat-card-header style="display: flex; justify-content: space-between; align-items: center;">
-          <mat-card-title style="display: flex; align-items: center; gap: 8px;">
-            <mat-icon>qr_code_scanner</mat-icon>
+        <mat-card-header>
+          <mat-card-title>
+            <mat-icon>barcode_reader</mat-icon>
             Escáner de Productos
           </mat-card-title>
-          <button mat-icon-button (click)="toggleCamera()" [matTooltip]="cameraEnabled ? 'Apagar cámara' : 'Encender cámara'">
-            <mat-icon>{{ cameraEnabled ? 'videocam_off' : 'videocam' }}</mat-icon>
+          <mat-card-subtitle *ngIf="!cameraEnabled" style="margin-top: 4px; color: var(--talavera-muted);">Lector físico en espera.</mat-card-subtitle>
+
+          <button *ngIf="!cameraEnabled" mat-icon-button color="primary" (click)="toggleCamera()" title="Encender cámara">
+            <mat-icon>videocam</mat-icon>
+          </button>
+          <button *ngIf="cameraEnabled" mat-icon-button color="warn" (click)="toggleCamera()" title="Apagar cámara">
+            <mat-icon>videocam_off</mat-icon>
           </button>
         </mat-card-header>
-        <mat-card-content *ngIf="cameraEnabled" style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding-top: 10px;">
-          <div class="scanner-wrapper" style="width: 100%; max-width: 400px; margin-bottom: 16px;">
+        
+        <mat-card-content *ngIf="cameraEnabled" style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px;">
+          <div class="scanner-wrapper" style="width: 100%; max-width: 400px;">
             <div *ngIf="isCheckingCamera" style="position: absolute; z-index: 1; color: #fff; text-align: center; width: 100%;">
               <mat-spinner diameter="30" style="margin: 0 auto 10px auto;"></mat-spinner>
               <p style="margin: 0; font-size: 0.9rem;">Cargando cámara...</p>
@@ -67,18 +73,6 @@
               style="position: relative; z-index: 2;">
             </zxing-scanner>
           </div>
-          <button mat-button color="warn" (click)="toggleCamera()">
-            <mat-icon>videocam_off</mat-icon> Apagar cámara
-          </button>
-        </mat-card-content>
-        <mat-card-content *ngIf="!cameraEnabled" style="text-align: center; padding: 32px 20px;">
-          <mat-icon style="font-size: 64px; height: 64px; width: 64px; color: var(--talavera-blue); margin-bottom: 16px;">barcode_reader</mat-icon>
-          <h3 style="color: var(--talavera-ink); margin: 0 0 8px 0; font-size: 1.25rem;">Esperando código de barras...</h3>
-          <p style="color: var(--talavera-muted); margin: 0 0 24px 0;">Pasa tu escáner físico. El sistema leerá el código como si lo escribieras en el teclado.</p>
-          <button mat-stroked-button color="primary" (click)="toggleCamera()">
-            <mat-icon>videocam</mat-icon>
-            ¿No cuentas con escáner? Activa tu cámara
-          </button>
         </mat-card-content>
       </mat-card>
 

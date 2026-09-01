@@ -10,20 +10,20 @@
 
     <mat-form-field appearance="outline" class="form-field-full">
       <mat-label>Nombre Completo</mat-label>
+      <mat-icon matPrefix>person</mat-icon>
       <input matInput formControlName="name" required placeholder="Ej. Juan Pérez">
-      <mat-icon matSuffix>person</mat-icon>
     </mat-form-field>
 
     <mat-form-field appearance="outline" class="form-field-full">
       <mat-label>Correo Electrónico</mat-label>
+      <mat-icon matPrefix>email</mat-icon>
       <input matInput type="email" formControlName="email" required placeholder="ejemplo@correo.com">
-      <mat-icon matSuffix>email</mat-icon>
     </mat-form-field>
 
     <mat-form-field appearance="outline" class="form-field-full">
       <mat-label>Teléfono</mat-label>
+      <mat-icon matPrefix>phone</mat-icon>
       <input matInput type="tel" formControlName="phone" required placeholder="555-1234">
-      <mat-icon matSuffix>phone</mat-icon>
     </mat-form-field>
 
   </form>
@@ -31,7 +31,7 @@
 
 <div mat-dialog-actions align="end">
   <button mat-button (click)="onCancel()">Cancelar</button>
-  <button mat-raised-button color="primary" (click)="onSave()" [disabled]="clientForm.invalid">
+  <button mat-flat-button color="primary" (click)="onSave()" [disabled]="clientForm.invalid">
     Guardar Cliente
   </button>
 </div>

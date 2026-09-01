@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angular/forms';
@@ -72,8 +72,66 @@ export class ProductFormComponent implements OnInit {
   showScanner = false;
   allowedFormats = [ BarcodeFormat.QR_CODE, BarcodeFormat.EAN_13, BarcodeFormat.CODE_128, BarcodeFormat.UPC_A ];
 
+  isCheckingCamera = false;
+  hasDevices = false;
+  availableDevices: MediaDeviceInfo[] = [];
+  currentDevice: MediaDeviceInfo | undefined = undefined;
+
+  private barcodeBuffer = '';
+  private lastScanTime = 0;
+  lastScannedCode = '';
+
   toggleScanner() {
     this.showScanner = !this.showScanner;
+    if (this.showScanner) {
+      this.isCheckingCamera = true;
+    }
+  }
+
+  camerasFound(devices: MediaDeviceInfo[]) {
+    this.isCheckingCamera = false;
+    this.hasDevices = devices && devices.length > 0;
+    this.availableDevices = devices;
+    
+    if (this.hasDevices && !this.currentDevice) {
+      const backCamera = devices.find(d => d.label.toLowerCase().includes('back') || d.label.toLowerCase().includes('trasera'));
+      this.currentDevice = backCamera || devices[0];
+    }
+  }
+
+  camerasNotFound() {
+    this.isCheckingCamera = false;
+    this.hasDevices = false;
+    this.availableDevices = [];
+    this.currentDevice = undefined;
+    this.snackBar.open('No se encontraron cámaras o no se dio permiso.', 'Cerrar', { duration: 3000, panelClass: ['snackbar-error'] });
+  }
+
+  @HostListener('window:keydown', ['$event'])
+  handleKeyboardEvent(event: KeyboardEvent) {
+    const target = event.target as HTMLElement;
+    if (target && (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.isContentEditable)) {
+      return;
+    }
+
+    const now = Date.now();
+    if (now - this.lastScanTime > 50) {
+      this.barcodeBuffer = '';
+    }
+    
+    this.lastScanTime = now;
+
+    if (event.key === 'Enter') {
+      if (this.barcodeBuffer.length > 2) { 
+        this.scanSuccess(this.barcodeBuffer);
+        this.barcodeBuffer = '';
+      }
+      return;
+    }
+
+    if (event.key.length === 1) {
+      this.barcodeBuffer += event.key;
+    }
   }
 
   scanSuccess(resultString: string) {

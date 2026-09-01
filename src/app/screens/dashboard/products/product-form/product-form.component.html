@@ -28,31 +28,43 @@
           </mat-form-field>
 
           <mat-form-field appearance="outline" class="form-field">
-            <mat-label>Código de Barras (SKU)</mat-label>
-            <input matInput formControlName="sku">
-            <mat-icon matPrefix>qr_code</mat-icon>
-            <button mat-icon-button matSuffix type="button" (click)="toggleScanner()" title="Escanear código">
-              <mat-icon>qr_code_scanner</mat-icon>
+            <mat-label>Código de Barras</mat-label>
+            <input matInput formControlName="sku" placeholder="Escanea o escribe el código">
+            <mat-icon matPrefix>barcode_reader</mat-icon>
+            <button mat-icon-button matSuffix type="button" (click)="toggleScanner()" [title]="showScanner ? 'Apagar cámara' : 'Encender cámara'">
+              <mat-icon>{{ showScanner ? 'videocam_off' : 'videocam' }}</mat-icon>
             </button>
+            <mat-hint>Puedes usar tu escáner físico en cualquier momento.</mat-hint>
             <mat-error *ngIf="hasError('sku')">
               {{ getErrorMessage('sku') }}
             </mat-error>
           </mat-form-field>
         </div>
 
-        <div *ngIf="showScanner" style="display: flex; flex-direction: column; align-items: center; background: #000; max-width: 400px; margin: 0 auto 20px;">
-          <div style="width: 100%; display: flex; justify-content: flex-end; background: #333; padding: 4px;">
-            <button mat-icon-button type="button" (click)="toggleScanner()" style="color: white;">
-              <mat-icon>close</mat-icon>
-            </button>
+        <!-- Escáner de Código de Barras -->
+        <div class="scanner-wrapper" *ngIf="showScanner">
+          
+          <div *ngIf="isCheckingCamera" style="position: absolute; z-index: 1; color: #fff; text-align: center; width: 100%;">
+            <mat-spinner diameter="30" style="margin: 0 auto 10px auto;"></mat-spinner>
+            <p style="margin: 0; font-size: 0.9rem;">Cargando cámara...</p>
           </div>
+          
+          <div *ngIf="!isCheckingCamera && !hasDevices" style="position: absolute; z-index: 1; color: #fff; text-align: center; width: 100%;">
+            <mat-icon style="font-size: 32px; height: 32px; width: 32px; color: #f87171;">error_outline</mat-icon>
+            <p style="margin: 5px 0 0 0; font-size: 0.9rem;">Cámara no disponible</p>
+          </div>
+
           <zxing-scanner
+            [device]="currentDevice"
             [formats]="allowedFormats"
             [tryHarder]="true"
             [autofocusEnabled]="true"
             [timeBetweenScans]="100"
             [delayBetweenScanSuccess]="100"
-            (scanSuccess)="scanSuccess($event)">
+            (scanSuccess)="scanSuccess($event)"
+            (camerasFound)="camerasFound($event)"
+            (camerasNotFound)="camerasNotFound()"
+            style="position: relative; z-index: 2;">
           </zxing-scanner>
         </div>
 

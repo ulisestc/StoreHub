@@ -211,7 +211,6 @@ export class HomeComponent implements OnInit {
     { id: 'corte', icon: 'point_of_sale', title: 'Corte de Caja', desc: 'Apertura / Cierre', action: 'cash-register', roles: ['Admin', 'Cajero'], active: true },
     { id: 'products', icon: 'inventory_2', title: 'Productos', desc: 'Gestionar catálogo', route: '/dashboard/products', roles: ['Admin'], active: true },
     { id: 'clients', icon: 'people', title: 'Clientes', desc: 'Base de datos', route: '/dashboard/clients', roles: ['Admin'], active: true },
-    { id: 'reports', icon: 'bar_chart', title: 'Reportes', desc: 'Ver estadísticas', route: '/dashboard/reports', roles: ['Admin'], active: true },
     { id: 'analytics', icon: 'insights', title: 'Analíticas', desc: 'Métricas clave', route: '/dashboard/analytics', roles: ['Admin'], active: true },
     { id: 'inventory', icon: 'calculate', title: 'Inventario', desc: 'Ajustes manuales', route: '/dashboard/inventory', roles: ['Admin'], active: true },
     { id: 'employees', icon: 'manage_accounts', title: 'Empleados', desc: 'Administrar cajeros', route: '/dashboard/employees', roles: ['Admin'], active: true },

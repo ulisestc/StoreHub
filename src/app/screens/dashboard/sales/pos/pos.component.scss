@@ -57,6 +57,37 @@ $color-success: #d46a4e;
   border-radius: 16px !important;
   border: 1px solid $color-border !important;
   padding: 0 !important;
+  overflow: hidden !important;
+}
+
+.scanner-card {
+  mat-card-header {
+    background-color: rgba(11, 47, 107, 0.05);
+    padding: 20px 24px;
+    border-bottom: 1px solid $color-border;
+    position: relative;
+
+    mat-card-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--talavera-ink);
+      margin: 0;
+
+      mat-icon {
+        color: var(--talavera-blue);
+      }
+    }
+
+    button {
+      position: absolute;
+      right: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+  }
 }
 
 .scanner-wrapper {
