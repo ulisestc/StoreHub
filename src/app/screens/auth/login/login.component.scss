@@ -352,9 +352,11 @@
 
 // Estilos para el snackbar de advertencia
 ::ng-deep .warning-snackbar {
-  background: linear-gradient(135deg, #ff9800 0%, #f57c00 100%) !important;
-  color: white !important;
-  box-shadow: 0 4px 12px rgba(11, 47, 107, 0.15) !important;
+  .mdc-snackbar__surface {
+    background: linear-gradient(135deg, #ff9800 0%, #f57c00 100%) !important;
+    color: white !important;
+    box-shadow: 0 4px 12px rgba(11, 47, 107, 0.15) !important;
+  }
 
   .mat-mdc-snack-bar-label {
     color: white !important;

@@ -345,14 +345,14 @@
     font-size: 64px;
     height: 64px;
     width: 64px;
-    color: #69f0ae;
+    color: var(--talavera-accent);
     margin-bottom: 24px;
   }
 
   h2 {
     background: none;
     -webkit-text-fill-color: initial;
-    color: #69f0ae;
+    color: var(--talavera-accent);
     margin-bottom: 16px;
   }
 

@@ -21,14 +21,14 @@
         </div>
         <mat-divider></mat-divider>
         <ul class="plan-features">
-          <li><mat-icon class="feat-check">check</mat-icon> Punto de Venta (POS)</li>
-          <li><mat-icon class="feat-check">check</mat-icon> Inventario basico</li>
+          <li><mat-icon class="feat-check">check</mat-icon> Punto de Venta (POS) offline</li>
+          <li><mat-icon class="feat-check">check</mat-icon> Inventario (500 productos)</li>
           <li><mat-icon class="feat-check">check</mat-icon> Historial de ventas</li>
-          <li><mat-icon class="feat-check">check</mat-icon> Gestion de empleados</li>
-          <li class="feat-disabled"><mat-icon class="feat-x">close</mat-icon> Analiticas avanzadas</li>
-          <li class="feat-disabled"><mat-icon class="feat-x">close</mat-icon> Asistente IA</li>
-          <li class="feat-disabled"><mat-icon class="feat-x">close</mat-icon> Prediccion de demanda</li>
-          <li class="feat-disabled"><mat-icon class="feat-x">close</mat-icon> Soporte prioritario</li>
+          <li><mat-icon class="feat-check">check</mat-icon> Gestión de 3 Empleados</li>
+          <li class="feat-disabled"><mat-icon class="feat-x">close</mat-icon> Analíticas Avanzadas (BI)</li>
+          <li class="feat-disabled"><mat-icon class="feat-x">close</mat-icon> Cross-Selling Predictivo</li>
+          <li class="feat-disabled"><mat-icon class="feat-x">close</mat-icon> Análisis ABC y Stock Seguridad</li>
+          <li class="feat-disabled"><mat-icon class="feat-x">close</mat-icon> Asistente IA (Chatbot)</li>
         </ul>
         <div class="plan-card-footer">
           <button mat-stroked-button disabled class="plan-btn">Plan Actual</button>
@@ -42,20 +42,19 @@
           <h2 class="plan-name">Premium</h2>
           <p class="plan-description">Para negocios que quieren crecer.</p>
           <div class="plan-price">
-            <span class="price-amount">$299</span>
+            <span class="price-amount">$99</span>
             <span class="price-period">MXN / mes</span>
           </div>
         </div>
         <mat-divider></mat-divider>
         <ul class="plan-features">
-          <li><mat-icon class="feat-check">check</mat-icon> Todo lo del plan Starter</li>
-          <li><mat-icon class="feat-check">check</mat-icon> Rentabilidad por producto</li>
-          <li><mat-icon class="feat-check">check</mat-icon> Analiticas avanzadas (BI)</li>
-          <li><mat-icon class="feat-check">check</mat-icon> Asistente inteligente (IA)</li>
-          <li><mat-icon class="feat-check">check</mat-icon> Prediccion de demanda</li>
-          <li><mat-icon class="feat-check">check</mat-icon> Comparacion de periodos</li>
+          <li><mat-icon class="feat-check">check</mat-icon> Todo lo de Starter</li>
+          <li><mat-icon class="feat-check">check</mat-icon> Productos y Empleados Ilimitados</li>
+          <li><mat-icon class="feat-check">check</mat-icon> Analíticas Avanzadas (BI)</li>
+          <li><mat-icon class="feat-check">check</mat-icon> Cross-Selling Predictivo en POS</li>
+          <li><mat-icon class="feat-check">check</mat-icon> Análisis ABC y Stock de Seguridad</li>
+          <li><mat-icon class="feat-check">check</mat-icon> Asistente Inteligente (IA)</li>
           <li><mat-icon class="feat-check">check</mat-icon> Soporte prioritario 24/7</li>
-          <li><mat-icon class="feat-check">check</mat-icon> Actualizaciones anticipadas</li>
         </ul>
         <div class="plan-card-footer">
           <button mat-raised-button color="primary" class="plan-btn primary-btn" (click)="openCheckout()">
@@ -80,16 +79,16 @@
         <mat-divider></mat-divider>
         <div class="summary-row">
           <span>Plan Premium (mensual)</span>
-          <span>$299.00</span>
+          <span>$99.00</span>
         </div>
         <div class="summary-row">
           <span>IVA (16%)</span>
-          <span>$47.84</span>
+          <span>$15.84</span>
         </div>
         <mat-divider></mat-divider>
         <div class="summary-row total">
           <span>Total</span>
-          <span>$346.84 MXN</span>
+          <span>$114.84 MXN</span>
         </div>
         <p class="summary-note">Se renovara automaticamente cada mes. Puedes cancelar en cualquier momento.</p>
       </div>
@@ -140,7 +139,7 @@
         <div class="form-actions">
           <button mat-stroked-button class="btn-back" (click)="goBackToPlans()">Volver</button>
           <button mat-raised-button color="primary" class="btn-pay" [disabled]="!isFormValid()" (click)="processPayment()">
-            Pagar $346.84 MXN
+            Pagar $114.84 MXN
           </button>
         </div>
 
@@ -184,7 +183,7 @@
           <h2>Plan Premium</h2>
         </div>
         <div class="manage-price">
-          <span class="price-amount">$299</span>
+          <span class="price-amount">$99</span>
           <span class="price-period">MXN / mes</span>
         </div>
       </div>
@@ -213,12 +212,12 @@
       <div class="manage-includes">
         <h4>Tu plan incluye:</h4>
         <div class="includes-grid">
-          <span><mat-icon>check</mat-icon> Analiticas avanzadas</span>
+          <span><mat-icon>check</mat-icon> Productos ilimitados</span>
+          <span><mat-icon>check</mat-icon> Analíticas avanzadas (BI)</span>
+          <span><mat-icon>check</mat-icon> Cross-Selling Predictivo</span>
+          <span><mat-icon>check</mat-icon> Análisis ABC (Pareto)</span>
           <span><mat-icon>check</mat-icon> Asistente IA</span>
-          <span><mat-icon>check</mat-icon> Prediccion de demanda</span>
-          <span><mat-icon>check</mat-icon> Rentabilidad por producto</span>
           <span><mat-icon>check</mat-icon> Soporte prioritario</span>
-          <span><mat-icon>check</mat-icon> Actualizaciones anticipadas</span>
         </div>
       </div>
 

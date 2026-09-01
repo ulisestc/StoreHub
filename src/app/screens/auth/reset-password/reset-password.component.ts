@@ -9,13 +9,15 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { AuthService } from '../../../services/auth.service';
+import { FooterComponent } from '../../../partials/footer/footer.component';
 
 @Component({
   selector: 'app-reset-password',
   standalone: true,
   imports: [
     CommonModule, ReactiveFormsModule, RouterModule, MatCardModule,
-    MatFormFieldModule, MatInputModule, MatButtonModule, MatIconModule, MatSnackBarModule
+    MatFormFieldModule, MatInputModule, MatButtonModule, MatIconModule, MatSnackBarModule,
+    FooterComponent
   ],
   templateUrl: './reset-password.component.html',
   styleUrls: ['./reset-password.component.scss']
