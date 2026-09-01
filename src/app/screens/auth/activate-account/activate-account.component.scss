@@ -61,8 +61,8 @@
     }
     
     .state-success {
-      mat-icon { color: #69f0ae; }
-      h2 { color: #69f0ae; }
+      mat-icon { color: var(--talavera-accent); }
+      h2 { color: var(--talavera-accent); }
       
       button {
         padding: 8px 32px;
