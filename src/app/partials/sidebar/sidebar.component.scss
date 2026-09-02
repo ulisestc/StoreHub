@@ -6,7 +6,7 @@
   padding: 18px 14px;
 
   /* Smooth solid gradient based on Classic Blue palette */
-  background: linear-gradient(165deg, #071e47 0%, #0b2f6b 45%, #2a5c9a 100%) !important;
+  background: var(--talavera-blue) !important;
 
   color: #ffffff !important;
   border-right: none !important;
