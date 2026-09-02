@@ -11,6 +11,9 @@ $color-success: #d46a4e;
 
 .pos-header {
   margin-bottom: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 
   h1 {
     font-size: 2rem;

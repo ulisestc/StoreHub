@@ -1,5 +1,5 @@
 <div class="success-modal-container" style="position: relative;">
-  <button mat-icon-button (click)="onSkip()" tabindex="-1" class="close-btn" style="position: absolute; top: 8px; right: 8px; color: var(--talavera-muted);">
+  <button mat-icon-button (click)="onClose()" tabindex="-1" class="close-btn" style="position: absolute; top: 8px; right: 8px; color: var(--talavera-muted);">
     <mat-icon>close</mat-icon>
   </button>
   <div class="modal-header">
@@ -20,13 +20,22 @@
   </div>
 
   <div class="modal-footer">
-    <button mat-stroked-button (click)="onSkip()" [disabled]="isSending" class="skip-btn">
-      Omitir y continuar
+    <button mat-stroked-button (click)="onClose()" class="skip-btn">
+      Nueva Venta
     </button>
+    
+    <span class="tooltip-wrapper" matTooltip="Configura tu impresora térmica primero en el menú Hardware" matTooltipPosition="above" [matTooltipDisabled]="(isPrinterConnected$ | async) === true" [style.cursor]="(isPrinterConnected$ | async) ? 'default' : 'not-allowed'">
+      <button mat-stroked-button color="accent" (click)="printTicket()" [disabled]="!(isPrinterConnected$ | async)" class="full-width-btn">
+        <mat-icon>print</mat-icon>
+        Imprimir
+      </button>
+    </span>
+
     <button mat-raised-button color="primary" (click)="sendEmail()" [disabled]="emailForm.invalid || !emailForm.value.email || isSending" class="send-btn">
       <mat-spinner diameter="20" *ngIf="isSending" class="btn-spinner"></mat-spinner>
-      <mat-icon *ngIf="!isSending">send</mat-icon>
-      {{ isSending ? 'Enviando...' : 'Enviar Ticket' }}
+      <mat-icon [style.display]="isSending ? 'none' : 'inline-block'">send</mat-icon>
+      <span [style.display]="isSending ? 'none' : 'inline'">Enviar</span>
+      <span [style.display]="isSending ? 'inline' : 'none'">Enviando...</span>
     </button>
   </div>
 </div>
