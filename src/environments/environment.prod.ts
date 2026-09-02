@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiUrl: 'https://storehub-backend-xhr1.onrender.com/api'
+  apiUrl: 'storehubbackend-production.up.railway.app/api'
 };
