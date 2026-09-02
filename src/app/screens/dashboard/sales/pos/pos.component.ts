@@ -29,10 +29,13 @@ import { Client } from '../../../../shared/interfaces/client';
 import { OfflineSyncService } from '../../../../services/offline-sync.service';
 import { AnalyticsService, MarketBasketRule } from '../../../../services/analytics.service';
 import { AuthService } from '../../../../services/auth.service';
+import { CashRegisterService } from '../../../../services/cash-register.service';
+import { CashRegisterDialogComponent } from '../../../../components/cash-register-dialog/cash-register-dialog.component';
 import { ZXingScannerModule } from '@zxing/ngx-scanner';
 import { BarcodeFormat } from '@zxing/library';
 import { Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-pos',
@@ -103,6 +106,9 @@ export class PosComponent implements OnInit {
   private analyticsService = inject(AnalyticsService);
   private authService = inject(AuthService);
   private dialog = inject(MatDialog);
+  private cashRegisterService = inject(CashRegisterService);
+  private router = inject(Router);
+  isCashRegisterOpen: boolean = false;
   LOW_STOCK_THRESHOLD = 5;
   private searchSubject = new Subject<string>();
 
@@ -111,6 +117,7 @@ export class PosComponent implements OnInit {
   });
 
   ngOnInit(): void {
+    this.checkCashRegisterStatus();
     this.loadAllProducts();
     this.loadClients();
     this.loadCategories();
@@ -129,6 +136,39 @@ export class PosComponent implements OnInit {
       this.searchQuery = searchTerm;
       this.currentPage = 0;
       this.loadAllProducts(0);
+    });
+  }
+
+  checkCashRegisterStatus(): void {
+    this.cashRegisterService.getCurrentSession().subscribe({
+      next: (session) => {
+        this.isCashRegisterOpen = !!session;
+        if (!this.isCashRegisterOpen) {
+          this.promptOpenCashRegister();
+        }
+      },
+      error: () => {
+        this.isCashRegisterOpen = false;
+        this.promptOpenCashRegister();
+      }
+    });
+  }
+
+  private promptOpenCashRegister(): void {
+    const dialogRef = this.dialog.open(CashRegisterDialogComponent, {
+      width: '450px',
+      disableClose: true,
+      data: { action: 'open' }
+    });
+    
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.isCashRegisterOpen = true;
+        this.showSuccess('Caja abierta exitosamente. Listo para cobrar.');
+      } else {
+        // Redirect to dashboard if they refuse to open the register
+        this.router.navigate(['/dashboard']);
+      }
     });
   }
 
@@ -379,6 +419,23 @@ export class PosComponent implements OnInit {
   onConfirmSale(): void {
     if (this.ticketItems.length === 0) return;
 
+    if (!this.isCashRegisterOpen) {
+      const dialogRef = this.dialog.open(CashRegisterDialogComponent, {
+        width: '450px',
+        disableClose: true,
+        data: { action: 'open' }
+      });
+      
+      dialogRef.afterClosed().subscribe(result => {
+        if (result) {
+          this.isCashRegisterOpen = true;
+          this.showSuccess('Caja abierta exitosamente. Procediendo con el cobro...');
+          this.onConfirmSale();
+        }
+      });
+      return;
+    }
+
     const dialogRef = this.dialog.open(ConfirmSaleModalComponent, {
       width: '400px',
       data: { total: this.totalVenta }
@@ -455,6 +512,7 @@ export class PosComponent implements OnInit {
   private finishSale(lowStockProducts: any[]): void {
     this.ticketItems = [];
     this.calculateTotal();
+    this.updateSuggestion();
     this.loadAllProducts(this.currentPage);
 
     if (lowStockProducts.length > 0) {
