@@ -85,13 +85,13 @@ export class PosComponent implements OnInit {
   
   // Physical Scanner Buffer
   private barcodeBuffer = '';
-  private lastKeyTime = 0;
+  private lastScanTime = 0;
+  private lastSuccessScanTime = 0;
+  lastScannedCode = '';
 
   hasDevices = false;
   availableDevices: MediaDeviceInfo[] = [];
   currentDevice: MediaDeviceInfo | undefined = undefined;
-  lastScannedCode = '';
-  lastScanTime = 0;
 
   private productService = inject(ProductService);
   private categoryService = inject(CategoryService);
@@ -525,12 +525,14 @@ export class PosComponent implements OnInit {
     if (!resultString) return;
 
     const now = Date.now();
-    if (resultString === this.lastScannedCode && (now - this.lastScanTime) < 2000) {
-      // Ignorar el mismo código si se escanea dentro de 2 segundos para evitar rebotes
+    if (resultString === this.lastScannedCode && (now - this.lastSuccessScanTime) < 500) {
+      // Ignorar el mismo código si se escanea dentro de 500ms para evitar rebotes,
+      // pero permitir escanear rápido múltiples artículos iguales.
       return;
     }
     
     this.lastScannedCode = resultString;
+    this.lastSuccessScanTime = now;
     // Don't update lastScanTime here because it interferes with the physical scanner's 50ms buffer tracking
     
     this.playScanSound();

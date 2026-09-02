@@ -29,12 +29,12 @@
 
           <mat-form-field appearance="outline" class="form-field">
             <mat-label>Código de Barras</mat-label>
-            <input matInput formControlName="sku" placeholder="Escanea o escribe el código">
+            <input matInput formControlName="sku" placeholder="Escanea o escribe el código" autofocus>
             <mat-icon matPrefix>barcode_reader</mat-icon>
             <button mat-icon-button matSuffix type="button" (click)="toggleScanner()" [title]="showScanner ? 'Apagar cámara' : 'Encender cámara'">
               <mat-icon>{{ showScanner ? 'videocam_off' : 'videocam' }}</mat-icon>
             </button>
-            <mat-hint>Puedes usar tu escáner físico en cualquier momento.</mat-hint>
+            <mat-hint>Escanea con tu cámara si no tienes escáner físico o no quieres digitarlo.</mat-hint>
             <mat-error *ngIf="hasError('sku')">
               {{ getErrorMessage('sku') }}
             </mat-error>
