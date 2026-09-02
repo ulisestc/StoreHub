@@ -15,6 +15,7 @@ import { ReportService } from '../../../services/report.service';
 import { MatDialog, MatDialogModule, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { FormsModule } from '@angular/forms';
 import { CashRegisterService } from '../../../services/cash-register.service';
 import { CashRegisterDialogComponent } from '../../../components/cash-register-dialog/cash-register-dialog.component';
 import { Inject } from '@angular/core';
@@ -176,6 +177,117 @@ export class WidgetConfigDialogComponent {
 }
 
 @Component({
+  selector: 'app-export-dialog',
+  standalone: true,
+  imports: [CommonModule, MatButtonModule, MatDialogModule, FormsModule, MatIconModule],
+  template: `
+    <div class="dialog-header">
+      <h2 mat-dialog-title>Exportar Reporte</h2>
+      <p class="dialog-subtitle">Selecciona el periodo que deseas exportar a Excel.</p>
+    </div>
+    
+    <mat-dialog-content>
+      <div class="month-selector-container">
+        <select [(ngModel)]="selectedMonth" class="custom-select">
+          <option value="all">Todo el Histórico</option>
+          <option *ngFor="let m of availableMonths" [value]="m.value">{{ m.label }}</option>
+        </select>
+      </div>
+      
+      <div class="info-note" *ngIf="selectedMonth === 'all'">
+        <mat-icon>info</mat-icon>
+        <p><strong>Nota:</strong> Las ventas y detalles abarcan toda la historia de la tienda. Los <strong>KPIs Financieros</strong> se calculan para los últimos 30 días. El <strong>Inventario</strong> muestra tu stock actual.</p>
+      </div>
+
+      <div class="info-note" *ngIf="selectedMonth !== 'all'">
+        <mat-icon>info</mat-icon>
+        <p><strong>Nota:</strong> Las ventas, detalles y <strong>KPIs Financieros</strong> corresponderán únicamente al mes seleccionado. El <strong>Inventario</strong> muestra tu stock actual.</p>
+      </div>
+    </mat-dialog-content>
+    
+    <mat-dialog-actions align="end" class="dialog-footer">
+      <button mat-button mat-dialog-close>Cancelar</button>
+      <button mat-raised-button color="primary" [mat-dialog-close]="selectedMonth">Descargar Excel</button>
+    </mat-dialog-actions>
+  `,
+  styles: [`
+    .dialog-header {
+      padding: 24px 24px 16px;
+      h2 { margin: 0 0 4px; color: var(--talavera-blue); font-weight: 700; font-size: 22px; }
+      .dialog-subtitle { margin: 0; color: var(--talavera-muted); font-size: 14px; }
+    }
+    mat-dialog-content { padding: 0 24px 24px !important; }
+    .month-selector-container {
+      margin-top: 8px;
+    }
+    .custom-select {
+      width: 100%;
+      padding: 12px 16px;
+      border: 1px solid var(--talavera-line, #e2e8f0);
+      border-radius: 8px;
+      font-size: 16px;
+      color: var(--talavera-ink, #1e293b);
+      background-color: var(--talavera-surface, #fff);
+      outline: none;
+      cursor: pointer;
+    }
+    .custom-select:focus {
+      border-color: var(--talavera-blue, #0b2f6b);
+    }
+    .info-note {
+      display: flex;
+      gap: 12px;
+      margin-top: 16px;
+      padding: 12px 16px;
+      background: rgba(11, 47, 107, 0.04);
+      border-radius: 8px;
+      border-left: 4px solid var(--talavera-blue, #0b2f6b);
+      
+      mat-icon {
+        color: var(--talavera-blue, #0b2f6b);
+        font-size: 20px;
+        width: 20px;
+        height: 20px;
+        flex-shrink: 0;
+      }
+      p {
+        margin: 0;
+        font-size: 13px;
+        color: var(--talavera-ink, #1e293b);
+        line-height: 1.5;
+      }
+    }
+    .dialog-footer { padding: 16px 24px; margin-bottom: 0; }
+  `]
+})
+export class ExportDialogComponent implements OnInit {
+  availableMonths: { value: string; label: string }[] = [];
+  selectedMonth: string = 'all';
+
+  constructor(private reportService: ReportService) {}
+
+  ngOnInit() {
+    this.reportService.getAvailableMonths().subscribe(months => {
+      const monthNames = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
+        'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+      
+      this.availableMonths = months.map(m => {
+        const [year, monthStr] = m.split('-');
+        const monthIndex = parseInt(monthStr, 10) - 1;
+        return {
+          value: m,
+          label: `${monthNames[monthIndex]} ${year}`
+        };
+      });
+      
+      if (this.availableMonths.length > 0) {
+        this.selectedMonth = this.availableMonths[0].value;
+      }
+    });
+  }
+}
+
+@Component({
   selector: 'app-home',
   standalone: true,
   imports: [
@@ -214,7 +326,8 @@ export class HomeComponent implements OnInit {
     { id: 'analytics', icon: 'insights', title: 'Analíticas', desc: 'Métricas clave', route: '/dashboard/analytics', roles: ['Admin'], active: true },
     { id: 'inventory', icon: 'calculate', title: 'Inventario', desc: 'Ajustes manuales', route: '/dashboard/inventory', roles: ['Admin'], active: true },
     { id: 'employees', icon: 'manage_accounts', title: 'Empleados', desc: 'Administrar cajeros', route: '/dashboard/employees', roles: ['Admin'], active: true },
-    { id: 'settings', icon: 'settings', title: 'Configuración', desc: 'Ajustes del sistema', route: '/dashboard/settings', roles: ['Admin'], active: true }
+    { id: 'settings', icon: 'settings', title: 'Configuración', desc: 'Ajustes del sistema', route: '/dashboard/settings', roles: ['Admin'], active: true },
+    { id: 'export-full', icon: 'cloud_download', title: 'Exportar Reporte', desc: 'Descargar Excel Completo', action: 'export-full', roles: ['Admin'], active: true }
   ];
 
   activeWidgets: DashboardWidget[] = [];
@@ -335,7 +448,7 @@ export class HomeComponent implements OnInit {
           data: { session }
         });
 
-        dialogRef.afterClosed().subscribe(result => {
+        dialogRef.afterClosed().subscribe((result: any) => {
           if (result) {
             const action = session ? 'cerrada' : 'abierta';
             this.snackBar.open(`Caja ${action} exitosamente`, 'Cerrar', {
@@ -349,6 +462,48 @@ export class HomeComponent implements OnInit {
       error: (err) => {
         console.error('Error fetching current session', err);
         this.snackBar.open('Error al verificar estado de la caja', 'Cerrar', { duration: 3000 });
+      }
+    });
+  }
+
+  executeAction(action: string): void {
+    if (action === 'cash-register') {
+      this.openCashRegister();
+    } else if (action === 'export-full') {
+      const dialogRef = this.dialog.open(ExportDialogComponent, { width: '400px' });
+      
+      dialogRef.afterClosed().subscribe((result: any) => {
+        if (result) {
+          if (result === 'all') {
+            this.downloadBlob(this.reportService.exportFullReportToExcel(), 'reporte_historico_storehub.xlsx');
+          } else {
+            const [year, month] = result.split('-').map(Number);
+            const start = new Date(year, month - 1, 1);
+            const end = new Date(year, month, 0, 23, 59, 59, 999);
+            this.downloadBlob(this.reportService.exportFullReportToExcel(start, end), `reporte_${result}_storehub.xlsx`);
+          }
+        }
+      });
+    }
+  }
+
+  private downloadBlob(observable: import('rxjs').Observable<Blob>, filename: string): void {
+    this.snackBar.open('Generando archivo Excel...', '', { duration: 2000 });
+    observable.subscribe({
+      next: (blob) => {
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        window.URL.revokeObjectURL(url);
+        this.snackBar.open('Archivo descargado con éxito', 'Cerrar', { duration: 3000, panelClass: 'success-snackbar' });
+      },
+      error: (err) => {
+        console.error(`Error downloading ${filename}`, err);
+        this.snackBar.open('Error al generar el archivo', 'Cerrar', { duration: 3000 });
       }
     });
   }

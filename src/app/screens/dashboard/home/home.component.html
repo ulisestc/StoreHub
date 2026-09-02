@@ -77,9 +77,9 @@
   <div class="actions-grid">
     <ng-container *ngFor="let w of activeWidgets">
       
-      <!-- Special widget: Cash Register -->
-      <mat-card *ngIf="w.action === 'cash-register'" class="action-card" (click)="openCashRegister()" style="cursor: pointer; position: relative;">
-        <div class="status-indicator" [ngClass]="isCashRegisterOpen ? 'status-open' : 'status-closed'">
+      <!-- Special widget: Actions -->
+      <mat-card *ngIf="w.action" class="action-card" (click)="executeAction(w.action)" style="cursor: pointer; position: relative;">
+        <div *ngIf="w.action === 'cash-register'" class="status-indicator" [ngClass]="isCashRegisterOpen ? 'status-open' : 'status-closed'">
           {{ isCashRegisterOpen ? 'Abierta' : 'Cerrada' }}
         </div>
         <mat-icon class="action-icon">{{ w.icon }}</mat-icon>

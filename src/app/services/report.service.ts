@@ -93,4 +93,23 @@ export class ReportService {
       })
     );
   }
+
+  // Exports
+  exportFullReportToExcel(startDate?: Date, endDate?: Date): Observable<Blob> {
+    let params = new HttpParams();
+    if (startDate && endDate) {
+      params = params.append('start_date', startDate.toISOString().split('T')[0]);
+      params = params.append('end_date', endDate.toISOString().split('T')[0]);
+    }
+    return this.http.get(`${apiUrl}/export/full/`, { params, responseType: 'blob' });
+  }
+
+  getAvailableMonths(): Observable<string[]> {
+    return this.http.get<string[]>(`${apiUrl}/analytics/available-months/`).pipe(
+      catchError(error => {
+        console.error('Error fetching available months:', error);
+        return of([]);
+      })
+    );
+  }
 }
