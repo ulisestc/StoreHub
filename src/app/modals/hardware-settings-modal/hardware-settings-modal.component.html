@@ -1,0 +1,144 @@
+<div class="modal-container">
+  <button mat-icon-button class="close-btn" (click)="close()">
+    <mat-icon>close</mat-icon>
+  </button>
+  
+  <div class="modal-header">
+    <mat-icon class="header-icon">print</mat-icon>
+    <h2>Configuración de Hardware</h2>
+    <p class="subtitle">Impresora Térmica (Tickets)</p>
+  </div>
+
+  <div class="modal-body">
+    <!-- Step 1 -->
+    <div class="step-card">
+      <div class="step-number">1</div>
+      <div class="step-content">
+        <h3>Tamaño del Rollo</h3>
+        <p>Selecciona el ancho del papel de tu impresora térmica.</p>
+        <mat-radio-group [(ngModel)]="settings.paperSize" (change)="saveSettings()" class="radio-group">
+          <mat-radio-button value="58mm">58mm (Estándar)</mat-radio-button>
+          <mat-radio-button value="80mm">80mm (Ancho)</mat-radio-button>
+        </mat-radio-group>
+      </div>
+    </div>
+
+    <!-- Step 2 -->
+    <div class="step-card">
+      <div class="step-number">2</div>
+      <div class="step-content">
+        <h3>Vincular Impresora</h3>
+        <p *ngIf="!(isConnected$ | async)">Haz clic en el botón, el navegador abrirá una ventana para que selecciones tu impresora USB.</p>
+        <p *ngIf="(isConnected$ | async)" class="success-text">
+          <mat-icon>check_circle</mat-icon> Impresora conectada exitosamente.
+        </p>
+
+        <div class="action-buttons">
+          <button mat-raised-button color="primary" (click)="connectPrinter()" *ngIf="!(isConnected$ | async)">
+            <mat-icon>usb</mat-icon> Conectar Impresora
+          </button>
+          <button mat-stroked-button color="warn" (click)="disconnectPrinter()" *ngIf="(isConnected$ | async)">
+            <mat-icon>link_off</mat-icon> Desconectar
+          </button>
+        </div>
+
+        <div *ngIf="accessDeniedError" class="error-block" style="margin-top: 16px; padding: 16px; background-color: var(--talavera-surface); border-left: 4px solid var(--talavera-accent); border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
+          
+          <!-- LINUX INSTRUCTIONS -->
+          <ng-container *ngIf="currentOS === 'Linux'">
+            <h4 style="margin: 0 0 8px 0; color: var(--talavera-ink); display: flex; align-items: center; gap: 4px;">
+              <mat-icon style="font-size: 18px; height: 18px; width: 18px; color: var(--talavera-accent);">warning</mat-icon>
+              Permiso Denegado (Linux)
+            </h4>
+            <p style="margin: 0 0 12px 0; font-size: 13px; color: var(--talavera-text);">
+              Linux bloquea los puertos USB por seguridad. Para darle permiso a tu navegador, abre tu terminal, copia y ejecuta este comando:
+            </p>
+            <div style="position: relative; background: #ffffff; border: 1px solid var(--talavera-border); border-radius: 4px; padding: 12px; margin-bottom: 8px;">
+              <pre #linuxCmd style="margin: 0; white-space: pre-wrap; word-wrap: break-word; font-family: monospace; font-size: 12px; color: #333;">sudo bash -c 'echo "SUBSYSTEM==\"usb\", MODE=\"0666\"" > /etc/udev/rules.d/99-usb-printers.rules && udevadm control --reload-rules && udevadm trigger'</pre>
+              <button mat-icon-button (click)="copyToClipboard(linuxCmd.innerText)" style="position: absolute; top: 4px; right: 4px; transform: scale(0.8);" title="Copiar comando">
+                <mat-icon>content_copy</mat-icon>
+              </button>
+            </div>
+            <p style="margin: 0; font-size: 13px; color: var(--talavera-text);">Después, vuelve a dar clic en "Conectar Impresora".</p>
+          </ng-container>
+
+          <!-- WINDOWS INSTRUCTIONS -->
+          <ng-container *ngIf="currentOS === 'Windows'">
+            <h4 style="margin: 0 0 8px 0; color: var(--talavera-ink); display: flex; align-items: center; gap: 4px;">
+              <mat-icon style="font-size: 18px; height: 18px; width: 18px; color: var(--talavera-accent);">warning</mat-icon>
+              Impresora en Uso (Windows)
+            </h4>
+            <p style="margin: 0 0 8px 0; font-size: 13px; color: var(--talavera-text);">
+              Windows bloquea el acceso porque tiene instalado el driver original de fábrica. Para conectar tu impresora al Punto de Venta web necesitas instalar el driver genérico <b>WinUSB</b>.
+            </p>
+            <ol style="margin: 0; padding-left: 16px; font-size: 13px; color: var(--talavera-text);">
+              <li>Descarga y abre la herramienta gratuita <b>Zadig</b>.</li>
+              <li>Ve a Options > List All Devices.</li>
+              <li>Selecciona tu impresora térmica de la lista.</li>
+              <li>Asegúrate de que el driver destino diga <b>WinUSB</b> y haz clic en "Replace Driver".</li>
+            </ol>
+          </ng-container>
+
+          <!-- MAC/OTHER INSTRUCTIONS -->
+          <ng-container *ngIf="currentOS !== 'Linux' && currentOS !== 'Windows'">
+            <h4 style="margin: 0 0 8px 0; color: var(--talavera-ink); display: flex; align-items: center; gap: 4px;">
+              <mat-icon style="font-size: 18px; height: 18px; width: 18px; color: var(--talavera-accent);">warning</mat-icon>
+              Permiso Denegado
+            </h4>
+            <p style="margin: 0; font-size: 13px; color: var(--talavera-text);">
+              No se pudo conectar a la impresora. Asegúrate de que no esté siendo usada por otra aplicación en este momento o desconecta y vuelve a conectar el cable USB.
+            </p>
+          </ng-container>
+          
+        </div>
+
+        <div *ngIf="interfaceClaimError" class="error-block" style="margin-top: 16px; padding: 16px; background-color: var(--talavera-surface); border-left: 4px solid var(--talavera-accent); border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
+          <!-- LINUX INSTRUCTIONS FOR CLAIM ERROR -->
+          <ng-container *ngIf="currentOS === 'Linux'">
+            <h4 style="margin: 0 0 8px 0; color: var(--talavera-ink); display: flex; align-items: center; gap: 4px;">
+              <mat-icon style="font-size: 18px; height: 18px; width: 18px; color: var(--talavera-accent);">warning</mat-icon>
+              Impresora Secuestrada por el Sistema (Linux)
+            </h4>
+            <p style="margin: 0 0 12px 0; font-size: 13px; color: var(--talavera-text);">
+              El núcleo de Linux (kernel) ha reclamado la impresora automáticamente. Para liberarla y que StoreHub pueda imprimir, ejecuta este comando en tu terminal:
+            </p>
+            <div style="position: relative; background: #ffffff; border: 1px solid var(--talavera-border); border-radius: 4px; padding: 12px; margin-bottom: 8px;">
+              <pre #linuxRmmodCmd style="margin: 0; white-space: pre-wrap; word-wrap: break-word; font-family: monospace; font-size: 12px; color: #333;">sudo rmmod usblp</pre>
+              <button mat-icon-button (click)="copyToClipboard(linuxRmmodCmd.innerText)" style="position: absolute; top: 4px; right: 4px; transform: scale(0.8);" title="Copiar comando">
+                <mat-icon>content_copy</mat-icon>
+              </button>
+            </div>
+            <p style="margin: 0; font-size: 13px; color: var(--talavera-text);">Después, vuelve a dar clic en "Conectar Impresora". (Tendrás que hacer esto si desconectas y vuelves a conectar la impresora).</p>
+          </ng-container>
+
+          <ng-container *ngIf="currentOS !== 'Linux'">
+            <h4 style="margin: 0 0 8px 0; color: var(--talavera-ink); display: flex; align-items: center; gap: 4px;">
+              <mat-icon style="font-size: 18px; height: 18px; width: 18px; color: var(--talavera-accent);">warning</mat-icon>
+              Impresora en Uso
+            </h4>
+            <p style="margin: 0; font-size: 13px; color: var(--talavera-text);">
+              La impresora está siendo usada por otra aplicación. Cierra cualquier programa que la esté usando e intenta de nuevo.
+            </p>
+          </ng-container>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 3 -->
+    <div class="step-card" [class.disabled]="!(isConnected$ | async)">
+      <div class="step-number">3</div>
+      <div class="step-content">
+        <h3>Probar Conexión</h3>
+        <p>Imprime un ticket de prueba para asegurar que los comandos ESC/POS están llegando correctamente.</p>
+        <button mat-stroked-button (click)="testPrint()" [disabled]="!(isConnected$ | async)">
+          <mat-icon>receipt</mat-icon> Imprimir Prueba
+        </button>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="modal-footer">
+    <button mat-button (click)="close()">Cerrar</button>
+  </div>
+</div>

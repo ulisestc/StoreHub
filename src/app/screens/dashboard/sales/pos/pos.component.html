@@ -3,8 +3,15 @@
 
 
   <header class="pos-header">
-    <h1>Punto de Venta</h1>
-    <p>Registra nuevas transacciones</p>
+    <div>
+      <h1>Punto de Venta</h1>
+      <p>Registra nuevas transacciones</p>
+    </div>
+    <div class="header-actions">
+      <button mat-stroked-button (click)="openHardwareSettings()">
+        <mat-icon>print</mat-icon> Hardware
+      </button>
+    </div>
   </header>
 
   <div class="pos-layout">

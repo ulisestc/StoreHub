@@ -18,6 +18,7 @@ import { ConfirmSaleModalComponent } from '../../../../modals/confirm-sale-modal
 import { ClientQuickAddModalComponent } from '../../../../modals/client-quick-add-modal/client-quick-add-modal.component';
 import { LowStockWarningModalComponent } from '../../../../modals/low-stock-warning-modal/low-stock-warning-modal.component';
 import { SaleSuccessModalComponent } from '../../../../modals/sale-success-modal/sale-success-modal.component';
+import { HardwareSettingsModalComponent } from '../../../../modals/hardware-settings-modal/hardware-settings-modal.component';
 import { ProductService } from '../../../../services/product.service';
 import { CategoryService } from '../../../../services/category.service';
 import { Product } from '../../../../shared/interfaces/product';
@@ -410,7 +411,8 @@ export class PosComponent implements OnInit {
           disableClose: true,
           data: {
             saleId: saleResponse.id,
-            clientEmail: selectedClientEmail
+            clientEmail: selectedClientEmail,
+            sale: saleResponse
           }
         });
 
@@ -468,6 +470,12 @@ export class PosComponent implements OnInit {
     if (this.cameraEnabled) {
       this.isCheckingCamera = true;
     }
+  }
+
+  openHardwareSettings() {
+    this.dialog.open(HardwareSettingsModalComponent, {
+      width: '500px'
+    });
   }
 
   @HostListener('window:keydown', ['$event'])
