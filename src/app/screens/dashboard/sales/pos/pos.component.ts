@@ -555,6 +555,7 @@ export class PosComponent implements OnInit {
 
     if (event.key === 'Enter') {
       if (this.barcodeBuffer.length > 2) { // Minimal length for a barcode
+        event.preventDefault(); // Evitar que el Enter dispare clics en botones con foco (ej. el menú)
         this.scanSuccess(this.barcodeBuffer);
         this.barcodeBuffer = '';
       }
