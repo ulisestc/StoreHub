@@ -80,8 +80,14 @@
     font-weight: 600;
   }
 
+  .table-container {
+    overflow-x: auto;
+    width: 100%;
+  }
+
   .employees-table {
     width: 100%;
+    min-width: 600px;
   }
   
   .empty-state {
