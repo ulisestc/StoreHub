@@ -81,6 +81,10 @@ export class AnalyticsDashboardComponent implements OnInit {
   salesLineChartData: ChartData<'line'> = { labels: [], datasets: [] };
   salesLineChartOptions: ChartOptions<any> = {
     ...this.defaultChartOptions,
+    interaction: {
+      mode: 'index',
+      intersect: false,
+    },
     elements: {
       line: { tension: 0.4 }
     }
