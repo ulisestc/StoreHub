@@ -55,21 +55,28 @@ app-root {
   height: 100%;
 }
 
+:root {
+  --app-zoom: 1;
+}
+
 @media screen and (max-width: 1440px) {
+  :root { --app-zoom: 0.8; }
   html {
-    zoom: 0.8;
+    zoom: var(--app-zoom);
   }
 }
 
 @media screen and (max-width: 1280px) {
+  :root { --app-zoom: 0.7; }
   html {
-    zoom: 0.7;
+    zoom: var(--app-zoom);
   }
 }
 
 @media screen and (max-width: 768px) {
+  :root { --app-zoom: 1; }
   html {
-    zoom: 1;
+    zoom: var(--app-zoom);
   }
 }
 

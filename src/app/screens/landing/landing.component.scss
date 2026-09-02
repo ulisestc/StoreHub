@@ -1,5 +1,5 @@
 .landing-container {
-  min-height: 100vh;
+  min-height: calc(100vh / var(--app-zoom, 1));
   background: transparent;
   overflow-x: hidden;
   position: relative;
