@@ -8,6 +8,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { StoreService } from '../../../services/store.service';
+import { AuthService } from '../../../services/auth.service';
 
 @Component({
   selector: 'app-store-settings',
@@ -26,7 +27,8 @@ export class StoreSettingsComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private storeService: StoreService,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private authService: AuthService
   ) {
     this.storeForm = this.fb.group({
       name: ['', Validators.required],
@@ -63,7 +65,15 @@ export class StoreSettingsComponent implements OnInit {
 
     this.isLoading = true;
     this.storeService.updateStoreConfig(this.storeForm.value).subscribe({
-      next: () => {
+      next: (updatedConfig) => {
+        // Sync with local storage so tickets and UI update immediately
+        this.authService.updateTokenData({
+          storeName: updatedConfig.name,
+          storeAddress: updatedConfig.address,
+          storePhone: updatedConfig.phone,
+          storeReceiptMessage: updatedConfig.receipt_message
+        });
+
         this.snackBar.open('Configuración guardada correctamente', 'Cerrar', { duration: 3000 });
         this.isLoading = false;
       },

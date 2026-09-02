@@ -2,6 +2,7 @@ import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { AuthService } from './auth.service';
 
 export interface PrinterSettings {
   paperSize: '58mm' | '80mm';
@@ -27,21 +28,22 @@ export class PrinterService {
   private readonly GS = '\x1D';
   private readonly INIT = this.ESC + '@';
   private readonly CUT = this.GS + 'V\x00';
-  private readonly BOLD_ON = this.ESC + 'E\x01';
-  private readonly BOLD_OFF = this.ESC + 'E\x00';
-  private readonly CENTER = this.ESC + 'a\x01';
-  private readonly LEFT = this.ESC + 'a\x00';
-  private readonly RIGHT = this.ESC + 'a\x02';
+  private readonly BOLD_ON = this.ESC + 'E1';
+  private readonly BOLD_OFF = this.ESC + 'E0';
+  private readonly CENTER = this.ESC + 'a1';
+  private readonly LEFT = this.ESC + 'a0';
+  private readonly RIGHT = this.ESC + 'a2';
   private readonly DOUBLE_HEIGHT = this.ESC + '!\x10';
   private readonly DOUBLE_WIDTH = this.ESC + '!\x20';
   private readonly DOUBLE_ON = this.ESC + '!\x30';
   private readonly NORMAL_SIZE = this.ESC + '!\x00';
 
   constructor(
-    @Inject(PLATFORM_ID) platformId: Object,
-    private snackBar: MatSnackBar
+    @Inject(PLATFORM_ID) private platformId: Object,
+    private snackBar: MatSnackBar,
+    private authService: AuthService
   ) {
-    this.isBrowser = isPlatformBrowser(platformId);
+    this.isBrowser = isPlatformBrowser(this.platformId);
     if (this.isBrowser) {
       this.loadSettings();
       this.initUsbListeners();
@@ -184,7 +186,7 @@ export class PrinterService {
     receipt += "Tamaño de rollo: " + this.settings.paperSize + "\n";
     receipt += "==============================\n\n";
     receipt += this.CENTER;
-    receipt += "¡Gracias por usar StoreHub!\n\n\n\n";
+    receipt += "¡Gracias por usar StoreHub!\n\n\n\n\n\n\n";
     receipt += this.CUT;
 
     return this.printRaw(receipt);
@@ -193,11 +195,24 @@ export class PrinterService {
   public async printSaleTicket(sale: any): Promise<boolean> {
     if (!sale) return false;
 
+    const storeName = this.authService.getStoreName() || 'STOREHUB';
+    const storeAddress = this.authService.getStoreAddress() || '';
+    const storePhone = this.authService.getStorePhone() || '';
+    const storeReceiptMessage = this.authService.getStoreReceiptMessage() || '¡Gracias por tu compra!';
+
     const lineLen = this.settings.paperSize === '58mm' ? 32 : 48;
     
     let receipt = this.INIT;
     receipt += this.CENTER;
-    receipt += this.DOUBLE_HEIGHT + this.BOLD_ON + "TICKET DE VENTA\n" + this.NORMAL_SIZE + this.BOLD_OFF;
+    
+    // Store Info
+    receipt += this.DOUBLE_HEIGHT + this.BOLD_ON + storeName.toUpperCase() + "\n" + this.NORMAL_SIZE + this.BOLD_OFF;
+    if (storeAddress) receipt += storeAddress + "\n";
+    if (storePhone) receipt += "Tel: " + storePhone + "\n";
+    receipt += "\n";
+    
+    // Ticket Header
+    receipt += this.BOLD_ON + "TICKET DE VENTA\n" + this.BOLD_OFF;
     receipt += `Venta #${sale.id}\n`;
     receipt += `Fecha: ${new Date(sale.created_at).toLocaleString()}\n`;
     if (sale.client_name) {
@@ -232,7 +247,7 @@ export class PrinterService {
     receipt += `IVA: $${sale.impuestos}\n`;
     receipt += this.DOUBLE_ON + `TOTAL: $${sale.total}\n` + this.NORMAL_SIZE + this.BOLD_OFF;
     
-    receipt += "\n" + this.CENTER + "¡Gracias por tu compra!\n\n\n\n";
+    receipt += "\n" + this.CENTER + storeReceiptMessage + "\n\n\n\n\n\n\n";
     receipt += this.CUT;
 
     return this.printRaw(receipt);

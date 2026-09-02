@@ -240,6 +240,19 @@ export class AuthService {
     }
   }
 
+  updateTokenData(partialData: Partial<TokenData>): void {
+    const tokenDataStr = localStorage.getItem(this.TOKEN_DATA_KEY);
+    if (tokenDataStr) {
+      try {
+        const tokenData: TokenData = JSON.parse(tokenDataStr);
+        const updatedData = { ...tokenData, ...partialData };
+        localStorage.setItem(this.TOKEN_DATA_KEY, JSON.stringify(updatedData));
+      } catch (e) {
+        console.error('Error updating token data', e);
+      }
+    }
+  }
+
   getTokenExpirationTime(): number {
     const tokenDataStr = localStorage.getItem(this.TOKEN_DATA_KEY);
 
