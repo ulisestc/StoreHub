@@ -27,7 +27,8 @@ export class SalesService {
   }
 
   getSalesHistory(): Observable<Sale[]> {
-    if (!navigator.onLine) {
+    const isOfflineFlag = localStorage.getItem('storehub_is_offline') === 'true';
+    if (!navigator.onLine || isOfflineFlag) {
       const cached = localStorage.getItem('storehub_offline_sales_history');
       return of(cached ? JSON.parse(cached) : []);
     }
@@ -38,7 +39,8 @@ export class SalesService {
   }
 
   getSalesHistoryPaginated(page: number, pageSize: number = 10): Observable<{ count: number; results: Sale[] }> {
-    if (!navigator.onLine) {
+    const isOfflineFlag = localStorage.getItem('storehub_is_offline') === 'true';
+    if (!navigator.onLine || isOfflineFlag) {
       const cached = localStorage.getItem('storehub_offline_sales_history');
       let sales: Sale[] = cached ? JSON.parse(cached) : [];
 

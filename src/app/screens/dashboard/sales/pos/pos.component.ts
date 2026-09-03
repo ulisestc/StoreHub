@@ -140,6 +140,11 @@ export class PosComponent implements OnInit {
   }
 
   checkCashRegisterStatus(): void {
+    if (!navigator.onLine) {
+      this.isCashRegisterOpen = true;
+      return;
+    }
+
     this.cashRegisterService.getCurrentSession().subscribe({
       next: (session) => {
         this.isCashRegisterOpen = !!session;
@@ -147,9 +152,14 @@ export class PosComponent implements OnInit {
           this.promptOpenCashRegister();
         }
       },
-      error: () => {
-        this.isCashRegisterOpen = false;
-        this.promptOpenCashRegister();
+      error: (err) => {
+        if (err.status === 0 || err.status === 502 || err.status === 504 || err.status === 500 || !this.isOnline) {
+          // Network error or Proxy Gateway Timeout: assume register is open to allow offline sales
+          this.isCashRegisterOpen = true;
+        } else {
+          this.isCashRegisterOpen = false;
+          this.promptOpenCashRegister();
+        }
       }
     });
   }
@@ -184,6 +194,44 @@ export class PosComponent implements OnInit {
     const backendPage = pageIndex + 1;
     console.log('Iniciando carga de productos...');
 
+    // Fast-path offline: servir directamente desde caché sin pasar por HTTP/interceptors
+    const isOffline = !navigator.onLine || localStorage.getItem('storehub_is_offline') === 'true';
+    if (isOffline) {
+      const cached = localStorage.getItem('storehub_offline_catalog');
+      if (cached) {
+        try {
+          let catalog: any[] = JSON.parse(cached);
+
+          if (this.searchQuery) {
+            const s = this.searchQuery.toLowerCase();
+            catalog = catalog.filter((p: any) =>
+              p.name.toLowerCase().includes(s) ||
+              p.sku.toLowerCase().includes(s)
+            );
+          }
+          if (this.selectedCategoryId) {
+            catalog = catalog.filter((p: any) =>
+              p.category?.toString() === this.selectedCategoryId?.toString()
+            );
+          }
+
+          this.totalProducts = catalog.length;
+          const start = pageIndex * this.pageSize;
+          this.filteredProducts = catalog.slice(start, start + this.pageSize);
+          this.currentPage = pageIndex;
+          console.log('Productos cargados desde caché offline:', this.filteredProducts.length);
+          this.isLoading = false;
+          return;
+        } catch (e) {
+          console.error('Error leyendo caché offline:', e);
+        }
+      }
+      this.filteredProducts = [];
+      this.totalProducts = 0;
+      this.isLoading = false;
+      return;
+    }
+
     this.productService.getProducts(
       this.searchQuery || undefined,
       this.selectedCategoryId,
@@ -200,11 +248,27 @@ export class PosComponent implements OnInit {
       },
       error: (error) => {
         console.error('Error cargando productos:', error);
-        this.filteredProducts = [];
-        this.totalProducts = 0;
-        this.showError('Error al cargar los productos');
+        // Fallback a caché offline con paginación correcta
+        const cached = localStorage.getItem('storehub_offline_catalog');
+        if (cached) {
+          try {
+            const catalog = JSON.parse(cached);
+            const start = pageIndex * this.pageSize;
+            this.filteredProducts = catalog.slice(start, start + this.pageSize);
+            this.totalProducts = catalog.length;
+            this.currentPage = pageIndex;
+          } catch(e) {
+            this.filteredProducts = [];
+            this.totalProducts = 0;
+          }
+        } else {
+          this.filteredProducts = [];
+          this.totalProducts = 0;
+          this.showError('Error al cargar los productos');
+        }
         this.isLoading = false;
       }
+
     });
   }
 

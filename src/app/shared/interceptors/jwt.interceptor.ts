@@ -6,6 +6,12 @@ import { catchError, throwError, switchMap } from 'rxjs';
 
 export const jwtInterceptor: HttpInterceptorFn = (req, next) => {
 
+  // Saltar auth para health checks del heartbeat
+  if (req.headers.has('X-Skip-Auth')) {
+    const cleanReq = req.clone({ headers: req.headers.delete('X-Skip-Auth') });
+    return next(cleanReq);
+  }
+
   const authService = inject(AuthService);
   const router = inject(Router);
 
@@ -24,6 +30,12 @@ export const jwtInterceptor: HttpInterceptorFn = (req, next) => {
 
   return next(clonedReq).pipe(
     catchError((error: HttpErrorResponse) => {
+
+      // Si estamos offline, NO intentar refresh ni cerrar sesión
+      const isOffline = !navigator.onLine || localStorage.getItem('storehub_is_offline') === 'true';
+      if (isOffline || error.status === 0) {
+        return throwError(() => error);
+      }
 
       switch (error.status) {
         case 401:

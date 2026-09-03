@@ -212,6 +212,12 @@ export class AuthService {
       return false;
     }
 
+    // Offline: no cerrar sesión por token expirado, el backend no es accesible
+    const isOffline = !navigator.onLine || localStorage.getItem('storehub_is_offline') === 'true';
+    if (isOffline) {
+      return true;
+    }
+
     if (this.isTokenExpired()) {
       this.logout();
       return false;

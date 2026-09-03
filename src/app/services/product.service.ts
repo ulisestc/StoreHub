@@ -1,7 +1,8 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Observable, forkJoin, of } from 'rxjs';
-import { map, switchMap } from 'rxjs/operators';
+import { Observable, forkJoin, of, throwError } from 'rxjs';
+import { map, switchMap, catchError } from 'rxjs/operators';
+import { HttpErrorResponse } from '@angular/common/http';
 import { Product } from '../shared/interfaces/product';
 import { CategoryService } from './category.service';
 import { environment } from '../../environments/environment';
@@ -18,7 +19,7 @@ export class ProductService {
   constructor(private http: HttpClient) { }
 
   getProducts(search?: string, categoryId?: number | string, page?: number, pageSize: number = 10): Observable<{count: number, results: Product[]}> {
-    if (!navigator.onLine) {
+    const serveFromCache = () => {
       const cached = localStorage.getItem('storehub_offline_catalog');
       let catalog: Product[] = cached ? JSON.parse(cached) : [];
 
@@ -29,7 +30,6 @@ export class ProductService {
           p.sku.toLowerCase().includes(s)
         );
       }
-
       if (categoryId) {
         catalog = catalog.filter(p => p.category?.toString() === categoryId?.toString());
       }
@@ -41,8 +41,12 @@ export class ProductService {
       } else {
         catalog = catalog.slice(0, pageSize);
       }
-
       return of({ count, results: catalog });
+    };
+
+    const isOfflineFlag = localStorage.getItem('storehub_is_offline') === 'true';
+    if (!navigator.onLine || isOfflineFlag) {
+      return serveFromCache();
     }
 
     let params = new HttpParams();
@@ -76,6 +80,12 @@ export class ProductService {
             results: []
           };
         }
+      }),
+      catchError((error: HttpErrorResponse) => {
+        if (error.status === 0 || error.status === 502 || error.status === 504 || error.status === 500) {
+          return serveFromCache();
+        }
+        return throwError(() => error);
       })
     );
   }

@@ -398,6 +398,10 @@ export class HomeComponent implements OnInit {
   }
 
   checkCashRegisterStatus(): void {
+    if (!navigator.onLine || localStorage.getItem('storehub_is_offline') === 'true') {
+      this.isCashRegisterOpen = true;
+      return;
+    }
     this.cashRegisterService.getCurrentSession().subscribe({
       next: (session) => {
         this.isCashRegisterOpen = !!session;
@@ -409,6 +413,9 @@ export class HomeComponent implements OnInit {
   }
 
   loadDashboardMetrics(): void {
+    if (!navigator.onLine || localStorage.getItem('storehub_is_offline') === 'true') {
+      return;
+    }
     this.loadingProducts = true;
     this.productService.getProductsCount().subscribe({
       next: (count) => {

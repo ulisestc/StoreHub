@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
+import { map, tap, catchError } from 'rxjs/operators';
+import { HttpErrorResponse } from '@angular/common/http';
+import { throwError } from 'rxjs';
 import { Category } from '../shared/interfaces/category';
 import { environment } from '../../environments/environment';
 
@@ -15,7 +17,8 @@ export class CategoryService {
   constructor(private http: HttpClient) { }
 
   getCategories(): Observable<Category[]> {
-    if (!navigator.onLine) {
+    const isOfflineFlag = localStorage.getItem('storehub_is_offline') === 'true';
+    if (!navigator.onLine || isOfflineFlag) {
       const cached = localStorage.getItem('storehub_categories');
       return of(cached ? JSON.parse(cached) : []);
     }
@@ -24,6 +27,13 @@ export class CategoryService {
       map(response => response.results || response),
       tap(categories => {
         localStorage.setItem('storehub_categories', JSON.stringify(categories));
+      }),
+      catchError((error: HttpErrorResponse) => {
+        if (error.status === 0 || error.status === 502 || error.status === 504 || error.status === 500) {
+          const cached = localStorage.getItem('storehub_categories');
+          return of(cached ? JSON.parse(cached) : []);
+        }
+        return throwError(() => error);
       })
     );
   }

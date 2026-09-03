@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, of } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Observable, of, throwError } from 'rxjs';
+import { map, catchError } from 'rxjs/operators';
+import { HttpErrorResponse } from '@angular/common/http';
 import { Client } from '../shared/interfaces/client';
 import { environment } from '../../environments/environment';
 
@@ -15,7 +16,7 @@ export class ClientService {
   constructor(private http: HttpClient) { }
 
   getClients(page: number = 1, pageSize: number = 10): Observable<{count: number, results: Client[]}> {
-    if (!navigator.onLine) {
+    const serveFromCache = () => {
       const cached = localStorage.getItem('storehub_offline_clients');
       let clients: Client[] = cached ? JSON.parse(cached) : [];
 
@@ -24,6 +25,11 @@ export class ClientService {
       clients = clients.slice(start, start + pageSize);
 
       return of({ count, results: clients });
+    };
+
+    const isOfflineFlag = localStorage.getItem('storehub_is_offline') === 'true';
+    if (!navigator.onLine || isOfflineFlag) {
+      return serveFromCache();
     }
 
     return this.http.get<any>(
@@ -46,6 +52,12 @@ export class ClientService {
           count: 0,
           results: []
         };
+      }),
+      catchError((error: HttpErrorResponse) => {
+        if (error.status === 0 || error.status === 502 || error.status === 504 || error.status === 500) {
+          return serveFromCache();
+        }
+        return throwError(() => error);
       })
     );
   }

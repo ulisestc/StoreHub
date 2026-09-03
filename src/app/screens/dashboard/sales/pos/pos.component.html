@@ -1,7 +1,8 @@
 <div class="pos-container">
-
-
-
+  <div *ngIf="!isOnline" class="offline-banner">
+    <mat-icon>cloud_off</mat-icon>
+    <span>Sin conexión — Las ventas se guardarán localmente</span>
+  </div>
   <header class="pos-header">
     <div>
       <h1>Punto de Venta</h1>
