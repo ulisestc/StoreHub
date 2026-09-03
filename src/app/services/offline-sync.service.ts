@@ -34,6 +34,7 @@ export class OfflineSyncService {
 
     // Sync catalog immediately on startup if we are online
     if (navigator.onLine) {
+      localStorage.setItem('storehub_is_offline', 'false');
       this.syncOfflineCatalog();
     }
   }

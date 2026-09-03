@@ -140,7 +140,8 @@ export class PosComponent implements OnInit {
   }
 
   checkCashRegisterStatus(): void {
-    if (!navigator.onLine) {
+    const isOfflineFlag = localStorage.getItem('storehub_is_offline') === 'true';
+    if (!navigator.onLine || isOfflineFlag || !this.isOnline) {
       this.isCashRegisterOpen = true;
       return;
     }
