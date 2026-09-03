@@ -60,9 +60,7 @@ export class OfflineSyncService {
     // /api/health/ is a lightweight endpoint without DB queries — negligible Railway cost.
     this.heartbeatSub = interval(10000).subscribe(() => {
       // Pinging a lightweight endpoint.
-      this.http.get(`${apiUrl}/health/`, {
-        headers: { 'X-Skip-Auth': 'true' }
-      }).subscribe({
+      this.http.get(`${apiUrl}/health/`).subscribe({
         next: () => this.handleOnline(),
         error: (err) => {
           // Status 0 (network dead) or 504/502/500 (proxy gateway timeout when backend is dead locally)

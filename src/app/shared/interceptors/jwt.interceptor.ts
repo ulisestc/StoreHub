@@ -7,9 +7,8 @@ import { catchError, throwError, switchMap } from 'rxjs';
 export const jwtInterceptor: HttpInterceptorFn = (req, next) => {
 
   // Saltar auth para health checks del heartbeat
-  if (req.headers.has('X-Skip-Auth')) {
-    const cleanReq = req.clone({ headers: req.headers.delete('X-Skip-Auth') });
-    return next(cleanReq);
+  if (req.url.endsWith('/health/')) {
+    return next(req);
   }
 
   const authService = inject(AuthService);
