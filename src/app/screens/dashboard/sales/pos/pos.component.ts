@@ -638,10 +638,15 @@ export class PosComponent implements OnInit {
     this.hasDevices = devices && devices.length > 0;
     this.availableDevices = devices;
     
-    // Explicitly select a camera, preferring the back camera if available
+    // Explicitly select a camera, preferring DroidCam, v4l2, or back camera if available
     if (this.hasDevices && !this.currentDevice) {
-      const backCamera = devices.find(d => d.label.toLowerCase().includes('back') || d.label.toLowerCase().includes('trasera'));
-      this.currentDevice = backCamera || devices[0];
+      const preferredCamera = devices.find(d => 
+        d.label.toLowerCase().includes('droidcam') || 
+        d.label.toLowerCase().includes('v4l2') || 
+        d.label.toLowerCase().includes('back') || 
+        d.label.toLowerCase().includes('trasera')
+      );
+      this.currentDevice = preferredCamera || devices[0];
     }
   }
 

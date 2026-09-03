@@ -94,8 +94,13 @@ export class ProductFormComponent implements OnInit {
     this.availableDevices = devices;
     
     if (this.hasDevices && !this.currentDevice) {
-      const backCamera = devices.find(d => d.label.toLowerCase().includes('back') || d.label.toLowerCase().includes('trasera'));
-      this.currentDevice = backCamera || devices[0];
+      const preferredCamera = devices.find(d => 
+        d.label.toLowerCase().includes('droidcam') || 
+        d.label.toLowerCase().includes('v4l2') || 
+        d.label.toLowerCase().includes('back') || 
+        d.label.toLowerCase().includes('trasera')
+      );
+      this.currentDevice = preferredCamera || devices[0];
     }
   }
 
