@@ -88,7 +88,7 @@ graph TD;
 4. **Ejecutar en Desarrollo**
 
    ```bash
-   npm run dev
+   npm start
    ```
 
    *Aplicación disponible en [http://localhost:4200](http://localhost:4200).*
