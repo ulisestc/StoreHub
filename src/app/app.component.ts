@@ -7,10 +7,12 @@ import { LoadingService } from './services/loading.service';
 import { OfflineSyncService } from './services/offline-sync.service';
 import { CategoryService } from './services/category.service';
 import { AuthService } from './services/auth.service';
+import { TourService } from './services/tour.service';
+import { OnboardingTourComponent } from './components/onboarding-tour/onboarding-tour.component';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, CommonModule, MatProgressSpinnerModule, MatIconModule],
+  imports: [RouterOutlet, CommonModule, MatProgressSpinnerModule, MatIconModule, OnboardingTourComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
@@ -21,6 +23,7 @@ export class AppComponent {
 
   constructor(
     public loadingService: LoadingService,
+    public tourService: TourService,
     private offlineSync: OfflineSyncService,
     private categoryService: CategoryService,
     private authService: AuthService

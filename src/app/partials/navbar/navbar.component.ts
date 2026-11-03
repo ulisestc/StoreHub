@@ -7,6 +7,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatDividerModule } from '@angular/material/divider';
+import { TourService } from '../../services/tour.service';
 
 @Component({
   selector: 'app-navbar',
@@ -26,11 +27,16 @@ import { MatDividerModule } from '@angular/material/divider';
 export class NavbarComponent {
 
   authService = inject(AuthService);
+  private tourService = inject(TourService);
 
   @Output() menuToggle = new EventEmitter<void>();
 
   onMenuToggle() {
     this.menuToggle.emit();
+  }
+
+  openTour() {
+    this.tourService.startTour();
   }
 
   logout() {

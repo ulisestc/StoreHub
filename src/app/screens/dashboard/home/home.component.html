@@ -1,12 +1,12 @@
 <div class="home-container">
 
-  <header class="dashboard-header">
+  <header class="dashboard-header" data-tour="dashboard-header">
     <div class="header-text">
       <h1>¡Hola, {{ userName }}! </h1>
       <p>Bienvenido a tu panel de control.</p>
     </div>
 
-    <button mat-raised-button class="cta-button" routerLink="/dashboard/sales/pos">
+    <button mat-raised-button class="cta-button" routerLink="/dashboard/sales/pos" data-tour="pos-button">
       <mat-icon>point_of_sale</mat-icon>
       NUEVA VENTA
     </button>
@@ -48,7 +48,7 @@
       </mat-card-content>
     </mat-card>
 
-    <mat-card class="stat-card alert-card" routerLink="/dashboard/products">
+    <mat-card class="stat-card alert-card" routerLink="/dashboard/products" data-tour="products">
       <mat-card-content>
         <div class="stat-icon warn-icon">
           <mat-icon>inventory_2</mat-icon>
@@ -78,7 +78,7 @@
     <ng-container *ngFor="let w of activeWidgets">
       
       <!-- Special widget: Actions -->
-      <mat-card *ngIf="w.action" class="action-card" (click)="executeAction(w.action)" style="cursor: pointer; position: relative;">
+      <mat-card *ngIf="w.action" class="action-card" (click)="executeAction(w.action)" [attr.data-tour]="w.id" style="cursor: pointer; position: relative;">
         <div *ngIf="w.action === 'cash-register'" class="status-indicator" [ngClass]="isCashRegisterOpen ? 'status-open' : 'status-closed'">
           {{ isCashRegisterOpen ? 'Abierta' : 'Cerrada' }}
         </div>
@@ -88,7 +88,7 @@
       </mat-card>
 
       <!-- Normal route widget -->
-      <mat-card *ngIf="!w.action" class="action-card" [routerLink]="w.route" style="cursor: pointer;">
+      <mat-card *ngIf="!w.action" class="action-card" [routerLink]="w.route" [attr.data-tour]="w.id" style="cursor: pointer;">
         <mat-icon class="action-icon">{{ w.icon }}</mat-icon>
         <span class="action-title">{{ w.title }}</span>
         <span class="action-desc">{{ w.desc }}</span>

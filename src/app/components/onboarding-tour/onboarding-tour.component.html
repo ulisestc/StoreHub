@@ -1,0 +1,73 @@
+<div class="tour-screen-wrapper">
+  <!-- Spotlight Hole using box-shadow 9999px to darken everything except active element -->
+  <div class="spotlight-cutout"
+       *ngIf="spotlightRect"
+       [style.top.px]="spotlightRect.y"
+       [style.left.px]="spotlightRect.x"
+       [style.width.px]="spotlightRect.w"
+       [style.height.px]="spotlightRect.h">
+    <div class="spotlight-border-glow"></div>
+  </div>
+
+  <!-- Fallback backdrop if target is loading -->
+  <div class="fallback-backdrop" *ngIf="!spotlightRect"></div>
+
+  <!-- Tour Popover Card -->
+  <div class="tour-popover-card"
+       [style.top.px]="cardPosition.top"
+       [style.left.px]="cardPosition.left"
+       [class.is-centered]="!spotlightRect">
+    
+    <div class="card-header">
+      <div class="badge-row">
+        <span class="step-badge">Paso {{ currentStep + 1 }} de {{ steps.length }}</span>
+        <span class="category-badge">{{ currentStepData.badge }}</span>
+      </div>
+      <button mat-icon-button (click)="skip()" class="close-btn" title="Cerrar recorrido">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+
+    <div class="card-body">
+      <div class="icon-title-row">
+        <div class="step-icon-wrapper">
+          <mat-icon>{{ currentStepData.icon }}</mat-icon>
+        </div>
+        <div class="title-group">
+          <h3>{{ currentStepData.title }}</h3>
+          <h4>{{ currentStepData.subtitle }}</h4>
+        </div>
+      </div>
+
+      <p class="step-desc">{{ currentStepData.description }}</p>
+
+      <div class="highlight-callout" *ngIf="currentStepData.highlightText">
+        <mat-icon>lightbulb</mat-icon>
+        <span>{{ currentStepData.highlightText }}</span>
+      </div>
+    </div>
+
+    <div class="card-footer">
+      <mat-progress-bar mode="determinate" [value]="progress" class="tour-progress"></mat-progress-bar>
+      
+      <div class="footer-actions">
+        <button mat-button (click)="skip()" class="skip-btn">
+          Omitir
+        </button>
+
+        <div class="nav-buttons">
+          <button mat-stroked-button (click)="prev()" [disabled]="currentStep === 0" *ngIf="currentStep > 0">
+            <mat-icon>arrow_back</mat-icon>
+            Anterior
+          </button>
+          <button mat-raised-button color="primary" (click)="next()" class="next-btn">
+            {{ currentStep === steps.length - 1 ? '¡Comenzar!' : 'Siguiente' }}
+            <mat-icon *ngIf="currentStep < steps.length - 1">arrow_forward</mat-icon>
+            <mat-icon *ngIf="currentStep === steps.length - 1">check</mat-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

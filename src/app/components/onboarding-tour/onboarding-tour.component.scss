@@ -1,0 +1,264 @@
+.tour-screen-wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 999999;
+  background: transparent;
+  pointer-events: auto;
+  overflow: hidden;
+  font-family: 'DM Sans', sans-serif;
+}
+
+.spotlight-cutout {
+  position: absolute;
+  background: transparent;
+  border-radius: 12px;
+  /* 9999px spread shadow creates the darkened overlay with a 100% transparent cutout window */
+  box-shadow: 0 0 0 9999px rgba(15, 23, 42, 0.52);
+  border: 2px solid #ffffff;
+  pointer-events: none;
+  z-index: 1000000;
+  transition: top 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), 
+              left 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), 
+              width 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), 
+              height 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+
+  .spotlight-border-glow {
+    position: absolute;
+    inset: -5px;
+    border-radius: 16px;
+    border: 2px solid #d46a4e;
+    box-shadow: 0 0 18px rgba(212, 106, 78, 0.65);
+    animation: tourPulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+}
+
+@keyframes tourPulse {
+  0% {
+    transform: scale(0.99);
+    opacity: 0.9;
+  }
+  50% {
+    transform: scale(1.02);
+    opacity: 0.4;
+  }
+  100% {
+    transform: scale(0.99);
+    opacity: 0.9;
+  }
+}
+
+.fallback-backdrop {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(15, 23, 42, 0.48);
+  pointer-events: auto;
+  z-index: 999999;
+}
+
+.tour-popover-card {
+  position: absolute;
+  width: 440px;
+  max-width: calc(100% - 32px);
+  background: #ffffff;
+  border: 1px solid var(--talavera-line, #e2e8f0);
+  border-radius: 16px;
+  box-shadow: 0 24px 48px rgba(11, 47, 107, 0.28), 0 4px 12px rgba(0, 0, 0, 0.12);
+  pointer-events: auto;
+  z-index: 1000001;
+  transition: top 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), 
+              left 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+
+  &.is-centered {
+    width: 460px;
+  }
+
+  .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 18px 10px;
+    border-bottom: 1px solid #f1f5f9;
+
+    .badge-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+
+      .step-badge {
+        font-size: 0.75rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        background: #0b2f6b;
+        color: #ffffff;
+        padding: 4px 10px;
+        border-radius: 12px;
+        letter-spacing: 0.5px;
+      }
+
+      .category-badge {
+        font-size: 0.75rem;
+        font-weight: 600;
+        color: var(--talavera-muted, #64748b);
+      }
+    }
+
+    .close-btn {
+      color: #94a3b8;
+      width: 32px;
+      height: 32px;
+      line-height: 32px;
+
+      mat-icon {
+        font-size: 20px;
+        width: 20px;
+        height: 20px;
+      }
+
+      &:hover {
+        color: #0f172a;
+      }
+    }
+  }
+
+  .card-body {
+    padding: 14px 18px 12px;
+
+    .icon-title-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 10px;
+
+      .step-icon-wrapper {
+        width: 42px;
+        height: 42px;
+        border-radius: 10px;
+        background: rgba(11, 47, 107, 0.08);
+        color: #0b2f6b;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+
+        mat-icon {
+          font-size: 24px;
+          width: 24px;
+          height: 24px;
+        }
+      }
+
+      .title-group {
+        display: flex;
+        flex-direction: column;
+
+        h3 {
+          margin: 0;
+          font-size: 1.08rem;
+          font-weight: 700;
+          color: #0f172a;
+          line-height: 1.25;
+        }
+
+        h4 {
+          margin: 2px 0 0 0;
+          font-size: 0.82rem;
+          font-weight: 500;
+          color: #64748b;
+        }
+      }
+    }
+
+    .step-desc {
+      margin: 0 0 10px 0;
+      font-size: 0.88rem;
+      line-height: 1.5;
+      color: #334155;
+    }
+
+    .highlight-callout {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      background: #f8fafc;
+      border-left: 3px solid #d46a4e;
+      border-radius: 6px;
+      padding: 8px 10px;
+
+      mat-icon {
+        font-size: 17px;
+        width: 17px;
+        height: 17px;
+        color: #d46a4e;
+        flex-shrink: 0;
+        margin-top: 1px;
+      }
+
+      span {
+        font-size: 0.8rem;
+        color: #475569;
+        line-height: 1.35;
+      }
+    }
+  }
+
+  .card-footer {
+    display: flex;
+    flex-direction: column;
+
+    .tour-progress {
+      height: 3px;
+      background-color: #f1f5f9;
+
+      ::ng-deep .mdc-linear-progress__bar-inner {
+        border-color: #0b2f6b !important;
+      }
+    }
+
+    .footer-actions {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 18px 12px;
+
+      .skip-btn {
+        color: #64748b;
+        font-size: 0.85rem;
+      }
+
+      .nav-buttons {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+
+        button {
+          border-radius: 8px;
+          font-weight: 600;
+          font-size: 0.85rem;
+          display: inline-flex;
+          align-items: center;
+          gap: 4px;
+
+          mat-icon {
+            font-size: 16px;
+            width: 16px;
+            height: 16px;
+          }
+        }
+
+        .next-btn {
+          background-color: #0b2f6b;
+          color: #ffffff;
+        }
+      }
+    }
+  }
+}

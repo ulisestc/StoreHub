@@ -11,6 +11,8 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { AuthService } from '../../../services/auth.service';
 import { ProductService } from '../../../services/product.service';
 import { ReportService } from '../../../services/report.service';
+import { AnalyticsService, DashboardKPI } from '../../../services/analytics.service';
+import { ExpenseService } from '../../../services/expense.service';
 
 import { MatDialog, MatDialogModule, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
@@ -18,6 +20,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { FormsModule } from '@angular/forms';
 import { CashRegisterService } from '../../../services/cash-register.service';
 import { CashRegisterDialogComponent } from '../../../components/cash-register-dialog/cash-register-dialog.component';
+import { TourService } from '../../../services/tour.service';
 import { Inject } from '@angular/core';
 
 export interface DashboardWidget {
@@ -312,15 +315,22 @@ export class HomeComponent implements OnInit {
   salesToday: number = 0;
   transactionsToday: number = 0;
   totalProducts: number = 0;
+  gastosMes: number = 0;
+  utilidadNetaMes: number = 0;
+  ingresosMes: number = 0;
+  currencySymbol: string = '$';
+  currencyCode: string = 'COP';
 
   loadingSales: boolean = false;
   loadingProducts: boolean = false;
+  loadingFinancials: boolean = false;
   
   isCashRegisterOpen: boolean = false;
   
   widgets: DashboardWidget[] = [
     { id: 'pos', icon: 'point_of_sale', title: 'Ir al POS', desc: 'Realizar cobro', route: '/dashboard/sales/pos', roles: ['Admin', 'Cajero'], active: true },
     { id: 'corte', icon: 'point_of_sale', title: 'Corte de Caja', desc: 'Apertura / Cierre', action: 'cash-register', roles: ['Admin', 'Cajero'], active: true },
+    { id: 'expenses', icon: 'receipt_long', title: 'Gastos Operativos', desc: 'Bitácora y egresos', route: '/dashboard/expenses', roles: ['Admin'], active: true },
     { id: 'products', icon: 'inventory_2', title: 'Productos', desc: 'Gestionar catálogo', route: '/dashboard/products', roles: ['Admin'], active: true },
     { id: 'clients', icon: 'people', title: 'Clientes', desc: 'Base de datos', route: '/dashboard/clients', roles: ['Admin'], active: true },
     { id: 'analytics', icon: 'insights', title: 'Analíticas', desc: 'Métricas clave', route: '/dashboard/analytics', roles: ['Admin'], active: true },
@@ -335,9 +345,12 @@ export class HomeComponent implements OnInit {
   private authService = inject(AuthService);
   private productService = inject(ProductService);
   private reportService = inject(ReportService);
+  private analyticsService = inject(AnalyticsService);
+  private expenseService = inject(ExpenseService);
   private dialog = inject(MatDialog);
   private snackBar = inject(MatSnackBar);
   private cashRegisterService = inject(CashRegisterService);
+  private tourService = inject(TourService);
 
   ngOnInit(): void {
     this.userRole = this.authService.getUserRole();
@@ -350,12 +363,17 @@ export class HomeComponent implements OnInit {
       this.userName = this.userRole === 'Admin' ? 'Administrador' : 'Cajero';
     }
     
+    this.currencySymbol = this.authService.getStoreCurrencySymbol();
+    this.currencyCode = this.authService.getStoreCurrencyCode();
+    
     this.checkCashRegisterStatus();
     this.loadWidgets();
 
     if (this.userRole === 'Admin') {
       this.loadDashboardMetrics();
     }
+
+    this.tourService.checkAndStartAutoTour();
   }
 
   loadWidgets(): void {
@@ -443,6 +461,19 @@ export class HomeComponent implements OnInit {
       error: (err) => {
         console.error('Error cargando reporte de ventas', err);
         this.loadingSales = false;
+      }
+    });
+
+    this.loadingFinancials = true;
+    this.analyticsService.getDashboardKPI().subscribe({
+      next: (kpis: DashboardKPI) => {
+        this.gastosMes = kpis.gastos_mes || 0;
+        this.utilidadNetaMes = kpis.utilidad_neta_mes || 0;
+        this.ingresosMes = kpis.ingresos_mes || 0;
+        this.loadingFinancials = false;
+      },
+      error: () => {
+        this.loadingFinancials = false;
       }
     });
   }

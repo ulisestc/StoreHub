@@ -26,7 +26,7 @@
     <h3 mat-subheader>Tienda</h3>
 
     <div *ngIf="userRole === 'Admin' || userRole === 'Cajero'">
-      <a mat-list-item routerLink="/dashboard/sales/pos" routerLinkActive="active">
+      <a mat-list-item routerLink="/dashboard/sales/pos" routerLinkActive="active" data-tour="sidebar-pos">
         <mat-icon matListItemIcon>point_of_sale</mat-icon>
         <span matListItemTitle>Punto de Venta (POS)</span>
       </a>
@@ -34,7 +34,7 @@
         <mat-icon matListItemIcon>receipt_long</mat-icon>
         <span matListItemTitle>Historial de Ventas</span>
       </a>
-      <a mat-list-item (click)="openCashRegister()" style="cursor: pointer;">
+      <a mat-list-item (click)="openCashRegister()" style="cursor: pointer;" data-tour="sidebar-corte">
         <mat-icon matListItemIcon>point_of_sale</mat-icon>
         <span matListItemTitle>Corte de Caja</span>
       </a>
@@ -44,9 +44,13 @@
       <mat-divider></mat-divider>
       <h3 mat-subheader>Administración</h3>
 
-      <a mat-list-item routerLink="/dashboard/analytics" routerLinkActive="active">
+      <a mat-list-item routerLink="/dashboard/analytics" routerLinkActive="active" data-tour="sidebar-analytics">
         <mat-icon matListItemIcon>insights</mat-icon>
         <span matListItemTitle>Analíticas</span>
+      </a>
+      <a mat-list-item routerLink="/dashboard/expenses" routerLinkActive="active" data-tour="sidebar-expenses">
+        <mat-icon matListItemIcon>receipt_long</mat-icon>
+        <span matListItemTitle>Gastos Operativos</span>
       </a>
       <a mat-list-item routerLink="/dashboard/employees" routerLinkActive="active">
         <mat-icon matListItemIcon>manage_accounts</mat-icon>
@@ -56,7 +60,7 @@
         <mat-icon matListItemIcon>settings</mat-icon>
         <span matListItemTitle>Configuración</span>
       </a>
-      <a mat-list-item routerLink="/dashboard/products" routerLinkActive="active">
+      <a mat-list-item routerLink="/dashboard/products" routerLinkActive="active" data-tour="sidebar-products">
         <mat-icon matListItemIcon>inventory_2</mat-icon>
         <span matListItemTitle>Productos</span>
       </a>

@@ -48,6 +48,32 @@ img.brand-icon {
   flex: 1 1 auto;
 }
 
+.tour-btn {
+  color: var(--talavera-blue) !important;
+  font-weight: 600;
+  margin-right: 8px;
+  border-radius: 8px;
+  background: rgba(11, 47, 107, 0.05);
+
+  mat-icon {
+    margin-right: 4px;
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+  }
+
+  @media (max-width: 600px) {
+    span {
+      display: none;
+    }
+    min-width: 40px;
+    padding: 0 8px;
+    mat-icon {
+      margin-right: 0;
+    }
+  }
+}
+
 .user-btn mat-icon {
   transform: scale(1.25); /* Scales from 24px to 30px without breaking hover ripple alignment */
 }
