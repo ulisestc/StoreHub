@@ -17,6 +17,11 @@ interface TokenData {
   storePhone?: string;
   storeReceiptMessage?: string;
   isPremium?: boolean;
+  storeCountry?: string;
+  storeCurrencyCode?: string;
+  storeCurrencySymbol?: string;
+  storeTaxRate?: number;
+  storeTaxName?: string;
 }
 
 interface LoginResponse {
@@ -35,6 +40,11 @@ export interface Store {
   max_products: number;
   max_users: number;
   is_setup_complete?: boolean;
+  country?: string;
+  currency_code?: string;
+  currency_symbol?: string;
+  tax_rate?: number;
+  tax_name?: string;
 }
 
 export interface UserResponse {
@@ -102,7 +112,12 @@ export class AuthService {
               storeAddress: userInfo.store?.address,
               storePhone: userInfo.store?.phone,
               storeReceiptMessage: userInfo.store?.receipt_message,
-              isPremium: userInfo.store?.is_premium
+              isPremium: userInfo.store?.is_premium,
+              storeCountry: userInfo.store?.country || 'Colombia',
+              storeCurrencyCode: userInfo.store?.currency_code || 'COP',
+              storeCurrencySymbol: userInfo.store?.currency_symbol || '$',
+              storeTaxRate: userInfo.store?.tax_rate !== undefined && userInfo.store?.tax_rate !== null ? Number(userInfo.store?.tax_rate) : 0.19,
+              storeTaxName: userInfo.store?.tax_name || 'IVA'
             };
 
             localStorage.setItem(this.TOKEN_KEY, response.access);
@@ -256,6 +271,16 @@ export class AuthService {
       } catch (e) {
         console.error('Error updating token data', e);
       }
+    }
+  }
+
+  getTokenData(): TokenData | null {
+    const tokenDataStr = localStorage.getItem(this.TOKEN_DATA_KEY);
+    if (!tokenDataStr) return null;
+    try {
+      return JSON.parse(tokenDataStr) as TokenData;
+    } catch {
+      return null;
     }
   }
 
@@ -428,5 +453,47 @@ export class AuthService {
         }
       })
     );
+  }
+
+  getStoreCountry(): string {
+    const data = this.getTokenData();
+    return data?.storeCountry || 'Colombia';
+  }
+
+  getStoreCurrencyCode(): string {
+    const data = this.getTokenData();
+    return data?.storeCurrencyCode || 'COP';
+  }
+
+  getStoreCurrencySymbol(): string {
+    const data = this.getTokenData();
+    return data?.storeCurrencySymbol || '$';
+  }
+
+  getStoreTaxRate(): number {
+    const data = this.getTokenData();
+    return data?.storeTaxRate !== undefined && data?.storeTaxRate !== null ? data.storeTaxRate : 0.19;
+  }
+
+  getStoreTaxName(): string {
+    const data = this.getTokenData();
+    return data?.storeTaxName || 'IVA';
+  }
+
+  updateLocalStoreConfig(updatedFields: Partial<Store>): void {
+    const tokenDataStr = localStorage.getItem(this.TOKEN_DATA_KEY);
+    if (tokenDataStr) {
+      const tokenData: TokenData = JSON.parse(tokenDataStr);
+      if (updatedFields.name) tokenData.storeName = updatedFields.name;
+      if (updatedFields.address !== undefined) tokenData.storeAddress = updatedFields.address;
+      if (updatedFields.phone !== undefined) tokenData.storePhone = updatedFields.phone;
+      if (updatedFields.receipt_message !== undefined) tokenData.storeReceiptMessage = updatedFields.receipt_message;
+      if (updatedFields.country) tokenData.storeCountry = updatedFields.country;
+      if (updatedFields.currency_code) tokenData.storeCurrencyCode = updatedFields.currency_code;
+      if (updatedFields.currency_symbol) tokenData.storeCurrencySymbol = updatedFields.currency_symbol;
+      if (updatedFields.tax_rate !== undefined) tokenData.storeTaxRate = Number(updatedFields.tax_rate);
+      if (updatedFields.tax_name) tokenData.storeTaxName = updatedFields.tax_name;
+      localStorage.setItem(this.TOKEN_DATA_KEY, JSON.stringify(tokenData));
+    }
   }
 }

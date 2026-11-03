@@ -13,6 +13,11 @@ export interface StoreConfig {
   is_premium: boolean;
   max_products: number;
   max_users: number;
+  country?: string;
+  currency_code?: string;
+  currency_symbol?: string;
+  tax_rate?: number;
+  tax_name?: string;
 }
 
 @Injectable({

@@ -46,6 +46,44 @@
           <mat-icon matPrefix>receipt_long</mat-icon>
         </mat-form-field>
 
+        <div class="section-divider">
+          <h3>Configuración Regional</h3>
+          <p class="section-subtitle">Selecciona el país de operación. La moneda, símbolo e impuestos oficiales se aplican automáticamente según la normativa fiscal.</p>
+        </div>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>País de Operación</mat-label>
+          <mat-select formControlName="country" (selectionChange)="onCountryChange($event.value)">
+            <mat-option *ngFor="let p of countryPresets" [value]="p.country">
+              {{ p.country }}
+            </mat-option>
+          </mat-select>
+          <mat-icon matPrefix>public</mat-icon>
+        </mat-form-field>
+
+        <div class="regional-auto-card">
+          <h4 class="auto-title">Moneda e Impuesto:</h4>
+
+          <div class="auto-grid">
+            <div class="auto-item">
+              <span class="auto-label">Código ISO</span>
+              <span class="auto-value">{{ selectedPreset.currencyCode }}</span>
+            </div>
+            <div class="auto-item">
+              <span class="auto-label">Símbolo</span>
+              <span class="auto-value">{{ selectedPreset.currencySymbol }}</span>
+            </div>
+            <div class="auto-item">
+              <span class="auto-label">Impuesto Oficial</span>
+              <span class="auto-value">{{ selectedPreset.taxName }}</span>
+            </div>
+            <div class="auto-item">
+              <span class="auto-label">Tasa Aplicable</span>
+              <span class="auto-value">{{ selectedPreset.taxRatePercent }}%</span>
+            </div>
+          </div>
+        </div>
+
         <div class="form-actions">
           <button mat-raised-button color="primary" type="submit" [disabled]="storeForm.invalid || isLoading">
             <mat-icon>save</mat-icon>
