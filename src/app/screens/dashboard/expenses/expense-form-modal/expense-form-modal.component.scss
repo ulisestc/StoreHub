@@ -1,0 +1,72 @@
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24px 24px 16px;
+  border-bottom: 1px solid var(--talavera-line, #e2e8f0);
+
+  .header-title {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    mat-icon {
+      font-size: 28px;
+      width: 28px;
+      height: 28px;
+    }
+
+    h2 {
+      margin: 0;
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: var(--talavera-ink, #0f172a);
+    }
+  }
+
+  .close-btn {
+    color: var(--talavera-muted, #64748b);
+    margin-right: -8px;
+  }
+}
+
+.modal-content {
+  padding: 20px 24px !important;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+
+  .subtitle {
+    margin: 0 0 8px;
+    font-size: 0.9rem;
+    color: var(--talavera-muted, #64748b);
+  }
+
+  .full-width {
+    width: 100%;
+  }
+
+  .row {
+    display: flex;
+    gap: 16px;
+
+    .half-width {
+      flex: 1;
+    }
+
+    @media (max-width: 600px) {
+      flex-direction: column;
+    }
+  }
+}
+
+.modal-actions {
+  padding: 16px 24px;
+  background-color: rgba(11, 47, 107, 0.03);
+  border-top: 1px solid var(--talavera-line, #e2e8f0);
+  margin: 0;
+
+  button {
+    font-weight: 600;
+  }
+}

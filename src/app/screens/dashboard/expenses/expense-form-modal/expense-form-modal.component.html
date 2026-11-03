@@ -1,0 +1,65 @@
+<div class="modal-header">
+  <div class="header-title">
+    <mat-icon color="primary">receipt_long</mat-icon>
+    <h2>Registrar Gasto Operativo</h2>
+  </div>
+  <button mat-icon-button (click)="onCancel()" tabindex="-1" class="close-btn">
+    <mat-icon>close</mat-icon>
+  </button>
+</div>
+
+<form [formGroup]="expenseForm" (ngSubmit)="onSubmit()">
+  <mat-dialog-content class="modal-content">
+    <p class="subtitle">Registra egresos de la tienda para calcular tu utilidad neta real sin sesgos.</p>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Concepto del Gasto</mat-label>
+      <input matInput formControlName="title" placeholder="Ej. Pago recibo de energía Enel">
+      <mat-icon matPrefix>edit_note</mat-icon>
+      <mat-error *ngIf="expenseForm.get('title')?.hasError('required')">El concepto es obligatorio.</mat-error>
+    </mat-form-field>
+
+    <div class="row">
+      <mat-form-field appearance="outline" class="half-width">
+        <mat-label>Categoría</mat-label>
+        <mat-select formControlName="category">
+          <mat-option *ngFor="let cat of categories" [value]="cat.value">
+            {{ cat.label }}
+          </mat-option>
+        </mat-select>
+        <mat-icon matPrefix>category</mat-icon>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="half-width">
+        <mat-label>Monto</mat-label>
+        <input matInput type="number" formControlName="amount" placeholder="0.00" min="0.01" step="any">
+        <span matPrefix>{{ currencySymbol }}&nbsp;</span>
+        <mat-icon matSuffix>attach_money</mat-icon>
+        <mat-error *ngIf="expenseForm.get('amount')?.hasError('required')">El monto es obligatorio.</mat-error>
+        <mat-error *ngIf="expenseForm.get('amount')?.hasError('min')">Debe ser mayor a cero.</mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="row">
+      <mat-form-field appearance="outline" class="half-width">
+        <mat-label>Fecha del Gasto</mat-label>
+        <input matInput type="date" formControlName="date">
+        <mat-icon matPrefix>event</mat-icon>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="half-width">
+        <mat-label>Notas adicionales (Opcional)</mat-label>
+        <input matInput formControlName="description" placeholder="No. de factura o referencia">
+        <mat-icon matPrefix>description</mat-icon>
+      </mat-form-field>
+    </div>
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="end" class="modal-actions">
+    <button mat-button type="button" (click)="onCancel()" [disabled]="isSubmitting">Cancelar</button>
+    <button mat-raised-button color="primary" type="submit" [disabled]="expenseForm.invalid || isSubmitting">
+      <mat-icon>save</mat-icon>
+      {{ isSubmitting ? 'Guardando...' : 'Guardar Gasto' }}
+    </button>
+  </mat-dialog-actions>
+</form>

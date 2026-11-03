@@ -228,6 +228,13 @@ export const routes: Routes = [
         title: 'Mejorar a Premium | StoreHub'
       },
       {
+        path: 'expenses',
+        loadComponent: () => import('./screens/dashboard/expenses/expense-list/expense-list.component').then(m => m.ExpenseListComponent),
+        canActivate: [roleGuard, setupGuard],
+        data: { expectedRoles: ['Admin'] },
+        title: 'Gastos Operativos | StoreHub'
+      },
+      {
         path: 'reports',
         component: ReportListComponent,
         canActivate: [roleGuard, setupGuard],

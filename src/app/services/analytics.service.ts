@@ -10,6 +10,12 @@ export interface DashboardKPI {
   productos_vendidos_hoy: number;
   ingresos_mes: number;
   ventas_mes: number;
+  gastos_hoy?: number;
+  gastos_mes?: number;
+  cogs_mes?: number;
+  utilidad_bruta_mes?: number;
+  utilidad_neta_mes?: number;
+  utilidad_neta_hoy?: number;
 }
 
 export interface SalesOverTime {

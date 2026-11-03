@@ -33,6 +33,22 @@
         <div class="kpi-value">${{ kpiData?.ingresos_mes | number:'1.2-2' }}</div>
       </div>
     </mat-card>
+    <mat-card class="kpi-card" style="border-left-color: #ef4444;">
+      <div class="kpi-icon" style="color: #ef4444;"><mat-icon>receipt_long</mat-icon></div>
+      <div class="kpi-content">
+        <div class="kpi-title">Gastos Operativos (Mes)</div>
+        <div class="kpi-value" style="color: #ef4444;">-${{ (kpiData?.gastos_mes || 0) | number:'1.2-2' }}</div>
+      </div>
+    </mat-card>
+    <mat-card class="kpi-card" style="border-left-color: #10b981;">
+      <div class="kpi-icon" style="color: #10b981;"><mat-icon>savings</mat-icon></div>
+      <div class="kpi-content">
+        <div class="kpi-title">Utilidad Neta Real (Mes)</div>
+        <div class="kpi-value" [style.color]="(kpiData?.utilidad_neta_mes || 0) >= 0 ? '#10b981' : '#ef4444'">
+          ${{ (kpiData?.utilidad_neta_mes || 0) | number:'1.2-2' }}
+        </div>
+      </div>
+    </mat-card>
   </div>
 
   <div class="header" style="margin-top: 24px;">

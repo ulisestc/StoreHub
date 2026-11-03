@@ -1,0 +1,158 @@
+<div class="expenses-container">
+  <!-- Header -->
+  <div class="page-header">
+    <div>
+      <h1>Bitácora de Gastos Operativos</h1>
+      <p class="subtitle">Controla los egresos del negocio para obtener la utilidad neta real sin sesgos.</p>
+    </div>
+    <button mat-raised-button color="primary" (click)="openCreateModal()" class="action-btn">
+      <mat-icon>add</mat-icon>
+      Registrar Gasto
+    </button>
+  </div>
+
+  <!-- KPI Summary Cards -->
+  <div class="kpi-grid" *ngIf="summary">
+    <mat-card class="kpi-card">
+      <div class="kpi-icon-box blue">
+        <mat-icon>calendar_month</mat-icon>
+      </div>
+      <div class="kpi-info">
+        <span class="kpi-label">Gastos del Mes</span>
+        <span class="kpi-value">{{ summary.month_total | currency:currencyCode:'symbol':'1.0-2' }}</span>
+        <span class="kpi-sub">{{ summary.month_count }} registros este mes</span>
+      </div>
+    </mat-card>
+
+    <mat-card class="kpi-card">
+      <div class="kpi-icon-box amber">
+        <mat-icon>today</mat-icon>
+      </div>
+      <div class="kpi-info">
+        <span class="kpi-label">Gastos de Hoy</span>
+        <span class="kpi-value">{{ summary.today_total | currency:currencyCode:'symbol':'1.0-2' }}</span>
+        <span class="kpi-sub">{{ summary.today_count }} registros hoy</span>
+      </div>
+    </mat-card>
+
+    <mat-card class="kpi-card">
+      <div class="kpi-icon-box green">
+        <mat-icon>pie_chart</mat-icon>
+      </div>
+      <div class="kpi-info">
+        <span class="kpi-label">Categoría Principal</span>
+        <span class="kpi-value" style="font-size: 1.25rem;">
+          {{ summary.by_category.length > 0 ? summary.by_category[0].category_label : 'Sin registros' }}
+        </span>
+        <span class="kpi-sub" *ngIf="summary.by_category.length > 0">
+          {{ summary.by_category[0].total | currency:currencyCode:'symbol':'1.0-2' }}
+        </span>
+      </div>
+    </mat-card>
+  </div>
+
+  <!-- Filters Card -->
+  <mat-card class="filter-card">
+    <div class="filters-row">
+      <mat-form-field appearance="outline" subscriptSizing="dynamic" class="filter-field">
+        <mat-label>Categoría</mat-label>
+        <mat-select [(ngModel)]="selectedCategory" (selectionChange)="onFilterChange()">
+          <mat-option *ngFor="let c of categories" [value]="c.value">
+            {{ c.label }}
+          </mat-option>
+        </mat-select>
+        <mat-icon matPrefix>category</mat-icon>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" subscriptSizing="dynamic" class="filter-field">
+        <mat-label>Desde</mat-label>
+        <input matInput type="date" [(ngModel)]="startDate" (change)="onFilterChange()">
+        <mat-icon matPrefix>event</mat-icon>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" subscriptSizing="dynamic" class="filter-field">
+        <mat-label>Hasta</mat-label>
+        <input matInput type="date" [(ngModel)]="endDate" (change)="onFilterChange()">
+        <mat-icon matPrefix>event</mat-icon>
+      </mat-form-field>
+
+      <button mat-stroked-button (click)="clearFilters()" *ngIf="selectedCategory || startDate || endDate">
+        <mat-icon>clear</mat-icon>
+        Limpiar Filtros
+      </button>
+    </div>
+  </mat-card>
+
+  <!-- Table Card -->
+  <mat-card class="table-card">
+    <div *ngIf="isLoading" class="loader-box">
+      <mat-spinner diameter="40"></mat-spinner>
+    </div>
+
+    <div *ngIf="!isLoading && expenses.length === 0" class="empty-state">
+      <mat-icon class="empty-icon">receipt_long</mat-icon>
+      <h3>No hay gastos registrados</h3>
+      <p>Registra servicios, nómina, rentas o fletes para llevar la contabilidad al día.</p>
+      <button mat-raised-button color="primary" (click)="openCreateModal()">
+        <mat-icon>add</mat-icon>
+        Registrar Primer Gasto
+      </button>
+    </div>
+
+    <div class="table-responsive" *ngIf="!isLoading && expenses.length > 0">
+      <table mat-table [dataSource]="expenses" class="expenses-table">
+        <!-- Date Column -->
+        <ng-container matColumnDef="date">
+          <th mat-header-cell *matHeaderCellDef>Fecha</th>
+          <td mat-cell *matCellDef="let exp">{{ exp.date | date:'dd/MM/yyyy' }}</td>
+        </ng-container>
+
+        <!-- Title Column -->
+        <ng-container matColumnDef="title">
+          <th mat-header-cell *matHeaderCellDef>Concepto</th>
+          <td mat-cell *matCellDef="let exp">
+            <div class="concept-cell">
+              <span class="title">{{ exp.title }}</span>
+              <span class="desc" *ngIf="exp.description">{{ exp.description }}</span>
+            </div>
+          </td>
+        </ng-container>
+
+        <!-- Category Column -->
+        <ng-container matColumnDef="category">
+          <th mat-header-cell *matHeaderCellDef>Categoría</th>
+          <td mat-cell *matCellDef="let exp">
+            <span class="category-badge {{ exp.category }}">{{ exp.category_display }}</span>
+          </td>
+        </ng-container>
+
+        <!-- Amount Column -->
+        <ng-container matColumnDef="amount">
+          <th mat-header-cell *matHeaderCellDef>Monto</th>
+          <td mat-cell *matCellDef="let exp" class="amount-cell">
+            -{{ exp.amount | currency:currencyCode:'symbol':'1.0-2' }}
+          </td>
+        </ng-container>
+
+        <!-- User Column -->
+        <ng-container matColumnDef="user">
+          <th mat-header-cell *matHeaderCellDef>Registrado por</th>
+          <td mat-cell *matCellDef="let exp">{{ exp.user_name || 'Administrador' }}</td>
+        </ng-container>
+
+        <!-- Actions Column -->
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef></th>
+          <td mat-cell *matCellDef="let exp" class="actions-cell">
+            <button mat-icon-button color="warn" (click)="deleteExpense(exp)" title="Eliminar gasto">
+              <mat-icon>delete_outline</mat-icon>
+            </button>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+    </div>
+  </mat-card>
+</div>
