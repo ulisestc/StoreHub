@@ -56,6 +56,114 @@ $color-border: var(--talavera-surface);
     color: var(--talavera-muted);
     font-size: 1rem;
   }
+
+  .payment-method-selector {
+    margin: 16px 0;
+
+    .section-label {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--talavera-ink);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 8px;
+    }
+
+    .method-buttons {
+      display: flex;
+      gap: 12px;
+
+      button {
+        flex: 1;
+        height: 48px;
+        border-radius: 8px;
+        border: 2px solid var(--talavera-line, #cbd5e1);
+        color: var(--talavera-muted);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        font-weight: 600;
+        transition: all 0.2s ease;
+
+        mat-icon {
+          font-size: 20px;
+          width: 20px;
+          height: 20px;
+        }
+
+        &.active {
+          border-color: var(--talavera-blue, #0b2f6b);
+          background-color: rgba(11, 47, 107, 0.08);
+          color: var(--talavera-blue, #0b2f6b);
+        }
+      }
+    }
+  }
+
+  .cash-calc-section {
+    margin-top: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    .full-width {
+      width: 100%;
+    }
+
+    .change-display {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 16px;
+      background: rgba(16, 185, 129, 0.1);
+      border-radius: 8px;
+      border: 1px solid rgba(16, 185, 129, 0.3);
+
+      .change-label {
+        font-weight: 600;
+        color: #065f46;
+      }
+
+      .change-amount {
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: #047857;
+      }
+    }
+
+    .error-text {
+      color: #b91c1c;
+      font-size: 0.85rem;
+      font-weight: 500;
+    }
+  }
+
+  .card-info-note {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 12px 14px;
+    background: rgba(11, 47, 107, 0.05);
+    border-radius: 8px;
+    margin-top: 12px;
+
+    mat-icon {
+      font-size: 20px;
+      width: 20px;
+      height: 20px;
+      color: var(--talavera-blue);
+      flex-shrink: 0;
+    }
+
+    p {
+      margin: 0;
+      font-size: 0.85rem;
+      line-height: 1.4;
+      color: var(--talavera-ink);
+    }
+  }
 }
 
 ::ng-deep .mat-mdc-dialog-actions {

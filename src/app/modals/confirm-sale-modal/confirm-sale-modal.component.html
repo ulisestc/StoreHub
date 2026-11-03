@@ -10,13 +10,56 @@
 
 <div mat-dialog-content>
   <p class="total-display">Total a Pagar:</p>
-  <div class="total-amount">{{ data.total | currency:'USD':'symbol':'1.2-2' }}</div>
-  <p>¿Deseas registrar esta venta?</p>
+  <div class="total-amount">{{ data.total | currency:currencyCode:'symbol':'1.0-2' }}</div>
+
+  <div class="payment-method-selector">
+    <label class="section-label">Método de Pago:</label>
+    <div class="method-buttons">
+      <button type="button" 
+              mat-stroked-button 
+              [class.active]="paymentMethod === 'cash'"
+              (click)="setPaymentMethod('cash')">
+        <mat-icon>payments</mat-icon>
+        <span>Efectivo</span>
+      </button>
+
+      <button type="button" 
+              mat-stroked-button 
+              [class.active]="paymentMethod === 'card'"
+              (click)="setPaymentMethod('card')">
+        <mat-icon>credit_card</mat-icon>
+        <span>Tarjeta</span>
+      </button>
+    </div>
+  </div>
+
+  <div *ngIf="paymentMethod === 'cash'" class="cash-calc-section">
+    <mat-form-field appearance="outline" class="full-width" subscriptSizing="dynamic">
+      <mat-label>Efectivo Recibido (Opcional)</mat-label>
+      <input matInput type="number" [(ngModel)]="cashReceived" placeholder="Ej. 50000" min="0">
+      <span matPrefix>{{ currencySymbol }}&nbsp;</span>
+      <mat-icon matSuffix>monetization_on</mat-icon>
+    </mat-form-field>
+
+    <div *ngIf="change > 0" class="change-display">
+      <span class="change-label">Cambio / Vueltos:</span>
+      <span class="change-amount">{{ change | currency:currencyCode:'symbol':'1.0-2' }}</span>
+    </div>
+
+    <div *ngIf="isCashInsufficient" class="error-text">
+      El efectivo recibido es menor al total a pagar.
+    </div>
+  </div>
+
+  <div *ngIf="paymentMethod === 'card'" class="card-info-note">
+    <mat-icon color="primary">info</mat-icon>
+    <p>Esta venta se registrará como pago con tarjeta. No se sumará al efectivo físico del corte de caja.</p>
+  </div>
 </div>
 
 <div mat-dialog-actions align="end">
   <button mat-button (click)="onCancel()">Cancelar</button>
-  <button mat-raised-button color="primary" (click)="onConfirm()" cdkFocusInitial>
+  <button mat-raised-button color="primary" (click)="onConfirm()" [disabled]="isCashInsufficient" cdkFocusInitial>
     Confirmar y Cobrar
   </button>
 </div>

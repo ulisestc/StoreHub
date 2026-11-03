@@ -12,6 +12,8 @@ import { SalesService } from '../../../../services/sales.service';
 import { Sale } from '../../../../shared/interfaces/sale';
 import { SaleDetailModalComponent } from '../../../../modals/sale-detail-modal/sale-detail-modal.component';
 
+import { AuthService } from '../../../../services/auth.service';
+
 @Component({
   selector: 'app-sale-history',
   standalone: true,
@@ -30,7 +32,7 @@ import { SaleDetailModalComponent } from '../../../../modals/sale-detail-modal/s
 })
 export class SaleHistoryComponent implements OnInit {
 
-  displayedColumns: string[] = ['created_at', 'id', 'client_name', 'items', 'total', 'acciones'];
+  displayedColumns: string[] = ['created_at', 'id', 'client_name', 'payment_method', 'items', 'total', 'acciones'];
   dataSource: Sale[] = [];
   isLoading = false;
   pageSize = 10;
@@ -39,8 +41,14 @@ export class SaleHistoryComponent implements OnInit {
 
   private salesService = inject(SalesService);
   private dialog = inject(MatDialog);
+  private authService = inject(AuthService);
+
+  currencyCode = this.authService.getStoreCurrencyCode();
+  currencySymbol = this.authService.getStoreCurrencySymbol();
 
   ngOnInit(): void {
+    this.currencyCode = this.authService.getStoreCurrencyCode();
+    this.currencySymbol = this.authService.getStoreCurrencySymbol();
     this.loadSalesHistory();
   }
 
@@ -83,5 +91,38 @@ export class SaleHistoryComponent implements OnInit {
 
   getTotalItems(sale: Sale): number {
     return sale.details?.reduce((sum, detail) => sum + detail.quantity, 0) || 0;
+  }
+
+  shareWhatsApp(sale: Sale): void {
+    const storeName = this.authService.getStoreName() || 'StoreHub';
+    const symbol = this.currencySymbol || '$';
+    const paymentMethodLabel = sale.payment_method === 'card' ? 'Tarjeta' : 'Efectivo';
+    const dateStr = new Date(sale.created_at).toLocaleString('es-ES', { dateStyle: 'short', timeStyle: 'short' });
+
+    let lines: string[] = [];
+    lines.push(`*COMPROBANTE DE VENTA*`);
+    lines.push(`*${storeName}*`);
+    lines.push(`Folio: #${sale.id}`);
+    lines.push(`Fecha: ${dateStr}`);
+    lines.push(`Método de pago: ${paymentMethodLabel}`);
+    lines.push(`--------------------------------`);
+
+    if (sale.details && sale.details.length > 0) {
+      for (const d of sale.details) {
+        const itemTotal = Number(d.price_at_sale) * Number(d.quantity);
+        lines.push(`- ${d.quantity}x ${d.product_name} = ${symbol} ${itemTotal.toLocaleString('es-CO')}`);
+      }
+    }
+
+    lines.push(`--------------------------------`);
+    lines.push(`Subtotal: ${symbol} ${Number(sale.subtotal).toLocaleString('es-CO')}`);
+    lines.push(`Impuestos: ${symbol} ${Number(sale.impuestos).toLocaleString('es-CO')}`);
+    lines.push(`*TOTAL PAGADO: ${symbol} ${Number(sale.total).toLocaleString('es-CO')}*`);
+    lines.push(`--------------------------------`);
+    lines.push(`Gracias por su compra.`);
+
+    const message = lines.join('\n');
+    const waUrl = `https://wa.me/?text=${encodeURIComponent(message)}`;
+    window.open(waUrl, '_blank');
   }
 }

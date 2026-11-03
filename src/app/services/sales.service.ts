@@ -9,6 +9,7 @@ const apiUrl = environment.apiUrl;
 
 export interface CreateSaleData {
   client: string;
+  payment_method?: 'cash' | 'card';
   details: Array<{
     product: string;
     quantity: number;
@@ -67,3 +68,4 @@ export class SalesService {
     return this.http.post(`${apiUrl}/sales/${saleId}/send-ticket/`, payload);
   }
 }
+

@@ -11,6 +11,9 @@ export interface CashRegisterSession {
   opening_balance: number;
   expected_closing_balance: number;
   actual_closing_balance: number | null;
+  cash_sales_total?: number;
+  card_sales_total?: number;
+  total_sales?: number;
   status: 'Open' | 'Closed';
   notes: string;
   opened_by: number;

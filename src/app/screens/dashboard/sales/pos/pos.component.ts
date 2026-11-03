@@ -11,6 +11,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatSnackBarModule, MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSelectModule } from '@angular/material/select';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { MatTooltipModule } from '@angular/material/tooltip';
@@ -23,7 +24,7 @@ import { ProductService } from '../../../../services/product.service';
 import { CategoryService } from '../../../../services/category.service';
 import { Product } from '../../../../shared/interfaces/product';
 import { Category } from '../../../../shared/interfaces/category';
-import { SalesService } from '../../../../services/sales.service';
+import { SalesService, CreateSaleData } from '../../../../services/sales.service';
 import { ClientService } from '../../../../services/client.service';
 import { Client } from '../../../../shared/interfaces/client';
 import { OfflineSyncService } from '../../../../services/offline-sync.service';
@@ -52,6 +53,7 @@ import { Router } from '@angular/router';
     MatListModule,
     MatSnackBarModule,
     MatSelectModule,
+    MatAutocompleteModule,
     MatProgressSpinnerModule,
     MatPaginatorModule,
     FormsModule,
@@ -69,10 +71,19 @@ export class PosComponent implements OnInit {
   ivaVenta: number = 0;
   filteredProducts: Product[] = [];
   clients: Client[] = [];
-  categories: Category[] = [];
+  filteredClients: Client[] = [];
+  clientSearchCtrl = new FormControl('');
+  selectedClient: Client | null = null;
   selectedClientId: string | null = null;
   selectedCategoryId: string | undefined = undefined;
+  categories: Category[] = [];
   searchQuery: string = '';
+
+  // Configuración Regional
+  taxRate: number = 0.19;
+  taxName: string = 'IVA';
+  currencyCode: string = 'COP';
+  currencySymbol: string = '$';
   isLoading = false;
   isOnline: boolean = true;
   pageSize = 10;
@@ -117,6 +128,11 @@ export class PosComponent implements OnInit {
   });
 
   ngOnInit(): void {
+    this.taxRate = this.authService.getStoreTaxRate();
+    this.taxName = this.authService.getStoreTaxName();
+    this.currencyCode = this.authService.getStoreCurrencyCode();
+    this.currencySymbol = this.authService.getStoreCurrencySymbol();
+
     this.checkCashRegisterStatus();
     this.loadAllProducts();
     this.loadClients();
@@ -136,6 +152,22 @@ export class PosComponent implements OnInit {
       this.searchQuery = searchTerm;
       this.currentPage = 0;
       this.loadAllProducts(0);
+    });
+
+    // Búsqueda predictiva de clientes en tiempo real
+    this.clientSearchCtrl.valueChanges.pipe(
+      debounceTime(200)
+    ).subscribe(query => {
+      if (!query || typeof query !== 'string') {
+        this.filteredClients = this.clients.slice(0, 30);
+        return;
+      }
+      const q = query.toLowerCase().trim();
+      this.filteredClients = this.clients.filter(c =>
+        c.name.toLowerCase().includes(q) ||
+        (c.phone && c.phone.toLowerCase().includes(q)) ||
+        (c.email && c.email.toLowerCase().includes(q))
+      ).slice(0, 30);
     });
   }
 
@@ -274,23 +306,36 @@ export class PosComponent implements OnInit {
   }
 
   loadClients(): void {
-    console.log('Iniciando carga de clientes...');
     this.clientService.getClients(1, 1000).subscribe({
       next: (data) => {
-        console.log('Respuesta clientes:', data);
         this.clients = data.results || [];
-        console.log('Clientes cargados:', this.clients.length);
-        const defaultClient = this.clients.find(c => c.name.includes('Mostrador'));
+        this.filteredClients = this.clients.slice(0, 30);
+        const defaultClient = this.clients.find(c => c.name.toLowerCase().includes('mostrador') || c.name.toLowerCase().includes('público general'));
         if (defaultClient) {
+          this.selectedClient = defaultClient;
           this.selectedClientId = defaultClient.id;
-          console.log('Cliente por defecto seleccionado:', defaultClient.name);
+          this.clientSearchCtrl.setValue(defaultClient.name, { emitEvent: false });
         }
       },
       error: (error) => {
         console.error('Error cargando clientes:', error);
         this.clients = [];
+        this.filteredClients = [];
       }
     });
+  }
+
+  onClientSelected(client: Client): void {
+    this.selectedClient = client;
+    this.selectedClientId = client.id;
+    this.clientSearchCtrl.setValue(client.name, { emitEvent: false });
+  }
+
+  clearSelectedClient(): void {
+    this.selectedClient = null;
+    this.selectedClientId = null;
+    this.clientSearchCtrl.setValue('');
+    this.filteredClients = this.clients.slice(0, 30);
   }
 
   loadCategories(): void {
@@ -407,7 +452,7 @@ export class PosComponent implements OnInit {
     this.totalVenta = this.ticketItems.reduce((acc, item) => {
       return acc + (item.precio_venta * item.cantidad);
     }, 0);
-    this.subtotalVenta = this.totalVenta / 1.16;
+    this.subtotalVenta = this.totalVenta / (1 + this.taxRate);
     this.ivaVenta = this.totalVenta - this.subtotalVenta;
   }
 
@@ -502,31 +547,33 @@ export class PosComponent implements OnInit {
     }
 
     const dialogRef = this.dialog.open(ConfirmSaleModalComponent, {
-      width: '400px',
+      width: '450px',
       data: { total: this.totalVenta }
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      if (result === true) {
-        this.processSale();
+      if (result && result.confirmed) {
+        this.processSale(result.payment_method || 'cash');
       }
     });
   }
 
-  private processSale(): void {
+  private processSale(paymentMethod: 'cash' | 'card' = 'cash'): void {
     const saleDetails = this.ticketItems.map(item => ({
       product: item.id,
       quantity: item.cantidad
     }));
 
-    const saleData = {
+    const saleData: CreateSaleData = {
       client: this.selectedClientId || '',
+      payment_method: paymentMethod,
       details: saleDetails
     };
 
     if (this.isOnline) {
       this.salesService.createSale(saleData).subscribe(saleResponse => {
-        const selectedClientEmail = this.clients.find(c => c.id === this.selectedClientId)?.email;
+        const selectedClientEmail = this.selectedClient?.email;
+        const selectedClientPhone = this.selectedClient?.phone;
         
         const dialogRef = this.dialog.open(SaleSuccessModalComponent, {
           width: '450px',
@@ -534,7 +581,17 @@ export class PosComponent implements OnInit {
           data: {
             saleId: saleResponse.id,
             clientEmail: selectedClientEmail,
-            sale: saleResponse
+            clientPhone: selectedClientPhone,
+            sale: saleResponse,
+            ticketItems: this.ticketItems,
+            subtotal: this.subtotalVenta,
+            iva: this.ivaVenta,
+            total: this.totalVenta,
+            paymentMethod: paymentMethod,
+            currencySymbol: this.currencySymbol,
+            currencyCode: this.currencyCode,
+            taxName: this.taxName,
+            taxRate: this.taxRate
           }
         });
 
@@ -566,7 +623,10 @@ export class PosComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((newClient: Client | undefined) => {
       if (newClient) {
+        this.clients.unshift(newClient);
+        this.selectedClient = newClient;
         this.selectedClientId = newClient.id;
+        this.clientSearchCtrl.setValue(newClient.name, { emitEvent: false });
         this.snackBar.open(`Cliente "${newClient.name}" creado y seleccionado`, 'Cerrar', {
           duration: 3000
         });

@@ -10,13 +10,34 @@
     <p class="subtitle">La venta #{{data.saleId}} ha sido registrada correctamente.</p>
   </div>
 
-  <div class="modal-body" [formGroup]="emailForm">
-    <mat-form-field appearance="outline" class="full-width">
-      <mat-label>Enviar ticket por correo (Opcional)</mat-label>
-      <input matInput formControlName="email" type="email" placeholder="ejemplo@correo.com">
-      <mat-icon matPrefix>mail</mat-icon>
-      <mat-error *ngIf="emailForm.get('email')?.hasError('email')">Formato inválido</mat-error>
-    </mat-form-field>
+  <div class="modal-body">
+    <!-- WhatsApp Ticket Section -->
+    <div class="dispatch-group">
+      <mat-form-field appearance="outline" class="full-width" subscriptSizing="dynamic">
+        <mat-label>Enviar ticket por WhatsApp</mat-label>
+        <input matInput [(ngModel)]="whatsappPhone" type="tel" placeholder="Número de celular con o sin prefijo">
+        <mat-icon matPrefix>phone_iphone</mat-icon>
+        <button mat-flat-button color="accent" matSuffix (click)="sendWhatsAppTicket()" [disabled]="!whatsappPhone" class="whatsapp-btn">
+          <mat-icon>send</mat-icon>
+          Enviar
+        </button>
+      </mat-form-field>
+    </div>
+
+    <!-- Email Ticket Section -->
+    <div class="dispatch-group" [formGroup]="emailForm">
+      <mat-form-field appearance="outline" class="full-width" subscriptSizing="dynamic">
+        <mat-label>Enviar ticket por correo (Opcional)</mat-label>
+        <input matInput formControlName="email" type="email" placeholder="ejemplo@correo.com">
+        <mat-icon matPrefix>mail</mat-icon>
+        <button mat-flat-button color="primary" matSuffix (click)="sendEmail()" [disabled]="emailForm.invalid || !emailForm.value.email || isSending" class="email-btn">
+          <mat-spinner diameter="18" *ngIf="isSending" class="btn-spinner"></mat-spinner>
+          <mat-icon [style.display]="isSending ? 'none' : 'inline-block'">send</mat-icon>
+          {{ isSending ? 'Enviando...' : 'Enviar' }}
+        </button>
+        <mat-error *ngIf="emailForm.get('email')?.hasError('email')">Formato inválido</mat-error>
+      </mat-form-field>
+    </div>
   </div>
 
   <div class="modal-footer">
@@ -25,17 +46,10 @@
     </button>
     
     <span class="tooltip-wrapper" matTooltip="Configura tu impresora térmica primero en el menú Hardware" matTooltipPosition="above" [matTooltipDisabled]="(isPrinterConnected$ | async) === true" [style.cursor]="(isPrinterConnected$ | async) ? 'default' : 'not-allowed'">
-      <button mat-stroked-button color="accent" (click)="printTicket()" [disabled]="!(isPrinterConnected$ | async)" class="full-width-btn">
+      <button mat-stroked-button color="accent" (click)="printTicket()" [disabled]="!(isPrinterConnected$ | async)" class="print-btn">
         <mat-icon>print</mat-icon>
         Imprimir
       </button>
     </span>
-
-    <button mat-raised-button color="primary" (click)="sendEmail()" [disabled]="emailForm.invalid || !emailForm.value.email || isSending" class="send-btn">
-      <mat-spinner diameter="20" *ngIf="isSending" class="btn-spinner"></mat-spinner>
-      <mat-icon [style.display]="isSending ? 'none' : 'inline-block'">send</mat-icon>
-      <span [style.display]="isSending ? 'none' : 'inline'">Enviar</span>
-      <span [style.display]="isSending ? 'inline' : 'none'">Enviando...</span>
-    </button>
   </div>
 </div>

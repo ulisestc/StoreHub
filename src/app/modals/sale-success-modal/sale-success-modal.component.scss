@@ -49,6 +49,64 @@ $color-success: #d46a4e;
 .modal-body {
   padding: 0 32px 24px;
 
+  .dispatch-group {
+    margin-bottom: 12px;
+
+    .whatsapp-btn, .email-btn {
+      height: 36px;
+      margin-right: 4px;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      font-weight: 600;
+
+      mat-icon {
+        font-size: 18px;
+        width: 18px;
+        height: 18px;
+        margin-right: 4px;
+      }
+    }
+
+    .whatsapp-btn {
+      background-color: #25d366;
+      color: #ffffff !important;
+
+      &:hover {
+        background-color: #1ebe5d;
+      }
+    }
+
+    .whatsapp-subactions {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 4px;
+
+      .web-link-btn {
+        background: transparent;
+        border: none;
+        color: var(--talavera-muted, #64748b);
+        font-size: 0.78rem;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        padding: 2px 4px;
+        transition: color 0.2s ease;
+
+        mat-icon {
+          font-size: 14px;
+          width: 14px;
+          height: 14px;
+        }
+
+        &:hover {
+          color: #0284c7;
+          text-decoration: underline;
+        }
+      }
+    }
+  }
+
   .full-width {
     width: 100%;
   }

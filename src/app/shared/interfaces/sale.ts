@@ -6,6 +6,7 @@ export interface Sale {
   subtotal: string;
   impuestos: string;
   total: string;
+  payment_method?: 'cash' | 'card';
   created_at: string;
   details: SaleDetail[];
 }

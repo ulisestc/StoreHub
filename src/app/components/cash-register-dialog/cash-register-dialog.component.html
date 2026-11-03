@@ -20,11 +20,22 @@
       <div class="summary-box" *ngIf="isClosing && data.session">
         <div class="summary-item">
           <span>Fondo Inicial:</span>
-          <strong>${{ data.session.opening_balance | number:'1.2-2' }}</strong>
+          <strong>${{ data.session.opening_balance | number:'1.0-2' }}</strong>
+        </div>
+        <div class="summary-item" *ngIf="data.session.cash_sales_total !== undefined">
+          <span>Ventas en Efectivo:</span>
+          <strong style="color: #047857;">+${{ data.session.cash_sales_total | number:'1.0-2' }}</strong>
         </div>
         <div class="summary-item expected">
-          <span>Total Esperado en Caja (Calculado):</span>
-          <strong>${{ data.session.expected_closing_balance | number:'1.2-2' }}</strong>
+          <span>Efectivo Físico Esperado:</span>
+          <strong>${{ data.session.expected_closing_balance | number:'1.0-2' }}</strong>
+        </div>
+        <div class="summary-item card-sales" *ngIf="data.session.card_sales_total !== undefined && data.session.card_sales_total > 0">
+          <span style="display: flex; align-items: center; gap: 4px;">
+            <mat-icon style="font-size: 16px; width: 16px; height: 16px; color: var(--talavera-blue);">credit_card</mat-icon>
+            Ventas con Tarjeta (Informativo):
+          </span>
+          <strong style="color: var(--talavera-blue);">${{ data.session.card_sales_total | number:'1.0-2' }}</strong>
         </div>
       </div>
 

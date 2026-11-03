@@ -24,13 +24,28 @@
 
           <div class="client-section">
             <mat-form-field appearance="outline" class="full-width" subscriptSizing="dynamic">
-              <mat-label>Cliente</mat-label>
-              <mat-select [(ngModel)]="selectedClientId">
-                <mat-option *ngFor="let client of clients" [value]="client.id">
-                  {{ client.name }}
+              <mat-label>Buscar o Seleccionar Cliente</mat-label>
+              <input type="text"
+                     matInput
+                     [formControl]="clientSearchCtrl"
+                     [matAutocomplete]="autoClient"
+                     placeholder="Escribe nombre, teléfono o correo">
+              <button *ngIf="selectedClient" mat-icon-button matSuffix type="button" (click)="clearSelectedClient()" title="Quitar cliente">
+                <mat-icon>close</mat-icon>
+              </button>
+              <mat-icon *ngIf="!selectedClient" matSuffix>search</mat-icon>
+
+              <mat-autocomplete #autoClient="matAutocomplete" (optionSelected)="onClientSelected($event.option.value)">
+                <mat-option *ngFor="let client of filteredClients" [value]="client">
+                  <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+                    <span style="font-weight: 500;">{{ client.name }}</span>
+                    <span *ngIf="client.phone" style="font-size: 0.85rem; color: var(--talavera-muted); margin-left: 12px;">{{ client.phone }}</span>
+                  </div>
                 </mat-option>
-              </mat-select>
-              <mat-icon matSuffix>person</mat-icon>
+                <mat-option *ngIf="filteredClients.length === 0" disabled>
+                  <span>No se encontraron clientes coincidentes</span>
+                </mat-option>
+              </mat-autocomplete>
             </mat-form-field>
 
             <button mat-raised-button color="primary" class="new-client-btn" (click)="openCreateClientDialog()">
@@ -209,16 +224,16 @@
         <div class="ticket-footer">
           <div class="total-row subtotal">
             <span>Subtotal</span>
-            <span class="total-amount">{{ subtotalVenta | currency }}</span>
+            <span class="total-amount">{{ subtotalVenta | currency:currencyCode:'symbol':'1.0-2' }}</span>
           </div>
           <div class="total-row iva">
-            <span>IVA (16%)</span>
-            <span class="total-amount">{{ ivaVenta | currency }}</span>
+            <span>{{ taxName }} ({{ (taxRate * 100) | number:'1.0-2' }}%)</span>
+            <span class="total-amount">{{ ivaVenta | currency:currencyCode:'symbol':'1.0-2' }}</span>
           </div>
           <mat-divider style="margin: 8px 0;"></mat-divider>
           <div class="total-row final-total">
             <span>Total a Pagar</span>
-            <span class="total-amount">{{ totalVenta | currency }}</span>
+            <span class="total-amount">{{ totalVenta | currency:currencyCode:'symbol':'1.0-2' }}</span>
           </div>
 
           <button mat-raised-button color="primary" class="pay-btn" [disabled]="ticketItems.length === 0" (click)="onConfirmSale()">

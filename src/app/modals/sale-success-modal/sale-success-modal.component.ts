@@ -12,10 +12,23 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { SalesService } from '../../services/sales.service';
 import { PrinterService } from '../../services/printer.service';
 
+import { FormsModule } from '@angular/forms';
+import { AuthService } from '../../services/auth.service';
+
 export interface SaleSuccessData {
   saleId: number;
   clientEmail?: string;
+  clientPhone?: string;
   sale?: any;
+  ticketItems?: any[];
+  subtotal?: number;
+  iva?: number;
+  total?: number;
+  paymentMethod?: 'cash' | 'card';
+  currencySymbol?: string;
+  currencyCode?: string;
+  taxName?: string;
+  taxRate?: number;
 }
 
 @Component({
@@ -29,6 +42,7 @@ export interface SaleSuccessData {
     MatInputModule,
     MatIconModule,
     ReactiveFormsModule,
+    FormsModule,
     MatProgressSpinnerModule,
     MatTooltipModule
   ],
@@ -37,7 +51,9 @@ export interface SaleSuccessData {
 })
 export class SaleSuccessModalComponent {
   emailForm: FormGroup;
+  whatsappPhone: string = '';
   isSending: boolean = false;
+  isSendingWhatsApp: boolean = false;
 
   isPrinterConnected$;
 
@@ -47,12 +63,84 @@ export class SaleSuccessModalComponent {
     private fb: FormBuilder,
     private salesService: SalesService,
     private snackBar: MatSnackBar,
-    private printerService: PrinterService
+    private printerService: PrinterService,
+    private authService: AuthService
   ) {
     this.isPrinterConnected$ = this.printerService.isConnected$;
+    this.whatsappPhone = data.clientPhone || '';
     this.emailForm = this.fb.group({
       email: [data.clientEmail || '', [Validators.required, Validators.email]]
     });
+  }
+
+  private getFormattedPhone(): string {
+    const rawPhone = (this.whatsappPhone || '').replace(/\D/g, '');
+    if (!rawPhone || rawPhone.length < 7) return '';
+
+    let finalPhone = rawPhone;
+    const country = (this.authService.getStoreCountry() || '').toLowerCase();
+    if (rawPhone.length === 10) {
+      if (country.includes('colombia')) {
+        finalPhone = '57' + rawPhone;
+      } else if (country.includes('m') || country.includes('mex')) {
+        finalPhone = '52' + rawPhone;
+      } else if (country.includes('per')) {
+        finalPhone = '51' + rawPhone;
+      } else if (country.includes('chi')) {
+        finalPhone = '56' + rawPhone;
+      }
+    }
+    return finalPhone;
+  }
+
+  sendWhatsAppTicket(): void {
+    const finalPhone = this.getFormattedPhone();
+    if (!finalPhone) {
+      this.snackBar.open('Por favor ingresa un número de teléfono válido para WhatsApp.', 'Cerrar', { duration: 3000 });
+      return;
+    }
+
+    const storeName = this.authService.getStoreName() || 'StoreHub';
+    const symbol = this.data.currencySymbol || this.authService.getStoreCurrencySymbol() || '$';
+    const taxName = this.data.taxName || this.authService.getStoreTaxName() || 'IVA';
+    const paymentMethodLabel = this.data.paymentMethod === 'card' ? 'Tarjeta' : 'Efectivo';
+    const dateStr = new Date().toLocaleString('es-ES', { dateStyle: 'short', timeStyle: 'short' });
+
+    let lines: string[] = [];
+    lines.push(`*COMPROBANTE DE VENTA*`);
+    lines.push(`*${storeName}*`);
+    lines.push(`Folio: #${this.data.saleId}`);
+    lines.push(`Fecha: ${dateStr}`);
+    lines.push(`Método de pago: ${paymentMethodLabel}`);
+    lines.push(`--------------------------------`);
+
+    if (this.data.ticketItems && this.data.ticketItems.length > 0) {
+      for (const item of this.data.ticketItems) {
+        const itemTotal = (item.precio_venta * item.cantidad).toLocaleString('es-CO', { minimumFractionDigits: 0, maximumFractionDigits: 2 });
+        lines.push(`- ${item.cantidad}x ${item.nombre} = ${symbol} ${itemTotal}`);
+      }
+    } else if (this.data.sale?.details) {
+      for (const d of this.data.sale.details) {
+        const itemTotal = (d.price_at_sale * d.quantity).toLocaleString('es-CO', { minimumFractionDigits: 0, maximumFractionDigits: 2 });
+        lines.push(`- ${d.quantity}x ${d.product_name} = ${symbol} ${itemTotal}`);
+      }
+    }
+
+    lines.push(`--------------------------------`);
+    if (this.data.subtotal !== undefined) {
+      lines.push(`Subtotal: ${symbol} ${this.data.subtotal.toLocaleString('es-CO', { minimumFractionDigits: 0, maximumFractionDigits: 2 })}`);
+    }
+    if (this.data.iva !== undefined) {
+      lines.push(`${taxName}: ${symbol} ${this.data.iva.toLocaleString('es-CO', { minimumFractionDigits: 0, maximumFractionDigits: 2 })}`);
+    }
+    const totalVal = this.data.total ?? this.data.sale?.total ?? 0;
+    lines.push(`*TOTAL PAGADO: ${symbol} ${Number(totalVal).toLocaleString('es-CO', { minimumFractionDigits: 0, maximumFractionDigits: 2 })}*`);
+    lines.push(`--------------------------------`);
+    lines.push(`Gracias por su compra.`);
+
+    const message = lines.join('\n');
+    const waUrl = `https://wa.me/${finalPhone}?text=${encodeURIComponent(message)}`;
+    window.open(waUrl, '_blank');
   }
 
   onClose(): void {
