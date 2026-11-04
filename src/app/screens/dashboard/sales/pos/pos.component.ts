@@ -123,6 +123,12 @@ export class PosComponent implements OnInit {
   LOW_STOCK_THRESHOLD = 5;
   private searchSubject = new Subject<string>();
 
+  // Venta Libre / Cargo Rápido
+  showCustomItemForm: boolean = false;
+  customItemConcept: string = '';
+  customItemPrice: number | null = null;
+  customItemQty: number = 1;
+
   searchForm = new FormGroup({
     sku: new FormControl('', [Validators.required])
   });
@@ -370,8 +376,43 @@ export class PosComponent implements OnInit {
     this.loadAllProducts(event.pageIndex);
   }
 
+  toggleCustomItemForm(): void {
+    this.showCustomItemForm = !this.showCustomItemForm;
+  }
+
+  addCustomItemToTicket(): void {
+    const concept = (this.customItemConcept || '').trim();
+    const price = Number(this.customItemPrice);
+    const qty = Math.max(1, Math.floor(Number(this.customItemQty) || 1));
+
+    if (!concept) {
+      this.showError('Ingresa un concepto para la venta libre.');
+      return;
+    }
+    if (!price || price <= 0) {
+      this.showError('Ingresa un monto mayor a $0.00.');
+      return;
+    }
+
+    this.ticketItems.push({
+      id: null,
+      isCustom: true,
+      sku: 'CARGO LIBRE',
+      nombre: concept,
+      precio_venta: price,
+      cantidad: qty,
+      stock_disponible: 999999
+    });
+
+    this.calculateTotal();
+    this.showSuccess(`${concept} ($${price.toFixed(2)}) agregado al ticket`);
+    this.customItemConcept = '';
+    this.customItemPrice = null;
+    this.customItemQty = 1;
+  }
+
   addProductToTicket(product: Product): void {
-    const itemInTicket = this.ticketItems.find(item => item.id === product.id);
+    const itemInTicket = this.ticketItems.find(item => !item.isCustom && item.id === product.id);
     const cantidadEnTicket = itemInTicket ? itemInTicket.cantidad : 0;
 
     if (cantidadEnTicket >= product.stock) {
@@ -410,7 +451,7 @@ export class PosComponent implements OnInit {
     const productFound = this.filteredProducts.find(p => p.sku === sku);
 
     if (productFound) {
-      const itemInTicket = this.ticketItems.find(item => item.id === productFound.id);
+      const itemInTicket = this.ticketItems.find(item => !item.isCustom && item.id === productFound.id);
       const cantidadEnTicket = itemInTicket ? itemInTicket.cantidad : 0;
 
       if (cantidadEnTicket >= productFound.stock) {
@@ -559,10 +600,20 @@ export class PosComponent implements OnInit {
   }
 
   private processSale(paymentMethod: 'cash' | 'card' = 'cash'): void {
-    const saleDetails = this.ticketItems.map(item => ({
-      product: item.id,
-      quantity: item.cantidad
-    }));
+    const saleDetails = this.ticketItems.map(item => {
+      if (item.isCustom) {
+        return {
+          product: null,
+          custom_description: item.nombre,
+          custom_price: item.precio_venta,
+          quantity: item.cantidad
+        };
+      }
+      return {
+        product: item.id,
+        quantity: item.cantidad
+      };
+    });
 
     const saleData: CreateSaleData = {
       client: this.selectedClientId || '',
@@ -598,7 +649,7 @@ export class PosComponent implements OnInit {
         dialogRef.afterClosed().subscribe(() => {
           const productsWithLowStock: any[] = [];
           for (const item of this.ticketItems) {
-            if (item.stock_disponible - item.cantidad <= this.LOW_STOCK_THRESHOLD) {
+            if (!item.isCustom && (item.stock_disponible - item.cantidad <= this.LOW_STOCK_THRESHOLD)) {
               productsWithLowStock.push(item);
             }
           }

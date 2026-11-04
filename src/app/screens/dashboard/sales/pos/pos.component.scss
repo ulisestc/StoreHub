@@ -218,10 +218,13 @@ $color-success: #d46a4e;
   flex-direction: column;
   overflow: hidden;
 
-  mat-card-header {
+  mat-card-header.products-card-header {
     background-color: rgba(11, 47, 107, 0.05);
-    padding: 20px 24px;
+    padding: 16px 24px;
     border-bottom: 1px solid $color-border;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 
     mat-card-title {
       display: flex;
@@ -230,9 +233,92 @@ $color-success: #d46a4e;
       font-size: 1.1rem;
       font-weight: 600;
       color: var(--talavera-ink);
+      margin: 0;
 
       mat-icon {
         color: var(--talavera-blue);
+      }
+    }
+
+    .custom-sale-toggle-btn {
+      margin-left: auto;
+      background: rgba(212, 106, 78, 0.12);
+      color: #d46a4e;
+      border: 1px solid rgba(212, 106, 78, 0.35);
+      border-radius: 10px;
+      font-weight: 600;
+      font-size: 0.85rem;
+      height: 38px;
+      padding: 0 14px;
+      transition: all 0.2s ease;
+
+      mat-icon {
+        font-size: 18px;
+        width: 18px;
+        height: 18px;
+        margin-right: 6px;
+      }
+
+      &:hover,
+      &.active {
+        background: #d46a4e;
+        color: #ffffff;
+        border-color: #d46a4e;
+      }
+    }
+  }
+
+  .custom-item-drawer {
+    background: linear-gradient(135deg, rgba(11, 47, 107, 0.03) 0%, rgba(212, 106, 78, 0.06) 100%);
+    border-bottom: 1px solid $color-border;
+    padding: 16px 20px;
+    animation: slideDown 0.2s ease-out;
+
+    .custom-item-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+
+      .custom-item-title {
+        strong {
+          display: block;
+          font-size: 0.92rem;
+          color: var(--talavera-ink);
+        }
+
+        span {
+          font-size: 0.78rem;
+          color: var(--talavera-muted);
+        }
+      }
+    }
+
+    .custom-item-inputs {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      flex-wrap: wrap;
+
+      .concept-field {
+        flex: 2;
+        min-width: 180px;
+      }
+
+      .price-field {
+        flex: 1;
+        min-width: 120px;
+      }
+
+      .qty-field {
+        width: 85px;
+      }
+
+      .add-custom-btn {
+        height: 52px;
+        border-radius: 10px;
+        padding: 0 18px;
+        font-weight: 600;
       }
     }
   }

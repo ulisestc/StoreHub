@@ -11,7 +11,9 @@ export interface CreateSaleData {
   client: string;
   payment_method?: 'cash' | 'card';
   details: Array<{
-    product: string;
+    product?: string | null;
+    custom_description?: string;
+    custom_price?: number;
     quantity: number;
   }>;
 }

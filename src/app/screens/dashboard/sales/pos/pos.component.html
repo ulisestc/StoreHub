@@ -100,12 +100,52 @@
       </mat-card>
 
       <mat-card class="pos-card products-card">
-        <mat-card-header>
+        <mat-card-header class="products-card-header">
           <mat-card-title>
             <mat-icon>inventory_2</mat-icon>
             Productos Disponibles
           </mat-card-title>
+          <button mat-flat-button class="custom-sale-toggle-btn" [class.active]="showCustomItemForm" (click)="toggleCustomItemForm()">
+            <mat-icon>{{ showCustomItemForm ? 'expand_less' : 'add' }}</mat-icon>
+            <span>Venta Libre</span>
+          </button>
         </mat-card-header>
+
+        <!-- Panel desplegable de Venta Libre / Cargo Rápido -->
+        <div *ngIf="showCustomItemForm" class="custom-item-drawer">
+          <div class="custom-item-header">
+            <div class="custom-item-title">
+              <div>
+                <strong>Cargo Rápido / Venta Libre</strong>
+                <span>Para cobrar artículos sueltos, a granel o aún no registrados en el catálogo</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="custom-item-inputs">
+            <mat-form-field appearance="outline" subscriptSizing="dynamic" class="concept-field">
+              <mat-label>Concepto</mat-label>
+              <input matInput [(ngModel)]="customItemConcept" placeholder="Descripción del cargo" (keyup.enter)="addCustomItemToTicket()">
+              <mat-icon matPrefix>edit_note</mat-icon>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" subscriptSizing="dynamic" class="price-field">
+              <mat-label>Monto ({{ currencySymbol }})</mat-label>
+              <input matInput type="number" min="0.5" step="0.5" [(ngModel)]="customItemPrice" placeholder="0.00" (keyup.enter)="addCustomItemToTicket()">
+              <mat-icon matPrefix>attach_money</mat-icon>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" subscriptSizing="dynamic" class="qty-field">
+              <mat-label>Cant.</mat-label>
+              <input matInput type="number" min="1" step="1" [(ngModel)]="customItemQty" (keyup.enter)="addCustomItemToTicket()">
+            </mat-form-field>
+
+            <button mat-raised-button color="primary" class="add-custom-btn" (click)="addCustomItemToTicket()">
+              <mat-icon>add_shopping_cart</mat-icon>
+              Agregar
+            </button>
+          </div>
+        </div>
 
         <mat-card-content>
 
@@ -159,7 +199,11 @@
           <div *ngIf="!isLoading && filteredProducts.length === 0" class="empty-state" style="text-align: center; padding: 3rem 1rem;">
             <mat-icon style="font-size: 48px; width: 48px; height: 48px; color: #ccc;">inventory_2</mat-icon>
             <h3 style="margin-top: 16px; color: #666;">No se encontraron productos</h3>
-            <p style="color: #999;">Intenta con otro término de búsqueda.</p>
+            <p style="color: #999; margin-bottom: 16px;">Intenta con otro término o cóbralo al instante como cargo libre.</p>
+            <button mat-stroked-button color="primary" (click)="showCustomItemForm = true; customItemConcept = searchQuery || ''">
+              <mat-icon>add</mat-icon>
+              Cobrar como Venta Libre
+            </button>
           </div>
 
           <!-- Paginador -->
