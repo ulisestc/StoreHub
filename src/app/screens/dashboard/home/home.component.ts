@@ -336,6 +336,7 @@ export class HomeComponent implements OnInit {
     { id: 'analytics', icon: 'insights', title: 'Analíticas', desc: 'Métricas clave', route: '/dashboard/analytics', roles: ['Admin'], active: true },
     { id: 'inventory', icon: 'calculate', title: 'Inventario', desc: 'Ajustes manuales', route: '/dashboard/inventory', roles: ['Admin'], active: true },
     { id: 'employees', icon: 'manage_accounts', title: 'Empleados', desc: 'Administrar cajeros', route: '/dashboard/employees', roles: ['Admin'], active: true },
+    { id: 'audit-log', icon: 'verified_user', title: 'Auditoría', desc: 'Bitácora de seguridad', route: '/dashboard/audit-log', roles: ['Admin'], active: true },
     { id: 'settings', icon: 'settings', title: 'Configuración', desc: 'Ajustes del sistema', route: '/dashboard/settings', roles: ['Admin'], active: true },
     { id: 'export-full', icon: 'cloud_download', title: 'Exportar Reporte', desc: 'Descargar Excel Completo', action: 'export-full', roles: ['Admin'], active: true }
   ];

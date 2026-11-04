@@ -235,6 +235,13 @@ export const routes: Routes = [
         title: 'Gastos Operativos | StoreHub'
       },
       {
+        path: 'audit-log',
+        loadComponent: () => import('./screens/dashboard/audit-log/audit-log.component').then(m => m.AuditLogComponent),
+        canActivate: [roleGuard, setupGuard],
+        data: { expectedRoles: ['Admin'] },
+        title: 'Bitácora de Auditoría | StoreHub'
+      },
+      {
         path: 'reports',
         component: ReportListComponent,
         canActivate: [roleGuard, setupGuard],

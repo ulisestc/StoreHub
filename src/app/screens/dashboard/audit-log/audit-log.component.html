@@ -1,0 +1,153 @@
+<div class="audit-page">
+  <header class="page-header">
+    <div class="header-text">
+      <h1>Bitácora de Auditoría</h1>
+      <p>Historial de cambios de precios, ajustes de inventario, cortes de caja y movimientos del negocio.</p>
+    </div>
+    <button mat-stroked-button class="refresh-btn" (click)="loadLogs()" [disabled]="isLoading">
+      <mat-icon>refresh</mat-icon>
+      Actualizar
+    </button>
+  </header>
+
+  <!-- Tarjetas de Resumen Rápido -->
+  <section class="summary-grid">
+    <div class="summary-card">
+      <div class="summary-icon primary">
+        <mat-icon>history</mat-icon>
+      </div>
+      <div class="summary-info">
+        <span class="summary-label">Eventos Registrados</span>
+        <strong class="summary-value">{{ logs.length }}</strong>
+      </div>
+    </div>
+
+    <div class="summary-card">
+      <div class="summary-icon warning">
+        <mat-icon>price_change</mat-icon>
+      </div>
+      <div class="summary-info">
+        <span class="summary-label">Precios y Stock</span>
+        <strong class="summary-value">{{ priceAndStockChangesCount }}</strong>
+      </div>
+    </div>
+
+    <div class="summary-card">
+      <div class="summary-icon info">
+        <mat-icon>point_of_sale</mat-icon>
+      </div>
+      <div class="summary-info">
+        <span class="summary-label">Aperturas y Cortes</span>
+        <strong class="summary-value">{{ cashEventsCount }}</strong>
+      </div>
+    </div>
+
+    <div class="summary-card">
+      <div class="summary-icon danger">
+        <mat-icon>delete_outline</mat-icon>
+      </div>
+      <div class="summary-info">
+        <span class="summary-label">Bajas / Eliminaciones</span>
+        <strong class="summary-value">{{ criticalDeletionsCount }}</strong>
+      </div>
+    </div>
+  </section>
+
+  <!-- Barra de Filtros -->
+  <mat-card class="filter-card">
+    <div class="filter-bar">
+      <mat-form-field appearance="outline" subscriptSizing="dynamic" class="search-field">
+        <mat-label>Buscar por producto, usuario o detalle...</mat-label>
+        <input matInput [(ngModel)]="searchQuery" (keyup.enter)="loadLogs()" placeholder="Ej. Refresco, Admin, Caja...">
+        <mat-icon matPrefix>search</mat-icon>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" subscriptSizing="dynamic" class="action-field">
+        <mat-label>Tipo de Evento</mat-label>
+        <mat-select [(ngModel)]="selectedAction" (selectionChange)="loadLogs()">
+          <mat-option *ngFor="let opt of actionOptions" [value]="opt.value">
+            {{ opt.label }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" subscriptSizing="dynamic" class="date-field">
+        <mat-label>Desde</mat-label>
+        <input matInput type="date" [(ngModel)]="startDate" (change)="loadLogs()">
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" subscriptSizing="dynamic" class="date-field">
+        <mat-label>Hasta</mat-label>
+        <input matInput type="date" [(ngModel)]="endDate" (change)="loadLogs()">
+      </mat-form-field>
+
+      <button mat-flat-button color="primary" class="filter-btn" (click)="loadLogs()">
+        <mat-icon>filter_list</mat-icon>
+        Filtrar
+      </button>
+
+      <button *ngIf="selectedAction || searchQuery || startDate || endDate"
+              mat-button class="clear-btn" (click)="clearFilters()">
+        Limpiar
+      </button>
+    </div>
+  </mat-card>
+
+  <!-- Estado de Carga -->
+  <div *ngIf="isLoading" class="loading-box">
+    <mat-spinner diameter="36"></mat-spinner>
+    <p>Cargando movimientos...</p>
+  </div>
+
+  <!-- Lista Compacta de Eventos -->
+  <div *ngIf="!isLoading && logs.length > 0" class="audit-timeline">
+    <div *ngFor="let log of logs" class="audit-item" [attr.data-severity]="getActionSeverity(log.action)">
+      <div class="action-avatar" [ngClass]="getActionSeverity(log.action)">
+        <mat-icon>{{ getActionIcon(log.action) }}</mat-icon>
+      </div>
+
+      <div class="audit-body">
+        <div class="audit-main-line">
+          <div class="audit-left">
+            <span class="action-badge" [ngClass]="getActionSeverity(log.action)">
+              {{ log.action_label }}
+            </span>
+            <span class="audit-description">{{ log.description }}</span>
+          </div>
+
+          <div class="audit-right">
+            <span class="meta-user">
+              <mat-icon>person</mat-icon>
+              {{ log.user_name }}
+            </span>
+            <span class="audit-timestamp">
+              {{ log.created_at | date:'dd/MM/yyyy HH:mm' }}
+            </span>
+          </div>
+        </div>
+
+        <!-- Comparativa compacta solo cuando hay cambio de valor (antes -> después) -->
+        <div class="diff-inline" *ngIf="log.before_data && log.after_data">
+          <span class="diff-pill before">
+            <ng-container *ngFor="let item of formatDataObject(log.before_data); let last = last">
+              {{ item.key }}: <strong>{{ item.val }}</strong><span *ngIf="!last"> · </span>
+            </ng-container>
+          </span>
+          <mat-icon class="diff-arrow">east</mat-icon>
+          <span class="diff-pill after">
+            <ng-container *ngFor="let item of formatDataObject(log.after_data); let last = last">
+              {{ item.key }}: <strong>{{ item.val }}</strong><span *ngIf="!last"> · </span>
+            </ng-container>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Estado Vacío -->
+  <mat-card *ngIf="!isLoading && logs.length === 0" class="empty-card">
+    <mat-icon>history</mat-icon>
+    <h3>Sin movimientos registrados con estos filtros</h3>
+    <p>Aquí aparecerán los cambios de precios, ajustes de inventario, cortes de caja y gastos conforme se realicen.</p>
+  </mat-card>
+</div>
